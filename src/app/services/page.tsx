@@ -1,0 +1,192 @@
+import Link from "next/link"
+import ServiceCard from "@/components/ServiceCard"
+
+export const metadata = {
+  title: "Leistungen | SmartConnect CRM UG (haftungsbeschränkt)",
+  description:
+    "Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Fokussiert auf klare Abgrenzung, Dokumentation und Compliance-by-Design.",
+}
+
+export default function ServicesPage() {
+  const services = [
+    {
+      title: "IT Service & Operations Support",
+      shortScope:
+        "Unterstützung im Betrieb (Run) mit klaren Leistungsbausteinen, Dokumentation und Übergabefähigkeit.",
+      deliverables: [
+        "Betriebs-/Service-Dokumentation (Runbooks, SOPs)",
+        "Incident-/Request-Prozesse (Definition/Anpassung)",
+        "Service-Übersicht inkl. Verantwortlichkeiten (RACI nach Bedarf)",
+        "Übergabe-/Onboarding-Unterlagen für Betriebsteams",
+      ],
+      typicalInputs: [
+        "Bestehende Betriebsprozesse/ITSM-Vorgaben",
+        "System-/Zugangsübersichten (nach Rollenprinzip)",
+        "Sicherheits- und Compliance-Vorgaben des Auftraggebers",
+      ],
+      boundaries: [
+        "Kein 24/7-Betrieb ohne explizite Vereinbarung",
+        "Keine Änderungen an Produktivsystemen ohne Change-Freigabe",
+        "Keine Übernahme von Lizenz-/Provider-Verträgen ohne Mandat",
+      ],
+      tenderAlignment: ["ITIL-nahe Vorgehensweisen", "Auditierbare Dokumentation", "Betriebsnahe Umsetzung"],
+    },
+    {
+      title: "Systemintegration & Schnittstellen",
+      shortScope:
+        "Integration bestehender Systeme über APIs/ETL mit nachvollziehbaren Datenflüssen und kontrollierten Changes.",
+      deliverables: [
+        "Schnittstellenbeschreibung (Datenfelder, Auth, Fehlerbehandlung)",
+        "Integrations- und Ablaufdiagramme (technisch, nachvollziehbar)",
+        "Testfälle/Abnahmekriterien (funktional, ggf. sicherheitsrelevant)",
+        "Betriebs-/Monitoring-Hinweise für die Integration",
+      ],
+      typicalInputs: [
+        "API-Dokumentation / Zugang zu Sandbox/Testumgebung",
+        "Datenmodelle (Quelle/Ziel) und Validierungsregeln",
+        "Vorgaben zur Protokollierung, Aufbewahrung, Datenschutz",
+      ],
+      boundaries: [
+        "Keine Verarbeitung besonderer Kategorien personenbezogener Daten ohne separate Bewertung",
+        "Keine Produktivschaltung ohne Abnahme und Change-Prozess",
+        "Keine dauerhafte Datenhaltung außerhalb vereinbarter Systeme",
+      ],
+      tenderAlignment: ["Nachvollziehbare Datenflüsse", "Security-by-Design", "Dokumentierte Übergabe"],
+    },
+    {
+      title: "Security-by-Design & Baseline Hardening",
+      shortScope:
+        "Sicherheitsorientierte Umsetzung (Baseline), Risiko- und Maßnahmenübersicht ohne pauschale Zertifikatsclaims.",
+      deliverables: [
+        "Baseline-Hardening-Checkliste (Systemspezifisch)",
+        "Risiko-/Maßnahmenliste (priorisiert, nachvollziehbar)",
+        "Empfehlungen für Logging/Monitoring (minimal, zweckgebunden)",
+        "Dokumentation für Review/Audit (technische Nachweise)",
+      ],
+      typicalInputs: [
+        "Sicherheitsanforderungen/Policies (z. B. Passwort, MFA, Logging)",
+        "Systemübersicht (Assets, Rollen, Kritikalität)",
+        "Vorgaben zur Datenklassifikation und Aufbewahrung",
+      ],
+      boundaries: [
+        "Keine Penetrationstests ohne separates Mandat/Scope",
+        "Keine Sicherheitsgarantien; Ergebnisse sind kontextabhängig",
+        "Keine Einführung von Tracking/Analytics ohne Einwilligungskonzept",
+      ],
+      tenderAlignment: ["Grundschutz-nahe Denkweise möglich", "Least-Privilege & Rollenprinzip", "Review-fähige Nachweise"],
+    },
+    {
+      title: "Datenschutz-/DSGVO-nahe Umsetzung (technisch)",
+      shortScope:
+        "Technische Umsetzung zur Unterstützung von DSGVO-Anforderungen (Datenminimierung, Rechte, Löschkonzepte).",
+      deliverables: [
+        "Datenflussübersicht (wo entstehen/wandern Daten)",
+        "Technische Lösch-/Aufbewahrungslogik (Konzept + Umsetzungshinweise)",
+        "Zugriffs-/Berechtigungsmodell (Rollen, Minimierung)",
+        "Dokumentation für Datenschutzprüfung (technisch orientiert)",
+      ],
+      typicalInputs: [
+        "Verzeichnis von Verarbeitungstätigkeiten (falls vorhanden)",
+        "Datenkategorien, Zwecke, Aufbewahrungsvorgaben",
+        "Systemzugang für technische Prüfung (rollenbasiert)",
+      ],
+      boundaries: [
+        "Keine Rechtsberatung; juristische Bewertung erfolgt durch Datenschutzbeauftragte/Rechtsstelle",
+        "Keine Verarbeitung ohne dokumentierten Zweck und Rechtsgrundlage",
+        "Keine Übermittlung in Drittländer ohne Freigabe/Prüfung",
+      ],
+      tenderAlignment: ["Datensparsamkeit", "Transparenz und Nachweisbarkeit", "Rollen- und Berechtigungskonzepte"],
+    },
+    {
+      title: "Dokumentation & Übergabe (Audit-/Review-fähig)",
+      shortScope:
+        "Strukturierte technische und organisatorische Dokumentation zur Übergabe in Betrieb und für Beschaffungsprüfungen.",
+      deliverables: [
+        "Systemdokumentation (Architektur, Komponenten, Abhängigkeiten)",
+        "Betriebsdokumentation (Runbooks, Notfall-/Rollback-Hinweise)",
+        "Abnahme-Checkliste und Übergabeprotokoll",
+        "Änderungs-/Versionsübersicht (nach Bedarf)",
+      ],
+      typicalInputs: [
+        "Bestehende Dokumente, Tickets, Repo/Config-Stand",
+        "Stakeholder/Ansprechpartner für Abnahme",
+        "Vorgaben zu Formaten/Tools (Confluence, SharePoint, PDF etc.)",
+      ],
+      boundaries: [
+        "Keine Veröffentlichung interner Inhalte ohne Freigabe",
+        "Keine Ersetzung interner Governance-Prozesse",
+        "Keine Garantie für Vollständigkeit ohne Zugriff auf relevante Quellen",
+      ],
+      tenderAlignment: ["Nachvollziehbare Deliverables", "Betriebsübergabe", "Review- und Auditkontexte"],
+    },
+    {
+      title: "Projekt-/Umsetzungsunterstützung (strukturierte Lieferung)",
+      shortScope:
+        "Unterstützung bei Planung und Umsetzung mit klarer Abgrenzung, Change-Kontrolle und dokumentierter Lieferung.",
+      deliverables: [
+        "Umsetzungsplan (Scope, Phasen, Abhängigkeiten)",
+        "Abnahmekriterien & Liefergegenstände je Phase",
+        "Change-Log (Änderungen, Gründe, Freigaben)",
+        "Status-/Risikoübersicht (faktisch, ohne Marketing)",
+      ],
+      typicalInputs: [
+        "Ziele/Scope, Prioritäten, Rahmenbedingungen",
+        "Entscheidungswege (Owner, Freigaben, Gremien)",
+        "Zugänge zu Projektwerkzeugen (Jira, Planner etc.)",
+      ],
+      boundaries: [
+        "Keine Festpreis-/Terminzusagen ohne abgestimmten Scope",
+        "Keine eigenmächtige Scope-Erweiterung (Change required)",
+        "Keine Abkürzungen bei Dokumentation bei Audit-Relevanz",
+      ],
+      tenderAlignment: ["Scope-Kontrolle", "Nachweisbare Lieferung", "Vergabe-/Prüfkontext geeignet"],
+    },
+  ]
+
+  return (
+    <div className="doc-prose">
+      <h1>Leistungen</h1>
+      <p>
+        Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Die folgenden Bausteine sind
+        bewusst klar abgegrenzt und auf dokumentierte, nachvollziehbare Lieferung ausgelegt.
+      </p>
+
+      <div className="mt-6 doc-box">
+        <div className="font-bold">Rahmen & Grundsätze</div>
+        <ul className="mt-2 list-disc pl-5 space-y-1">
+          <li>Leistungsabgrenzung und Änderungen über abgestimmte Change-Prozesse</li>
+          <li>Dokumentation als Bestandteil der Lieferung (Audit-/Review-fähig)</li>
+          <li>Datensparsamkeit und Rollenprinzip (Least Privilege) als Standardannahme</li>
+          <li>Keine unbestätigten Referenzen, Kennzahlen oder Zertifikatsclaims auf der Website</li>
+        </ul>
+      </div>
+
+      <div className="mt-8 grid gap-6">
+        {services.map((s) => (
+          <ServiceCard
+            key={s.title}
+            title={s.title}
+            shortScope={s.shortScope}
+            deliverables={s.deliverables}
+            typicalInputs={s.typicalInputs}
+            boundaries={s.boundaries}
+            tenderAlignment={s.tenderAlignment}
+          />
+        ))}
+      </div>
+
+      <div className="mt-8 doc-box">
+        <div className="font-bold">Anfrage / Abstimmung</div>
+        <p className="small-muted mt-1">
+          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. eine
+          gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
+        </p>
+        <div className="mt-3">
+          <Link href="/contact" className="underline text-brand-link">
+            Zur Geschäftsanfrage (Kontakt)
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}

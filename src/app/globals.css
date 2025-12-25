@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, system-ui, sans-serif;
+  background: #ffffff;
+  color: #333333;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: #003366;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.container-fixed {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.doc-prose {
+  font-size: 16px; 
+  max-width: 860px;
+}
+
+.doc-prose p {
+  margin: 0.5rem 0;
+  line-height: 1.55;
+}
+
+.doc-prose ul {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.doc-prose li {
+  margin: 0.125rem 0;
+}
+
+.doc-prose h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.75rem 0;
+}
+
+.doc-prose h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+}
+
+.doc-prose h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0.75rem 0 0.35rem;
+}
+
+.small-muted {
+  color: #333333;
+  opacity: 0.85;
+  font-size: 0.875rem;
+}
+
+.doc-prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.doc-prose td,
+.doc-prose th {
+  padding: 0.5rem 0.75rem;
+  vertical-align: top;
+}
+
+.doc-prose tr {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.doc-box {
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  padding: 1rem;
+}
+
+@media print {
+  a {
+    color: #333333;
+    text-decoration: none;
+  }
+  .container-fixed {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media (min-width: 768px) {
+  .doc-prose .grid {
+    max-width: 860px;
+  }
+}
