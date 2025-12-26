@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 type ServiceCardProps = {
@@ -22,60 +21,66 @@ export default function ServiceCard({
   tenderAlignment,
 }: ServiceCardProps) {
   return (
-    <Card className="rounded-none border border-brand-muted shadow-none">
-      <CardHeader>
-        <CardTitle className="text-base">{title}</CardTitle>
-        <p className="small-muted mt-1">{shortScope}</p>
-      </CardHeader>
+    <section className="card-soft p-6">
+      {/* Header */}
+      <div className="flex flex-col gap-2">
+        <h2 className="m-0 text-base font-extrabold tracking-tight">{title}</h2>
+        <p className="m-0 small-muted">{shortScope}</p>
+      </div>
 
-      <CardContent>
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="details" className="border-brand-muted">
-            <AccordionTrigger className="text-sm">Details anzeigen</AccordionTrigger>
+      {/* Accordion */}
+      <div className="mt-5">
+        <Accordion type="single" collapsible>
+          <AccordionItem value="details" className="border-0">
+            <AccordionTrigger className="sc-acc-trigger">
+              <span className="sc-acc-label sc-acc-open">Details anzeigen</span>
+              <span className="sc-acc-label sc-acc-close">Details ausblenden</span>
+            </AccordionTrigger>
+
             <AccordionContent>
-              <div className="mt-3 grid gap-5">
-                <section>
-                  <div className="font-bold text-sm">Lieferobjekte (Deliverables)</div>
+              <div className="sc-acc-content grid gap-6 md:grid-cols-2">
+                <div>
+                  <div className="text-sm font-extrabold">Lieferobjekte (Deliverables)</div>
                   <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
                     {deliverables.map((d) => (
                       <li key={d}>{d}</li>
                     ))}
                   </ul>
-                </section>
+                </div>
 
-                <section>
-                  <div className="font-bold text-sm">Typische Eingaben (Client Inputs)</div>
+                <div>
+                  <div className="text-sm font-extrabold">Typische Eingaben (Client Inputs)</div>
                   <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
                     {typicalInputs.map((i) => (
                       <li key={i}>{i}</li>
                     ))}
                   </ul>
-                </section>
+                </div>
 
-                <section>
-                  <div className="font-bold text-sm">Abgrenzung (Scope Boundaries)</div>
+                <div className="md:col-span-2">
+                  <div className="text-sm font-extrabold">Abgrenzung (Scope Boundaries)</div>
                   <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
                     {boundaries.map((b) => (
                       <li key={b}>{b}</li>
                     ))}
                   </ul>
-                </section>
+                </div>
 
                 {tenderAlignment?.length ? (
-                  <section>
-                    <div className="font-bold text-sm">Ausrichtung (EU-/Vergabe-Kontext)</div>
+                  <div className="md:col-span-2">
+                    <div className="text-sm font-extrabold">Ausrichtung (EU-/Vergabe-Kontext)</div>
                     <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
                       {tenderAlignment.map((t) => (
                         <li key={t}>{t}</li>
                       ))}
                     </ul>
-                  </section>
+                  </div>
                 ) : null}
               </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   )
 }

@@ -1,78 +1,74 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 
 export default function HomePage() {
   return (
     <div className="doc-prose">
       <h1>SmartConnect CRM UG (haftungsbeschränkt)</h1>
-      <p>
+
+      <p className="lead">
         B2B IT &amp; Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben. Fokus:
         strukturierte Umsetzung, nachvollziehbare Dokumentation und compliance-orientierte Arbeitsweise.
       </p>
 
-      <div className="mt-6 flex items-center gap-3">
-        <Button asChild className="rounded-none">
-          <Link href="/contact">Geschäftsanfrage</Link>
-        </Button>
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        {/* Keep your shadcn Button if you want, but styling it to match */}
+        <Link href="/contact" className="btn-primary">
+          Geschäftsanfrage
+        </Link>
 
-        <Link href="/services" className="underline text-brand-link">
+        <Link href="/services" className="btn-secondary">
           Leistungskatalog ansehen
         </Link>
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <Card className="rounded-none border border-brand-muted shadow-none">
-          <CardHeader>
-            <CardTitle className="text-base">Arbeitsweise (procurement-tauglich)</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm">
-            <ul className="list-disc space-y-1 pl-5">
+      <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="card-soft p-5">
+          <div className="flex items-center justify-between">
+            <h2 className="m-0 text-base">Arbeitsweise (procurement-tauglich)</h2>
+          </div>
+          <div className="mt-3 text-sm">
+            <ul>
               <li>Klare Leistungsabgrenzung, nachvollziehbare Deliverables</li>
               <li>Dokumentation (technisch + organisatorisch) für Audit-/Review-Kontexte</li>
               <li>Datensparsamkeit, Sicherheits- und Compliance-by-Design</li>
               <li>Keine unbestätigten Referenzen oder Kennzahlen auf der Website</li>
             </ul>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <Card className="rounded-none border border-brand-muted shadow-none">
-          <CardHeader>
-            <CardTitle className="text-base">Schnellübersicht</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">Standort</TableCell>
-                  <TableCell>Düsseldorf, Deutschland</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Einsatz</TableCell>
-                  <TableCell>Remote / On-site (nach Vereinbarung)</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Kontakt</TableCell>
-                  <TableCell>
-                    <a href="mailto:admin@smartclientcrm.com" className="underline text-brand-link">
-                      admin@smartclientcrm.com
-                    </a>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Schwerpunkt</TableCell>
-                  <TableCell>IT Services, Integration, Security-by-Design, Betriebsnähe</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <div className="card-soft p-5">
+          <h2 className="m-0 text-base">Schnellübersicht</h2>
+
+          <table className="table-soft mt-3">
+            <tbody>
+              <tr>
+                <td>Standort</td>
+                <td>Düsseldorf, Deutschland</td>
+              </tr>
+              <tr>
+                <td>Einsatz</td>
+                <td>Remote / On-site (nach Vereinbarung)</td>
+              </tr>
+              <tr>
+                <td>Kontakt</td>
+                <td>
+                  <a href="mailto:admin@smartclientcrm.com">admin@smartclientcrm.com</a>
+                </td>
+              </tr>
+              <tr>
+                <td>Schwerpunkt</td>
+                <td>IT Services, Integration, Security-by-Design, Betriebsnähe</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="mt-8 border border-brand-muted bg-white p-4">
-        <div className="font-bold">Hinweis zur Transparenz</div>
-        <p className="small-muted mt-1">
+      <div className="mt-10 card-soft p-5" style={{ background: "var(--card-soft)" }}>
+        <div className="font-extrabold">Hinweis zur Transparenz</div>
+        <p className="small-muted mt-2">
           Diese Website enthält keine Marketing-Behauptungen, keine erfundenen Kennzahlen, keine Zertifikats-Badges ohne
           Nachweis, und keine Tracking-/Analytics-Tools ohne Einwilligung.
         </p>

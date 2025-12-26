@@ -58,7 +58,7 @@ export default function ServicesPage() {
       shortScope:
         "Sicherheitsorientierte Umsetzung (Baseline), Risiko- und Maßnahmenübersicht ohne pauschale Zertifikatsclaims.",
       deliverables: [
-        "Baseline-Hardening-Checkliste (Systemspezifisch)",
+        "Baseline-Hardening-Checkliste (systemspezifisch)",
         "Risiko-/Maßnahmenliste (priorisiert, nachvollziehbar)",
         "Empfehlungen für Logging/Monitoring (minimal, zweckgebunden)",
         "Dokumentation für Review/Audit (technische Nachweise)",
@@ -73,7 +73,7 @@ export default function ServicesPage() {
         "Keine Sicherheitsgarantien; Ergebnisse sind kontextabhängig",
         "Keine Einführung von Tracking/Analytics ohne Einwilligungskonzept",
       ],
-      tenderAlignment: ["Grundschutz-nahe Denkweise möglich", "Least-Privilege & Rollenprinzip", "Review-fähige Nachweise"],
+      tenderAlignment: ["Least-Privilege & Rollenprinzip", "Review-fähige Nachweise", "Kontextbezogene Umsetzung"],
     },
     {
       title: "Datenschutz-/DSGVO-nahe Umsetzung (technisch)",
@@ -95,7 +95,7 @@ export default function ServicesPage() {
         "Keine Verarbeitung ohne dokumentierten Zweck und Rechtsgrundlage",
         "Keine Übermittlung in Drittländer ohne Freigabe/Prüfung",
       ],
-      tenderAlignment: ["Datensparsamkeit", "Transparenz und Nachweisbarkeit", "Rollen- und Berechtigungskonzepte"],
+      tenderAlignment: ["Datensparsamkeit", "Transparenz/Nachweisbarkeit", "Rollen- und Berechtigungskonzepte"],
     },
     {
       title: "Dokumentation & Übergabe (Audit-/Review-fähig)",
@@ -146,21 +146,24 @@ export default function ServicesPage() {
   return (
     <div className="doc-prose">
       <h1>Leistungen</h1>
-      <p>
+
+      <p className="lead">
         Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Die folgenden Bausteine sind
         bewusst klar abgegrenzt und auf dokumentierte, nachvollziehbare Lieferung ausgelegt.
       </p>
 
-      <div className="mt-6 doc-box">
-        <div className="font-bold">Rahmen & Grundsätze</div>
-        <ul className="mt-2 list-disc pl-5 space-y-1">
+      {/* Principles */}
+      <section className="card-soft p-6 mt-6">
+        <div className="font-extrabold">Rahmen &amp; Grundsätze</div>
+        <ul className="mt-3 list-disc pl-5 space-y-1">
           <li>Leistungsabgrenzung und Änderungen über abgestimmte Change-Prozesse</li>
           <li>Dokumentation als Bestandteil der Lieferung (Audit-/Review-fähig)</li>
           <li>Datensparsamkeit und Rollenprinzip (Least Privilege) als Standardannahme</li>
           <li>Keine unbestätigten Referenzen, Kennzahlen oder Zertifikatsclaims auf der Website</li>
         </ul>
-      </div>
+      </section>
 
+      {/* Service cards */}
       <div className="mt-8 grid gap-6">
         {services.map((s) => (
           <ServiceCard
@@ -175,18 +178,19 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      <div className="mt-8 doc-box">
-        <div className="font-bold">Anfrage / Abstimmung</div>
-        <p className="small-muted mt-1">
+      {/* CTA */}
+      <section className="card-soft p-6 mt-10">
+        <div className="font-extrabold">Anfrage / Abstimmung</div>
+        <p className="small-muted mt-2">
           Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. eine
           gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
         </p>
-        <div className="mt-3">
-          <Link href="/contact" className="underline text-brand-link">
+        <div className="mt-4">
+          <Link href="/contact" className="btn-primary">
             Zur Geschäftsanfrage (Kontakt)
           </Link>
         </div>
-      </div>
+      </section>
     </div>
   )
 }

@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Separator } from "@/components/ui/separator"
 
 const nav = [
   { href: "/", label: "Start" },
@@ -11,36 +10,52 @@ const nav = [
 
 export default function Header() {
   return (
-    <header className="border-b" style={{ borderColor: "#E5E5E5" }}>
+    <header className="border-b" style={{ borderColor: "var(--border)" }}>
       <div className="container-fixed py-5">
         <div className="flex items-center justify-between gap-6">
+          {/* Brand */}
           <div className="min-w-0">
             <Link href="/" className="no-underline">
-              <div className="text-base font-bold text-brand-text">
+              <div className="text-base font-extrabold tracking-tight">
                 SmartConnect CRM UG (haftungsbeschränkt)
               </div>
               <div className="text-sm small-muted">
-                IT & Digital Solutions · Enterprise & Public Sector
+                IT &amp; Digital Solutions · Enterprise &amp; Public Sector
               </div>
             </Link>
           </div>
 
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-5 text-sm">
-            {nav.map((i) => (
-              <Link key={i.href} href={i.href} className="no-underline">
-                {i.label}
-              </Link>
-            ))}
+            {nav
+              .filter((i) => i.href !== "/contact")
+              .map((i) => (
+                <Link
+                  key={i.href}
+                  href={i.href}
+                  className="no-underline"
+                  style={{ color: "var(--text)" }}
+                >
+                  {i.label}
+                </Link>
+              ))}
+
+            {/* Desktop CTA */}
+            <Link href="/contact" className="btn-primary">
+              Kontakt
+            </Link>
           </nav>
 
-          <div className="md:hidden text-sm">
-            <Link href="/contact" className="no-underline">
+          {/* Mobile CTA */}
+          <div className="md:hidden">
+            <Link href="/contact" className="btn-primary">
               Kontakt
             </Link>
           </div>
         </div>
 
-        <Separator className="mt-5" />
+        {/* Notice bar */}
+        <div className="mt-5 hr-soft" />
         <div className="mt-3 text-sm small-muted">
           Hinweis: Diese Website verwendet keine Analyse- oder Tracking-Technologien ohne Einwilligung.
         </div>
