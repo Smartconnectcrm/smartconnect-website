@@ -1,28 +1,55 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 
+type Status = "idle" | "sending" | "sent" | "error"
+
 export default function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
+  const [status, setStatus] = useState<Status>("idle")
+  const [startedAt, setStartedAt] = useState<number>(Date.now())
+
+  useEffect(() => {
+    setStartedAt(Date.now())
+  }, [])
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setStatus("sending")
 
-    const form = new FormData(e.currentTarget)
-    const payload = Object.fromEntries(form.entries())
+    const formEl = e.currentTarget
+    const form = new FormData(formEl)
+
+    const payload = {
+      name: String(form.get("name") ?? "").trim().slice(0, 120),
+      email: String(form.get("email") ?? "").trim().slice(0, 160),
+      subject: String(form.get("subject") ?? "").trim().slice(0, 160),
+      message: String(form.get("message") ?? "").trim().slice(0, 4000),
+
+      // Anti-spam signals
+      company: String(form.get("company") ?? "").trim().slice(0, 120), // honeypot (should stay empty)
+      startedAt, // user started filling the form at this time
+    }
 
     try {
-      // Optional: implement /api/contact later to send email (SMTP/provider).
-      // For now, we simply confirm submission without storing.
-      await new Promise((r) => setTimeout(r, 400))
-      console.log("Contact payload (client only, not stored):", payload)
+      if (!payload.email || !payload.subject || !payload.message) {
+        throw new Error("Missing required fields")
+      }
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) throw new Error("Send failed")
+
       setStatus("sent")
-      e.currentTarget.reset()
+      formEl.reset()
+      setStartedAt(Date.now())
     } catch {
       setStatus("error")
     }
@@ -30,23 +57,46 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
+      {/* Honeypot field (hidden from humans, bots often fill it) */}
+      <div style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <Label htmlFor="company">Company</Label>
+        <Input id="company" name="company" tabIndex={-1} autoComplete="off" />
+      </div>
+
+      {/* Name + Email */}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="name">Name (optional)</Label>
-          <Input id="name" name="name" placeholder="Vorname Nachname" />
+          <Input id="name" name="name" placeholder="Vorname Nachname" maxLength={120} autoComplete="name" />
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="email">E-Mail *</Label>
-          <Input id="email" name="email" type="email" required placeholder="name@unternehmen.de" />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            required
+            placeholder="name@unternehmen.de"
+            maxLength={160}
+            autoComplete="email"
+          />
         </div>
       </div>
 
+      {/* Subject */}
       <div className="space-y-2">
         <Label htmlFor="subject">Betreff *</Label>
-        <Input id="subject" name="subject" required placeholder="z. B. Projektanfrage / Ausschreibung / Rahmenvertrag" />
+        <Input
+          id="subject"
+          name="subject"
+          required
+          maxLength={160}
+          placeholder="z. B. Projektanfrage / Ausschreibung / Rahmenvertrag"
+        />
       </div>
 
+      {/* Message */}
       <div className="space-y-2">
         <Label htmlFor="message">Nachricht *</Label>
         <Textarea
@@ -54,38 +104,36 @@ export default function ContactForm() {
           name="message"
           required
           rows={7}
-          placeholder="Bitte beschreiben Sie kurz den Bedarf, Zeitraum, Standort/Remote, sowie relevante Anforderungen."
+          maxLength={4000}
+          placeholder="Bitte beschreiben Sie kurz den Bedarf, Zeitraum, Standort/Remote sowie relevante Anforderungen."
         />
       </div>
 
-      <div className="border p-3 text-sm" style={{ borderColor: "#E5E5E5", background: "#FFFFFF" }}>
-        <div className="font-bold">Datenschutzhinweis (Kurzfassung)</div>
-        <div className="mt-1 small-muted">
-          Wir verwenden Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage. Keine Weitergabe an Dritte ohne
-          Rechtsgrundlage, keine Analyse-/Tracking-Dienste. Weitere Informationen:{" "}
-          <a href="/privacy">Datenschutzerklärung</a>.
+      {/* DSGVO Notice */}
+      <div className="policy-note">
+        <div className="section-title">Datenschutzhinweis (Kurzfassung)</div>
+        <div className="mt-2 small-muted">
+          Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verarbeitet (Art. 6 Abs. 1 lit. b DSGVO bzw.
+          lit. f DSGVO). Weitere Informationen: <a href="/privacy">Datenschutzerklärung</a>.
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <Button type="submit" disabled={status === "sending"} className="rounded-none">
+      {/* Submit */}
+      <div className="flex flex-col md:flex-row md:items-center gap-3">
+        <Button type="submit" disabled={status === "sending"}>
           {status === "sending" ? "Senden…" : "Geschäftsanfrage senden"}
         </Button>
+
         <div className="text-sm small-muted">
           Alternativ per E-Mail: <a href="mailto:admin@smartclientcrm.com">admin@smartclientcrm.com</a>
         </div>
       </div>
 
-      {status === "sent" && (
-        <div className="text-sm" style={{ color: "#333333" }}>
-          Danke. Ihre Anfrage wurde erfasst (ohne Speicherung auf der Website). Wir melden uns zurück.
-        </div>
-      )}
-      {status === "error" && (
-        <div className="text-sm" style={{ color: "#333333" }}>
-          Fehler beim Absenden. Bitte senden Sie Ihre Anfrage direkt per E-Mail.
-        </div>
-      )}
+      {/* Status messages */}
+      <div aria-live="polite">
+        {status === "sent" && <div className="text-sm">Danke. Ihre Anfrage wurde erfolgreich übermittelt.</div>}
+        {status === "error" && <div className="text-sm">Fehler beim Absenden. Bitte senden Sie per E-Mail.</div>}
+      </div>
     </form>
   )
 }

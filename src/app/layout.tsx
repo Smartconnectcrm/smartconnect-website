@@ -3,11 +3,47 @@ import "./globals.css"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 
-export const metadata: Metadata = {
-  title: "SmartConnect CRM UG (haftungsbeschränkt)",
+const siteUrl = "https://www.smartconnectcrm.eu"
+
+export const metadata = {
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "SmartConnect CRM UG (haftungsbeschränkt)",
+    template: "%s | SmartConnect CRM UG (haftungsbeschränkt)",
+  },
   description:
     "B2B IT- und Digitaldienstleistungen für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben. Strukturierte, dokumentations- und compliance-orientierte Arbeitsweise.",
+  alternates: {
+    canonical: siteUrl,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "SmartConnect CRM UG (haftungsbeschränkt)",
+    title: "SmartConnect CRM UG (haftungsbeschränkt)",
+    description:
+      "B2B IT- und Digitaldienstleistungen für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.",
+    locale: "de_DE",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SmartConnect CRM UG (haftungsbeschränkt)",
+    description:
+      "B2B IT- und Digitaldienstleistungen für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.",
+  },
 }
+
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

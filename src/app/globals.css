@@ -2,31 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* ==================================================
+   Root variables
+================================================== */
 :root {
   color-scheme: light;
 
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: rgba(17, 17, 17, 0.74);
-
-  --link: #003366;
-
+  /* Header variables */
   --border: #e6e6e6;
-  --border-strong: #d8d8d8;
-
-  --card: #ffffff;
-  --card-soft: #fafafa;
-
-  --shadow-soft: 0 1px 0 rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.06);
-
-  --radius: 14px;
-  --radius-sm: 12px;
-
-  --focus: rgba(0, 51, 102, 0.25);
+  --text-strong: #111111;
 }
 
+/* ==================================================
+   Base
+================================================== */
 html,
 body {
   height: 100%;
@@ -34,19 +23,37 @@ body {
 
 body {
   font-family: Arial, Helvetica, system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: #ffffff;
+  color: #333333;
 }
 
+/* ==================================================
+   Global layout separators
+================================================== */
+header {
+  border-bottom: 1px solid var(--border);
+}
+
+footer {
+  border-top: 1px solid var(--border);
+}
+
+/* ==================================================
+   Links
+================================================== */
 a {
-  color: var(--link);
+  color: #003366;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
 a:hover {
   text-decoration-thickness: 2px;
 }
 
+/* ==================================================
+   Containers
+================================================== */
 .container-fixed {
   max-width: 1200px;
   margin: 0 auto;
@@ -58,21 +65,19 @@ main {
   padding-bottom: 24px;
 }
 
-
+/* ==================================================
+   Document-style typography
+================================================== */
 .doc-prose {
   max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .doc-prose p {
   margin: 0.6rem 0;
   line-height: 1.65;
   font-size: 1rem;
-}
-
-.doc-prose .lead {
-  font-size: 1.05rem;
-  line-height: 1.75;
-  color: var(--muted);
 }
 
 .doc-prose ul {
@@ -107,65 +112,51 @@ main {
 }
 
 .small-muted {
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.55;
+  color: #333333;
+  opacity: 0.82;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-
+/* ==================================================
+   Cards
+================================================== */
 .card-soft {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow-soft);
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
 }
 
-.card-soft + .card-soft {
-  margin-top: 16px;
+/* ==================================================
+   Policy / info blocks
+================================================== */
+.policy-note {
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  background: #fafafa;
+  padding: 18px;
 }
 
-.hr-soft {
-  height: 1px;
-  background: var(--border);
-  width: 100%;
+.section-title {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
 }
 
-.sc-note {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card-soft);
-  padding: 16px;
+/* ==================================================
+   Lead text
+================================================== */
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.92;
+  margin-top: 0.6rem;
 }
 
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  padding: 10px 14px;
-  border-radius: 999px;
-
-  border: 1px solid #111111;
-  background: #111111;
-  color: #ffffff !important;
-
-  text-decoration: none;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.btn-primary:hover {
-  background: #000000;
-}
-
-.btn-primary:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 4px var(--focus);
-}
-
-
+/* ==================================================
+   Tables
+================================================== */
 table {
   width: 100%;
   border-collapse: separate;
@@ -175,7 +166,7 @@ table {
 td,
 th {
   padding: 10px 12px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #e5e5e5;
   vertical-align: top;
 }
 
@@ -184,57 +175,44 @@ tr:first-child th {
   border-top: none;
 }
 
-
+/* ==================================================
+   Accordion (Radix / shadcn)
+================================================== */
 [data-slot="accordion"] {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--card);
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  background: #ffffff;
   overflow: hidden;
 }
 
 [data-slot="accordion-item"] {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #e6e6e6;
 }
+
 [data-slot="accordion-item"]:last-child {
   border-bottom: none;
 }
 
 [data-slot="accordion-trigger"] {
-  padding: 14px 14px;
+  padding: 12px 14px;
   font-size: 0.95rem;
   line-height: 1.35;
   font-weight: 800;
-
-  color: var(--text);
-  background: var(--card);
-
-  border: 1px solid var(--border);
-  border-radius: 12px;
-
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  color: #111111;
+  background: #ffffff;
 }
 
 [data-slot="accordion-trigger"]:hover {
-  background: var(--card-soft);
+  background: #fafafa;
   text-decoration: none;
 }
 
-[data-slot="accordion-trigger"]:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 4px var(--focus);
-}
-
-[data-slot="accordion-item"][data-state="open"] [data-slot="accordion-trigger"] {
-  border-color: var(--border-strong);
-  background: #f6f6f6;
-}
-
 [data-slot="accordion-content"] {
-  background: var(--card);
+  background: #ffffff;
 }
 
 [data-slot="accordion-content"] > div {
-  padding: 10px 14px 16px 14px;
+  padding: 12px 14px 16px 14px;
 }
 
 [data-slot="accordion-content"] ul {
@@ -246,7 +224,143 @@ tr:first-child th {
   margin: 0.3rem 0;
 }
 
+/* ==================================================
+   ServiceCard accordion enhancements
+================================================== */
+.sc-accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
+.sc-accordion-trigger-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sc-accordion-trigger[data-state="closed"]
+  .sc-accordion-trigger-label::after {
+  content: " anzeigen";
+  font-weight: 800;
+  opacity: 0.65;
+}
+
+.sc-accordion-trigger[data-state="open"]
+  .sc-accordion-trigger-label::after {
+  content: " ausblenden";
+  font-weight: 800;
+  opacity: 0.65;
+}
+
+.sc-accordion-content .text-sm {
+  line-height: 1.45;
+}
+
+.sc-accordion-content ul {
+  margin: 0.55rem 0;
+  padding-left: 1.2rem;
+}
+
+.sc-accordion-content li {
+  margin: 0.28rem 0;
+  line-height: 1.55;
+}
+
+.sc-accordion-content .mt-4.grid > div {
+  padding-top: 10px;
+  border-top: 1px solid #eeeeee;
+}
+
+.sc-accordion-content .mt-4.grid > div:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ==================================================
+   Header helpers (used by Header.tsx)
+================================================== */
+.nav-link {
+  text-decoration: none;
+  color: #111111;
+  font-weight: 800;
+  opacity: 0.82;
+  padding: 8px 10px;
+  border-radius: 999px;
+}
+
+.nav-link:hover {
+  background: #fafafa;
+  opacity: 1;
+  text-decoration: none;
+}
+
+.nav-link-active {
+  background: #111111;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.hr-soft {
+  height: 1px;
+  background: #e6e6e6;
+  border: 0;
+}
+
+/* Footer: links slightly more corporate */
+.footer-links a {
+  text-decoration: none;
+  color: #111111;
+  opacity: 0.85;
+  font-weight: 700;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 1;
+}
+
+
+/* ==================================================
+   Buttons
+================================================== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff !important;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.btn-primary:hover {
+  background: #000000;
+}
+
+/* ==================================================
+   Skip link (accessibility)
+================================================== */
+.skip-link:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 10px 14px;
+  margin: 10px;
+  display: inline-block;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+}
+
+/* ==================================================
+   Responsive tweaks
+================================================== */
 @media (max-width: 640px) {
   .container-fixed {
     padding-left: 16px;
@@ -254,89 +368,14 @@ tr:first-child th {
   }
 
   .doc-prose h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
   }
 
-  .doc-prose .lead {
+  .lead {
     font-size: 1rem;
   }
 
-  .card-soft {
-    border-radius: 12px;
+  .policy-note {
+    padding: 16px;
   }
-
-  [data-slot="accordion-trigger"] {
-    padding: 14px 12px;
-  }
-
-  [data-slot="accordion-content"] > div {
-    padding: 10px 12px 14px 12px;
-  }
-}
-
-
-
-.sc-acc-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 6px;
-
-  padding: 10px 12px !important;
-  border-radius: 10px !important;
-
-  border: 1px solid var(--border) !important;
-  background: #ffffff !important;
-
-  box-shadow: none !important;
-}
-
-.sc-acc-trigger:hover {
-  background: var(--card-soft) !important;
-}
-
-.sc-acc-label {
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1.2;
-}
-
-.sc-acc-hint {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--muted);
-  line-height: 1.2;
-}
-
-.sc-acc-content {
-  padding-top: 2px;
-}
-
-@media (max-width: 640px) {
-  .sc-acc-trigger {
-    padding: 10px 10px !important;
-  }
-}
-
-
-.sc-acc-close {
-  display: none;
-}
-
-[data-state="open"] .sc-acc-open {
-  display: none;
-}
-
-[data-state="open"] .sc-acc-close {
-  display: inline;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-* {
-  scroll-margin-top: 80px;
 }
