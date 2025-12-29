@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -10,15 +10,27 @@ type Status = "idle" | "sending" | "sent" | "error"
 
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle")
-  const [startedAt, setStartedAt] = useState<number>(Date.now())
+  const [startedAt, setStartedAt] = useState<number>(() => Date.now())
+  const [errorMsg, setErrorMsg] = useState<string>("")
+  const startedRef = useRef(false)
+
+  // Better anti-bot: start timer on the first real interaction, not just mount
+  function ensureStarted() {
+    if (!startedRef.current) {
+      startedRef.current = true
+      setStartedAt(Date.now())
+    }
+  }
 
   useEffect(() => {
+    // In case user pastes immediately without focusing, keep baseline.
     setStartedAt(Date.now())
   }, [])
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setStatus("sending")
+    setErrorMsg("")
 
     const formEl = e.currentTarget
     const form = new FormData(formEl)
@@ -31,12 +43,12 @@ export default function ContactForm() {
 
       // Anti-spam signals
       company: String(form.get("company") ?? "").trim().slice(0, 120), // honeypot (should stay empty)
-      startedAt, // user started filling the form at this time
+      startedAt,
     }
 
     try {
       if (!payload.email || !payload.subject || !payload.message) {
-        throw new Error("Missing required fields")
+        throw new Error("Bitte Pflichtfelder ausfüllen.")
       }
 
       const res = await fetch("/api/contact", {
@@ -45,20 +57,44 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       })
 
-      if (!res.ok) throw new Error("Send failed")
+      if (!res.ok) {
+        // Try to extract a useful message from server JSON
+        let msg = "Fehler beim Absenden. Bitte per E-Mail senden."
+        try {
+          const data = await res.json()
+          if (data?.error) msg = String(data.error)
+        } catch {
+          // ignore
+        }
+        throw new Error(msg)
+      }
 
       setStatus("sent")
       formEl.reset()
+
+      // Reset timer for next attempt
+      startedRef.current = false
       setStartedAt(Date.now())
-    } catch {
+    } catch (err: any) {
       setStatus("error")
+      setErrorMsg(err?.message ? String(err.message) : "Fehler beim Absenden. Bitte per E-Mail senden.")
     }
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-5" noValidate onFocus={ensureStarted} onInput={ensureStarted}>
       {/* Honeypot field (hidden from humans, bots often fill it) */}
-      <div style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "-10000px",
+          top: "auto",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+        }}
+      >
         <Label htmlFor="company">Company</Label>
         <Input id="company" name="company" tabIndex={-1} autoComplete="off" />
       </div>
@@ -132,7 +168,7 @@ export default function ContactForm() {
       {/* Status messages */}
       <div aria-live="polite">
         {status === "sent" && <div className="text-sm">Danke. Ihre Anfrage wurde erfolgreich übermittelt.</div>}
-        {status === "error" && <div className="text-sm">Fehler beim Absenden. Bitte senden Sie per E-Mail.</div>}
+        {status === "error" && <div className="text-sm">{errorMsg || "Fehler beim Absenden. Bitte per E-Mail."}</div>}
       </div>
     </form>
   )
