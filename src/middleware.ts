@@ -1,51 +1,80 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import { NextResponse, type NextRequest } from "next/server"
 
-export function middleware(request: NextRequest) {
-  const response = NextResponse.next()
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu"
 
-  // Content Security Policy (conservative, enterprise-safe)
-  response.headers.set(
-    "Content-Security-Policy",
-    [
-      "default-src 'self'",
-      "script-src 'self'",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
-      "font-src 'self'",
-      "connect-src 'self'",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-    ].join("; ")
-  )
+// CSP modes:
+// - "enforce" -> Content-Security-Policy
+// - "report"  -> Content-Security-Policy-Report-Only
+// - "off"     -> no CSP headers (recovery / troubleshooting)
+const CSP_MODE = process.env.CSP_MODE ?? "report"
 
-  // Enforce HTTPS (HSTS)
-  response.headers.set(
-    "Strict-Transport-Security",
-    "max-age=63072000; includeSubDomains; preload"
-  )
+// Where the browser should send CSP violation reports:
+const CSP_REPORT_ENDPOINT = "/api/csp-report"
 
-  // Prevent MIME sniffing
-  response.headers.set("X-Content-Type-Options", "nosniff")
-
-  // Referrer policy
-  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
-
-  // Disable unnecessary browser features
-  response.headers.set(
-    "Permissions-Policy",
-    [
-      "camera=()",
-      "microphone=()",
-      "geolocation=()",
-      "interest-cohort=()",
-    ].join(", ")
-  )
-
-  return response
+function buildCsp() {
+  // Conservative CSP compatible with Next.js App Router.
+  // Tighten later using nonces/hashes once stable.
+  return [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "script-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self'",
+    "manifest-src 'self'",
+    "upgrade-insecure-requests",
+    `report-uri ${CSP_REPORT_ENDPOINT}`,
+  ].join("; ")
 }
 
+export function middleware(_request: NextRequest) {
+  const res = NextResponse.next()
+
+  // -----------------------------
+  // CSP (safe rollout)
+  // -----------------------------
+  const csp = buildCsp()
+  if (CSP_MODE === "enforce") {
+    res.headers.set("Content-Security-Policy", csp)
+  } else if (CSP_MODE === "report") {
+    res.headers.set("Content-Security-Policy-Report-Only", csp)
+  }
+  // CSP_MODE === "off" => no CSP headers
+
+  // -----------------------------
+  // A+ security headers
+  // -----------------------------
+  res.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+  res.headers.set("X-Frame-Options", "DENY")
+  res.headers.set("X-Content-Type-Options", "nosniff")
+  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
+  res.headers.set("Cross-Origin-Opener-Policy", "same-origin")
+  res.headers.set("Cross-Origin-Resource-Policy", "same-origin")
+  res.headers.set(
+    "Permissions-Policy",
+    ["camera=()", "microphone=()", "geolocation=()", "interest-cohort=()"].join(", ")
+  )
+
+  // Reporting API (optional; complements report-uri)
+  res.headers.set("Reporting-Endpoints", `csp="${SITE_URL}${CSP_REPORT_ENDPOINT}"`)
+  res.headers.set(
+    "Report-To",
+    JSON.stringify({
+      group: "csp",
+      max_age: 10886400,
+      endpoints: [{ url: `${SITE_URL}${CSP_REPORT_ENDPOINT}` }],
+    })
+  )
+
+  return res
+}
+
+// Apply headers to NON-root pages only, and exclude Next internals + API routes.
+// Important: using ".+" (not ".*") prevents matching "/" which can break Next hydration with CSP.
 export const config = {
-  matcher: "/:path*",
+  matcher: ["/((?!api|_next|favicon.ico|sitemap.xml|robots.txt).+)"],
 }
