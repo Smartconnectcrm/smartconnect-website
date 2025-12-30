@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-and-build:
+  lint-typecheck-build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node (from package.json engines if present)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -31,12 +31,16 @@ jobs:
       - name: Lint (strict)
         run: npm run lint:strict
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Build
         env:
-          # Prevent CI build failures due to missing SMTP vars (your API route checks env at runtime, not build time)
+          # Safe placeholders so CI never fails due to missing env.
           SMTP_HOST: "ci-placeholder"
           SMTP_PORT: "587"
           SMTP_USER: "ci-placeholder"
           SMTP_PASS: "ci-placeholder"
           CONTACT_TO_EMAIL: "ci-placeholder@example.com"
+          CONTACT_AUTOREPLY_ENABLED: "false"
         run: npm run build
