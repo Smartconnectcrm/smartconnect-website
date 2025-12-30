@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node (from package.json engines if present)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (strict)
+        run: npm run lint:strict
+
+      - name: Build
+        env:
+          # Prevent CI build failures due to missing SMTP vars (your API route checks env at runtime, not build time)
+          SMTP_HOST: "ci-placeholder"
+          SMTP_PORT: "587"
+          SMTP_USER: "ci-placeholder"
+          SMTP_PASS: "ci-placeholder"
+          CONTACT_TO_EMAIL: "ci-placeholder@example.com"
+        run: npm run build
