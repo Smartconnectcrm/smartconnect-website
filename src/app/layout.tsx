@@ -1,7 +1,7 @@
 import "./globals.css"
 
-import { headers, cookies } from "next/headers"
 import type { Metadata } from "next"
+import { headers } from "next/headers"
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
@@ -49,29 +49,12 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // headers() is synchronous in Next 14/15 App Router
   const nonce = headers().get("x-nonce") || undefined
 
-  // Theme: server-rendered via cookie (default: dark)
-  const themeCookie = cookies().get("theme")?.value
-  const isDark = themeCookie ? themeCookie === "dark" : true
-
-  // Tailwind dark mode: toggles via <html class="dark">
-  const htmlClass = isDark ? "dark" : ""
-
-  // If you implemented brand.light/dark tokens in Tailwind, use them.
-  // Otherwise, safely fall back to slate tokens.
-  const bodyClass =
-    "antialiased " +
-    (isDark
-      ? "bg-brand-dark-bg text-brand-dark-text"
-      : "bg-brand-light-bg text-brand-light-text")
-
   return (
-    <html lang="de" className={htmlClass}>
-      <body className={bodyClass}>
+    <html lang="de">
+      <body>
         <NonceProvider nonce={nonce}>
-          {/* Accessibility: Skip link (keyboard users) */}
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-lg focus:bg-slate-950 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"

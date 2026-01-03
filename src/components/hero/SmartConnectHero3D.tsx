@@ -1,37 +1,82 @@
 "use client"
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import Image from "next/image"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Color, Euler, type Group, type Mesh } from "three"
+import { useEffect, useMemo, useRef } from "react"
+import * as THREE from "three"
 
-function useAdaptiveDpr() {
-  return useMemo(() => {
-    if (typeof window === "undefined") return [1, 1.25] as [number, number]
-    const isSmall = window.matchMedia("(max-width: 768px)").matches
-    return isSmall ? ([1, 1.25] as [number, number]) : ([1, 1.35] as [number, number])
-  }, [])
+import type { Group, Mesh } from "three"
+
+type RingDef = {
+  id: "gold" | "silver" | "diamond"
+  baseRadius: number
+  tube: number
+  phase: number
 }
 
-// Smooth approach without extra deps
-function damp(current: number, target: number, lambda: number, dt: number) {
-  return current + (target - current) * (1 - Math.exp(-lambda * dt))
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n))
 }
 
 function Scene() {
-  const group = useRef<Group | null>(null)
-  const ringGold = useRef<Mesh | null>(null)
-  const ringSilver = useRef<Mesh | null>(null)
-  const ringOcean = useRef<Mesh | null>(null)
+  const root = useRef<Group | null>(null)
+  const bg = useRef<Mesh | null>(null)
 
   const paused = useRef(false)
-  const settled = useRef(false)
-  const settleTime = 5 // seconds until we enter micro-shimmer
   const { invalidate } = useThree()
+
+  // 3 rings: gold, silver, ocean-blue diamond
+  const rings = useMemo<RingDef[]>(
+    () => [
+      { id: "gold", baseRadius: 1.25, tube: 0.08, phase: 0.0 },
+      { id: "silver", baseRadius: 1.18, tube: 0.075, phase: (Math.PI * 2) / 3 },
+      { id: "diamond", baseRadius: 1.1, tube: 0.07, phase: (Math.PI * 4) / 3 },
+    ],
+    []
+  )
+
+  const materials = useMemo(() => {
+    const gold = new THREE.MeshStandardMaterial({
+      color: new THREE.Color("#d4af37"),
+      metalness: 0.95,
+      roughness: 0.22,
+      envMapIntensity: 1.0,
+    })
+
+    const silver = new THREE.MeshStandardMaterial({
+      color: new THREE.Color("#c7cdd6"),
+      metalness: 0.95,
+      roughness: 0.18,
+      envMapIntensity: 1.0,
+    })
+
+    // “Ocean blue diamond” feel: physical + transmission + clearcoat
+    const diamond = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color("#1fb6ff"), // ocean-ish blue
+      metalness: 0.05,
+      roughness: 0.05,
+      transmission: 0.65,
+      thickness: 0.6,
+      ior: 2.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      envMapIntensity: 1.2,
+    })
+
+    const bgMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color("#071523"),
+      roughness: 1,
+      metalness: 0,
+      emissive: new THREE.Color("#03111a"),
+      emissiveIntensity: 0.8,
+    })
+
+    return { gold, silver, diamond, bgMat }
+  }, [])
 
   useEffect(() => {
     const onVisibilityChange = () => {
       paused.current = document.visibilityState !== "visible"
+      // wake a render when coming back
       if (!paused.current) invalidate()
     }
     onVisibilityChange()
@@ -39,196 +84,125 @@ function Scene() {
     return () => document.removeEventListener("visibilitychange", onVisibilityChange)
   }, [invalidate])
 
-  // Colors
-  const crystal = useMemo(() => new Color("#eef7ff"), [])
-  const edgeBlue = useMemo(() => new Color("#38bdf8"), [])
-  const gold = useMemo(() => new Color("#d4af37"), [])
-  const silver = useMemo(() => new Color("#cfd6dd"), [])
-  const oceanBlue = useMemo(() => new Color("#0ea5e9"), []) // ocean blue diamond ring
+  // tiny shimmer while paused (tab inactive): render very rarely
+  const shimmerClock = useRef(0)
 
-  // Planes that swap between rings (for the first phase)
-  const planes = useMemo(
-    () => [
-      new Euler(Math.PI / 2, 0, 0), // X plane
-      new Euler(0, Math.PI / 2, 0), // Y plane
-      new Euler(Math.PI / 3, Math.PI / 4, 0), // angled
-    ],
-    []
-  )
+  useFrame((_, delta) => {
+    const g = root.current
+    if (!g) return
 
-  useFrame((state, dt) => {
-    if (paused.current) return
-    if (!group.current) return
+    // If tab is hidden -> micro shimmer (slow & low frequency)
+    if (paused.current) {
+      shimmerClock.current += delta
+      if (shimmerClock.current < 0.45) return
+      shimmerClock.current = 0
 
-    const t = state.clock.elapsedTime
-    const rings: Array<Mesh | null> = [ringGold.current, ringSilver.current, ringOcean.current]
-
-    // ----- Phase 1: premium motion + swapping (0..5s) -----
-    if (t < settleTime) {
-      group.current.rotation.y += dt * 0.10
-      group.current.rotation.x += dt * 0.03
-
-      const SWITCH_SEC = 6
-      const slot = Math.floor(t / SWITCH_SEC) % 3
-      const speeds = [0.14, 0.20, 0.26] // slow/med/fast
-
-      rings.forEach((r, i) => {
-        if (!r) return
-
-        const targetPlane = planes[(i + slot) % 3]
-        r.rotation.x = damp(r.rotation.x, targetPlane.x, 6, dt)
-        r.rotation.y = damp(r.rotation.y, targetPlane.y, 6, dt)
-        r.rotation.z = damp(r.rotation.z, targetPlane.z, 6, dt)
-
-        const speed = speeds[(i + slot) % 3]
-        r.rotation.z += dt * speed
-      })
+      g.rotation.y += 0.002
+      g.rotation.x += 0.001
+      if (bg.current) bg.current.rotation.z += 0.0008
 
       invalidate()
       return
     }
 
-    // ----- Phase 2: micro-shimmer (after 5s) -----
-    // We "settle" once into the current pose so it doesn't jump.
-    if (!settled.current) {
-      settled.current = true
+    // Normal animation
+    const t = performance.now() * 0.001
+
+    // Keep everything comfortably inside the hero rectangle:
+    // - orbitRadius small
+    // - z depth small
+    const orbitRadius = 0.22
+    const zDepth = 0.10
+
+    // Root gentle motion
+    g.rotation.y += delta * 0.12
+    g.rotation.x += delta * 0.04
+
+    // Inter-change: each ring orbits and also spins,
+    // with phase offsets so they “swap” positions over time.
+    for (let i = 0; i < g.children.length; i++) {
+      const child = g.children[i]
+      if (!(child instanceof THREE.Mesh)) continue
+
+      const def = rings[i]
+      const speed = 0.7
+      const tt = t * speed + def.phase
+
+      const x = Math.cos(tt) * orbitRadius
+      const y = Math.sin(tt * 0.9) * (orbitRadius * 0.55)
+      const z = Math.sin(tt * 1.15) * zDepth
+
+      child.position.set(x, y, z)
+
+      // Each ring rotates differently (inter-change feel)
+      child.rotation.x = tt * 0.9
+      child.rotation.y = tt * 1.1
+      child.rotation.z = tt * 0.7
     }
 
-    // Ultra-subtle living motion (tiny oscillations)
-    const shimmer = 0.012 // overall amplitude (keep tiny)
-    const s1 = Math.sin(t * 0.55) * shimmer
-    const s2 = Math.cos(t * 0.42) * shimmer
-
-    // Core: barely moves
-    group.current.rotation.y += dt * 0.012
-    group.current.rotation.x += dt * 0.006
-    group.current.rotation.z = damp(group.current.rotation.z, s2, 2.5, dt)
-
-    // Rings: slow constant rotation + tiny “breathing”
-    rings.forEach((r, i) => {
-      if (!r) return
-      const base = 0.018 + i * 0.004 // slightly different per ring
-      r.rotation.z += dt * base
-
-      // micro “breath” on x/y so it feels premium, not static
-      const phase = i * 1.7
-      const tx = s1 * (0.9 - i * 0.15) + Math.sin(t * 0.33 + phase) * 0.004
-      const ty = s2 * (0.9 - i * 0.15) + Math.cos(t * 0.31 + phase) * 0.004
-      r.rotation.x = damp(r.rotation.x, r.rotation.x + tx, 1.6, dt)
-      r.rotation.y = damp(r.rotation.y, r.rotation.y + ty, 1.6, dt)
-    })
+    // Background subtle parallax
+    if (bg.current) {
+      const p = clamp(Math.sin(t * 0.5) * 0.03, -0.03, 0.03)
+      bg.current.rotation.z = p
+    }
 
     invalidate()
   })
 
   return (
-    <group ref={group} scale={0.9}>
-      {/* Diamond core */}
-      <mesh>
-        <icosahedronGeometry args={[1.38, 2]} />
-        <meshStandardMaterial
-          color={crystal}
-          metalness={0.28}
-          roughness={0.16}
-          envMapIntensity={0.9}
-        />
+    <>
+      {/* Graphic background plane */}
+      <mesh ref={bg} position={[0, 0, -1.1]}>
+        <planeGeometry args={[10, 6]} />
+        <primitive object={materials.bgMat} attach="material" />
       </mesh>
 
-      {/* Facet sheen */}
-      <mesh scale={1.01}>
-        <icosahedronGeometry args={[1.38, 2]} />
-        <meshStandardMaterial
-          color={edgeBlue}
-          metalness={0.12}
-          roughness={0.34}
-          transparent
-          opacity={0.2}
-        />
-      </mesh>
+      {/* Soft vignette-ish rim lights */}
+      <pointLight position={[2.6, 1.8, 2.4]} intensity={1.0} />
+      <pointLight position={[-2.2, -1.6, 2.0]} intensity={0.8} />
 
-      {/* Gold ring */}
-      <mesh ref={ringGold} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.7, 0.042, 24, 128]} />
-        <meshStandardMaterial color={gold} metalness={0.92} roughness={0.24} />
-      </mesh>
+      <group ref={root}>
+        {rings.map((r) => {
+          const mat =
+            r.id === "gold" ? materials.gold : r.id === "silver" ? materials.silver : materials.diamond
 
-      {/* Silver ring */}
-      <mesh ref={ringSilver} rotation={[0, Math.PI / 2, 0]}>
-        <torusGeometry args={[1.9, 0.036, 24, 128]} />
-        <meshStandardMaterial color={silver} metalness={0.88} roughness={0.32} />
-      </mesh>
-
-      {/* Ocean blue “diamond” ring */}
-      <mesh ref={ringOcean} rotation={[Math.PI / 3, Math.PI / 4, 0]}>
-        <torusGeometry args={[2.1, 0.032, 24, 128]} />
-        <meshStandardMaterial
-          color={oceanBlue}
-          metalness={0.78}
-          roughness={0.18}
-          transparent
-          opacity={0.96}
-          envMapIntensity={1.0}
-        />
-      </mesh>
-    </group>
+          return (
+            <mesh key={r.id}>
+              <torusGeometry args={[r.baseRadius, r.tube, 64, 220]} />
+              <primitive object={mat} attach="material" />
+            </mesh>
+          )
+        })}
+      </group>
+    </>
   )
+}
+
+function useAdaptiveDpr() {
+  return useMemo(() => {
+    if (typeof window === "undefined") return [1, 1.25] as [number, number]
+    const isSmall = window.matchMedia("(max-width: 768px)").matches
+    return isSmall ? ([1, 1.25] as [number, number]) : ([1, 1.5] as [number, number])
+  }, [])
 }
 
 export default function SmartConnectHero3D() {
   const dpr = useAdaptiveDpr()
-  const [lost, setLost] = useState(false)
-
-  const onCreated = useCallback(({ gl }: any) => {
-    const canvas: HTMLCanvasElement | undefined = gl?.domElement
-    if (!canvas) return
-
-    const handleLost = (e: Event) => {
-      try {
-        ;(e as any).preventDefault?.()
-      } catch {}
-      setLost(true)
-    }
-
-    canvas.addEventListener("webglcontextlost", handleLost as any, { passive: false })
-    return () => canvas.removeEventListener("webglcontextlost", handleLost as any)
-  }, [])
-
-  if (lost) {
-    return (
-      <div className="h-[420px] md:h-[520px] w-full">
-        <Image
-          src="/hero/hero-poster.webp"
-          alt="SmartConnect CRM UG – Hero"
-          width={1890}
-          height={1080}
-          sizes="(max-width: 768px) 100vw, 1200px"
-          className="h-full w-full object-cover"
-        />
-      </div>
-    )
-  }
 
   return (
     <div className="h-[420px] md:h-[520px] w-full">
       <Canvas
-        key="hero-canvas"
         frameloop="demand"
-        camera={{ position: [0, 0, 6.0], fov: 42 }}
+        camera={{ position: [0, 0, 4.7], fov: 45 }}
         dpr={dpr}
         gl={{
           antialias: true,
-          alpha: true,
           powerPreference: "high-performance",
-          preserveDrawingBuffer: false,
+          alpha: true,
         }}
-        onCreated={onCreated}
       >
-        {/* Keep Canvas transparent; your Hero3D rectangle provides the background */}
-        <ambientLight intensity={0.42} />
-        <directionalLight position={[6, 8, 6]} intensity={1.45} />
-        <directionalLight position={[-6, -4, 4]} intensity={0.62} />
-        <directionalLight position={[0, 4, -6]} intensity={0.42} />
-
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[4, 4, 6]} intensity={1.0} />
         <Scene />
       </Canvas>
     </div>
