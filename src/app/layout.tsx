@@ -1,8 +1,8 @@
-import type { Metadata } from "next"
 import { headers } from "next/headers"
+import type { Metadata } from "next"
 
-import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import Header from "@/components/Header"
 import { NonceProvider } from "@/components/NonceProvider"
 
 import "./globals.css"
