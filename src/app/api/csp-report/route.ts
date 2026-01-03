@@ -28,7 +28,7 @@ function safeJsonParse(text: string): unknown {
  * - cap depth to avoid huge logs
  */
 function redactDeep(value: unknown, depth = 0): unknown {
-  if (depth > 4) return "[omitted]"
+  if (depth > 4) return "[omitted]" // cap recursion
   if (value === null) return null
 
   const t = typeof value
@@ -36,6 +36,7 @@ function redactDeep(value: unknown, depth = 0): unknown {
   if (t === "number" || t === "boolean") return value
 
   if (Array.isArray(value)) {
+    // keep only first few entries
     return value.slice(0, 3).map((v) => redactDeep(v, depth + 1))
   }
 
@@ -47,6 +48,7 @@ function redactDeep(value: unknown, depth = 0): unknown {
   for (const [k, val] of Object.entries(v)) {
     const key = k.toLowerCase()
 
+    // URLs & location-identifiers
     if (
       key.includes("url") ||
       key.includes("uri") ||
@@ -67,48 +69,19 @@ function redactDeep(value: unknown, depth = 0): unknown {
 }
 
 /**
- * Super-light in-memory throttle (best-effort).
- * Edge instances are ephemeral; this is only a small guard.
- *
- * Important improvements:
- * - Use a stable client key even if IP is missing
- * - Prune old entries to avoid unbounded Map growth
+ * Optional: super-light in-memory throttle (best-effort).
+ * Note: Edge instances are ephemeral; this is only a small guard.
  */
 const bucket = new Map<string, { ts: number; n: number }>()
-let lastPrune = 0
 
-function getClientKey(req: Request) {
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    ""
-
-  if (ip) return `ip:${ip}`
-
-  // Fallback key when IP is unavailable (common on some proxies)
-  const ua = req.headers.get("user-agent") ?? "ua:unknown"
-  const al = req.headers.get("accept-language") ?? "al:unknown"
-  return `fp:${ua.slice(0, 80)}|${al.slice(0, 40)}`
-}
-
-function prune(now: number) {
-  // prune at most every 2 minutes
-  if (now - lastPrune < 120_000) return
-  lastPrune = now
-
-  const maxAge = 5 * 60_000 // keep 5 minutes of entries
-  for (const [k, v] of bucket.entries()) {
-    if (now - v.ts > maxAge) bucket.delete(k)
-  }
-}
-
-function allow(key: string, now: number) {
+function allow(ip: string) {
+  const now = Date.now()
   const w = 60_000 // 1 min window
-  const limit = 60 // max 60/min per client key
+  const limit = 60 // max 60/min per IP (adjust)
 
-  const cur = bucket.get(key)
+  const cur = bucket.get(ip)
   if (!cur || now - cur.ts > w) {
-    bucket.set(key, { ts: now, n: 1 })
+    bucket.set(ip, { ts: now, n: 1 })
     return true
   }
   if (cur.n >= limit) return false
@@ -116,40 +89,69 @@ function allow(key: string, now: number) {
   return true
 }
 
+function asRecord(value: unknown): Record<string, unknown> | null {
+  if (typeof value !== "object" || value === null) return null
+  return value as Record<string, unknown>
+}
+
+function getString(obj: Record<string, unknown>, key: string): string | undefined {
+  const v = obj[key]
+  return typeof v === "string" ? v : undefined
+}
+
 export async function POST(req: Request) {
   try {
-    const now = Date.now()
-    prune(now)
+    // Best-effort IP (varies by platform/proxy)
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown"
 
-    const key = getClientKey(req)
-    if (!allow(key, now)) {
-      // Always return 204 to reduce retries; just skip logging.
+    if (!allow(ip)) {
+      // Still no-store, still 204-ish behavior (or 429 if you prefer)
       return noStore({ status: 204 })
     }
 
     const contentType = req.headers.get("content-type") ?? ""
 
-    // Cap body size to reduce abuse
+    // Cap body size to reduce abuse (read as text, then slice)
     const raw = (await req.text()).slice(0, 50_000)
     const parsed = safeJsonParse(raw)
 
+    /**
+     * Normalize to a compact safe log object.
+     * Keep only fields that are useful for CSP tuning without collecting URLs.
+     */
     let reportForLog: unknown = null
 
-    // application/reports+json -> [{ type, age, url, user_agent, body: {...} }]
+    // Modern Reporting API: application/reports+json
+    // Example: [{ type, age, url, user_agent, body: { ... } }]
     if (contentType.includes("application/reports+json") && Array.isArray(parsed)) {
-      const first = parsed[0] as any
+      const first = parsed[0] as unknown
+      const firstRec = asRecord(first)
+
+      const type = firstRec ? getString(firstRec, "type") : undefined
+      const body = firstRec ? (firstRec["body"] as unknown) : null
+
       reportForLog = {
-        type: typeof first?.type === "string" ? first.type : "unknown",
-        body: redactDeep(first?.body ?? null),
+        type: type ?? "unknown",
+        body: redactDeep(body),
       }
     }
-    // legacy application/csp-report -> { "csp-report": {...} }
-    else if (parsed && typeof parsed === "object") {
-      const obj = parsed as any
-      const legacy = obj["csp-report"] ?? obj
-      reportForLog = redactDeep(legacy)
-    } else {
-      reportForLog = { note: "unparsed" }
+    // Legacy: application/csp-report
+    // Example: { "csp-report": { ... } }
+    else {
+      const obj = asRecord(parsed)
+
+      if (obj) {
+        const legacy = Object.prototype.hasOwnProperty.call(obj, "csp-report")
+          ? (obj["csp-report"] as unknown)
+          : obj
+
+        reportForLog = redactDeep(legacy)
+      } else {
+        reportForLog = { note: "unparsed" }
+      }
     }
 
     console.warn("[CSP REPORT]", {
