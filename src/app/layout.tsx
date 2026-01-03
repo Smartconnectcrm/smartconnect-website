@@ -1,11 +1,11 @@
-import "./globals.css"
+import type { Metadata } from "next"
+import { headers } from "next/headers"
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { NonceProvider } from "@/components/NonceProvider"
 
-import type { Metadata } from "next"
-import { headers } from "next/headers"
+import "./globals.css"
 
 export const dynamic = "force-dynamic"
 
@@ -55,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="de">
       <body>
         <NonceProvider nonce={nonce}>
+          {/* Accessibility skip link */}
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-lg focus:bg-slate-950 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
