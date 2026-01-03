@@ -1,11 +1,11 @@
-import { headers } from "next/headers"
 import type { Metadata } from "next"
+import { headers } from "next/headers"
+
+import "./globals.css"
 
 import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { NonceProvider } from "@/components/NonceProvider"
-
-import "./globals.css"
 
 export const dynamic = "force-dynamic"
 
@@ -49,12 +49,14 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // ✅ headers() is synchronous in Next 14/15 App Router
   const nonce = headers().get("x-nonce") || undefined
 
   return (
     <html lang="de">
       <body>
         <NonceProvider nonce={nonce}>
+          {/* Accessibility: Skip link (visible on keyboard focus) */}
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[1000] focus:rounded-lg focus:bg-slate-950 focus:px-4 focus:py-2 focus:text-white focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
