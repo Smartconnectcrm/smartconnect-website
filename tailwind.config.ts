@@ -9,10 +9,20 @@ const config = {
     extend: {
       colors: {
         brand: {
-          text: "#333333",
-          bg: "#FFFFFF",
-          muted: "#E5E5E5",
-          link: "#003366",
+          light: {
+            text: "#1f2937",     // slate-800
+            bg: "#ffffff",
+            muted: "#e5e7eb",    // gray-200
+            link: "#003366",
+            border: "#e5e7eb",
+          },
+          dark: {
+            text: "#e5e7eb",     // gray-200
+            bg: "#020617",       // slate-950
+            muted: "#334155",    // slate-700
+            link: "#38bdf8",     // sky-400
+            border: "#1e293b",   // slate-800
+          },
         },
       },
       fontFamily: {

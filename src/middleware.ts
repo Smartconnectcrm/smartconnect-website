@@ -1,80 +1,153 @@
 import { NextResponse, type NextRequest } from "next/server"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu"
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu").replace(
+  /\/+$/,
+  ""
+)
 
-// CSP modes:
-// - "enforce" -> Content-Security-Policy
-// - "report"  -> Content-Security-Policy-Report-Only
-// - "off"     -> no CSP headers (recovery / troubleshooting)
-const CSP_MODE = process.env.CSP_MODE ?? "report"
+/**
+ * CSP modes:
+ * - "off"     -> no CSP headers at all
+ * - "report"  -> Content-Security-Policy-Report-Only
+ * - "enforce" -> Content-Security-Policy
+ */
+const CSP_MODE = (process.env.CSP_MODE ?? "off").toLowerCase()
 
-// Where the browser should send CSP violation reports:
-const CSP_REPORT_ENDPOINT = "/api/csp-report"
+function isProd() {
+  return process.env.NODE_ENV === "production"
+}
 
-function buildCsp() {
-  // Conservative CSP compatible with Next.js App Router.
-  // Tighten later using nonces/hashes once stable.
+function makeNonce() {
+  const bytes = new Uint8Array(16)
+  crypto.getRandomValues(bytes)
+  let str = ""
+  bytes.forEach((b) => (str += String.fromCharCode(b)))
+  return btoa(str)
+}
+
+function buildCsp(nonce: string) {
+  const reportPath = "/api/csp-report"
+  const isReport = CSP_MODE === "report"
+
   return [
-    "default-src 'self'",
-    "base-uri 'self'",
-    "object-src 'none'",
-    "frame-ancestors 'none'",
-    "form-action 'self'",
-    "script-src 'self' 'unsafe-inline'",
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
-    "font-src 'self' data:",
-    "connect-src 'self'",
-    "manifest-src 'self'",
-    "upgrade-insecure-requests",
-    `report-uri ${CSP_REPORT_ENDPOINT}`,
+    `default-src 'self'`,
+    `base-uri 'self'`,
+    `object-src 'none'`,
+    `frame-ancestors 'none'`,
+    `form-action 'self'`,
+
+    // If you embed external iframes later, tighten per need
+    `frame-src 'self' https:`,
+
+    `img-src 'self' data: blob: https:`,
+    `font-src 'self' data: https:`,
+
+    // Tighten inline attributes (prevents onClick="..." and style="...")
+    `script-src-attr 'none'`,
+    `style-src-attr 'none'`,
+
+    // Nonce-based styles (no unsafe-inline)
+    `style-src 'self' 'nonce-${nonce}' https:`,
+
+    // Strong scripts with nonce + strict-dynamic
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:`,
+
+    // WebSockets allowed
+    `connect-src 'self' https: wss:`,
+
+    `media-src 'self' https: blob:`,
+    `worker-src 'self' blob:`,
+    `manifest-src 'self'`,
+
+    // Reporting (modern + legacy)
+    `report-to csp-endpoint`,
+    `report-uri ${reportPath}`,
+
+    // Helpful for tuning during report-only
+    ...(isReport ? [`report-sample`] : []),
+
+    `upgrade-insecure-requests`,
   ].join("; ")
 }
 
-export function middleware(_request: NextRequest) {
+function isHtmlRequest(req: NextRequest) {
+  const accept = req.headers.get("accept") || ""
+  return accept.includes("text/html")
+}
+
+function buildReportingHeaders() {
+  const reportPath = "/api/csp-report"
+
+  const reportTo = JSON.stringify({
+    group: "csp-endpoint",
+    max_age: 10886400,
+    endpoints: [{ url: reportPath }],
+    include_subdomains: true,
+  })
+
+  const reportingEndpoints = `csp-endpoint="${reportPath}"`
+
+  return { reportTo, reportingEndpoints }
+}
+
+export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl
+
+  // Hard-skip Next internals + dev tooling routes
+  if (
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/__nextjs_original-stack-frame") ||
+    pathname.startsWith("/__nextjs_error_feedback") ||
+    pathname.startsWith("/favicon") ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml" ||
+    pathname === "/site.webmanifest"
+  ) {
+    return NextResponse.next()
+  }
+
   const res = NextResponse.next()
 
-  // -----------------------------
-  // CSP (safe rollout)
-  // -----------------------------
-  const csp = buildCsp()
-  if (CSP_MODE === "enforce") {
-    res.headers.set("Content-Security-Policy", csp)
-  } else if (CSP_MODE === "report") {
-    res.headers.set("Content-Security-Policy-Report-Only", csp)
-  }
-  // CSP_MODE === "off" => no CSP headers
+  // Nonce header for layout/provider
+  const nonce = makeNonce()
+  res.headers.set("x-nonce", nonce)
 
-  // -----------------------------
-  // A+ security headers
-  // -----------------------------
-  res.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+  // ✅ Avoid killing caching in production unless you intentionally want it.
+  // In dev, no-store helps avoid stale HTML; in prod, let Vercel handle caching.
+  if (!isProd() && isHtmlRequest(req)) {
+    res.headers.set("Cache-Control", "no-store, max-age=0")
+  }
+
+  // Base security headers
   res.headers.set("X-Frame-Options", "DENY")
   res.headers.set("X-Content-Type-Options", "nosniff")
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
-  res.headers.set("Cross-Origin-Opener-Policy", "same-origin")
-  res.headers.set("Cross-Origin-Resource-Policy", "same-origin")
-  res.headers.set(
-    "Permissions-Policy",
-    ["camera=()", "microphone=()", "geolocation=()", "interest-cohort=()"].join(", ")
-  )
+  res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
 
-  // Reporting API (optional; complements report-uri)
-  res.headers.set("Reporting-Endpoints", `csp="${SITE_URL}${CSP_REPORT_ENDPOINT}"`)
-  res.headers.set(
-    "Report-To",
-    JSON.stringify({
-      group: "csp",
-      max_age: 10886400,
-      endpoints: [{ url: `${SITE_URL}${CSP_REPORT_ENDPOINT}` }],
-    })
-  )
+  if (isProd()) {
+    res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+  }
 
+  // CSP only in production and only if enabled
+  const enableCsp = isProd() && CSP_MODE !== "off"
+  if (enableCsp) {
+    const csp = buildCsp(nonce)
+
+    const { reportTo, reportingEndpoints } = buildReportingHeaders()
+    res.headers.set("Report-To", reportTo)
+    res.headers.set("Reporting-Endpoints", reportingEndpoints)
+
+    if (CSP_MODE === "report") {
+      res.headers.set("Content-Security-Policy-Report-Only", csp)
+    } else {
+      res.headers.set("Content-Security-Policy", csp)
+    }
+  }
+
+  void SITE_URL
   return res
 }
 
-// Apply headers to NON-root pages only, and exclude Next internals + API routes.
-// Important: using ".+" (not ".*") prevents matching "/" which can break Next hydration with CSP.
 export const config = {
-  matcher: ["/((?!api|_next|favicon.ico|sitemap.xml|robots.txt).+)"],
+  matcher: ["/((?!_next/static|_next/image|_next/webpack-hmr|favicon.ico).*)"],
 }

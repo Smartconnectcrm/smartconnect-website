@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 
-const baseUrl = "https://www.smartconnectcrm.eu"
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
@@ -20,6 +21,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${path}`,
     lastModified: now,
     changeFrequency: "monthly",
-    priority: path === "/" ? 1 : 0.7,
+    priority:
+      path === "/"
+        ? 1
+        : path === "/services" || path === "/contact"
+        ? 0.8
+        : 0.6,
   }))
 }
