@@ -9,6 +9,7 @@ import { NonceProvider } from "@/components/NonceProvider"
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 
+
 export const dynamic = "force-dynamic"
 
 const siteUrl = "https://www.smartconnectcrm.eu"
