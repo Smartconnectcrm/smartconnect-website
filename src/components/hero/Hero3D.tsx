@@ -4,9 +4,7 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import { Suspense, useEffect, useRef, useState } from "react"
 
-const SmartConnectHero3D = dynamic(() => import("./SmartConnectHero3D"), {
-  ssr: false,
-})
+const SmartConnectHero3D = dynamic(() => import("./SmartConnectHero3D"), { ssr: false })
 
 export default function Hero3D() {
   const [mounted, setMounted] = useState(false)
@@ -26,6 +24,7 @@ export default function Hero3D() {
   useEffect(() => {
     const el = hostRef.current
     if (!el) return
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
@@ -35,18 +34,34 @@ export default function Hero3D() {
       },
       { root: null, rootMargin: "250px 0px", threshold: 0.01 }
     )
+
     io.observe(el)
     return () => io.disconnect()
   }, [])
 
   const show3D = mounted && inView && !reduced
 
+  const Poster = (
+    <Image
+      src="/hero/hero-poster.webp"
+      alt="SmartConnect CRM UG – Enterprise IT & Digital Solutions"
+      width={1890}
+      height={1080}
+      priority
+      sizes="(max-width: 768px) 100vw, 1200px"
+      className="h-full w-full object-cover"
+    />
+  )
+
   return (
     <div ref={hostRef} className="relative">
-      {/* Outer halo (variant) */}
-      <div className="pointer-events-none absolute -inset-6 rounded-[28px] blur-2xl
-        bg-gradient-to-br from-emerald-400/10 via-sky-500/10 to-amber-300/10
-        dark:from-emerald-400/15 dark:via-sky-500/12 dark:to-amber-300/12"
+      {/* Outer halo */}
+      <div
+        className="
+          pointer-events-none absolute -inset-6 rounded-[28px] blur-2xl
+          bg-gradient-to-br from-emerald-400/10 via-sky-500/10 to-amber-300/10
+          dark:from-emerald-400/15 dark:via-sky-500/12 dark:to-amber-300/12
+        "
       />
 
       <div
@@ -56,9 +71,8 @@ export default function Hero3D() {
           dark:border-white/10 dark:bg-slate-950
         "
       >
-        {/* ===== Graphical rectangle background (light/dark variants) ===== */}
+        {/* Background */}
         <div className="pointer-events-none absolute inset-0">
-          {/* Gradient base */}
           <div
             className="
               absolute inset-0
@@ -67,7 +81,6 @@ export default function Hero3D() {
             "
           />
 
-          {/* Subtle grid */}
           <div
             className="absolute inset-0 opacity-[0.10] dark:opacity-[0.08]"
             style={{
@@ -76,7 +89,6 @@ export default function Hero3D() {
               backgroundSize: "44px 44px",
             }}
           />
-          {/* Dark mode grid uses white lines; we overlay a second grid only in dark */}
           <div
             className="absolute inset-0 hidden dark:block opacity-[0.08]"
             style={{
@@ -86,7 +98,6 @@ export default function Hero3D() {
             }}
           />
 
-          {/* Vignette (light vs dark) */}
           <div
             className="
               absolute inset-0
@@ -95,7 +106,6 @@ export default function Hero3D() {
             "
           />
 
-          {/* Inline SVG grain (no external file) */}
           <div
             className="absolute inset-0 mix-blend-overlay opacity-[0.06] dark:opacity-[0.06]"
             style={{
@@ -105,28 +115,23 @@ export default function Hero3D() {
             }}
           />
 
-          {/* Soft top highlight (light mode only) */}
           <div className="absolute inset-x-0 top-0 h-40 bg-[linear-gradient(to_bottom,_rgba(255,255,255,0.55),_transparent)] dark:hidden" />
         </div>
 
-        {/* ===== Poster (LCP) OR 3D ===== */}
-        {!show3D ? (
-          <Image
-            src="/hero/hero-poster.webp"
-            alt="SmartConnect CRM UG – Enterprise IT & Digital Solutions"
-            width={1890}
-            height={1080}
-            priority
-            sizes="(max-width: 768px) 100vw, 1200px"
-            className="h-[420px] md:h-[520px] w-full object-cover"
-          />
-        ) : (
-          <Suspense fallback={null}>
-            <SmartConnectHero3D />
-          </Suspense>
-        )}
+        {/* ===== Poster OR 3D (explicit height either way) ===== */}
+        <div className="relative h-[420px] w-full md:h-[520px]">
+          {!show3D ? (
+            Poster
+          ) : (
+            <Suspense fallback={Poster}>
+              <div className="h-full w-full">{/* ensures the canvas has real height */}
+                <SmartConnectHero3D />
+              </div>
+            </Suspense>
+          )}
+        </div>
 
-        {/* Brand overlay (variant) */}
+        {/* Brand overlay */}
         <div className="pointer-events-none absolute left-4 top-4 md:left-5 md:top-5">
           <div
             className="

@@ -6,13 +6,12 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { NonceProvider } from "@/components/NonceProvider"
 
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
-
 
 export const dynamic = "force-dynamic"
 
-const siteUrl = "https://www.smartconnectcrm.eu"
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu").replace(/\/+$/, "")
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -22,7 +21,8 @@ export const metadata: Metadata = {
   },
   description:
     "B2B IT- und Digitaldienstleistungen für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben. Strukturierte, dokumentations- und compliance-orientierte Arbeitsweise.",
-  alternates: { canonical: siteUrl },
+  // With metadataBase set, canonical should usually be a path.
+  alternates: { canonical: "/" },
   robots: {
     index: true,
     follow: true,
@@ -51,13 +51,19 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#071523",
+}
+
 export default function RootLayout({ children }: { children: ReactNode }) {
-  // ✅ headers() is synchronous in Next 14/15 App Router
-  const nonce = headers().get("x-nonce") || undefined
+  // headers() is synchronous in Next App Router
+  const nonce = headers().get("x-nonce") ?? undefined
 
   return (
-    <html lang="de">
-      <body>
+    <html lang="de" suppressHydrationWarning>
+      <body className="min-h-dvh bg-background text-foreground antialiased">
         <NonceProvider nonce={nonce}>
           {/* Accessibility: Skip link (visible on keyboard focus) */}
           <a
@@ -67,7 +73,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             Zum Inhalt springen
           </a>
 
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-dvh flex flex-col">
             <header>
               <Header />
             </header>
