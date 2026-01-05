@@ -1,4 +1,5 @@
 import Link from "next/link"
+
 import ServiceCard from "@/components/ServiceCard"
 
 export const metadata = {

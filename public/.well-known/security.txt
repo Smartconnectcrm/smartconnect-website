@@ -1,0 +1,5 @@
+Contact: mailto:admin@smartclientcrm.com
+Preferred-Languages: en, de
+Policy: https://smartconnectcrm.com/privacy
+Hiring: https://smartconnectcrm.com/contact
+Canonical: https://smartconnectcrm.com/.well-known/security.txt
