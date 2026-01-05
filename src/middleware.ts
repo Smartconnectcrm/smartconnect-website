@@ -1,9 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server"
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu").replace(
-  /\/+$/,
-  ""
-)
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu").replace(/\/+$/, "")
 
 /**
  * CSP modes:
@@ -33,16 +30,17 @@ function buildCsp(nonce: string) {
     `default-src 'self'`,
     `base-uri 'self'`,
     `object-src 'none'`,
-    `frame-ancestors 'none'`,
+    // Strict but compatible:
+    `frame-ancestors 'self'`,
     `form-action 'self'`,
 
-    // If you embed external iframes later, tighten per need
+    // Only allow frames if ever needed (safe default)
     `frame-src 'self' https:`,
 
     `img-src 'self' data: blob: https:`,
     `font-src 'self' data: https:`,
 
-    // Tighten inline attributes (prevents onClick="..." and style="...")
+    // Block inline attributes (prevents onClick="..." and style="...")
     `script-src-attr 'none'`,
     `style-src-attr 'none'`,
 
@@ -63,7 +61,6 @@ function buildCsp(nonce: string) {
     `report-to csp-endpoint`,
     `report-uri ${reportPath}`,
 
-    // Helpful for tuning during report-only
     ...(isReport ? [`report-sample`] : []),
 
     `upgrade-insecure-requests`,
@@ -93,12 +90,12 @@ function buildReportingHeaders() {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Hard-skip Next internals + dev tooling routes
+  // Skip Next internals + obvious static files
   if (
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/__nextjs_original-stack-frame") ||
     pathname.startsWith("/__nextjs_error_feedback") ||
-    pathname.startsWith("/favicon") ||
+    pathname === "/favicon.ico" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
     pathname === "/site.webmanifest"
@@ -112,18 +109,17 @@ export function middleware(req: NextRequest) {
   const nonce = makeNonce()
   res.headers.set("x-nonce", nonce)
 
-  // ✅ Avoid killing caching in production unless you intentionally want it.
-  // In dev, no-store helps avoid stale HTML; in prod, let Vercel handle caching.
+  // Dev only: avoid stale HTML
   if (!isProd() && isHtmlRequest(req)) {
     res.headers.set("Cache-Control", "no-store, max-age=0")
   }
 
-  // Base security headers
-  res.headers.set("X-Frame-Options", "DENY")
+  // Security headers
   res.headers.set("X-Content-Type-Options", "nosniff")
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
   res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
 
+  // HSTS only in prod
   if (isProd()) {
     res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
   }
@@ -149,5 +145,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|_next/webpack-hmr|favicon.ico).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)"],
 }
