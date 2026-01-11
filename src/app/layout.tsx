@@ -6,9 +6,10 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import { NonceProvider } from "@/components/NonceProvider"
 
+import Insights from "./insights"
+
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
-
 
 export const dynamic = "force-dynamic"
 
@@ -80,6 +81,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Footer />
             </footer>
           </div>
+
+          {/* Vercel Speed Insights */}
+          <Insights />
         </NonceProvider>
       </body>
     </html>
