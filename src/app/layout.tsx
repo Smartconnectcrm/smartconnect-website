@@ -73,7 +73,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </header>
 
             <main id="main-content" role="main" tabIndex={-1} className="flex-1">
-              <div className="container-fixed py-8">{children}</div>
+              {children}
             </main>
 
             <footer>
