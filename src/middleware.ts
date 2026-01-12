@@ -105,21 +105,17 @@ export function middleware(req: NextRequest) {
     res.headers.set("Cache-Control", "no-store, max-age=0")
   }
 
-  // Security headers
   res.headers.set("X-Content-Type-Options", "nosniff")
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
   res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
 
-  // HSTS only in prod
   if (isProd()) {
     res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
   }
 
-  // CSP only in production and only if enabled
   const enableCsp = isProd() && CSP_MODE !== "off"
   if (enableCsp) {
     const csp = buildCsp(nonce)
-
     const { reportTo, reportingEndpoints } = buildReportingHeaders()
     res.headers.set("Report-To", reportTo)
     res.headers.set("Reporting-Endpoints", reportingEndpoints)
