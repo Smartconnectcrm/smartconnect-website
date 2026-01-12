@@ -31,23 +31,17 @@ function buildCsp(nonce: string) {
     `base-uri 'self'`,
     `object-src 'none'`,
 
-    // Strict but compatible:
     `frame-ancestors 'self'`,
     `form-action 'self'`,
-
-    // Only allow frames if ever needed (safe default)
     `frame-src 'self' https:`,
 
     `img-src 'self' data: blob: https:`,
     `font-src 'self' data: https:`,
 
-    // Block inline attributes (prevents onClick="..." and style="...")
     `script-src-attr 'none'`,
     `style-src-attr 'none'`,
 
     `style-src 'self' 'nonce-${nonce}' https:`,
-
-    // ⚠️ No 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
     `script-src 'self' 'nonce-${nonce}' https:`,
 
     `connect-src 'self' https: wss:`,
@@ -104,48 +98,36 @@ export function middleware(req: NextRequest) {
 
   const res = NextResponse.next()
 
-  // Nonce header for layout/provider
   const nonce = makeNonce()
   res.headers.set("x-nonce", nonce)
 
-  // Dev only: avoid stale HTML
   if (!isProd() && isHtmlRequest(req)) {
     res.headers.set("Cache-Control", "no-store, max-age=0")
   }
 
-  // Security headers
   res.headers.set("X-Content-Type-Options", "nosniff")
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
   res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
 
-  // HSTS only in prod
   if (isProd()) {
     res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
   }
 
-  // CSP only in production and only if enabled
   const enableCsp = isProd() && CSP_MODE !== "off"
   if (enableCsp) {
     const csp = buildCsp(nonce)
-
     const { reportTo, reportingEndpoints } = buildReportingHeaders()
     res.headers.set("Report-To", reportTo)
     res.headers.set("Reporting-Endpoints", reportingEndpoints)
 
-    if (CSP_MODE === "report") {
-      res.headers.set("Content-Security-Policy-Report-Only", csp)
-    } else {
-      res.headers.set("Content-Security-Policy", csp)
-    }
+    if (CSP_MODE === "report") res.headers.set("Content-Security-Policy-Report-Only", csp)
+    else res.headers.set("Content-Security-Policy", csp)
   }
 
-  // keep referenced (used for canonicalization in other contexts)
   void SITE_URL
-
   return res
 }
 
 export const config = {
-  // Exclude API routes and static asset handlers from middleware
   matcher: ["/((?!api|_next/static|_next/image|_vercel|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)"],
 }

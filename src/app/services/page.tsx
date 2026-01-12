@@ -1,32 +1,11 @@
-import type { IconKey } from "@/components/ServiceCard"
-
 import ServicesCatalog from "./ServicesCatalog"
 
+import type { ServiceDTO } from "./types"
 
 export const metadata = {
   title: "Leistungen | SmartConnect CRM UG (haftungsbeschränkt)",
   description:
     "Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Fokussiert auf klare Abgrenzung, Dokumentation und Compliance-by-Design.",
-}
-
-export type ServiceCategory =
-  | "Operations"
-  | "Integration"
-  | "Security"
-  | "Procurement"
-  | "Cloud"
-  | "Data"
-  | "Delivery"
-
-export type ServiceDTO = {
-  title: string
-  shortScope: string
-  deliverables: string[]
-  typicalInputs: string[]
-  boundaries: string[]
-  tenderAlignment: string[]
-  iconKey?: IconKey
-  category: ServiceCategory
 }
 
 export default function ServicesPage() {
@@ -61,7 +40,7 @@ export default function ServicesPage() {
       category: "Integration",
       iconKey: "network",
       shortScope:
-        "Integration bestehender Systeme über APIs/ETL mit nachvollziehbaren Datenflüsse und kontrollierten Changes.",
+        "Integration bestehender Systeme über APIs/ETL mit nachvollziehbaren Datenflüssen und kontrollierten Changes.",
       deliverables: [
         "Schnittstellenbeschreibung (Datenfelder, Auth, Fehlerbehandlung)",
         "Integrations- und Ablaufdiagramme (technisch, nachvollziehbar)",
@@ -104,81 +83,6 @@ export default function ServicesPage() {
         "Keine Einführung von Tracking/Analytics ohne Einwilligungskonzept",
       ],
       tenderAlignment: ["Least-Privilege & Rollenprinzip", "Review-fähige Nachweise", "Kontextbezogene Umsetzung"],
-    },
-
-    {
-      title: "Datenschutz-/DSGVO-nahe Umsetzung (technisch)",
-      category: "Security",
-      iconKey: "shield",
-      shortScope:
-        "Technische Umsetzung zur Unterstützung von DSGVO-Anforderungen (Datenminimierung, Rechte, Löschkonzepte).",
-      deliverables: [
-        "Datenflussübersicht (wo entstehen/wandern Daten)",
-        "Technische Lösch-/Aufbewahrungslogik (Konzept + Umsetzungshinweise)",
-        "Zugriffs-/Berechtigungsmodell (Rollen, Minimierung)",
-        "Dokumentation für Datenschutzprüfung (technisch orientiert)",
-      ],
-      typicalInputs: [
-        "Verzeichnis von Verarbeitungstätigkeiten (falls vorhanden)",
-        "Datenkategorien, Zwecke, Aufbewahrungsvorgaben",
-        "Systemzugang für technische Prüfung (rollenbasiert)",
-      ],
-      boundaries: [
-        "Keine Rechtsberatung; juristische Bewertung erfolgt durch Datenschutzbeauftragte/Rechtsstelle",
-        "Keine Verarbeitung ohne dokumentierten Zweck und Rechtsgrundlage",
-        "Keine Übermittlung in Drittländer ohne Freigabe/Prüfung",
-      ],
-      tenderAlignment: ["Datensparsamkeit", "Transparenz/Nachweisbarkeit", "Rollen- und Berechtigungskonzepte"],
-    },
-
-    {
-      title: "Dokumentation & Übergabe (Audit-/Review-fähig)",
-      category: "Operations",
-      iconKey: "filecheck",
-      shortScope:
-        "Strukturierte technische und organisatorische Dokumentation zur Übergabe in Betrieb und für Beschaffungsprüfungen.",
-      deliverables: [
-        "Systemdokumentation (Architektur, Komponenten, Abhängigkeiten)",
-        "Betriebsdokumentation (Runbooks, Notfall-/Rollback-Hinweise)",
-        "Abnahme-Checkliste und Übergabeprotokoll",
-        "Änderungs-/Versionsübersicht (nach Bedarf)",
-      ],
-      typicalInputs: [
-        "Bestehende Dokumente, Tickets, Repo/Config-Stand",
-        "Stakeholder/Ansprechpartner für Abnahme",
-        "Vorgaben zu Formaten/Tools (Confluence, SharePoint, PDF etc.)",
-      ],
-      boundaries: [
-        "Keine Veröffentlichung interner Inhalte ohne Freigabe",
-        "Keine Ersetzung interner Governance-Prozesse",
-        "Keine Garantie für Vollständigkeit ohne Zugriff auf relevante Quellen",
-      ],
-      tenderAlignment: ["Nachvollziehbare Deliverables", "Betriebsübergabe", "Review- und Auditkontexte"],
-    },
-
-    {
-      title: "Projekt-/Umsetzungsunterstützung (strukturierte Lieferung)",
-      category: "Delivery",
-      iconKey: "target",
-      shortScope:
-        "Unterstützung bei Planung und Umsetzung mit klarer Abgrenzung, Change-Kontrolle und dokumentierter Lieferung.",
-      deliverables: [
-        "Umsetzungsplan (Scope, Phasen, Abhängigkeiten)",
-        "Abnahmekriterien & Liefergegenstände je Phase",
-        "Change-Log (Änderungen, Gründe, Freigaben)",
-        "Status-/Risikoübersicht (faktisch, ohne Marketing)",
-      ],
-      typicalInputs: [
-        "Ziele/Scope, Prioritäten, Rahmenbedingungen",
-        "Entscheidungswege (Owner, Freigaben, Gremien)",
-        "Zugänge zu Projektwerkzeugen (Jira, Planner etc.)",
-      ],
-      boundaries: [
-        "Keine Festpreis-/Terminzusagen ohne abgestimmten Scope",
-        "Keine eigenmächtige Scope-Erweiterung (Change required)",
-        "Keine Abkürzungen bei Dokumentation bei Audit-Relevanz",
-      ],
-      tenderAlignment: ["Scope-Kontrolle", "Nachweisbare Lieferung", "Vergabe-/Prüfkontext geeignet"],
     },
 
     {
