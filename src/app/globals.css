@@ -3,14 +3,79 @@
 @tailwind utilities;
 
 /* ==================================================
-   Root variables
+   Luxury Corporate Global Styles (SmartConnect)
+   - Tokenized (CSS variables)
+   - Calm neutrals + premium accents
+   - Accessible focus rings
+   - Works with Tailwind + shadcn/radix slots
 ================================================== */
+
+/* ------------------------------
+   Design tokens
+------------------------------ */
 :root {
   color-scheme: light;
 
-  /* Header variables */
-  --border: #e6e6e6;
-  --text-strong: #111111;
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica,
+    "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Surfaces */
+  --bg: #ffffff;
+  --bg-elev: #fbfbfc;
+  --bg-soft: #f6f7f9;
+
+  /* Text */
+  --text: #111827; /* slate-900 */
+  --text-muted: rgba(17, 24, 39, 0.72);
+  --text-soft: rgba(17, 24, 39, 0.6);
+
+  /* Lines */
+  --border: rgba(15, 23, 42, 0.12); /* premium thin line */
+  --border-strong: rgba(15, 23, 42, 0.18);
+
+  /* Accents (luxury corporate: deep navy + subtle gold) */
+  --accent: #0b1f3a; /* deep navy */
+  --accent-2: #b08d57; /* muted gold */
+  --link: #0b1f3a;
+
+  /* States */
+  --focus: rgba(11, 31, 58, 0.22);
+  --danger: #b42318;
+
+  /* Radius */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+
+  /* Shadows (soft, premium) */
+  --shadow-sm: 0 1px 0 rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.07);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Optional dark mode (Tailwind uses .dark) */
+.dark {
+  color-scheme: dark;
+
+  --bg: #0b1220;
+  --bg-elev: rgba(255, 255, 255, 0.03);
+  --bg-soft: rgba(255, 255, 255, 0.05);
+
+  --text: rgba(248, 250, 252, 0.95);
+  --text-muted: rgba(226, 232, 240, 0.72);
+  --text-soft: rgba(226, 232, 240, 0.6);
+
+  --border: rgba(148, 163, 184, 0.18);
+  --border-strong: rgba(148, 163, 184, 0.28);
+
+  --link: rgba(226, 232, 240, 0.92);
+
+  --focus: rgba(148, 163, 184, 0.28);
+
+  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 18px 45px rgba(0, 0, 0, 0.35);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 /* ==================================================
@@ -22,9 +87,25 @@ body {
 }
 
 body {
-  font-family: Arial, Helvetica, system-ui, sans-serif;
-  background: #ffffff;
-  color: #333333;
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  letter-spacing: -0.01em;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Better selection feel */
+::selection {
+  background: rgba(176, 141, 87, 0.22);
+}
+
+/* Accessible focus */
+:where(a, button, input, textarea, select, [role="button"], [tabindex]):focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 4px var(--focus);
+  border-radius: 10px;
 }
 
 /* ==================================================
@@ -32,6 +113,8 @@ body {
 ================================================== */
 header {
   border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 footer {
@@ -42,13 +125,15 @@ footer {
    Links
 ================================================== */
 a {
-  color: #003366;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--link);
+  text-decoration: none;
 }
 
 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
   text-decoration-thickness: 2px;
+  text-decoration-color: color-mix(in srgb, var(--link) 65%, transparent);
 }
 
 /* ==================================================
@@ -62,7 +147,7 @@ a:hover {
 }
 
 main {
-  padding-bottom: 24px;
+  padding-bottom: 28px;
 }
 
 /* ==================================================
@@ -75,83 +160,93 @@ main {
 }
 
 .doc-prose p {
-  margin: 0.6rem 0;
-  line-height: 1.65;
+  margin: 0.7rem 0;
+  line-height: 1.75;
   font-size: 1rem;
+  color: var(--text-muted);
 }
 
 .doc-prose ul {
-  margin: 0.7rem 0;
+  margin: 0.8rem 0;
   padding-left: 1.25rem;
   list-style: disc;
+  color: var(--text-muted);
 }
 
 .doc-prose li {
   margin: 0.35rem 0;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 .doc-prose h1 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin: 0.25rem 0 0.75rem;
-  letter-spacing: -0.02em;
+  font-size: 2.25rem;
+  font-weight: 900;
+  margin: 0.25rem 0 0.85rem;
+  letter-spacing: -0.03em;
+  color: var(--text);
 }
 
 .doc-prose h2 {
   font-size: 1.35rem;
-  font-weight: 800;
-  margin: 1.25rem 0 0.6rem;
-  letter-spacing: -0.01em;
+  font-weight: 900;
+  margin: 1.3rem 0 0.7rem;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
 
 .doc-prose h3 {
   font-size: 1.1rem;
-  font-weight: 800;
-  margin: 1rem 0 0.45rem;
+  font-weight: 900;
+  margin: 1rem 0 0.5rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .small-muted {
-  color: #333333;
-  opacity: 0.82;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* Lead text */
+.lead {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
 }
 
 /* ==================================================
    Cards
 ================================================== */
 .card-soft {
-  border: 1px solid #e6e6e6;
-  border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Premium hover feel (subtle) */
+.card-soft:hover {
+  border-color: var(--border-strong);
 }
 
 /* ==================================================
    Policy / info blocks
 ================================================== */
 .policy-note {
-  border: 1px solid #e6e6e6;
-  border-radius: 14px;
-  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-elev);
   padding: 18px;
+  box-shadow: var(--shadow-sm);
 }
 
 .section-title {
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: -0.01em;
-}
-
-/* ==================================================
-   Lead text
-================================================== */
-.lead {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  opacity: 0.92;
-  margin-top: 0.6rem;
+  font-size: 1.1rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
 
 /* ==================================================
@@ -165,9 +260,15 @@ table {
 
 td,
 th {
-  padding: 10px 12px;
-  border-top: 1px solid #e5e5e5;
+  padding: 11px 12px;
+  border-top: 1px solid var(--border);
   vertical-align: top;
+  color: var(--text-muted);
+}
+
+th {
+  color: var(--text);
+  font-weight: 900;
 }
 
 tr:first-child td,
@@ -179,14 +280,15 @@ tr:first-child th {
    Accordion (Radix / shadcn)
 ================================================== */
 [data-slot="accordion"] {
-  border: 1px solid #e6e6e6;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--bg);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 [data-slot="accordion-item"] {
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--border);
 }
 
 [data-slot="accordion-item"]:last-child {
@@ -196,19 +298,19 @@ tr:first-child th {
 [data-slot="accordion-trigger"] {
   padding: 12px 14px;
   font-size: 0.95rem;
-  line-height: 1.35;
-  font-weight: 800;
-  color: #111111;
-  background: #ffffff;
+  line-height: 1.4;
+  font-weight: 900;
+  color: var(--text);
+  background: var(--bg);
 }
 
 [data-slot="accordion-trigger"]:hover {
-  background: #fafafa;
+  background: var(--bg-elev);
   text-decoration: none;
 }
 
 [data-slot="accordion-content"] {
-  background: #ffffff;
+  background: var(--bg);
 }
 
 [data-slot="accordion-content"] > div {
@@ -225,7 +327,7 @@ tr:first-child th {
 }
 
 /* ==================================================
-   ServiceCard accordion enhancements
+   ServiceCard accordion enhancements (luxury)
 ================================================== */
 .sc-accordion-trigger {
   display: flex;
@@ -238,24 +340,48 @@ tr:first-child th {
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.sc-accordion-trigger[data-state="closed"]
-  .sc-accordion-trigger-label::after {
+/* Premium pill trigger — only for ServiceCard triggers */
+[data-slot="accordion-trigger"].sc-accordion-trigger {
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  box-shadow: var(--shadow-inset);
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+[data-slot="accordion-trigger"].sc-accordion-trigger:hover {
+  background: color-mix(in srgb, var(--bg-elev) 80%, var(--bg) 20%);
+  border-color: var(--border-strong);
+}
+
+/* Prevent double chevrons (shadcn often injects a default svg chevron) */
+[data-slot="accordion-trigger"].sc-accordion-trigger > svg {
+  display: none !important;
+}
+
+/* Details label suffix (DE) */
+.sc-accordion-trigger[data-state="closed"] .sc-accordion-trigger-label::after {
   content: " anzeigen";
-  font-weight: 800;
+  font-weight: 900;
   opacity: 0.65;
 }
 
-.sc-accordion-trigger[data-state="open"]
-  .sc-accordion-trigger-label::after {
+.sc-accordion-trigger[data-state="open"] .sc-accordion-trigger-label::after {
   content: " ausblenden";
-  font-weight: 800;
+  font-weight: 900;
   opacity: 0.65;
 }
 
 .sc-accordion-content .text-sm {
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 .sc-accordion-content ul {
@@ -265,12 +391,13 @@ tr:first-child th {
 
 .sc-accordion-content li {
   margin: 0.28rem 0;
-  line-height: 1.55;
+  line-height: 1.65;
 }
 
+/* Gentle section divider inside content grid */
 .sc-accordion-content .mt-4.grid > div {
   padding-top: 10px;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
 }
 
 .sc-accordion-content .mt-4.grid > div:first-child {
@@ -283,64 +410,97 @@ tr:first-child th {
 ================================================== */
 .nav-link {
   text-decoration: none;
-  color: #111111;
-  font-weight: 800;
-  opacity: 0.82;
-  padding: 8px 10px;
+  color: var(--text);
+  font-weight: 900;
+  opacity: 0.78;
+  padding: 8px 12px;
   border-radius: 999px;
+  transition: background 180ms ease, opacity 180ms ease, transform 180ms ease;
 }
 
 .nav-link:hover {
-  background: #fafafa;
+  background: var(--bg-elev);
   opacity: 1;
   text-decoration: none;
 }
 
 .nav-link-active {
-  background: #111111;
+  background: var(--accent);
   color: #ffffff;
   opacity: 1;
 }
 
 .hr-soft {
   height: 1px;
-  background: #e6e6e6;
+  background: var(--border);
   border: 0;
 }
 
-/* Footer: links slightly more corporate */
+/* Footer links */
 .footer-links a {
   text-decoration: none;
-  color: #111111;
-  opacity: 0.85;
-  font-weight: 700;
+  color: var(--text);
+  opacity: 0.82;
+  font-weight: 800;
 }
 
 .footer-links a:hover {
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
   opacity: 1;
 }
 
-
 /* ==================================================
-   Buttons
+   Buttons (luxury)
 ================================================== */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid #111111;
-  background: #111111;
+  border: 1px solid color-mix(in srgb, var(--accent) 85%, black 15%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 92%, #000 8%), var(--accent));
   color: #ffffff !important;
   text-decoration: none;
-  font-weight: 800;
+  font-weight: 950;
+  letter-spacing: -0.01em;
+  box-shadow: 0 10px 24px rgba(11, 31, 58, 0.16);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
 
 .btn-primary:hover {
-  background: #000000;
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow: 0 14px 34px rgba(11, 31, 58, 0.22);
+}
+
+.btn-primary:active {
+  transform: translateY(0px);
+  box-shadow: 0 10px 24px rgba(11, 31, 58, 0.16);
+}
+
+/* Optional secondary button (safe to keep even if unused) */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text) !important;
+  text-decoration: none;
+  font-weight: 900;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-elev);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
 }
 
 /* ==================================================
@@ -353,9 +513,9 @@ tr:first-child th {
   padding: 10px 14px;
   margin: 10px;
   display: inline-block;
-  background: #ffffff;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
 
 /* ==================================================
