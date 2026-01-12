@@ -1,3 +1,4 @@
+// src/components/hero/Hero3D.tsx
 "use client"
 
 import dynamic from "next/dynamic"
@@ -8,11 +9,53 @@ const SmartConnectHero3D = dynamic(() => import("./SmartConnectHero3D"), {
   ssr: false,
 })
 
+type ScenarioKey = "stable" | "scale" | "defense"
+
+const HERO_SCENARIOS: Record<
+  ScenarioKey,
+  {
+    label: string
+    status: string
+    mode: string
+    risk: "LOW" | "MED" | "HIGH"
+    speed: number
+    intensity: number
+  }
+> = {
+  stable: {
+    label: "Stable",
+    status: "All services operating within nominal thresholds.",
+    mode: "NORMAL",
+    risk: "LOW",
+    speed: 0.7,
+    intensity: 0.95,
+  },
+  scale: {
+    label: "Scale",
+    status: "Capacity expansion active. Monitoring saturation signals.",
+    mode: "AUTOSCALE",
+    risk: "MED",
+    speed: 1.15,
+    intensity: 1.1,
+  },
+  defense: {
+    label: "Defense",
+    status: "Security posture tightened. Elevated monitoring enabled.",
+    mode: "HARDENED",
+    risk: "MED",
+    speed: 0.45,
+    intensity: 1.25,
+  },
+}
+
 export default function Hero3D() {
   const [mounted, setMounted] = useState(false)
   const [reduced, setReduced] = useState(false)
   const [inView, setInView] = useState(false)
   const hostRef = useRef<HTMLDivElement | null>(null)
+
+  // Enterprise deterministic mode selector
+  const [scenario, setScenario] = useState<ScenarioKey>("stable")
 
   useEffect(() => {
     setMounted(true)
@@ -40,25 +83,29 @@ export default function Hero3D() {
   }, [])
 
   const show3D = mounted && inView && !reduced
+  const preset = HERO_SCENARIOS[scenario]
 
   return (
-    <div ref={hostRef} className="relative">
-      {/* Outer halo (variant) */}
-      <div className="pointer-events-none absolute -inset-6 rounded-[28px] blur-2xl
-        bg-gradient-to-br from-emerald-400/10 via-sky-500/10 to-amber-300/10
-        dark:from-emerald-400/15 dark:via-sky-500/12 dark:to-amber-300/12"
-      />
-
+    <div ref={hostRef} className="relative h-full w-full">
+      {/* Outer halo */}
       <div
         className="
-          relative overflow-hidden rounded-2xl border
+          pointer-events-none absolute -inset-6 rounded-[28px] blur-2xl
+          bg-gradient-to-br from-emerald-400/10 via-sky-500/10 to-amber-300/10
+          dark:from-emerald-400/15 dark:via-sky-500/12 dark:to-amber-300/12
+        "
+      />
+
+      {/* Main frame */}
+      <div
+        className="
+          relative h-full w-full overflow-hidden rounded-2xl border
           border-black/10 bg-white
           dark:border-white/10 dark:bg-slate-950
         "
       >
-        {/* ===== Graphical rectangle background (light/dark variants) ===== */}
+        {/* Background system */}
         <div className="pointer-events-none absolute inset-0">
-          {/* Gradient base */}
           <div
             className="
               absolute inset-0
@@ -66,8 +113,6 @@ export default function Hero3D() {
               dark:bg-[radial-gradient(ellipse_at_top,_rgba(56,189,248,0.16),_transparent_55%),radial-gradient(ellipse_at_bottom,_rgba(34,197,94,0.10),_transparent_55%)]
             "
           />
-
-          {/* Subtle grid */}
           <div
             className="absolute inset-0 opacity-[0.10] dark:opacity-[0.08]"
             style={{
@@ -76,7 +121,6 @@ export default function Hero3D() {
               backgroundSize: "44px 44px",
             }}
           />
-          {/* Dark mode grid uses white lines; we overlay a second grid only in dark */}
           <div
             className="absolute inset-0 hidden dark:block opacity-[0.08]"
             style={{
@@ -85,8 +129,6 @@ export default function Hero3D() {
               backgroundSize: "44px 44px",
             }}
           />
-
-          {/* Vignette (light vs dark) */}
           <div
             className="
               absolute inset-0
@@ -94,8 +136,6 @@ export default function Hero3D() {
               dark:bg-[radial-gradient(ellipse_at_center,_transparent_45%,_rgba(2,6,23,0.65)_100%)]
             "
           />
-
-          {/* Inline SVG grain (no external file) */}
           <div
             className="absolute inset-0 mix-blend-overlay opacity-[0.06] dark:opacity-[0.06]"
             style={{
@@ -104,47 +144,108 @@ export default function Hero3D() {
               backgroundRepeat: "repeat",
             }}
           />
-
-          {/* Soft top highlight (light mode only) */}
           <div className="absolute inset-x-0 top-0 h-40 bg-[linear-gradient(to_bottom,_rgba(255,255,255,0.55),_transparent)] dark:hidden" />
         </div>
 
-        {/* ===== Poster (LCP) OR 3D ===== */}
-        {!show3D ? (
-          <Image
-            src="/hero/hero-poster.webp"
-            alt="SmartConnect CRM UG – Enterprise IT & Digital Solutions"
-            width={1890}
-            height={1080}
-            priority
-            sizes="(max-width: 768px) 100vw, 1200px"
-            className="h-[420px] md:h-[520px] w-full object-cover"
-          />
-        ) : (
-          <Suspense fallback={null}>
-            <SmartConnectHero3D />
-          </Suspense>
-        )}
-
-        {/* Brand overlay (variant) */}
-        <div className="pointer-events-none absolute left-4 top-4 md:left-5 md:top-5">
-          <div
-            className="
-              flex items-center rounded-xl border px-3 py-2 backdrop-blur-md
-              border-black/10 bg-white/65
-              dark:border-white/10 dark:bg-slate-950/55
-            "
-          >
+        {/* Viewport */}
+        <div className="relative h-full w-full">
+          {!show3D ? (
             <Image
-              src="/brand/smartconnect-logo.webp"
-              alt="SmartConnect CRM UG"
-              width={150}
-              height={32}
-              className="h-8 w-auto"
-              style={{ width: "auto", height: "32px" }}
+              src="/hero/hero-poster.webp"
+              alt="SmartConnect CRM UG – Enterprise IT & Digital Solutions"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
             />
+          ) : (
+            <Suspense fallback={null}>
+              <div className="absolute inset-0">
+                <SmartConnectHero3D speed={preset.speed} intensity={preset.intensity} />
+              </div>
+            </Suspense>
+          )}
+        </div>
+
+        {/* ===== Enterprise Overlay (clean) ===== */}
+        <div className="absolute inset-0 z-20 pointer-events-none">
+          {/* Top bar */}
+          <div className="absolute left-5 right-5 top-5 flex items-center justify-between gap-3">
+            {/* Left: system label */}
+            <div className="pointer-events-none hidden md:block">
+              <div className="rounded-xl border border-white/10 bg-slate-950/45 backdrop-blur-xl px-4 py-2">
+                <div className="text-[10px] font-semibold tracking-widest text-white/70 uppercase">
+                  SmartConnect · Infrastructure Visualization
+                </div>
+                <div className="text-[9px] text-white/40 uppercase tracking-[0.22em] mt-1">
+                  Mode: {preset.mode} · Risk: {preset.risk}
+                </div>
+              </div>
+            </div>
+
+            {/* Right: compact diagnostics */}
+            <div className="pointer-events-auto ml-auto rounded-xl border border-white/10 bg-slate-950/45 backdrop-blur-xl px-4 py-2">
+              <div className="flex items-center gap-3">
+                <div className="text-[10px] font-semibold tracking-widest text-white/70 uppercase">Diagnostics</div>
+                <div className="h-4 w-px bg-white/10" />
+                <div className="flex items-center gap-2 text-[10px] text-white/60">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+                  <span>Render OK</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom enterprise console */}
+          <div className="absolute inset-x-0 bottom-5 flex justify-center px-4">
+            <div className="pointer-events-auto w-full max-w-3xl rounded-2xl border border-white/10 bg-slate-950/65 backdrop-blur-2xl shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-white/10">
+                <div className="min-w-[220px]">
+                  <div className="text-[11px] font-semibold text-white/80">System Status</div>
+                  <div className="text-[10px] text-white/50">{preset.status}</div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-white/40 uppercase tracking-widest hidden sm:inline">Profile</span>
+
+                  {(["stable", "scale", "defense"] as const).map((key) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setScenario(key)}
+                      className={`px-3 py-2 rounded-lg text-[10px] font-semibold border transition
+                        ${
+                          scenario === key
+                            ? "bg-white/10 border-white/20 text-white"
+                            : "bg-transparent border-white/10 text-white/70 hover:bg-white/5"
+                        }`}
+                    >
+                      {HERO_SCENARIOS[key].label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="px-5 py-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="text-[10px] text-white/45 uppercase tracking-[0.22em]">
+                    Procurement-safe · Deterministic visuals · No external calls
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="text-[10px] text-white/50">Theme</div>
+                    <div className="flex items-center gap-1">
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-300/70" />
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-slate-300/70" />
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-sky-400/70" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+        {/* ===== End Enterprise Overlay ===== */}
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
-import Link from "next/link"
+import type { IconKey } from "@/components/ServiceCard"
 
-import ServiceCard from "@/components/ServiceCard"
+import ServicesCatalog from "./ServicesCatalog"
+
 
 export const metadata = {
   title: "Leistungen | SmartConnect CRM UG (haftungsbeschränkt)",
@@ -8,19 +9,32 @@ export const metadata = {
     "Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Fokussiert auf klare Abgrenzung, Dokumentation und Compliance-by-Design.",
 }
 
-type Service = {
+export type ServiceCategory =
+  | "Operations"
+  | "Integration"
+  | "Security"
+  | "Procurement"
+  | "Cloud"
+  | "Data"
+  | "Delivery"
+
+export type ServiceDTO = {
   title: string
   shortScope: string
   deliverables: string[]
   typicalInputs: string[]
   boundaries: string[]
   tenderAlignment: string[]
+  iconKey?: IconKey
+  category: ServiceCategory
 }
 
 export default function ServicesPage() {
-  const services: Service[] = [
+  const services: ServiceDTO[] = [
     {
       title: "IT Service & Operations Support",
+      category: "Operations",
+      iconKey: "settings",
       shortScope:
         "Unterstützung im Betrieb (Run) mit klaren Leistungsbausteinen, Dokumentation und Übergabefähigkeit.",
       deliverables: [
@@ -44,8 +58,10 @@ export default function ServicesPage() {
 
     {
       title: "Systemintegration & Schnittstellen",
+      category: "Integration",
+      iconKey: "network",
       shortScope:
-        "Integration bestehender Systeme über APIs/ETL mit nachvollziehbaren Datenflüssen und kontrollierten Changes.",
+        "Integration bestehender Systeme über APIs/ETL mit nachvollziehbaren Datenflüsse und kontrollierten Changes.",
       deliverables: [
         "Schnittstellenbeschreibung (Datenfelder, Auth, Fehlerbehandlung)",
         "Integrations- und Ablaufdiagramme (technisch, nachvollziehbar)",
@@ -67,6 +83,8 @@ export default function ServicesPage() {
 
     {
       title: "Security-by-Design & Baseline Hardening",
+      category: "Security",
+      iconKey: "lock",
       shortScope:
         "Sicherheitsorientierte Umsetzung (Baseline), Risiko- und Maßnahmenübersicht ohne pauschale Zertifikatsclaims.",
       deliverables: [
@@ -90,6 +108,8 @@ export default function ServicesPage() {
 
     {
       title: "Datenschutz-/DSGVO-nahe Umsetzung (technisch)",
+      category: "Security",
+      iconKey: "shield",
       shortScope:
         "Technische Umsetzung zur Unterstützung von DSGVO-Anforderungen (Datenminimierung, Rechte, Löschkonzepte).",
       deliverables: [
@@ -113,6 +133,8 @@ export default function ServicesPage() {
 
     {
       title: "Dokumentation & Übergabe (Audit-/Review-fähig)",
+      category: "Operations",
+      iconKey: "filecheck",
       shortScope:
         "Strukturierte technische und organisatorische Dokumentation zur Übergabe in Betrieb und für Beschaffungsprüfungen.",
       deliverables: [
@@ -136,6 +158,8 @@ export default function ServicesPage() {
 
     {
       title: "Projekt-/Umsetzungsunterstützung (strukturierte Lieferung)",
+      category: "Delivery",
+      iconKey: "target",
       shortScope:
         "Unterstützung bei Planung und Umsetzung mit klarer Abgrenzung, Change-Kontrolle und dokumentierter Lieferung.",
       deliverables: [
@@ -159,6 +183,8 @@ export default function ServicesPage() {
 
     {
       title: "EU Tender & Procurement Enablement",
+      category: "Procurement",
+      iconKey: "gantt",
       shortScope:
         "Unterstützung bei tendertauglicher Dokumentation, Angebotsstruktur und prüffähiger Aufbereitung für Beschaffung & Vergabe.",
       deliverables: [
@@ -185,6 +211,8 @@ export default function ServicesPage() {
 
     {
       title: "Cloud & Modern Workplace Operations",
+      category: "Cloud",
+      iconKey: "cloud",
       shortScope:
         "Betriebsnahe Unterstützung für Microsoft 365/Azure-orientierte Umgebungen inkl. Identitäten, Endpoints und Governance.",
       deliverables: [
@@ -211,6 +239,8 @@ export default function ServicesPage() {
 
     {
       title: "Data & Reporting Foundations",
+      category: "Data",
+      iconKey: "database",
       shortScope:
         "Aufbau von Daten- und Reporting-Grundlagen mit klaren Definitionen, Datenqualität und nachvollziehbarer KPI-Logik.",
       deliverables: [
@@ -235,6 +265,8 @@ export default function ServicesPage() {
 
     {
       title: "Delivery Support & Project Recovery",
+      category: "Delivery",
+      iconKey: "boxes",
       shortScope:
         "Stabilisierungs- und Übergabeorientierte Unterstützung bei Lieferdruck, offenen Punkten und ungeklärten Verantwortlichkeiten.",
       deliverables: [
@@ -258,54 +290,5 @@ export default function ServicesPage() {
     },
   ]
 
-  return (
-    <div className="doc-prose">
-      <h1>Leistungen</h1>
-
-      <p className="lead">
-        Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Die folgenden Bausteine sind
-        bewusst klar abgegrenzt und auf dokumentierte, nachvollziehbare Lieferung ausgelegt.
-      </p>
-
-      {/* Principles */}
-      <section className="policy-note mt-6">
-        <div className="section-title">Rahmen &amp; Grundsätze</div>
-        <ul className="mt-3 list-disc pl-5 space-y-1">
-          <li>Leistungsabgrenzung und Änderungen über abgestimmte Change-Prozesse</li>
-          <li>Dokumentation als Bestandteil der Lieferung (Audit-/Review-fähig)</li>
-          <li>Datensparsamkeit und Rollenprinzip (Least Privilege) als Standardannahme</li>
-          <li>Keine unbestätigten Referenzen, Kennzahlen oder Zertifikatsclaims auf der Website</li>
-        </ul>
-      </section>
-
-      {/* Service cards */}
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-        {services.map((s) => (
-          <ServiceCard
-            key={s.title}
-            title={s.title}
-            shortScope={s.shortScope}
-            deliverables={s.deliverables}
-            typicalInputs={s.typicalInputs}
-            boundaries={s.boundaries}
-            tenderAlignment={s.tenderAlignment}
-          />
-        ))}
-      </div>
-
-      {/* CTA */}
-      <section className="policy-note mt-10">
-        <div className="section-title">Anfrage / Abstimmung</div>
-        <p className="small-muted mt-2">
-          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. eine
-          gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
-        </p>
-        <div className="mt-4">
-          <Link href="/contact" className="btn-primary">
-            Zur Geschäftsanfrage (Kontakt)
-          </Link>
-        </div>
-      </section>
-    </div>
-  )
+  return <ServicesCatalog services={services} />
 }

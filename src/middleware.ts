@@ -30,6 +30,7 @@ function buildCsp(nonce: string) {
     `default-src 'self'`,
     `base-uri 'self'`,
     `object-src 'none'`,
+
     // Strict but compatible:
     `frame-ancestors 'self'`,
     `form-action 'self'`,
@@ -44,20 +45,17 @@ function buildCsp(nonce: string) {
     `script-src-attr 'none'`,
     `style-src-attr 'none'`,
 
-    // Nonce-based styles (no unsafe-inline)
     `style-src 'self' 'nonce-${nonce}' https:`,
 
-    // Strong scripts with nonce + strict-dynamic
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:`,
+    // ⚠️ No 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
+    `script-src 'self' 'nonce-${nonce}' https:`,
 
-    // WebSockets allowed
     `connect-src 'self' https: wss:`,
 
     `media-src 'self' https: blob:`,
     `worker-src 'self' blob:`,
     `manifest-src 'self'`,
 
-    // Reporting (modern + legacy)
     `report-to csp-endpoint`,
     `report-uri ${reportPath}`,
 
@@ -90,9 +88,10 @@ function buildReportingHeaders() {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Skip Next internals + obvious static files
+  // Skip Next internals + obvious static files + Vercel internals
   if (
     pathname.startsWith("/_next/") ||
+    pathname.startsWith("/_vercel/") ||
     pathname.startsWith("/__nextjs_original-stack-frame") ||
     pathname.startsWith("/__nextjs_error_feedback") ||
     pathname === "/favicon.ico" ||
@@ -140,10 +139,13 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  // keep referenced (used for canonicalization in other contexts)
   void SITE_URL
+
   return res
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)"],
+  // Exclude API routes and static asset handlers from middleware
+  matcher: ["/((?!api|_next/static|_next/image|_vercel|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)"],
 }
