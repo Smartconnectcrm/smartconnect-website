@@ -40,7 +40,7 @@ type ServiceCardProps = {
   boundaries: string[]
   tenderAlignment?: string[]
   /** Optional: enables the premium icon chip (keeps backwards compatibility). */
-  iconKey?: IconKey
+iconKey?: IconKey | string
 }
 
 function safeList(list: string[] | undefined) {
