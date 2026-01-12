@@ -25,6 +25,7 @@ function buildCsp(nonce: string) {
     `default-src 'self'`,
     `base-uri 'self'`,
     `object-src 'none'`,
+
     `frame-ancestors 'self'`,
     `form-action 'self'`,
     `frame-src 'self' https:`,
@@ -36,7 +37,7 @@ function buildCsp(nonce: string) {
     `style-src-attr 'none'`,
 
     `style-src 'self' 'nonce-${nonce}' https:`,
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:`,
+    `script-src 'self' 'nonce-${nonce}' https:`,
 
     `connect-src 'self' https: wss:`,
     `media-src 'self' https: blob:`,
@@ -84,12 +85,10 @@ export function middleware(req: NextRequest) {
   const nonce = makeNonce()
   res.headers.set("x-nonce", nonce)
 
-  // Dev: prevent stale HTML
-  if (!isProd()) {
+  if (!isProd() && isHtmlRequest(req)) {
     res.headers.set("Cache-Control", "no-store, max-age=0")
   }
 
-  // Security headers
   res.headers.set("X-Content-Type-Options", "nosniff")
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
   res.headers.set(
@@ -104,18 +103,16 @@ export function middleware(req: NextRequest) {
     )
   }
 
-  if (isProd() && CSP_MODE !== "off") {
+  const enableCsp = isProd() && CSP_MODE !== "off"
+  if (enableCsp) {
     const csp = buildCsp(nonce)
     const { reportTo, reportingEndpoints } = buildReportingHeaders()
 
     res.headers.set("Report-To", reportTo)
     res.headers.set("Reporting-Endpoints", reportingEndpoints)
 
-    if (CSP_MODE === "report") {
-      res.headers.set("Content-Security-Policy-Report-Only", csp)
-    } else {
-      res.headers.set("Content-Security-Policy", csp)
-    }
+    if (CSP_MODE === "report") res.headers.set("Content-Security-Policy-Report-Only", csp)
+    else res.headers.set("Content-Security-Policy", csp)
   }
 
   void SITE_URL

@@ -104,7 +104,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         ))}
       </section>
 
-      {/* Filter + Mini-TOC */}
+      {/* Filter */}
       <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           {/* Search */}
@@ -164,19 +164,11 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Services */}
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         {filtered.map((s) => (
           <div key={s.title} id={slugify(s.title)} className="scroll-mt-28">
-            <ServiceCard
-              title={s.title}
-              shortScope={s.shortScope}
-              deliverables={s.deliverables}
-              typicalInputs={s.typicalInputs}
-              boundaries={s.boundaries}
-              tenderAlignment={s.tenderAlignment}
-              iconKey={s.iconKey}
-            />
+            <ServiceCard {...s} />
           </div>
         ))}
       </div>
