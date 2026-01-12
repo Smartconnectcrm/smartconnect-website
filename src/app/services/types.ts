@@ -11,11 +11,11 @@ export type ServiceCategory =
 
 export type ServiceDTO = {
   title: string
+  category: ServiceCategory
   shortScope: string
   deliverables: string[]
   typicalInputs: string[]
   boundaries: string[]
   tenderAlignment: string[]
   iconKey?: IconKey
-  category: ServiceCategory
 }

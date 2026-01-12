@@ -1,11 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 
-/**
- * CSP modes:
- * - "off"     -> no CSP headers at all
- * - "report"  -> Content-Security-Policy-Report-Only
- * - "enforce" -> Content-Security-Policy
- */
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectcrm.eu").replace(/\/+$/, "")
+
 const CSP_MODE = (process.env.CSP_MODE ?? "off").toLowerCase()
 
 function isProd() {
@@ -28,7 +24,6 @@ function buildCsp(nonce: string) {
     `default-src 'self'`,
     `base-uri 'self'`,
     `object-src 'none'`,
-
     `frame-ancestors 'self'`,
     `form-action 'self'`,
     `frame-src 'self' https:`,
@@ -40,10 +35,11 @@ function buildCsp(nonce: string) {
     `style-src-attr 'none'`,
 
     `style-src 'self' 'nonce-${nonce}' https:`,
-    `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' https:`,
-    
-    `connect-src 'self' https: wss:`,
 
+    // allow Next hydration bootstrap (otherwise UI looks “dead”)
+    `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' https:`,
+
+    `connect-src 'self' https: wss:`,
     `media-src 'self' https: blob:`,
     `worker-src 'self' blob:`,
     `manifest-src 'self'`,
@@ -64,23 +60,19 @@ function isHtmlRequest(req: NextRequest) {
 
 function buildReportingHeaders() {
   const reportPath = "/api/csp-report"
-
   const reportTo = JSON.stringify({
     group: "csp-endpoint",
     max_age: 10886400,
     endpoints: [{ url: reportPath }],
     include_subdomains: true,
   })
-
   const reportingEndpoints = `csp-endpoint="${reportPath}"`
-
   return { reportTo, reportingEndpoints }
 }
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Skip Next internals + obvious static files + Vercel internals
   if (
     pathname.startsWith("/_next/") ||
     pathname.startsWith("/_vercel/") ||
@@ -96,11 +88,9 @@ export function middleware(req: NextRequest) {
 
   const res = NextResponse.next()
 
-  // Nonce for inline <style nonce=""> / <script nonce="">
   const nonce = makeNonce()
   res.headers.set("x-nonce", nonce)
 
-  // Dev only: avoid stale HTML caching
   if (!isProd() && isHtmlRequest(req)) {
     res.headers.set("Cache-Control", "no-store, max-age=0")
   }
@@ -124,6 +114,7 @@ export function middleware(req: NextRequest) {
     else res.headers.set("Content-Security-Policy", csp)
   }
 
+  void SITE_URL
   return res
 }
 

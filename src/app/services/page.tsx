@@ -13,7 +13,6 @@ export default function ServicesPage() {
     {
       title: "IT Service & Operations Support",
       category: "Operations",
-      iconKey: "settings",
       shortScope:
         "Unterstützung im Betrieb (Run) mit klaren Leistungsbausteinen, Dokumentation und Übergabefähigkeit.",
       deliverables: [
@@ -25,172 +24,82 @@ export default function ServicesPage() {
       typicalInputs: [
         "Bestehende Betriebsprozesse/ITSM-Vorgaben",
         "System-/Zugangsübersichten (nach Rollenprinzip)",
-        "Sicherheits- und Compliance-Vorgaben des Auftraggebers",
+        "Service- und Zuständigkeitsmodelle (falls vorhanden)",
       ],
       boundaries: [
-        "Kein 24/7-Betrieb ohne explizite Vereinbarung",
-        "Keine Änderungen an Produktivsystemen ohne Change-Freigabe",
-        "Keine Übernahme von Lizenz-/Provider-Verträgen ohne Mandat",
+        "Kein 24/7-NOC ohne separate Vereinbarung",
+        "Kein Betrieb ohne definierte Verantwortlichkeiten und Zugänge",
+        "Changes erfolgen kontrolliert (Change-Flow/Approval)",
       ],
-      tenderAlignment: ["ITIL-nahe Vorgehensweisen", "Auditierbare Dokumentation", "Betriebsnahe Umsetzung"],
+      tenderAlignment: [
+        "Nachvollziehbare Leistungsabgrenzung",
+        "Audit-/Review-fähige Dokumentation",
+        "Betriebs- und Übergabefähigkeit",
+      ],
+      iconKey: "settings",
     },
-
     {
       title: "Systemintegration & Schnittstellen",
       category: "Integration",
-      iconKey: "network",
       shortScope:
         "Integration bestehender Systeme über APIs/ETL mit nachvollziehbaren Datenflüssen und kontrollierten Changes.",
-      deliverables: [
-        "Schnittstellenbeschreibung (Datenfelder, Auth, Fehlerbehandlung)",
-        "Integrations- und Ablaufdiagramme (technisch, nachvollziehbar)",
-        "Testfälle/Abnahmekriterien (funktional, ggf. sicherheitsrelevant)",
-        "Betriebs-/Monitoring-Hinweise für die Integration",
-      ],
-      typicalInputs: [
-        "API-Dokumentation / Zugang zu Sandbox/Testumgebung",
-        "Datenmodelle (Quelle/Ziel) und Validierungsregeln",
-        "Vorgaben zur Protokollierung, Aufbewahrung, Datenschutz",
-      ],
-      boundaries: [
-        "Keine Verarbeitung besonderer Kategorien personenbezogener Daten ohne separate Bewertung",
-        "Keine Produktivschaltung ohne Abnahme und Change-Prozess",
-        "Keine dauerhafte Datenhaltung außerhalb vereinbarter Systeme",
-      ],
-      tenderAlignment: ["Nachvollziehbare Datenflüsse", "Security-by-Design", "Dokumentierte Übergabe"],
+      deliverables: ["Schnittstellen-/Datenfluss-Doku", "API-/ETL-Implementierung (scoped)", "Test- & Übergabeprotokoll"],
+      typicalInputs: ["Systemlandschaft/Architektur-Skizze", "Zugänge/Keys (rollenbasiert)", "Datenmodelle / Mapping"],
+      boundaries: ["Keine Blackbox-Integration ohne Doku", "Keine produktiven Changes ohne Test/Abnahme"],
+      tenderAlignment: ["Nachvollziehbarkeit", "Change-Kontrolle", "Übergabefähigkeit"],
+      iconKey: "network",
     },
-
     {
       title: "Security-by-Design & Baseline Hardening",
       category: "Security",
-      iconKey: "lock",
       shortScope:
         "Sicherheitsorientierte Umsetzung (Baseline), Risiko- und Maßnahmenübersicht ohne pauschale Zertifikatsclaims.",
-      deliverables: [
-        "Baseline-Hardening-Checkliste (systemspezifisch)",
-        "Risiko-/Maßnahmenliste (priorisiert, nachvollziehbar)",
-        "Empfehlungen für Logging/Monitoring (minimal, zweckgebunden)",
-        "Dokumentation für Review/Audit (technische Nachweise)",
-      ],
-      typicalInputs: [
-        "Sicherheitsanforderungen/Policies (z. B. Passwort, MFA, Logging)",
-        "Systemübersicht (Assets, Rollen, Kritikalität)",
-        "Vorgaben zur Datenklassifikation und Aufbewahrung",
-      ],
-      boundaries: [
-        "Keine Penetrationstests ohne separates Mandat/Scope",
-        "Keine Sicherheitsgarantien; Ergebnisse sind kontextabhängig",
-        "Keine Einführung von Tracking/Analytics ohne Einwilligungskonzept",
-      ],
-      tenderAlignment: ["Least-Privilege & Rollenprinzip", "Review-fähige Nachweise", "Kontextbezogene Umsetzung"],
+      deliverables: ["Baseline-Checkliste", "Maßnahmenplan (priorisiert)", "Dokumentierte Hardening-Änderungen (scoped)"],
+      typicalInputs: ["Asset-/Systemliste", "Rollen-/Rechtekonzept", "Aktuelle Konfigurationen (export/scan)"],
+      boundaries: ["Kein Zertifizierungsversprechen", "Kein Pentest ohne separates Angebot"],
+      tenderAlignment: ["Risikobasierter Ansatz", "Dokumentationspflicht", "Nachvollziehbare Maßnahmen"],
+      iconKey: "shield",
     },
-
     {
       title: "EU Tender & Procurement Enablement",
       category: "Procurement",
-      iconKey: "gantt",
       shortScope:
         "Unterstützung bei tendertauglicher Dokumentation, Angebotsstruktur und prüffähiger Aufbereitung für Beschaffung & Vergabe.",
-      deliverables: [
-        "Tender-Readiness-Pack (Profil, Leistungsblatt, Annex-Struktur)",
-        "Compliance-/Datenschutz-Bausteine (DSGVO, TOMs, AVV-Logik, Zweckbindung)",
-        "Liefer- & Leistungskonzept (Scope, Abgrenzung, Annahmen, Ausschlüsse)",
-        "Risikobewertung & Maßnahmenplan (Liefer-, Termin-, Qualitätsrisiken)",
-        "Preis-/Leistungsstruktur (Module, Optionen, SLA-Logik nach Bedarf)",
-        "Prüffähige Anhänge (RACI, Prozessdarstellung, Übergabekonzept)",
-      ],
-      typicalInputs: [
-        "Ausschreibungsunterlagen (Leistungsbeschreibung, Eignung, Vertragsentwurf)",
-        "Interne Kapazitäten/Rollen & Partner-Setup (falls relevant)",
-        "Technische Zielarchitektur / Vorgaben des Auftraggebers",
-        "Interne Preislogik (Stundensätze/Pakete) und gewünschte Angebotsform",
-      ],
-      boundaries: [
-        "Keine Garantie auf Zuschlag/Erfolg; Bewertung liegt bei Vergabestellen",
-        "Keine rechtliche Beratung; Vergabe-/Rechtsfragen über Rechtsstelle",
-        "Keine inhaltliche Erweiterung ohne abgestimmte Änderungen (Change)",
-      ],
-      tenderAlignment: ["Vergabe-/Prüfkontext geeignet", "Nachweisbare Struktur", "Compliance-by-Design"],
+      deliverables: ["Leistungsbeschreibung/Scope-Struktur", "Abgrenzungen & Annahmen", "Dokumentationspaket (Review-ready)"],
+      typicalInputs: ["RFP/RFQ-Unterlagen", "Projekt-/Zielbild", "Randbedingungen (Datenschutz, Fristen, Rollen)"],
+      boundaries: ["Keine Rechtsberatung", "Kein Guarantee auf Zuschlag"],
+      tenderAlignment: ["Vergabekontext geeignet", "Scope-Klarheit", "Prüffähige Struktur"],
+      iconKey: "filecheck",
     },
-
     {
       title: "Cloud & Modern Workplace Operations",
       category: "Cloud",
+      shortScope: "Stabile Cloud-Basis (scoped) inkl. Betriebskonzept, Rollenmodell und dokumentierter Übergabe.",
+      deliverables: ["Betriebskonzept", "Konfigurations-Standards (scoped)", "Übergabe/Runbook"],
+      typicalInputs: ["Tenant/Account-Zugänge (rollenbasiert)", "Zielbild/Policies", "Bestehende Standards"],
+      boundaries: ["Kein Vollbetrieb ohne SLA", "Keine Changes ohne Approval"],
+      tenderAlignment: ["Betriebsfähigkeit", "Governance", "Dokumentation"],
       iconKey: "cloud",
-      shortScope:
-        "Betriebsnahe Unterstützung für Microsoft 365/Azure-orientierte Umgebungen inkl. Identitäten, Endpoints und Governance.",
-      deliverables: [
-        "Betriebsprozesse für Cloud-Services (Incident/Request/Change)",
-        "Identity- & Access-Setup (MFA, Conditional Access, Rollenmodelle)",
-        "Endpoint-Management-Standards (z. B. Policy-Set, Gerätestandards)",
-        "Tenant-/Service-Governance (Namenskonventionen, Lifecycle, Berechtigungen)",
-        "Monitoring-/Alerting-Grundlagen (Integration in bestehende Systeme, falls vorhanden)",
-        "Übergabeunterlagen (Admin-Handbook, Runbooks, Betriebsgrenzen)",
-      ],
-      typicalInputs: [
-        "Tenant-/Subscription-Übersicht, Rollen & Lizenzen (soweit vorhanden)",
-        "Gerätebestand/Nutzergruppen, Sicherheitsanforderungen",
-        "Bestehende ITSM-/Betriebsprozesse (falls vorhanden)",
-        "Betriebsziele (Stabilität, Security, Kostenkontrolle)",
-      ],
-      boundaries: [
-        "Keine Änderungen ohne Freigabe/Change-Prozess",
-        "Keine Übernahme der Provider-/Lizenzverantwortung ohne Mandat",
-        "Keine 24/7-Verfügbarkeit ohne separate Vereinbarung",
-      ],
-      tenderAlignment: ["Betriebsnahe Lieferung", "Governance & Rollenprinzip", "Übergabefähige Dokumentation"],
     },
-
     {
       title: "Data & Reporting Foundations",
       category: "Data",
+      shortScope: "Saubere Datenbasis für Reporting/Controlling mit klaren Definitionen, Qualitätssicherung und Doku.",
+      deliverables: ["Datenmodell (scoped)", "Definitionen/KPIs", "ETL/Extract-Konzept (scoped)", "Doku & Übergabe"],
+      typicalInputs: ["Datenquellen & Zugänge", "KPIs/Reporting-Ziele", "Governance/Compliance-Randbedingungen"],
+      boundaries: ["Kein Data Warehouse ‘Big Bang’ ohne Phasenplan"],
+      tenderAlignment: ["Nachvollziehbare Definitionen", "Audit-Trail (scoped)", "Übergabefähigkeit"],
       iconKey: "database",
-      shortScope:
-        "Aufbau von Daten- und Reporting-Grundlagen mit klaren Definitionen, Datenqualität und nachvollziehbarer KPI-Logik.",
-      deliverables: [
-        "KPI-/Metriken-Katalog (Definitionen, Berechnungslogik, Datenquellen)",
-        "Datenmodell-Grundlagen (Mapping, Verantwortlichkeiten, Datenflüsse)",
-        "Datenqualitätschecks (Vollständigkeit, Dubletten, Plausibilität)",
-        "Dashboard-/Report-Prototypen (Scope-limitiert, iterativ, prüfbar)",
-        "Dokumentation für Betrieb/Weiterentwicklung (Data Dictionary, Change-Logik)",
-      ],
-      typicalInputs: [
-        "Zielkennzahlen & Stakeholder-Anforderungen",
-        "Datenquellen (DB/CSV/APIs) und Zugriffe (rollenbasiert)",
-        "Datenschutzrahmen (Zwecke, Aufbewahrung, Berechtigungen)",
-      ],
-      boundaries: [
-        "Keine KPI-Interpretation als Managementberatung ohne Mandat",
-        "Keine Datenzusammenführung ohne dokumentierte Rechtsgrundlage/Zweck",
-        "Keine produktive ETL/Automatisierung ohne Abnahme",
-      ],
-      tenderAlignment: ["Nachvollziehbare KPI-Definitionen", "Datenqualität & Nachweisbarkeit", "Dokumentierte Übergabe"],
     },
-
     {
       title: "Delivery Support & Project Recovery",
       category: "Delivery",
-      iconKey: "boxes",
-      shortScope:
-        "Stabilisierungs- und Übergabeorientierte Unterstützung bei Lieferdruck, offenen Punkten und ungeklärten Verantwortlichkeiten.",
-      deliverables: [
-        "Ist-Aufnahme & Problem-Backlog (Priorisierung nach Risiko/Impact)",
-        "Stabilisierungssprint (Containment, Quick Wins, Fix-Plan)",
-        "Saubere Übergabe (RACI, Runbooks, offene Risiken, Next Steps)",
-        "QS-/Abnahme-Checklisten (Kriterien, Nachweise, Restpunkte)",
-        "Kommunikations- & Eskalationsstruktur (Statusformat, Stakeholder-Map)",
-      ],
-      typicalInputs: [
-        "Projektstatus/Artefakte (Tickets, Dokus, Pläne, Abnahmen)",
-        "Zugriffe auf relevante Systeme/Repos (nach Rollenprinzip)",
-        "Stakeholderliste & Ziele (Termine, SLA, Compliance-Vorgaben)",
-      ],
-      boundaries: [
-        "Keine Haftung für Altentscheidungen/Altarchitekturen ohne Transparenz und Mandat",
-        "Keine Scope-Erweiterung ohne Change und Priorisierung",
-        "Keine Produktionsänderungen ohne Freigabe/Abnahme",
-      ],
-      tenderAlignment: ["Stabilisierung & Nachweisbarkeit", "Betriebsübergabe", "Risikoorientiertes Vorgehen"],
+      shortScope: "Stabilisierung laufender Vorhaben durch klare Maßnahmen, Status-Transparenz und priorisierte Umsetzung.",
+      deliverables: ["Recovery-Plan", "Risikolog", "Status-/Fortschrittsreporting (scoped)", "Change-/Decision-Log"],
+      typicalInputs: ["Aktueller Stand/Backlog", "Stakeholder/Entscheider", "Constraints & Deadlines"],
+      boundaries: ["Kein ‘Heldentum’ ohne Scope/Fakten", "Entscheidungen bleiben beim Auftraggeber"],
+      tenderAlignment: ["Transparenz", "Nachvollziehbare Entscheidungen", "Governance"],
+      iconKey: "target",
     },
   ]
 

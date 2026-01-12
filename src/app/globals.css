@@ -3,79 +3,62 @@
 @tailwind utilities;
 
 /* ==================================================
-   Luxury Corporate Global Styles (SmartConnect)
-   - Tokenized (CSS variables)
-   - Calm neutrals + premium accents
-   - Accessible focus rings
-   - Works with Tailwind + shadcn/radix slots
+   Luxury Corporate System (Tender-grade)
+   - Clean hierarchy, restrained borders, premium type scale
 ================================================== */
 
-/* ------------------------------
-   Design tokens
------------------------------- */
 :root {
   color-scheme: light;
 
-  /* Typography */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica,
-    "Apple Color Emoji", "Segoe UI Emoji";
-
   /* Surfaces */
-  --bg: #ffffff;
-  --bg-elev: #fbfbfc;
-  --bg-soft: #f6f7f9;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --panel-2: #fbfcfe;
 
   /* Text */
-  --text: #111827; /* slate-900 */
-  --text-muted: rgba(17, 24, 39, 0.72);
-  --text-soft: rgba(17, 24, 39, 0.6);
+  --text: #0b1220;
+  --text-muted: rgba(11, 18, 32, 0.72);
 
-  /* Lines */
-  --border: rgba(15, 23, 42, 0.12); /* premium thin line */
-  --border-strong: rgba(15, 23, 42, 0.18);
+  /* Borders / lines */
+  --border: rgba(11, 18, 32, 0.12);
+  --border-strong: rgba(11, 18, 32, 0.18);
 
-  /* Accents (luxury corporate: deep navy + subtle gold) */
-  --accent: #0b1f3a; /* deep navy */
-  --accent-2: #b08d57; /* muted gold */
-  --link: #0b1f3a;
+  /* Brand accents (subtle, enterprise) */
+  --brand: #0b2a55; /* deep navy */
+  --brand-2: #0a3a7a;
 
-  /* States */
-  --focus: rgba(11, 31, 58, 0.22);
-  --danger: #b42318;
+  /* Focus ring */
+  --ring: rgba(10, 58, 122, 0.28);
 
-  /* Radius */
-  --r-sm: 10px;
-  --r-md: 14px;
-  --r-lg: 18px;
-
-  /* Shadows (soft, premium) */
-  --shadow-sm: 0 1px 0 rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.07);
-  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  /* Radius & shadows */
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 14px 34px rgba(15, 23, 42, 0.10);
 }
 
-/* Optional dark mode (Tailwind uses .dark) */
 .dark {
   color-scheme: dark;
 
-  --bg: #0b1220;
-  --bg-elev: rgba(255, 255, 255, 0.03);
-  --bg-soft: rgba(255, 255, 255, 0.05);
+  --bg: #0a0f1a;
+  --panel: #0e1625;
+  --panel-2: #0b1321;
 
-  --text: rgba(248, 250, 252, 0.95);
-  --text-muted: rgba(226, 232, 240, 0.72);
-  --text-soft: rgba(226, 232, 240, 0.6);
+  --text: rgba(255, 255, 255, 0.92);
+  --text-muted: rgba(255, 255, 255, 0.66);
 
-  --border: rgba(148, 163, 184, 0.18);
-  --border-strong: rgba(148, 163, 184, 0.28);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.18);
 
-  --link: rgba(226, 232, 240, 0.92);
+  --brand: #7cc1ff;
+  --brand-2: #a8d6ff;
 
-  --focus: rgba(148, 163, 184, 0.28);
+  --ring: rgba(124, 193, 255, 0.30);
 
-  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 18px 45px rgba(0, 0, 0, 0.35);
-  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.24);
+  --shadow-sm: 0 10px 24px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 18px 44px rgba(0, 0, 0, 0.48);
 }
 
 /* ==================================================
@@ -87,53 +70,36 @@ body {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
   background: var(--bg);
   color: var(--text);
-  letter-spacing: -0.01em;
-  text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* Better selection feel */
-::selection {
-  background: rgba(176, 141, 87, 0.22);
+/* Reduce “boxed / cheap” feel: remove default underlines everywhere */
+a {
+  color: var(--brand);
+  text-decoration: none;
 }
-
-/* Accessible focus */
-:where(a, button, input, textarea, select, [role="button"], [tabindex]):focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 4px var(--focus);
-  border-radius: 10px;
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
 }
 
 /* ==================================================
-   Global layout separators
+   Layout separators
 ================================================== */
 header {
   border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
-  backdrop-filter: blur(8px);
+  background: var(--panel);
 }
 
 footer {
   border-top: 1px solid var(--border);
-}
-
-/* ==================================================
-   Links
-================================================== */
-a {
-  color: var(--link);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 2px;
-  text-decoration-color: color-mix(in srgb, var(--link) 65%, transparent);
+  background: var(--panel);
 }
 
 /* ==================================================
@@ -151,7 +117,7 @@ main {
 }
 
 /* ==================================================
-   Document-style typography
+   Document-style typography (tender-friendly)
 ================================================== */
 .doc-prose {
   max-width: 980px;
@@ -160,15 +126,15 @@ main {
 }
 
 .doc-prose p {
-  margin: 0.7rem 0;
+  margin: 0.75rem 0;
   line-height: 1.75;
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: var(--text-muted);
 }
 
 .doc-prose ul {
   margin: 0.8rem 0;
-  padding-left: 1.25rem;
+  padding-left: 1.15rem;
   list-style: disc;
   color: var(--text-muted);
 }
@@ -179,9 +145,9 @@ main {
 }
 
 .doc-prose h1 {
-  font-size: 2.25rem;
+  font-size: clamp(1.9rem, 2.8vw, 2.35rem);
   font-weight: 900;
-  margin: 0.25rem 0 0.85rem;
+  margin: 0.25rem 0 0.75rem;
   letter-spacing: -0.03em;
   color: var(--text);
 }
@@ -189,7 +155,7 @@ main {
 .doc-prose h2 {
   font-size: 1.35rem;
   font-weight: 900;
-  margin: 1.3rem 0 0.7rem;
+  margin: 1.25rem 0 0.6rem;
   letter-spacing: -0.02em;
   color: var(--text);
 }
@@ -197,83 +163,102 @@ main {
 .doc-prose h3 {
   font-size: 1.1rem;
   font-weight: 900;
-  margin: 1rem 0 0.5rem;
-  letter-spacing: -0.01em;
+  margin: 1rem 0 0.45rem;
   color: var(--text);
 }
 
 .small-muted {
   color: var(--text-muted);
-  font-size: 0.92rem;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.65;
 }
 
-/* Lead text */
+/* ==================================================
+   Cards (premium, subtle borders)
+================================================== */
+.card-soft {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-soft:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.policy-note {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  padding: 18px;
+  box-shadow: var(--shadow-xs);
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 950;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+/* ==================================================
+   Lead text
+================================================== */
 .lead {
   font-size: 1.05rem;
   line-height: 1.8;
   color: var(--text-muted);
-  margin-top: 0.6rem;
+  margin-top: 0.65rem;
 }
 
 /* ==================================================
-   Cards
+   Inputs / pills (used by Services)
 ================================================== */
-.card-soft {
+.input-enterprise {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--bg);
-  box-shadow: var(--shadow-sm);
+  background: var(--panel);
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-xs);
 }
 
-/* Premium hover feel (subtle) */
-.card-soft:hover {
+.input-enterprise:focus-within {
   border-color: var(--border-strong);
+  box-shadow: 0 0 0 6px var(--ring);
 }
 
-/* ==================================================
-   Policy / info blocks
-================================================== */
-.policy-note {
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--bg-elev);
-  padding: 18px;
-  box-shadow: var(--shadow-sm);
-}
-
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 950;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
-
-/* ==================================================
-   Tables
-================================================== */
-table {
+.input-enterprise input {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-td,
-th {
-  padding: 11px 12px;
-  border-top: 1px solid var(--border);
-  vertical-align: top;
-  color: var(--text-muted);
-}
-
-th {
+  background: transparent;
+  outline: none;
+  font-size: 0.95rem;
   color: var(--text);
-  font-weight: 900;
 }
 
-tr:first-child td,
-tr:first-child th {
-  border-top: none;
+.pill {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-muted);
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.pill:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.pill-active {
+  background: var(--text);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 /* ==================================================
@@ -281,10 +266,10 @@ tr:first-child th {
 ================================================== */
 [data-slot="accordion"] {
   border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
 }
 
 [data-slot="accordion-item"] {
@@ -296,39 +281,31 @@ tr:first-child th {
 }
 
 [data-slot="accordion-trigger"] {
-  padding: 12px 14px;
+  padding: 14px 16px;
   font-size: 0.95rem;
-  line-height: 1.4;
+  line-height: 1.35;
   font-weight: 900;
   color: var(--text);
-  background: var(--bg);
+  background: transparent;
 }
 
 [data-slot="accordion-trigger"]:hover {
-  background: var(--bg-elev);
+  background: rgba(11, 18, 32, 0.03);
   text-decoration: none;
 }
 
+.dark [data-slot="accordion-trigger"]:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
 [data-slot="accordion-content"] {
-  background: var(--bg);
+  background: transparent;
 }
 
 [data-slot="accordion-content"] > div {
-  padding: 12px 14px 16px 14px;
+  padding: 12px 16px 16px 16px;
 }
 
-[data-slot="accordion-content"] ul {
-  margin: 0.6rem 0;
-  padding-left: 1.2rem;
-}
-
-[data-slot="accordion-content"] li {
-  margin: 0.3rem 0;
-}
-
-/* ==================================================
-   ServiceCard accordion enhancements (luxury)
-================================================== */
 .sc-accordion-trigger {
   display: flex;
   align-items: center;
@@ -340,73 +317,23 @@ tr:first-child th {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 11px;
-  font-weight: 950;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
-/* Premium pill trigger — only for ServiceCard triggers */
-[data-slot="accordion-trigger"].sc-accordion-trigger {
-  width: 100%;
-  border-radius: 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--border);
-  background: var(--bg-elev);
-  box-shadow: var(--shadow-inset);
-  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
-}
-
-[data-slot="accordion-trigger"].sc-accordion-trigger:hover {
-  background: color-mix(in srgb, var(--bg-elev) 80%, var(--bg) 20%);
-  border-color: var(--border-strong);
-}
-
-/* Prevent double chevrons (shadcn often injects a default svg chevron) */
-[data-slot="accordion-trigger"].sc-accordion-trigger > svg {
-  display: none !important;
-}
-
-/* Details label suffix (DE) */
+/* Keep it enterprise: remove “anzeigen/ausblenden” noise if you want.
+   If you still want it, keep these. */
 .sc-accordion-trigger[data-state="closed"] .sc-accordion-trigger-label::after {
-  content: " anzeigen";
+  content: " Details";
   font-weight: 900;
-  opacity: 0.65;
+  opacity: 0.55;
 }
-
 .sc-accordion-trigger[data-state="open"] .sc-accordion-trigger-label::after {
-  content: " ausblenden";
+  content: " Details";
   font-weight: 900;
-  opacity: 0.65;
-}
-
-.sc-accordion-content .text-sm {
-  line-height: 1.55;
-}
-
-.sc-accordion-content ul {
-  margin: 0.55rem 0;
-  padding-left: 1.2rem;
-}
-
-.sc-accordion-content li {
-  margin: 0.28rem 0;
-  line-height: 1.65;
-}
-
-/* Gentle section divider inside content grid */
-.sc-accordion-content .mt-4.grid > div {
-  padding-top: 10px;
-  border-top: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-}
-
-.sc-accordion-content .mt-4.grid > div:first-child {
-  padding-top: 0;
-  border-top: none;
+  opacity: 0.55;
 }
 
 /* ==================================================
-   Header helpers (used by Header.tsx)
+   Header helpers
 ================================================== */
 .nav-link {
   text-decoration: none;
@@ -415,18 +342,20 @@ tr:first-child th {
   opacity: 0.78;
   padding: 8px 12px;
   border-radius: 999px;
-  transition: background 180ms ease, opacity 180ms ease, transform 180ms ease;
 }
 
 .nav-link:hover {
-  background: var(--bg-elev);
+  background: rgba(11, 18, 32, 0.04);
   opacity: 1;
-  text-decoration: none;
+}
+
+.dark .nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .nav-link-active {
-  background: var(--accent);
-  color: #ffffff;
+  background: var(--text);
+  color: #fff;
   opacity: 1;
 }
 
@@ -436,75 +365,47 @@ tr:first-child th {
   border: 0;
 }
 
-/* Footer links */
-.footer-links a {
-  text-decoration: none;
-  color: var(--text);
-  opacity: 0.82;
-  font-weight: 800;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  opacity: 1;
-}
-
 /* ==================================================
-   Buttons (luxury)
+   Buttons (premium)
 ================================================== */
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 85%, black 15%);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 92%, #000 8%), var(--accent));
-  color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: linear-gradient(180deg, var(--brand-2), var(--brand));
+  color: #fff !important;
   text-decoration: none;
-  font-weight: 950;
-  letter-spacing: -0.01em;
-  box-shadow: 0 10px 24px rgba(11, 31, 58, 0.16);
-  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+  font-weight: 900;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
+  filter: brightness(0.98);
   transform: translateY(-1px);
-  filter: brightness(1.02);
-  box-shadow: 0 14px 34px rgba(11, 31, 58, 0.22);
 }
 
-.btn-primary:active {
-  transform: translateY(0px);
-  box-shadow: 0 10px 24px rgba(11, 31, 58, 0.16);
-}
-
-/* Optional secondary button (safe to keep even if unused) */
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   padding: 10px 14px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: var(--bg);
+  background: var(--panel);
   color: var(--text) !important;
   text-decoration: none;
   font-weight: 900;
-  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
 
 .btn-secondary:hover {
-  background: var(--bg-elev);
   border-color: var(--border-strong);
-  transform: translateY(-1px);
 }
 
 /* ==================================================
-   Skip link (accessibility)
+   Accessibility
 ================================================== */
 .skip-link:focus {
   position: static;
@@ -513,9 +414,9 @@ tr:first-child th {
   padding: 10px 14px;
   margin: 10px;
   display: inline-block;
-  background: var(--bg);
+  background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 /* ==================================================
@@ -525,14 +426,6 @@ tr:first-child th {
   .container-fixed {
     padding-left: 16px;
     padding-right: 16px;
-  }
-
-  .doc-prose h1 {
-    font-size: 1.9rem;
-  }
-
-  .lead {
-    font-size: 1rem;
   }
 
   .policy-note {

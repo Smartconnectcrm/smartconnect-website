@@ -34,9 +34,10 @@ function slugify(s: string) {
     .replace(/(^-|-$)/g, "")
 }
 
-function includesAny(hay: string, needles: string[]) {
-  const h = hay.toLowerCase()
-  return needles.some((n) => h.includes(n.toLowerCase()))
+function includesQuery(haystack: string, q: string) {
+  const h = haystack.toLowerCase()
+  const qq = q.toLowerCase()
+  return h.includes(qq)
 }
 
 export default function ServicesCatalog({ services }: { services: ServiceDTO[] }) {
@@ -57,10 +58,10 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         ...s.deliverables,
         ...s.typicalInputs,
         ...s.boundaries,
-        ...(s.tenderAlignment ?? []),
+        ...s.tenderAlignment,
       ].join(" ")
 
-      return includesAny(hay, [q])
+      return includesQuery(hay, q)
     })
   }, [services, query, cat])
 
@@ -76,17 +77,17 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
   return (
     <div className="doc-prose">
       {/* Header */}
-      <div className="mt-8">
+      <header className="mt-8">
         <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-black tracking-wide">
           TENDER-READY • DOKUMENTATIONS- &amp; COMPLIANCE-ORIENTIERT
         </div>
 
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-          <div>
+          <div className="min-w-0">
             <h1>Leistungen</h1>
             <p className="lead">
-              Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar abgegrenzt,
-              prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
+              Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar
+              abgegrenzt, prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
             </p>
           </div>
 
@@ -101,10 +102,10 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
 
         <hr className="hr-soft mt-6" />
-      </div>
+      </header>
 
       {/* Pillars */}
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <section className="mt-6 grid gap-4 md:grid-cols-2">
         <div className="policy-note">
           <div className="section-title">Governance</div>
           <p className="small-muted mt-2">Audit-fähige Artefakte. Dokumentation als Teil der Lieferung.</p>
@@ -121,32 +122,39 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
           <div className="section-title">Vergabe</div>
           <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung &amp; Review.</p>
         </div>
-      </div>
+      </section>
 
       {/* Controls */}
-      <div id="catalog" className="mt-7 card-soft p-5">
+      <section id="catalog" className="mt-7 card-soft p-5">
         <div className="flex flex-col gap-4">
+          {/* Search */}
           <div className="input-enterprise">
-            <Search className="h-4 w-4 opacity-70" />
+            <Search className="h-4 w-4 opacity-70" aria-hidden="true" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Suchen: Leistung, Deliverable, Scope, Stichwort …"
-              aria-label="Services durchsuchen"
+              aria-label="Leistungen durchsuchen"
             />
           </div>
 
+          {/* Category Pills */}
           <div className="flex flex-wrap items-center gap-2">
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.key}
-                type="button"
-                onClick={() => setCat(c.key)}
-                className={cn("pill", cat === c.key && "pill-active")}
-              >
-                {c.label}
-              </button>
-            ))}
+            {CATEGORIES.map((c) => {
+              const active = cat === c.key
+              return (
+                <button
+                  key={c.key}
+                  type="button"
+                  onClick={() => setCat(c.key)}
+                  className={cn("pill", active && "pill-active")}
+                  aria-pressed={active}
+                >
+                  {c.label}
+                </button>
+              )
+            })}
+
             <div className="ml-auto text-sm font-black opacity-70">Treffer: {filtered.length}</div>
           </div>
 
@@ -164,10 +172,10 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
             </div>
           )}
         </div>
-      </div>
+      </section>
 
       {/* List */}
-      <div className="mt-6 grid gap-5">
+      <section className="mt-6 grid gap-5">
         {filtered.map((s) => (
           <div key={s.title} id={slugify(s.title)} className="scroll-mt-24">
             <ServiceCard
@@ -182,14 +190,14 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
             />
           </div>
         ))}
-      </div>
+      </section>
 
       {/* CTA */}
       <section className="policy-note mt-10">
         <div className="section-title">Anfrage / Abstimmung</div>
         <p className="small-muted mt-2">
-          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. die gewünschte
-          Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
+          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. die
+          gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
         </p>
         <div className="mt-4">
           <Link href="/contact" className="btn-primary">

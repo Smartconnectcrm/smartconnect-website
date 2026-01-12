@@ -25,11 +25,6 @@ export default function ContactForm() {
   const errorId = `contact-error-${uid}`
   const successId = `contact-success-${uid}`
 
-  /**
-   * Anti-bot:
-   * Start timer only after first real interaction (focus / input),
-   * not on initial render.
-   */
   function ensureStarted() {
     if (!startedRef.current) {
       startedRef.current = true
@@ -38,12 +33,14 @@ export default function ContactForm() {
   }
 
   useEffect(() => {
-    // Baseline in case of paste-only interactions
+    // baseline in case of paste-only interactions
     setStartedAt(Date.now())
   }, [])
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (status === "sending") return
+
     setStatus("sending")
     setErrorMsg("")
 
@@ -56,7 +53,7 @@ export default function ContactForm() {
       subject: String(form.get("subject") ?? "").trim().slice(0, 160),
       message: String(form.get("message") ?? "").trim().slice(0, 4000),
 
-      // Anti-spam signals
+      // anti-spam signals
       company: String(form.get("company") ?? "").trim().slice(0, 120), // honeypot (must stay empty)
       startedAt,
     }
@@ -89,7 +86,6 @@ export default function ContactForm() {
       setStatus("sent")
       formEl.reset()
 
-      // Reset timer for next attempt
       startedRef.current = false
       setStartedAt(Date.now())
     } catch (err: unknown) {
@@ -104,7 +100,7 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-5"
+      className="space-y-6"
       noValidate
       onFocus={ensureStarted}
       onInput={ensureStarted}
@@ -127,106 +123,115 @@ export default function ContactForm() {
         <Input id="company" name="company" tabIndex={-1} autoComplete="off" />
       </div>
 
-      {/* Name + Email */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Name (optional)</Label>
-          <Input
-            id="name"
-            name="name"
-            placeholder="Vorname Nachname"
-            maxLength={120}
-            autoComplete="name"
-          />
+      {/* Form block */}
+      <section className="card-soft p-5">
+        <div className="section-title">Geschäftsanfrage</div>
+        <p className="small-muted mt-2">
+          Bitte geben Sie die wesentlichen Eckdaten an (Ziel, Zeitraum, Standort/Remote, Restriktionen). Pflichtfelder sind
+          markiert.
+        </p>
+
+        <div className="mt-5 grid gap-5">
+          {/* Name + Email */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name (optional)</Label>
+              <Input id="name" name="name" placeholder="Vorname Nachname" maxLength={120} autoComplete="name" />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">E-Mail *</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                required
+                placeholder="name@unternehmen.de"
+                maxLength={160}
+                autoComplete="email"
+                aria-invalid={isError ? true : undefined}
+                aria-describedby={isError ? errorId : undefined}
+              />
+            </div>
+          </div>
+
+          {/* Subject */}
+          <div className="space-y-2">
+            <Label htmlFor="subject">Betreff *</Label>
+            <Input
+              id="subject"
+              name="subject"
+              required
+              maxLength={160}
+              placeholder="z. B. Projektanfrage / Ausschreibung / Rahmenvertrag"
+              aria-invalid={isError ? true : undefined}
+              aria-describedby={isError ? errorId : undefined}
+            />
+          </div>
+
+          {/* Message */}
+          <div className="space-y-2">
+            <Label htmlFor="message">Nachricht *</Label>
+            <Textarea
+              id="message"
+              name="message"
+              required
+              rows={7}
+              maxLength={4000}
+              placeholder="Bitte beschreiben Sie kurz den Bedarf, Zeitraum, Standort/Remote sowie relevante Anforderungen."
+              aria-invalid={isError ? true : undefined}
+              aria-describedby={isError ? errorId : undefined}
+            />
+          </div>
+
+          {/* Status messages */}
+          <div aria-live="polite">
+            {status === "sent" && (
+              <div
+                id={successId}
+                role="status"
+                className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--panel-2)] p-4 text-sm"
+              >
+                <div className="font-black text-[color:var(--text)]">Übermittelt</div>
+                <div className="small-muted mt-1">Danke. Ihre Anfrage wurde erfolgreich übermittelt.</div>
+              </div>
+            )}
+
+            {status === "error" && (
+              <div
+                id={errorId}
+                role="alert"
+                className="rounded-2xl border border-[rgba(185,28,28,0.25)] bg-[rgba(185,28,28,0.06)] p-4 text-sm"
+              >
+                <div className="font-black text-[rgba(185,28,28,0.95)]">Fehler</div>
+                <div className="mt-1 text-[color:var(--text)]">{errorMsg || "Fehler beim Absenden. Bitte per E-Mail."}</div>
+              </div>
+            )}
+          </div>
+
+          {/* Submit row */}
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <Button type="submit" disabled={isSending}>
+              {isSending ? "Senden…" : "Geschäftsanfrage senden"}
+            </Button>
+
+            <div className="small-muted text-sm">
+              Alternativ per E-Mail:{" "}
+              <a href="mailto:admin@smartclientcrm.com">admin@smartclientcrm.com</a>
+            </div>
+          </div>
         </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">E-Mail *</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            required
-            placeholder="name@unternehmen.de"
-            maxLength={160}
-            autoComplete="email"
-            aria-invalid={isError ? true : undefined}
-            aria-describedby={isError ? errorId : undefined}
-          />
-        </div>
-      </div>
-
-      {/* Subject */}
-      <div className="space-y-2">
-        <Label htmlFor="subject">Betreff *</Label>
-        <Input
-          id="subject"
-          name="subject"
-          required
-          maxLength={160}
-          placeholder="z. B. Projektanfrage / Ausschreibung / Rahmenvertrag"
-          aria-invalid={isError ? true : undefined}
-          aria-describedby={isError ? errorId : undefined}
-        />
-      </div>
-
-      {/* Message */}
-      <div className="space-y-2">
-        <Label htmlFor="message">Nachricht *</Label>
-        <Textarea
-          id="message"
-          name="message"
-          required
-          rows={7}
-          maxLength={4000}
-          placeholder="Bitte beschreiben Sie kurz den Bedarf, Zeitraum, Standort/Remote sowie relevante Anforderungen."
-          aria-invalid={isError ? true : undefined}
-          aria-describedby={isError ? errorId : undefined}
-        />
-      </div>
+      </section>
 
       {/* DSGVO Notice */}
-      <div className="policy-note">
+      <section className="policy-note">
         <div className="section-title">Datenschutzhinweis (Kurzfassung)</div>
         <div className="mt-2 small-muted">
-          Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verarbeitet
-          (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO bzw. Art.&nbsp;6 Abs.&nbsp;1
-          lit.&nbsp;f DSGVO). Weitere Informationen finden Sie in unserer{" "}
-          <a href="/datenschutz" className="underline">
-            Datenschutzerklärung
-          </a>
-          .
+          Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verarbeitet (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b
+          DSGVO bzw. Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO). Weitere Informationen finden Sie in unserer{" "}
+          <a href="/datenschutz">Datenschutzerklärung</a>.
         </div>
-      </div>
-
-      {/* Submit */}
-      <div className="flex flex-col md:flex-row md:items-center gap-3">
-        <Button type="submit" disabled={isSending}>
-          {isSending ? "Senden…" : "Geschäftsanfrage senden"}
-        </Button>
-
-        <div className="text-sm small-muted">
-          Alternativ per E-Mail:{" "}
-          <a href="mailto:admin@smartclientcrm.com" className="underline">
-            admin@smartclientcrm.com
-          </a>
-        </div>
-      </div>
-
-      {/* Status messages (announced properly) */}
-      <div aria-live="polite" className="pt-1">
-        {status === "sent" && (
-          <div id={successId} role="status" className="text-sm">
-            Danke. Ihre Anfrage wurde erfolgreich übermittelt.
-          </div>
-        )}
-
-        {status === "error" && (
-          <div id={errorId} role="alert" className="text-sm">
-            {errorMsg || "Fehler beim Absenden. Bitte per E-Mail."}
-          </div>
-        )}
-      </div>
+      </section>
     </form>
   )
 }

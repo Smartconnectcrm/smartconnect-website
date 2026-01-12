@@ -1,16 +1,20 @@
 import Link from "next/link"
 
 export default function Footer() {
-  const yearText = "2025" 
+  const yearText = String(new Date().getFullYear())
 
   return (
-    <footer className="border-t" style={{ borderColor: "var(--border)" }}>
-      <div className="container-fixed py-10 text-sm">
-        <div className="grid gap-8 md:grid-cols-3">
+    <footer>
+      <div className="container-fixed py-12">
+        <div className="grid gap-10 md:grid-cols-3">
           {/* Company */}
           <div>
-            <div className="font-bold">SmartConnect CRM UG (haftungsbeschränkt)</div>
-            <div className="small-muted mt-2 leading-relaxed">
+            <div className="text-xs font-black uppercase tracking-[0.12em] opacity-70">Unternehmen</div>
+            <div className="mt-3 text-sm font-black text-[color:var(--text)]">
+              SmartConnect CRM UG (haftungsbeschränkt)
+            </div>
+
+            <div className="small-muted mt-3 leading-relaxed">
               Düsseldorf, Deutschland
               <br />
               E-Mail: <a href="mailto:admin@smartclientcrm.com">admin@smartclientcrm.com</a>
@@ -21,8 +25,8 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <div className="font-bold">Navigation</div>
-            <ul className="mt-2 space-y-1 footer-links">
+            <div className="text-xs font-black uppercase tracking-[0.12em] opacity-70">Navigation</div>
+            <ul className="mt-3 space-y-2 footer-links">
               <li>
                 <Link href="/services">Leistungen</Link>
               </li>
@@ -37,8 +41,8 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <div className="font-bold">Rechtliches</div>
-            <ul className="mt-2 space-y-1 footer-links">
+            <div className="text-xs font-black uppercase tracking-[0.12em] opacity-70">Rechtliches</div>
+            <ul className="mt-3 space-y-2 footer-links">
               <li>
                 <Link href="/imprint">Impressum</Link>
               </li>
@@ -52,12 +56,16 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="hr-soft mt-8" />
+        <div className="hr-soft mt-10" />
 
-        {/* Copyright */}
-        <div className="mt-4 small-muted">
-          © {yearText} SmartConnect CRM UG (haftungsbeschränkt). Alle Rechte vorbehalten.
+        <div className="mt-5 flex flex-col gap-2 text-sm md:flex-row md:items-center md:justify-between">
+          <div className="small-muted">
+            © {yearText} SmartConnect CRM UG (haftungsbeschränkt). Alle Rechte vorbehalten.
+          </div>
+
+          <div className="small-muted">
+            Tender-orientiert · Dokumentations- & Compliance-by-Design
+          </div>
         </div>
       </div>
     </footer>

@@ -4,8 +4,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-
 import ThemeToggle from "@/components/ThemeToggle"
+import { Button } from "@/components/ui/button"
 
 const nav = [
   { href: "/", label: "Start" },
@@ -19,29 +19,22 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-/**
- * Accessible focus ring
- * - Light mode: dark ring + white offset
- * - Dark mode: light ring + dark offset
- */
+// Uses your enterprise ring variable
 const focusRing =
-  "focus:outline-none focus-visible:ring-2 " +
-  "focus-visible:ring-slate-900/30 dark:focus-visible:ring-white/30 " +
-  "focus-visible:ring-offset-2 " +
-  "focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
+  "outline-none focus-visible:shadow-[0_0_0_6px_var(--ring)] rounded-full"
 
 export default function Header() {
   const pathname = usePathname()
 
   return (
-    <div className="border-b" style={{ borderColor: "var(--border)" }}>
+    <header className="sticky top-0 z-50 pointer-events-auto">
       <div className="container-fixed py-5">
         <div className="flex items-center justify-between gap-6">
           {/* Brand */}
           <div className="min-w-0">
             <Link
               href="/"
-              className={`no-underline ${focusRing} inline-flex items-center gap-3 rounded-md`}
+              className={`inline-flex items-center gap-3 ${focusRing}`}
               aria-label="Startseite – SmartConnect CRM UG (haftungsbeschränkt)"
             >
               <Image
@@ -50,18 +43,18 @@ export default function Header() {
                 width={44}
                 height={44}
                 priority
-                className="shrink-0 rounded-md"
+                className="shrink-0 rounded-xl"
                 style={{ width: "44px", height: "44px" }}
               />
 
               <div className="min-w-0">
                 <div
-                  className="text-base font-extrabold tracking-tight truncate"
-                  style={{ color: "var(--text-strong)" }}
+                  className="truncate text-sm font-black tracking-tight"
+                  style={{ color: "var(--text)" }}
                 >
                   SmartConnect CRM UG (haftungsbeschränkt)
                 </div>
-                <div className="text-sm small-muted truncate">
+                <div className="truncate text-sm small-muted">
                   IT &amp; Digital Solutions · Enterprise &amp; Public Sector
                 </div>
               </div>
@@ -69,14 +62,14 @@ export default function Header() {
           </div>
 
           {/* Desktop Nav */}
-          <nav aria-label="Hauptnavigation" className="hidden md:flex items-center gap-5 text-sm">
+          <nav aria-label="Hauptnavigation" className="hidden items-center gap-3 md:flex">
             {nav.map((i) => {
               const active = isActive(pathname, i.href)
               return (
                 <Link
                   key={i.href}
                   href={i.href}
-                  className={`${active ? "nav-link nav-link-active" : "nav-link"} ${focusRing} rounded-md`}
+                  className={`${active ? "nav-link nav-link-active" : "nav-link"} ${focusRing}`}
                   aria-current={active ? "page" : undefined}
                 >
                   {i.label}
@@ -84,28 +77,35 @@ export default function Header() {
               )
             })}
 
-            <ThemeToggle />
+            <div className="ml-1">
+              <ThemeToggle />
+            </div>
 
-            <Link href="/contact" className={`btn-primary ${focusRing}`}>
-              Kontakt
-            </Link>
+            <Button asChild variant="default" className="ml-2">
+              <Link href="/contact" className={focusRing}>
+                Kontakt
+              </Link>
+            </Button>
           </nav>
 
-          {/* Mobile CTA */}
-          <div className="md:hidden flex items-center gap-3">
+          {/* Mobile */}
+          <div className="flex items-center gap-3 md:hidden">
             <ThemeToggle />
-            <Link href="/contact" className={`btn-primary ${focusRing}`}>
-              Kontakt
-            </Link>
+            <Button asChild variant="default">
+              <Link href="/contact" className={focusRing}>
+                Kontakt
+              </Link>
+            </Button>
           </div>
         </div>
 
-        <div className="mt-5 hr-soft" />
+        <div className="mt-6 hr-soft" />
 
-        <p className="mt-3 text-sm small-muted">
+        {/* Compliance micro-bar */}
+        <div className="mt-3 text-sm small-muted">
           Hinweis: Diese Website verwendet keine Analyse- oder Tracking-Technologien ohne Einwilligung.
-        </p>
+        </div>
       </div>
-    </div>
+    </header>
   )
 }

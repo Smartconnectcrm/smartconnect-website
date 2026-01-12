@@ -4,8 +4,6 @@ import {
   AlertCircle,
   Boxes,
   CheckCircle2,
-  ChevronDown,
-  ChevronUp,
   Cloud,
   Database,
   FileCheck,
@@ -13,227 +11,140 @@ import {
   Lock,
   Network,
   Settings,
-  ShieldCheck,
   Target,
 } from "lucide-react"
 import * as React from "react"
 
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { cn } from "@/lib/utils"
 
 export type IconKey =
   | "settings"
   | "network"
-  | "lock"
-  | "gantt"
-  | "cloud"
-  | "database"
-  | "boxes"
   | "shield"
   | "filecheck"
+  | "cloud"
+  | "database"
   | "target"
+  | "boxes"
+  | "lock"
+  | "alert"
+  | "check"
+  | "gantt"
 
-type ServiceCardProps = {
+const ICONS: Record<IconKey, React.ComponentType<{ className?: string }>> = {
+  settings: Settings,
+  network: Network,
+  shield: Lock,
+  filecheck: FileCheck,
+  cloud: Cloud,
+  database: Database,
+  target: Target,
+  boxes: Boxes,
+  lock: Lock,
+  alert: AlertCircle,
+  check: CheckCircle2,
+  gantt: GanttChartSquare,
+}
+
+type Props = {
   title: string
+  category: string
   shortScope: string
   deliverables: string[]
   typicalInputs: string[]
   boundaries: string[]
   tenderAlignment?: string[]
-  /** Optional: enables the premium icon chip (keeps backwards compatibility). */
   iconKey?: IconKey
 }
 
-function safeList(list: string[] | undefined) {
+function safe(list: string[] | undefined) {
   return Array.isArray(list) ? list.filter(Boolean) : []
-}
-
-function normalizeIconKey(k?: string): IconKey | undefined {
-  if (!k) return undefined
-  const key = String(k).trim().toLowerCase()
-  const allowed: IconKey[] = [
-    "settings",
-    "network",
-    "lock",
-    "gantt",
-    "cloud",
-    "database",
-    "boxes",
-    "shield",
-    "filecheck",
-    "target",
-  ]
-  return allowed.includes(key as IconKey) ? (key as IconKey) : undefined
-}
-
-function getIcon(iconKey?: IconKey) {
-  const map: Record<IconKey, React.ElementType> = {
-    settings: Settings,
-    network: Network,
-    lock: Lock,
-    gantt: GanttChartSquare,
-    cloud: Cloud,
-    database: Database,
-    boxes: Boxes,
-    shield: ShieldCheck,
-    filecheck: FileCheck,
-    target: Target,
-  }
-  return iconKey ? map[iconKey] : null
 }
 
 export default function ServiceCard({
   title,
+  category,
   shortScope,
   deliverables,
   typicalInputs,
   boundaries,
   tenderAlignment,
-  iconKey,
-}: ServiceCardProps) {
-  const deliverablesSafe = safeList(deliverables)
-  const typicalInputsSafe = safeList(typicalInputs)
-  const boundariesSafe = safeList(boundaries)
-  const tenderAlignmentSafe = safeList(tenderAlignment)
+  iconKey = "settings",
+}: Props) {
+  const Icon = ICONS[iconKey] ?? Settings
 
   const itemValue = React.useMemo(() => {
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9äöüß\s-]/gi, "")
-      .trim()
-      .replace(/\s+/g, "-")
-    return `details-${slug || "service"}`
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+    return `svc-${slug}`
   }, [title])
 
-  const safeIconKey = React.useMemo(() => normalizeIconKey(iconKey), [iconKey])
-  const Icon = React.useMemo(() => getIcon(safeIconKey), [safeIconKey])
-
   return (
-    <section
-      aria-label={`Leistung: ${title}`}
-      className={[
-        "group overflow-hidden rounded-xl border transition-all duration-300",
-        "border-slate-200 bg-white shadow-sm hover:border-slate-300",
-        "dark:border-slate-800 dark:bg-slate-900",
-      ].join(" ")}
-    >
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex gap-4">
-            {Icon ? (
-              <div className="rounded-lg bg-slate-100 p-3 text-slate-500 dark:bg-slate-800 dark:text-slate-300">
-                <Icon size={22} />
-              </div>
-            ) : null}
+    <div className="card-soft p-5">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-2xl border bg-white/60 dark:bg-white/5">
+            <Icon className="h-5 w-5 opacity-80" />
+          </div>
 
-            <div className="flex-1">
-              <h2 className="m-0 text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-                {title}
-              </h2>
-              <p className="m-0 mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">{shortScope}</p>
-            </div>
+          <div>
+            <div className="text-xs font-black tracking-wide opacity-70">{category}</div>
+            <h2 className="mt-1 text-[1.25rem]">{title}</h2>
+            <p className="small-muted mt-2">{shortScope}</p>
           </div>
         </div>
-
-        {/* Accordion */}
-        <div className="mt-5">
-          <Accordion type="single" collapsible>
-            <AccordionItem value={itemValue} className="border-0">
-              <AccordionTrigger className="sc-accordion-trigger group">
-                <span className="sc-accordion-trigger-label">Details</span>
-
-                {/* Extra chevron (safe). If your shadcn trigger already has one, hide this via CSS if desired. */}
-                <span className="ml-auto inline-flex items-center text-slate-400">
-                  <ChevronDown size={18} className="group-data-[state=open]:hidden" />
-                  <ChevronUp size={18} className="hidden group-data-[state=open]:block" />
-                </span>
-              </AccordionTrigger>
-
-              <AccordionContent className="sc-accordion-content">
-                <div className="mt-4">
-                  <div className="grid gap-8 lg:grid-cols-12">
-                    {/* Deliverables */}
-                    {deliverablesSafe.length ? (
-                      <div className="lg:col-span-7">
-                        <div className="mb-4 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-200">
-                          <FileCheck size={14} /> Ergebnisse & Artefakte
-                        </div>
-
-                        <div className="grid gap-3">
-                          {deliverablesSafe.map((d, idx) => (
-                            <div
-                              key={`${idx}-${d}`}
-                              className="flex gap-3 rounded-lg border border-slate-100 bg-slate-50/60 p-3 dark:border-slate-700/50 dark:bg-slate-800/50"
-                            >
-                              <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-green-500" />
-                              <span className="text-sm leading-snug text-slate-700 dark:text-slate-300">{d}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null}
-
-                    {/* Inputs + Boundaries */}
-                    <div className={deliverablesSafe.length ? "lg:col-span-5 space-y-8" : "lg:col-span-12 space-y-8"}>
-                      {typicalInputsSafe.length ? (
-                        <div>
-                          <div className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-500">
-                            Typische Eingaben (Client Inputs)
-                          </div>
-                          <ul className="space-y-2">
-                            {typicalInputsSafe.map((i, idx) => (
-                              <li key={`${idx}-${i}`} className="flex gap-2 text-xs text-slate-600 dark:text-slate-400">
-                                <span className="text-slate-400">•</span>
-                                {i}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : null}
-
-                      {boundariesSafe.length ? (
-                        <div className="rounded-xl border border-red-100/60 bg-red-50/30 p-4 dark:border-red-900/25 dark:bg-red-900/10">
-                          <div className="mb-3 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-red-600 dark:text-red-400">
-                            <AlertCircle size={14} /> Abgrenzung (Scope Boundaries)
-                          </div>
-                          <ul className="space-y-2">
-                            {boundariesSafe.map((b, idx) => (
-                              <li
-                                key={`${idx}-${b}`}
-                                className="flex gap-2 text-xs italic leading-snug text-red-700/80 dark:text-red-300/80"
-                              >
-                                <span>–</span>
-                                {b}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  {/* Tender alignment tags */}
-                  {tenderAlignmentSafe.length ? (
-                    <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-6 dark:border-slate-800">
-                      <span className="mr-2 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">
-                        Ausrichtung (EU-/Vergabe-Kontext):
-                      </span>
-                      {tenderAlignmentSafe.map((t, idx) => (
-                        <span
-                          key={`${idx}-${t}`}
-                          className="rounded border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
       </div>
-    </section>
+
+      <div className="mt-4">
+        <Accordion type="single" collapsible>
+          <AccordionItem value={itemValue}>
+            <AccordionTrigger className={cn("sc-accordion-trigger")}>
+              <span className="sc-accordion-trigger-label">Details</span>
+            </AccordionTrigger>
+
+            <AccordionContent className="sc-accordion-content">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <div className="section-title">Deliverables</div>
+                  <ul className="mt-2">
+                    {safe(deliverables).map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <div className="section-title">Typische Inputs</div>
+                  <ul className="mt-2">
+                    {safe(typicalInputs).map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <div className="section-title">Abgrenzung</div>
+                  <ul className="mt-2">
+                    {safe(boundaries).map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <div className="section-title">Tender-Alignment</div>
+                  <ul className="mt-2">
+                    {safe(tenderAlignment).map((x) => (
+                      <li key={x}>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </div>
+    </div>
   )
 }
