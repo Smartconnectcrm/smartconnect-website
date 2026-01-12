@@ -30,18 +30,21 @@ function buildCsp(nonce: string) {
     `default-src 'self'`,
     `base-uri 'self'`,
     `object-src 'none'`,
-
     `frame-ancestors 'self'`,
     `form-action 'self'`,
+
     `frame-src 'self' https:`,
 
     `img-src 'self' data: blob: https:`,
     `font-src 'self' data: https:`,
 
+    // Block inline attributes (prevents onClick="..." and style="...")
     `script-src-attr 'none'`,
     `style-src-attr 'none'`,
 
     `style-src 'self' 'nonce-${nonce}' https:`,
+
+    // ⚠️ Removed 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
     `script-src 'self' 'nonce-${nonce}' https:`,
 
     `connect-src 'self' https: wss:`,
@@ -124,10 +127,13 @@ export function middleware(req: NextRequest) {
     else res.headers.set("Content-Security-Policy", csp)
   }
 
+  // keep referenced (used for canonicalization in other contexts)
   void SITE_URL
+
   return res
 }
 
 export const config = {
+  // Exclude API routes and static asset handlers from middleware
   matcher: ["/((?!api|_next/static|_next/image|_vercel|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)"],
 }
