@@ -2,11 +2,25 @@
 
 import { Search } from "lucide-react"
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import * as React from "react"
 
 import ServiceCard from "@/components/ServiceCard"
+import { cn } from "@/lib/utils"
 
-import type { ServiceDTO } from "./types"
+import type { ServiceCategory, ServiceDTO } from "./types"
+
+type CategoryFilter = "All" | ServiceCategory
+
+const CATEGORIES: Array<{ key: CategoryFilter; label: string }> = [
+  { key: "All", label: "Alle" },
+  { key: "Operations", label: "Operations" },
+  { key: "Integration", label: "Integration" },
+  { key: "Security", label: "Security" },
+  { key: "Procurement", label: "Procurement" },
+  { key: "Cloud", label: "Cloud" },
+  { key: "Data", label: "Data" },
+  { key: "Delivery", label: "Delivery" },
+]
 
 function slugify(s: string) {
   return s
@@ -20,48 +34,39 @@ function slugify(s: string) {
     .replace(/(^-|-$)/g, "")
 }
 
-const CATEGORIES: Array<ServiceDTO["category"] | "All"> = [
-  "All",
-  "Operations",
-  "Integration",
-  "Security",
-  "Procurement",
-  "Cloud",
-  "Data",
-  "Delivery",
-]
+function includesAny(hay: string, needles: string[]) {
+  const h = hay.toLowerCase()
+  return needles.some((n) => h.includes(n.toLowerCase()))
+}
 
 export default function ServicesCatalog({ services }: { services: ServiceDTO[] }) {
-  const [q, setQ] = useState("")
-  const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("All")
+  const [query, setQuery] = React.useState("")
+  const [cat, setCat] = React.useState<CategoryFilter>("All")
 
-  const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase()
-
+  const filtered = React.useMemo(() => {
+    const q = query.trim()
     return services.filter((s) => {
-      const catOk = cat === "All" ? true : s.category === cat
-      if (!catOk) return false
-      if (!query) return true
+      const categoryOk = cat === "All" ? true : s.category === cat
+      if (!categoryOk) return false
+      if (!q) return true
 
       const hay = [
         s.title,
-        s.shortScope,
         s.category,
+        s.shortScope,
         ...s.deliverables,
         ...s.typicalInputs,
         ...s.boundaries,
-        ...s.tenderAlignment,
-      ]
-        .join(" ")
-        .toLowerCase()
+        ...(s.tenderAlignment ?? []),
+      ].join(" ")
 
-      return hay.includes(query)
+      return includesAny(hay, [q])
     })
-  }, [services, q, cat])
+  }, [services, query, cat])
 
-  const toc = useMemo(
+  const jumpItems = React.useMemo(
     () =>
-      filtered.slice(0, 12).map((s) => ({
+      filtered.map((s) => ({
         id: slugify(s.title),
         label: s.title,
       })),
@@ -70,104 +75,111 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
 
   return (
     <div className="doc-prose">
-      {/* Hero */}
-      <div className="mb-10">
-        <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-          Tender-ready · Dokumentations- &amp; Compliance-orientiert
+      {/* Header */}
+      <div className="mt-8">
+        <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-black tracking-wide">
+          TENDER-READY • DOKUMENTATIONS- &amp; COMPLIANCE-ORIENTIERT
         </div>
 
-        <h1 className="mt-4">Leistungen</h1>
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1>Leistungen</h1>
+            <p className="lead">
+              Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar abgegrenzt,
+              prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
+            </p>
+          </div>
 
-        <p className="lead">
-          Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar abgegrenzt,
-          prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
-        </p>
+          <div className="mt-1 flex items-center gap-3">
+            <Link href="/contact" className="btn-primary">
+              Kontakt
+            </Link>
+            <a href="#catalog" className="btn-secondary">
+              Zum Katalog
+            </a>
+          </div>
+        </div>
+
+        <hr className="hr-soft mt-6" />
       </div>
 
-      {/* Executive Principles */}
-      <section className="mt-6 grid gap-4 md:grid-cols-4">
-        {[
-          { k: "Governance", v: "Audit-fähige Artefakte", d: "Dokumentation als Teil der Lieferung." },
-          { k: "Compliance", v: "Datensparsamkeit", d: "Zweckbindung, Rollenprinzip, Minimal Logging." },
-          { k: "Transparenz", v: "Klare Abgrenzung", d: "Änderungen über Change-Prozesse." },
-          { k: "Vergabe", v: "Prüfkontext geeignet", d: "Struktur für Beschaffung & Review." },
-        ].map((x) => (
-          <div
-            key={x.k}
-            className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
-          >
-            <div className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">{x.k}</div>
-            <div className="mt-1 text-sm font-bold text-slate-900 dark:text-slate-100">{x.v}</div>
-            <div className="mt-1 text-xs leading-relaxed text-slate-500 dark:text-slate-400">{x.d}</div>
-          </div>
-        ))}
-      </section>
+      {/* Pillars */}
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="policy-note">
+          <div className="section-title">Governance</div>
+          <p className="small-muted mt-2">Audit-fähige Artefakte. Dokumentation als Teil der Lieferung.</p>
+        </div>
+        <div className="policy-note">
+          <div className="section-title">Compliance</div>
+          <p className="small-muted mt-2">Datensparsamkeit, Zweckbindung, Rollenprinzip, Minimal Logging.</p>
+        </div>
+        <div className="policy-note">
+          <div className="section-title">Transparenz</div>
+          <p className="small-muted mt-2">Klare Abgrenzung. Änderungen über Change-Prozesse.</p>
+        </div>
+        <div className="policy-note">
+          <div className="section-title">Vergabe</div>
+          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung &amp; Review.</p>
+        </div>
+      </div>
 
-      {/* Filter */}
-      <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          {/* Search */}
-          <div className="flex w-full items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-950">
-            <Search size={16} className="text-slate-400" />
+      {/* Controls */}
+      <div id="catalog" className="mt-7 card-soft p-5">
+        <div className="flex flex-col gap-4">
+          <div className="input-enterprise">
+            <Search className="h-4 w-4 opacity-70" />
             <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="Suchen: Leistung, Deliverable, Scope, Stichwort …"
-              className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
+              aria-label="Services durchsuchen"
             />
           </div>
 
-          {/* Category Pills */}
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((c) => {
-              const active = c === cat
-              return (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setCat(c)}
-                  className={[
-                    "rounded-full px-3 py-1 text-xs font-semibold transition",
-                    active
-                      ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-                      : "border border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300",
-                  ].join(" ")}
-                >
-                  {c === "All" ? "Alle" : c}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* Mini TOC */}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Springe zu:</span>
-          {toc.length === 0 ? (
-            <span className="text-xs text-slate-500">Keine Treffer.</span>
-          ) : (
-            toc.map((t) => (
-              <a
-                key={t.id}
-                href={`#${t.id}`}
-                className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300"
+          <div className="flex flex-wrap items-center gap-2">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.key}
+                type="button"
+                onClick={() => setCat(c.key)}
+                className={cn("pill", cat === c.key && "pill-active")}
               >
-                {t.label}
-              </a>
-            ))
+                {c.label}
+              </button>
+            ))}
+            <div className="ml-auto text-sm font-black opacity-70">Treffer: {filtered.length}</div>
+          </div>
+
+          {/* Jump index */}
+          {jumpItems.length > 0 && (
+            <div className="mt-1 rounded-2xl border p-3">
+              <div className="text-xs font-black opacity-70">SPRINGE ZU</div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {jumpItems.map((j) => (
+                  <a key={j.id} href={`#${j.id}`} className="pill">
+                    {j.label}
+                  </a>
+                ))}
+              </div>
+            </div>
           )}
         </div>
+      </div>
 
-        <div className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-          Treffer: <span className="font-semibold">{filtered.length}</span>
-        </div>
-      </section>
-
-      {/* Services */}
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      {/* List */}
+      <div className="mt-6 grid gap-5">
         {filtered.map((s) => (
-          <div key={s.title} id={slugify(s.title)} className="scroll-mt-28">
-            <ServiceCard {...s} />
+          <div key={s.title} id={slugify(s.title)} className="scroll-mt-24">
+            <ServiceCard
+              title={s.title}
+              category={s.category}
+              iconKey={s.iconKey}
+              shortScope={s.shortScope}
+              deliverables={s.deliverables}
+              typicalInputs={s.typicalInputs}
+              boundaries={s.boundaries}
+              tenderAlignment={s.tenderAlignment}
+            />
           </div>
         ))}
       </div>
@@ -176,8 +188,8 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
       <section className="policy-note mt-10">
         <div className="section-title">Anfrage / Abstimmung</div>
         <p className="small-muted mt-2">
-          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. eine
-          gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
+          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. die gewünschte
+          Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
         </p>
         <div className="mt-4">
           <Link href="/contact" className="btn-primary">
@@ -185,6 +197,8 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
           </Link>
         </div>
       </section>
+
+      <div className="h-10" />
     </div>
   )
 }
