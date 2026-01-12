@@ -6,8 +6,7 @@ import { useMemo, useState } from "react"
 
 import ServiceCard from "@/components/ServiceCard"
 
-import type { ServiceDTO } from "./page"
-
+import type { ServiceDTO } from "./types"
 
 function slugify(s: string) {
   return s
@@ -85,7 +84,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </p>
       </div>
 
-      {/* Executive Principles Cards */}
+      {/* Executive Principles */}
       <section className="mt-6 grid gap-4 md:grid-cols-4">
         {[
           { k: "Governance", v: "Audit-fähige Artefakte", d: "Dokumentation als Teil der Lieferung." },
@@ -104,7 +103,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         ))}
       </section>
 
-      {/* Filter + Mini-TOC */}
+      {/* Filter */}
       <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           {/* Search */}
@@ -164,19 +163,11 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Services */}
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         {filtered.map((s) => (
           <div key={s.title} id={slugify(s.title)} className="scroll-mt-28">
-            <ServiceCard
-              title={s.title}
-              shortScope={s.shortScope}
-              deliverables={s.deliverables}
-              typicalInputs={s.typicalInputs}
-              boundaries={s.boundaries}
-              tenderAlignment={s.tenderAlignment}
-              iconKey={s.iconKey}
-            />
+            <ServiceCard {...s} />
           </div>
         ))}
       </div>
