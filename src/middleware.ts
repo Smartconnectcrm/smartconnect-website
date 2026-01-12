@@ -4,27 +4,22 @@ const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.smartconnectc
 
 /**
  * CSP modes:
- * - "off"     -> no CSP headers at all
- * - "report"  -> Content-Security-Policy-Report-Only
- * - "enforce" -> Content-Security-Policy
+ * - off     → no CSP
+ * - report  → report-only
+ * - enforce → blocking CSP
  */
 const CSP_MODE = (process.env.CSP_MODE ?? "off").toLowerCase()
 
-function isProd() {
-  return process.env.NODE_ENV === "production"
-}
+const isProd = () => process.env.NODE_ENV === "production"
 
 function makeNonce() {
   const bytes = new Uint8Array(16)
   crypto.getRandomValues(bytes)
-  let str = ""
-  bytes.forEach((b) => (str += String.fromCharCode(b)))
-  return btoa(str)
+  return btoa(String.fromCharCode(...bytes))
 }
 
 function buildCsp(nonce: string) {
   const reportPath = "/api/csp-report"
-  const isReport = CSP_MODE === "report"
 
   return [
     `default-src 'self'`,
@@ -32,7 +27,6 @@ function buildCsp(nonce: string) {
     `object-src 'none'`,
     `frame-ancestors 'self'`,
     `form-action 'self'`,
-
     `frame-src 'self' https:`,
 
     `img-src 'self' data: blob: https:`,
@@ -42,12 +36,9 @@ function buildCsp(nonce: string) {
     `style-src-attr 'none'`,
 
     `style-src 'self' 'nonce-${nonce}' https:`,
-
-    // ⚠️ Removed 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
-    `script-src 'self' 'nonce-${nonce}' https:`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:`,
 
     `connect-src 'self' https: wss:`,
-
     `media-src 'self' https: blob:`,
     `worker-src 'self' blob:`,
     `manifest-src 'self'`,
@@ -55,41 +46,31 @@ function buildCsp(nonce: string) {
     `report-to csp-endpoint`,
     `report-uri ${reportPath}`,
 
-    ...(isReport ? [`report-sample`] : []),
-
     `upgrade-insecure-requests`,
   ].join("; ")
-}
-
-function isHtmlRequest(req: NextRequest) {
-  const accept = req.headers.get("accept") || ""
-  return accept.includes("text/html")
 }
 
 function buildReportingHeaders() {
   const reportPath = "/api/csp-report"
 
-  const reportTo = JSON.stringify({
-    group: "csp-endpoint",
-    max_age: 10886400,
-    endpoints: [{ url: reportPath }],
-    include_subdomains: true,
-  })
-
-  const reportingEndpoints = `csp-endpoint="${reportPath}"`
-
-  return { reportTo, reportingEndpoints }
+  return {
+    reportTo: JSON.stringify({
+      group: "csp-endpoint",
+      max_age: 10886400,
+      endpoints: [{ url: reportPath }],
+      include_subdomains: true,
+    }),
+    reportingEndpoints: `csp-endpoint="${reportPath}"`,
+  }
 }
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Skip Next internals + obvious static files + Vercel internals
+  // Skip Next internals & static assets
   if (
     pathname.startsWith("/_next/") ||
-    pathname.startsWith("/_vercel/") ||
-    pathname.startsWith("/__nextjs_original-stack-frame") ||
-    pathname.startsWith("/__nextjs_error_feedback") ||
+    pathname.startsWith("/api/") ||
     pathname === "/favicon.ico" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
@@ -100,31 +81,33 @@ export function middleware(req: NextRequest) {
 
   const res = NextResponse.next()
 
-  // Nonce header for layout/provider
   const nonce = makeNonce()
   res.headers.set("x-nonce", nonce)
 
-  // Dev only: avoid stale HTML
-  if (!isProd() && isHtmlRequest(req)) {
+  // Dev: prevent stale HTML
+  if (!isProd()) {
     res.headers.set("Cache-Control", "no-store, max-age=0")
   }
 
   // Security headers
   res.headers.set("X-Content-Type-Options", "nosniff")
   res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
-  res.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=(), usb=()")
+  res.headers.set(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  )
 
-  // HSTS only in prod
   if (isProd()) {
-    res.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+    res.headers.set(
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubDomains; preload"
+    )
   }
 
-  // CSP only in production and only if enabled
-  const enableCsp = isProd() && CSP_MODE !== "off"
-  if (enableCsp) {
+  if (isProd() && CSP_MODE !== "off") {
     const csp = buildCsp(nonce)
-
     const { reportTo, reportingEndpoints } = buildReportingHeaders()
+
     res.headers.set("Report-To", reportTo)
     res.headers.set("Reporting-Endpoints", reportingEndpoints)
 
@@ -140,5 +123,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|_vercel|favicon.ico|robots.txt|sitemap.xml|site.webmanifest).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 }

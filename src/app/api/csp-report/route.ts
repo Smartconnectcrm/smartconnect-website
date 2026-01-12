@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
 
+export const runtime = "edge"
+
 type JsonInit = { status?: number; headers?: Record<string, string> }
 
 function noStore(init?: JsonInit) {
@@ -36,7 +38,6 @@ function redactDeep(value: unknown, depth = 0): unknown {
   if (t === "number" || t === "boolean") return value
 
   if (Array.isArray(value)) {
-    // keep only first few entries
     return value.slice(0, 3).map((v) => redactDeep(v, depth + 1))
   }
 
@@ -48,7 +49,6 @@ function redactDeep(value: unknown, depth = 0): unknown {
   for (const [k, val] of Object.entries(v)) {
     const key = k.toLowerCase()
 
-    // URLs & location-identifiers
     if (
       key.includes("url") ||
       key.includes("uri") ||
@@ -77,7 +77,7 @@ const bucket = new Map<string, { ts: number; n: number }>()
 function allow(ip: string) {
   const now = Date.now()
   const w = 60_000 // 1 min window
-  const limit = 60 // max 60/min per IP (adjust)
+  const limit = 60 // max 60/min per IP
 
   const cur = bucket.get(ip)
   if (!cur || now - cur.ts > w) {
@@ -99,33 +99,32 @@ function getString(obj: Record<string, unknown>, key: string): string | undefine
   return typeof v === "string" ? v : undefined
 }
 
+export async function OPTIONS() {
+  // Usually not needed, but safe to include for edge/proxy oddities.
+  return noStore({ status: 204 })
+}
+
 export async function POST(req: Request) {
   try {
-    // Best-effort IP (varies by platform/proxy)
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       req.headers.get("x-real-ip") ||
       "unknown"
 
     if (!allow(ip)) {
-      // Still no-store, still 204-ish behavior (or 429 if you prefer)
+      // keep it quiet (still 204)
       return noStore({ status: 204 })
     }
 
     const contentType = req.headers.get("content-type") ?? ""
 
-    // Cap body size to reduce abuse (read as text, then slice)
+    // Cap body size to reduce abuse
     const raw = (await req.text()).slice(0, 50_000)
     const parsed = safeJsonParse(raw)
 
-    /**
-     * Normalize to a compact safe log object.
-     * Keep only fields that are useful for CSP tuning without collecting URLs.
-     */
     let reportForLog: unknown = null
 
     // Modern Reporting API: application/reports+json
-    // Example: [{ type, age, url, user_agent, body: { ... } }]
     if (contentType.includes("application/reports+json") && Array.isArray(parsed)) {
       const first = parsed[0] as unknown
       const firstRec = asRecord(first)
@@ -137,10 +136,8 @@ export async function POST(req: Request) {
         type: type ?? "unknown",
         body: redactDeep(body),
       }
-    }
-    // Legacy: application/csp-report
-    // Example: { "csp-report": { ... } }
-    else {
+    } else {
+      // Legacy: application/csp-report
       const obj = asRecord(parsed)
 
       if (obj) {
