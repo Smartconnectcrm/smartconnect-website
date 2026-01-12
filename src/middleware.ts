@@ -30,17 +30,9 @@ function buildCsp(nonce: string) {
     `default-src 'self'`,
     `base-uri 'self'`,
     `object-src 'none'`,
-
-<<<<<<< HEAD
-    // Strict but compatible:
     `frame-ancestors 'self'`,
     `form-action 'self'`,
 
-    // Only allow frames if ever needed (safe default)
-=======
-    `frame-ancestors 'self'`,
-    `form-action 'self'`,
->>>>>>> 1c9520d4a9f7510bcce397e3a8e919d1ebd6479d
     `frame-src 'self' https:`,
 
     `img-src 'self' data: blob: https:`,
@@ -51,11 +43,8 @@ function buildCsp(nonce: string) {
     `style-src-attr 'none'`,
 
     `style-src 'self' 'nonce-${nonce}' https:`,
-<<<<<<< HEAD
 
-    // ⚠️ No 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
-=======
->>>>>>> 1c9520d4a9f7510bcce397e3a8e919d1ebd6479d
+    // ⚠️ Removed 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
     `script-src 'self' 'nonce-${nonce}' https:`,
 
     `connect-src 'self' https: wss:`,
