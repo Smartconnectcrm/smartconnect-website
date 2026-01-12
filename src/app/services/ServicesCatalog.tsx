@@ -6,7 +6,7 @@ import { useMemo, useState } from "react"
 
 import ServiceCard from "@/components/ServiceCard"
 
-import type { ServiceDTO } from "./page"
+import type { ServiceDTO } from "./types"
 
 
 function slugify(s: string) {

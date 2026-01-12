@@ -1,32 +1,11 @@
-import type { IconKey } from "@/components/ServiceCard"
-
 import ServicesCatalog from "./ServicesCatalog"
 
+import type { ServiceDTO } from "./types"
 
 export const metadata = {
   title: "Leistungen | SmartConnect CRM UG (haftungsbeschränkt)",
   description:
     "Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Fokussiert auf klare Abgrenzung, Dokumentation und Compliance-by-Design.",
-}
-
-export type ServiceCategory =
-  | "Operations"
-  | "Integration"
-  | "Security"
-  | "Procurement"
-  | "Cloud"
-  | "Data"
-  | "Delivery"
-
-export type ServiceDTO = {
-  title: string
-  shortScope: string
-  deliverables: string[]
-  typicalInputs: string[]
-  boundaries: string[]
-  tenderAlignment: string[]
-  iconKey?: IconKey
-  category: ServiceCategory
 }
 
 export default function ServicesPage() {
@@ -53,7 +32,7 @@ export default function ServicesPage() {
         "Keine Änderungen an Produktivsystemen ohne Change-Freigabe",
         "Keine Übernahme von Lizenz-/Provider-Verträgen ohne Mandat",
       ],
-      tenderAlignment: ["ITIL-nahe Vorgehensweisen", "Auditierbare Dokumentation", "Betriebsnahe Umsetzung"],
+      tenderAlignment: ["ITIL-nahe Vorgehensweisen", "Auditierbare Dokumentation"],
     },
 
     {
