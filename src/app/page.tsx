@@ -1,6 +1,7 @@
 import Link from "next/link"
 
 import HeroSlot from "@/components/hero/HeroSlot"
+import { BRAND } from "@/lib/branding"
 
 export default function HomePage() {
   return (
@@ -11,7 +12,8 @@ export default function HomePage() {
       {/* Constrained content */}
       <div className="container-fixed py-8">
         <div className="doc-prose">
-          <h1>SmartConnect CRM UG (haftungsbeschränkt)</h1>
+          {/* Brand name (NO legal suffix on homepage) */}
+          <h1>{BRAND.name}</h1>
 
           <p className="lead">
             B2B IT &amp; Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben. Fokus:
@@ -70,7 +72,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-10 card-soft p-5" style={{ background: "var(--card-soft)" }}>
+          <div className="mt-10 card-soft p-5">
             <div className="font-extrabold">Hinweis zur Transparenz</div>
             <p className="small-muted mt-2">
               Diese Website enthält keine Marketing-Behauptungen, keine erfundenen Kennzahlen, keine Zertifikats-Badges
