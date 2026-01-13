@@ -11,7 +11,7 @@ import type { ServiceCategory, ServiceDTO } from "./types"
 
 type CategoryFilter = "All" | ServiceCategory
 
-const CATEGORIES: ReadonlyArray<{ key: CategoryFilter; label: string }> = [
+const CATEGORIES: Array<{ key: CategoryFilter; label: string }> = [
   { key: "All", label: "Alle" },
   { key: "Operations", label: "Operations" },
   { key: "Integration", label: "Integration" },
@@ -119,7 +119,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
         <div className="policy-note">
           <div className="section-title">Vergabe</div>
-          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung &amp; Review.</p>
+          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung & Review.</p>
         </div>
       </div>
 
@@ -147,7 +147,6 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
                 {c.label}
               </button>
             ))}
-
             <div className="ml-auto text-sm font-black opacity-70">Treffer: {filtered.length}</div>
           </div>
 
@@ -173,8 +172,8 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
           <div key={s.title} id={slugify(s.title)} className="scroll-mt-24">
             <ServiceCard
               title={s.title}
+              iconKey={s.iconKey}
               shortScope={s.shortScope}
-              iconKey={s.iconKey} // ✅ keep iconKey
               deliverables={s.deliverables ?? []}
               typicalInputs={s.typicalInputs ?? []}
               boundaries={s.boundaries ?? []}
