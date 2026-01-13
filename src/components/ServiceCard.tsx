@@ -40,11 +40,28 @@ type ServiceCardProps = {
   boundaries: string[]
   tenderAlignment?: string[]
   /** Optional: enables the premium icon chip (keeps backwards compatibility). */
-iconKey?: IconKey | string
+  iconKey?: IconKey | string
+  className?: string
 }
 
 function safeList(list: string[] | undefined) {
   return Array.isArray(list) ? list.filter(Boolean) : []
+}
+
+/**
+ * Canonical slugify used by ServicesCatalog + MegaMenu + ServiceCard anchors.
+ * Keep this identical wherever anchors/ids must match.
+ */
+function slugify(input: string) {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/ä/g, "ae")
+    .replace(/ö/g, "oe")
+    .replace(/ü/g, "ue")
+    .replace(/ß/g, "ss")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
 }
 
 function normalizeIconKey(k?: string): IconKey | undefined {
@@ -81,6 +98,10 @@ function getIcon(iconKey?: IconKey) {
   return iconKey ? map[iconKey] : null
 }
 
+function cx(...parts: Array<string | undefined | false | null>) {
+  return parts.filter(Boolean).join(" ")
+}
+
 export default function ServiceCard({
   title,
   shortScope,
@@ -89,20 +110,18 @@ export default function ServiceCard({
   boundaries,
   tenderAlignment,
   iconKey,
+  className,
 }: ServiceCardProps) {
   const deliverablesSafe = safeList(deliverables)
   const typicalInputsSafe = safeList(typicalInputs)
   const boundariesSafe = safeList(boundaries)
   const tenderAlignmentSafe = safeList(tenderAlignment)
 
+  const reactId = React.useId()
   const itemValue = React.useMemo(() => {
-    const slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9äöüß\s-]/gi, "")
-      .trim()
-      .replace(/\s+/g, "-")
-    return `details-${slug || "service"}`
-  }, [title])
+    // Stable & unique per component instance
+    return `details-${slugify(title || "service")}-${reactId.replace(/[:]/g, "")}`
+  }, [title, reactId])
 
   const safeIconKey = React.useMemo(() => normalizeIconKey(iconKey), [iconKey])
   const Icon = React.useMemo(() => getIcon(safeIconKey), [safeIconKey])
@@ -110,11 +129,12 @@ export default function ServiceCard({
   return (
     <section
       aria-label={`Leistung: ${title}`}
-      className={[
+      className={cx(
         "group overflow-hidden rounded-xl border transition-all duration-300",
         "border-slate-200 bg-white shadow-sm hover:border-slate-300",
         "dark:border-slate-800 dark:bg-slate-900",
-      ].join(" ")}
+        className
+      )}
     >
       <div className="p-6">
         {/* Header */}
@@ -142,7 +162,7 @@ export default function ServiceCard({
               <AccordionTrigger className="sc-accordion-trigger group">
                 <span className="sc-accordion-trigger-label">Details</span>
 
-                {/* Extra chevron (safe). If your shadcn trigger already has one, hide this via CSS if desired. */}
+                {/* If your shadcn trigger already renders a chevron, hide this via CSS. */}
                 <span className="ml-auto inline-flex items-center text-slate-400">
                   <ChevronDown size={18} className="group-data-[state=open]:hidden" />
                   <ChevronUp size={18} className="hidden group-data-[state=open]:block" />
@@ -156,7 +176,7 @@ export default function ServiceCard({
                     {deliverablesSafe.length ? (
                       <div className="lg:col-span-7">
                         <div className="mb-4 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-700 dark:text-slate-200">
-                          <FileCheck size={14} /> Ergebnisse & Artefakte
+                          <FileCheck size={14} /> Ergebnisse &amp; Artefakte
                         </div>
 
                         <div className="grid gap-3">

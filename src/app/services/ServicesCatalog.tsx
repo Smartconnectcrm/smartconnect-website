@@ -22,8 +22,12 @@ const CATEGORIES: Array<{ key: CategoryFilter; label: string }> = [
   { key: "Delivery", label: "Delivery" },
 ]
 
-function slugify(s: string) {
-  return s
+/**
+ * Canonical slugify used by jump index + service section ids.
+ * Keep this identical wherever anchors/ids must match.
+ */
+function slugify(input: string) {
+  return input
     .toLowerCase()
     .trim()
     .replace(/ä/g, "ae")
@@ -34,9 +38,10 @@ function slugify(s: string) {
     .replace(/(^-|-$)/g, "")
 }
 
-function includesAny(hay: string, needles: string[]) {
+function includesQuery(hay: string, q: string) {
   const h = hay.toLowerCase()
-  return needles.some((n) => h.includes(n.toLowerCase()))
+  const query = q.toLowerCase()
+  return h.includes(query)
 }
 
 export default function ServicesCatalog({ services }: { services: ServiceDTO[] }) {
@@ -60,7 +65,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         ...(s.tenderAlignment ?? []),
       ].join(" ")
 
-      return includesAny(hay, [q])
+      return includesQuery(hay, q)
     })
   }, [services, query, cat])
 
@@ -74,19 +79,19 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
   )
 
   return (
-    <div className="doc-prose">
+    <div>
       {/* Header */}
-      <div className="mt-8">
+      <div className="mt-2">
         <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-black tracking-wide">
-          TENDER-READY • DOKUMENTATIONS- & COMPLIANCE-ORIENTIERT
+          TENDER-READY • DOKUMENTATIONS- &amp; COMPLIANCE-ORIENTIERT
         </div>
 
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-          <div>
+          <div className="doc-prose">
             <h1>Leistungen</h1>
             <p className="lead">
-              Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar abgegrenzt,
-              prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
+              Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar
+              abgegrenzt, prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
             </p>
           </div>
 
@@ -119,7 +124,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
         <div className="policy-note">
           <div className="section-title">Vergabe</div>
-          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung & Review.</p>
+          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung &amp; Review.</p>
         </div>
       </div>
 
@@ -152,7 +157,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
 
           {/* Jump index */}
           {jumpItems.length > 0 && (
-            <div className="mt-1 rounded-2xl border p-3">
+            <div className="mt-1 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
               <div className="text-xs font-black opacity-70">SPRINGE ZU</div>
               <div className="mt-2 flex flex-wrap gap-2">
                 {jumpItems.map((j) => (
@@ -187,8 +192,8 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
       <section className="policy-note mt-10">
         <div className="section-title">Anfrage / Abstimmung</div>
         <p className="small-muted mt-2">
-          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. die gewünschte
-          Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
+          Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. die
+          gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
         </p>
         <div className="mt-4">
           <Link href="/contact" className="btn-primary">
