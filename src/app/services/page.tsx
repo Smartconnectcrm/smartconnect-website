@@ -1,9 +1,15 @@
+import { BRAND } from "@/lib/branding"
+
 import ServicesCatalog from "./ServicesCatalog"
 
 import type { ServiceDTO } from "./types"
 
+
+
+
 export const metadata = {
-  title: "Leistungen | SmartConnect CRM UG (haftungsbeschränkt)",
+  // ✅ Use BRAND.name for visible/marketing titles
+  title: `Leistungen | ${BRAND?.name ?? "SmartConnect CRM"}`,
   description:
     "Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben. Fokussiert auf klare Abgrenzung, Dokumentation und Compliance-by-Design.",
 }
@@ -194,5 +200,19 @@ export default function ServicesPage() {
     },
   ]
 
-  return <ServicesCatalog services={services} />
+  return (
+    <div className="container-fixed py-10 md:py-14">
+      <div className="doc-prose">
+        <h1>Leistungen</h1>
+        <p className="lead">
+          Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und compliance-orientierter
+          Umsetzung.
+        </p>
+      </div>
+
+      <div className="mt-8">
+        <ServicesCatalog services={services} />
+      </div>
+    </div>
+  )
 }

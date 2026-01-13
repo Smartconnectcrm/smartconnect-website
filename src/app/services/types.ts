@@ -1,4 +1,4 @@
-import type { IconKey } from "@/components/ServiceCard"
+export type IconKey = "settings" | "network" | "lock" | "gantt" | "cloud" | "database" | "boxes"
 
 export type ServiceCategory =
   | "Operations"
