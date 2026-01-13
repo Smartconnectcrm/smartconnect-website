@@ -124,7 +124,7 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
         <div className="policy-note">
           <div className="section-title">Vergabe</div>
-          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung &amp; Review.</p>
+          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung & Review.</p>
         </div>
       </div>
 
