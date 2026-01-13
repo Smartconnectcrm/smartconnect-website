@@ -276,6 +276,30 @@ tr:first-child th {
   border-top: none;
 }
 
+.table-soft {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+}
+
+.table-soft td {
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text-muted);
+}
+
+.table-soft td:first-child {
+  font-weight: 900;
+  color: var(--text);
+  padding-right: 16px;
+}
+
+.table-soft tr:first-child td {
+  border-top: none;
+}
+
 /* ==================================================
    Accordion (Radix / shadcn)
 ================================================== */
@@ -448,6 +472,78 @@ tr:first-child th {
   text-decoration: underline;
   text-underline-offset: 3px;
   opacity: 1;
+}
+
+/* ==================================================
+   Form inputs (enterprise)
+================================================== */
+.input-enterprise {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.input-enterprise:focus-within {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px var(--focus);
+}
+
+.input-enterprise input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.input-enterprise input::placeholder {
+  color: var(--text-soft);
+  font-weight: 500;
+}
+
+/* ==================================================
+   Pills (filter/tag buttons)
+================================================== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+  cursor: pointer;
+}
+
+.pill:hover {
+  background: var(--bg-elev);
+  border-color: var(--border-strong);
+  text-decoration: none;
+}
+
+.pill-active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.pill-active:hover {
+  background: color-mix(in srgb, var(--accent) 90%, black 10%);
+  border-color: color-mix(in srgb, var(--accent) 90%, black 10%);
 }
 
 /* ==================================================
