@@ -17,10 +17,10 @@ type MegaItem = {
 }
 
 const nav = [
-  { href: "/", label: "Start" },
-  { href: "/services", label: "Leistungen", mega: true as const },
-  { href: "/about", label: "Unternehmen" },
-  { href: "/compliance", label: "Compliance" },
+  { href: "/", label: "START" },
+  { href: "/services", label: "LEISTUNGEN", mega: true as const },
+  { href: "/about", label: "UNTERNEHMEN" },
+  { href: "/compliance", label: "COMPLIANCE" },
 ]
 
 const megaPrimary: MegaItem[] = [
@@ -77,13 +77,13 @@ function isActive(pathname: string, href: string) {
 }
 
 /**
- * Accessible focus ring
+ * Concept B: Modern Institutional Focus Ring
  */
 const focusRing =
-  "focus:outline-none focus-visible:ring-2 " +
-  "focus-visible:ring-slate-900/30 dark:focus-visible:ring-white/30 " +
-  "focus-visible:ring-offset-2 " +
-  "focus-visible:ring-offset-white dark:focus-visible:ring-offset-slate-950"
+  "focus:outline-none focus-visible:ring-4 " +
+  "focus-visible:ring-brand-diamond/30 " +
+  "focus-visible:ring-offset-4 " +
+  "focus-visible:ring-offset-brand-light-bg dark:focus-visible:ring-offset-brand-dark-bg"
 
 function cx(...parts: Array<string | undefined | false | null>) {
   return parts.filter(Boolean).join(" ")
@@ -130,129 +130,58 @@ export default function Header() {
     <header
       className={cx(
         "sticky top-0 z-40",
-        "border-b",
-        "bg-white/85 dark:bg-slate-950/70",
-        "backdrop-blur supports-[backdrop-filter]:bg-white/75 supports-[backdrop-filter]:dark:bg-slate-950/60"
+        "bg-brand-light-bg/95 dark:bg-brand-dark-bg/95",
+        "backdrop-blur-md",
+        "border-b border-brand-light-border dark:border-brand-dark-border",
+        "shadow-soft-sm"
       )}
-      style={{ borderColor: "var(--border)" }}
     >
-      {/* Utility bar */}
-      <div className="border-b" style={{ borderColor: "var(--border)" }}>
-        <div className="container-fixed">
-          <div className="flex flex-wrap items-center justify-between gap-2 py-2 text-xs">
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <a
-                href="mailto:admin@smartclientcrm.com"
-                className={cx(
-                  "inline-flex items-center gap-2 font-semibold",
-                  "text-slate-700 hover:text-slate-950",
-                  "dark:text-slate-300 dark:hover:text-white",
-                  focusRing
-                )}
-              >
-                <Mail className="h-3.5 w-3.5 opacity-80" />
-                admin@smartclientcrm.com
-              </a>
-
-              <a
-                href="tel:+4921187973999233"
-                className={cx(
-                  "inline-flex items-center gap-2 font-semibold",
-                  "text-slate-700 hover:text-slate-950",
-                  "dark:text-slate-300 dark:hover:text-white",
-                  focusRing
-                )}
-              >
-                <Phone className="h-3.5 w-3.5 opacity-80" />
-                +49 211 87973999233
-              </a>
-
-              <Link
-                href="/compliance"
-                className={cx(
-                  "inline-flex items-center gap-2 font-semibold",
-                  "text-slate-700 hover:text-slate-950",
-                  "dark:text-slate-300 dark:hover:text-white",
-                  focusRing
-                )}
-              >
-                <ShieldCheck className="h-3.5 w-3.5 opacity-80" />
-                Status / Compliance
-              </Link>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="hidden sm:inline text-slate-500 dark:text-slate-400 font-semibold">Sprache:</span>
-
-              <Link
-                href={langDE}
-                className={cx(
-                  "rounded-full border px-2.5 py-1 font-extrabold tracking-wide",
-                  "border-black/10 bg-slate-900/[0.03] text-slate-700 hover:bg-slate-900/[0.06]",
-                  "dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.08]",
-                  focusRing
-                )}
-              >
-                DE
-              </Link>
-              <Link
-                href={langEN}
-                className={cx(
-                  "rounded-full border px-2.5 py-1 font-extrabold tracking-wide",
-                  "border-black/10 bg-slate-900/[0.03] text-slate-700 hover:bg-slate-900/[0.06]",
-                  "dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.08]",
-                  focusRing
-                )}
-              >
-                EN
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main header */}
-      <div className="container-fixed">
-        <div className="flex items-center justify-between gap-6 py-4 md:py-5">
+      <div className="container">
+        <div className="flex items-center justify-between gap-6 py-6">
           {/* Brand */}
           <Link
             href="/"
             className={cx(
-              "group inline-flex min-w-0 items-center gap-3 rounded-xl px-2 py-2",
-              "hover:bg-slate-900/[0.03] dark:hover:bg-white/[0.04]",
+              "group inline-flex min-w-0 items-center gap-4 rounded-lg px-3 py-2",
+              "hover:bg-brand-light-muted/50 dark:hover:bg-brand-dark-muted/50",
+              "transition-all duration-200",
               focusRing
             )}
             aria-label={`Startseite – ${BRAND.name}`}
           >
             <div
               className={cx(
-                "relative h-11 w-11 shrink-0 overflow-hidden rounded-xl",
-                "ring-1 ring-black/5 dark:ring-white/10",
-                "bg-white dark:bg-slate-900 shadow-sm"
+                "relative h-12 w-12 shrink-0 overflow-hidden rounded-lg",
+                "bg-gradient-to-br from-brand-gold to-brand-diamond",
+                "shadow-soft-md",
+                "p-0.5"
               )}
             >
-              <Image
-                src="/brand/smartconnect-logo.webp"
-                alt={BRAND.name}
-                fill
-                sizes="44px"
-                priority
-                className="object-contain p-1.5"
-              />
+              <div className="h-full w-full bg-white dark:bg-brand-nearblack rounded-lg p-1.5">
+                <Image
+                  src="/brand/smartconnect-logo.webp"
+                  alt={BRAND.name}
+                  fill
+                  sizes="48px"
+                  priority
+                  className="object-contain"
+                />
+              </div>
             </div>
 
             <div className="min-w-0">
-              <div className="truncate text-[15px] font-extrabold tracking-tight text-slate-950 dark:text-slate-50">
+              <div className="truncate text-lg font-heading font-bold tracking-tight text-brand-light-text dark:text-brand-dark-text">
                 {BRAND.name}
               </div>
-              <div className="truncate text-xs font-semibold text-slate-600 dark:text-slate-400">
-                IT &amp; Digital Solutions · Enterprise &amp; Public Sector
+              <div className="truncate text-xs font-medium text-brand-light-muted dark:text-brand-dark-muted">
+                Enterprise &amp; Public Sector
               </div>
             </div>
           </Link>
 
           {/* Desktop Nav with Mega Menu */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-1">
             {nav.map((i) => {
               const active = isActive(pathname, i.href)
 
@@ -272,15 +201,17 @@ export default function Header() {
                       aria-haspopup="menu"
                       aria-expanded={megaOpen}
                       className={cx(
-                        "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+                        "inline-flex items-center gap-2 rounded-lg px-5 py-3",
+                        "font-heading text-sm font-bold tracking-wide uppercase",
+                        "transition-all duration-200",
                         active
-                          ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
-                          : "text-slate-700 hover:bg-slate-900/[0.05] hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/[0.06] dark:hover:text-white",
+                          ? "bg-brand-gold text-brand-charcoal shadow-glow-gold"
+                          : "text-brand-light-text dark:text-brand-dark-text hover:bg-brand-light-muted/50 dark:hover:bg-brand-dark-muted/50",
                         focusRing
                       )}
                     >
                       {i.label}
-                      <ChevronDown className={cx("h-4 w-4 opacity-80 transition-transform", megaOpen && "rotate-180")} />
+                      <ChevronDown className={cx("h-4 w-4 transition-transform duration-300", megaOpen && "rotate-180")} />
                     </button>
 
                     {/* Mega panel */}
@@ -289,98 +220,77 @@ export default function Header() {
                         role="menu"
                         aria-label="Leistungen Menü"
                         className={cx(
-                          "absolute left-0 mt-3 w-[720px] max-w-[85vw] overflow-hidden rounded-2xl",
-                          "border border-black/10 dark:border-white/10",
-                          "bg-white/95 dark:bg-slate-950/95",
-                          "backdrop-blur shadow-xl"
+                          "absolute left-1/2 -translate-x-1/2 mt-4 w-[900px] max-w-[90vw]",
+                          "rounded-2xl overflow-hidden",
+                          "bg-brand-light-bg dark:bg-brand-dark-bg",
+                          "border border-brand-light-border dark:border-brand-dark-border",
+                          "shadow-soft-xl",
+                          "animate-slide-down"
                         )}
                       >
-                        <div className="grid gap-0 md:grid-cols-12">
-                          {/* Left: highlight */}
-                          <div className="md:col-span-4 p-5 border-b md:border-b-0 md:border-r border-black/5 dark:border-white/10">
-                            <div className="text-xs font-extrabold tracking-wide text-slate-500 dark:text-slate-400">
-                              LEISTUNGEN
-                            </div>
-                            <div className="mt-2 text-sm font-extrabold text-slate-950 dark:text-white">
-                              Tender-ready Delivery
-                            </div>
-                            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                              Klar abgegrenzt, prüfbar dokumentiert und auf Betriebs- &amp; Übergabefähigkeit ausgelegt.
+                        <div className="p-8">
+                          {/* Header */}
+                          <div className="mb-6 pb-6 border-b-2 border-gradient-gold-diamond">
+                            <h3 className="font-heading text-2xl font-bold text-brand-light-text dark:text-brand-dark-text mb-2">
+                              Leistungen
+                            </h3>
+                            <p className="text-brand-light-muted dark:text-brand-dark-muted">
+                              Tender-ready Delivery · Klar abgegrenzt, prüfbar dokumentiert
                             </p>
-
-                            <div className="mt-4 flex flex-wrap gap-2">
-                              <Link
-                                href="/services"
-                                className={cx(
-                                  "rounded-full border px-3 py-1 text-xs font-extrabold tracking-wide",
-                                  "border-black/10 bg-slate-900/[0.03] text-slate-700 hover:bg-slate-900/[0.06]",
-                                  "dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.08]",
-                                  focusRing
-                                )}
-                              >
-                                Übersicht
-                              </Link>
-                              <Link
-                                href="/contact"
-                                className={cx(
-                                  "rounded-full border px-3 py-1 text-xs font-extrabold tracking-wide",
-                                  "border-black/10 bg-slate-950 text-white hover:opacity-90",
-                                  "dark:bg-white dark:text-slate-950",
-                                  focusRing
-                                )}
-                              >
-                                Geschäftsanfrage
-                              </Link>
-                            </div>
                           </div>
 
-                          {/* Right: links */}
-                          <div className="md:col-span-8 p-5">
-                            <div className="grid gap-4 sm:grid-cols-2">
-                              {[...megaPrimary, ...megaSecondary].map((m) => (
-                                <Link
-                                  key={m.href}
-                                  href={m.href}
-                                  className={cx(
-                                    "group rounded-xl border border-black/5 dark:border-white/10",
-                                    "bg-slate-900/[0.02] dark:bg-white/[0.03]",
-                                    "p-4 hover:bg-slate-900/[0.04] dark:hover:bg-white/[0.06]",
-                                    focusRing
-                                  )}
-                                >
-                                  <div className="flex items-start justify-between gap-3">
-                                    <div className="text-sm font-extrabold text-slate-950 dark:text-white">
-                                      {m.title}
-                                    </div>
-                                    {m.tag ? (
-                                      <span className="shrink-0 rounded-full border border-black/10 dark:border-white/10 bg-white/60 dark:bg-white/[0.04] px-2 py-0.5 text-[10px] font-extrabold tracking-wide text-slate-600 dark:text-slate-300">
-                                        {m.tag}
-                                      </span>
-                                    ) : null}
-                                  </div>
-                                  <div className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-                                    {m.desc}
-                                  </div>
-                                </Link>
-                              ))}
-                            </div>
-
-                            <div className="mt-4 flex items-center justify-between gap-3">
+                          {/* Grid */}
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            {[...megaPrimary, ...megaSecondary].map((m) => (
                               <Link
-                                href="/services#catalog"
+                                key={m.href}
+                                href={m.href}
                                 className={cx(
-                                  "text-xs font-extrabold tracking-wide text-slate-700 hover:text-slate-950",
-                                  "dark:text-slate-300 dark:hover:text-white",
+                                  "group rounded-xl p-5",
+                                  "bg-brand-light-bg dark:bg-brand-dark-bg",
+                                  "border border-brand-light-border dark:border-brand-dark-border",
+                                  "hover:border-brand-diamond hover:shadow-soft-md",
+                                  "transition-all duration-300",
                                   focusRing
                                 )}
                               >
-                                Zum Katalog →
+                                <div className="flex items-start justify-between gap-3 mb-2">
+                                  <div className="font-heading text-base font-bold text-brand-light-text dark:text-brand-dark-text group-hover:text-brand-diamond transition-colors">
+                                    {m.title}
+                                  </div>
+                                  {m.tag ? (
+                                    <span className="shrink-0 rounded-full bg-gradient-to-r from-brand-gold to-brand-diamond px-3 py-1 text-xs font-bold text-brand-charcoal">
+                                      {m.tag}
+                                    </span>
+                                  ) : null}
+                                </div>
+                                <div className="text-sm text-brand-light-muted dark:text-brand-dark-muted">
+                                  {m.desc}
+                                </div>
                               </Link>
+                            ))}
+                          </div>
 
-                              <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                                Dokumentation · Governance · Compliance
-                              </span>
-                            </div>
+                          {/* Footer */}
+                          <div className="mt-6 pt-6 border-t border-brand-light-border dark:border-brand-dark-border flex items-center justify-between">
+                            <Link
+                              href="/services"
+                              className={cx(
+                                "btn btn-primary",
+                                focusRing
+                              )}
+                            >
+                              Alle Leistungen
+                            </Link>
+                            <Link
+                              href="/contact"
+                              className={cx(
+                                "btn btn-secondary",
+                                focusRing
+                              )}
+                            >
+                              Geschäftsanfrage
+                            </Link>
                           </div>
                         </div>
                       </div>
@@ -395,10 +305,12 @@ export default function Header() {
                   href={i.href}
                   aria-current={active ? "page" : undefined}
                   className={cx(
-                    "rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+                    "rounded-lg px-5 py-3",
+                    "font-heading text-sm font-bold tracking-wide uppercase",
+                    "transition-all duration-200",
                     active
-                      ? "bg-slate-950 text-white dark:bg-white dark:text-slate-950"
-                      : "text-slate-700 hover:bg-slate-900/[0.05] hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/[0.06] dark:hover:text-white",
+                      ? "bg-brand-gold text-brand-charcoal shadow-glow-gold"
+                      : "text-brand-light-text dark:text-brand-dark-text hover:bg-brand-light-muted/50 dark:hover:bg-brand-dark-muted/50",
                     focusRing
                   )}
                 >
@@ -406,32 +318,46 @@ export default function Header() {
                 </Link>
               )
             })}
+          </div>
 
-            <div className="ml-2 flex items-center gap-2">
-              <ThemeToggle />
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
+            {/* Language Switcher */}
+            <div className="hidden md:flex items-center gap-2">
               <Link
-                href="/contact"
+                href={langDE}
                 className={cx(
-                  "rounded-full px-5 py-2.5 text-sm font-extrabold tracking-tight",
-                  "bg-slate-950 text-white shadow-sm hover:shadow-md transition-shadow hover:opacity-95",
-                  "dark:bg-white dark:text-slate-950",
+                  "rounded-lg px-3 py-2 text-xs font-bold tracking-wide uppercase",
+                  "border border-brand-light-border dark:border-brand-dark-border",
+                  "text-brand-light-text dark:text-brand-dark-text",
+                  "hover:border-brand-diamond hover:text-brand-diamond",
+                  "transition-all duration-200",
                   focusRing
                 )}
               >
-                Kontakt
+                DE
+              </Link>
+              <Link
+                href={langEN}
+                className={cx(
+                  "rounded-lg px-3 py-2 text-xs font-bold tracking-wide uppercase",
+                  "border border-brand-light-border dark:border-brand-dark-border",
+                  "text-brand-light-text dark:text-brand-dark-text",
+                  "hover:border-brand-diamond hover:text-brand-diamond",
+                  "transition-all duration-200",
+                  focusRing
+                )}
+              >
+                EN
               </Link>
             </div>
-          </div>
 
-          {/* Mobile actions (kept minimal; we can add a mobile drawer next) */}
-          <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
+
             <Link
               href="/contact"
               className={cx(
-                "rounded-full px-4 py-2 text-sm font-extrabold tracking-tight",
-                "bg-slate-950 text-white shadow-sm hover:opacity-95",
-                "dark:bg-white dark:text-slate-950",
+                "btn btn-primary hidden lg:inline-flex",
                 focusRing
               )}
             >
@@ -439,13 +365,60 @@ export default function Header() {
             </Link>
           </div>
         </div>
+      </div>
 
-        {/* Compliance microcopy row (optional, corporate) */}
-        <div className="pb-4">
-          <div className="hr-soft" />
-          <p className="mt-3 text-xs font-semibold text-slate-600 dark:text-slate-400">
-            Hinweis: Diese Website verwendet keine Analyse- oder Tracking-Technologien ohne Einwilligung.
-          </p>
+      {/* Utility Bar (Bottom) */}
+      <div className="border-t border-brand-light-border dark:border-brand-dark-border bg-brand-light-muted/30 dark:bg-brand-dark-muted/30">
+        <div className="container">
+          <div className="flex flex-wrap items-center justify-between gap-4 py-3 text-xs">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <a
+                href="mailto:admin@smartclientcrm.com"
+                className={cx(
+                  "inline-flex items-center gap-2 font-medium",
+                  "text-brand-light-muted dark:text-brand-dark-muted",
+                  "hover:text-brand-diamond",
+                  "transition-colors duration-200",
+                  focusRing
+                )}
+              >
+                <Mail className="h-4 w-4" />
+                admin@smartclientcrm.com
+              </a>
+
+              <a
+                href="tel:+4921187973999233"
+                className={cx(
+                  "inline-flex items-center gap-2 font-medium",
+                  "text-brand-light-muted dark:text-brand-dark-muted",
+                  "hover:text-brand-diamond",
+                  "transition-colors duration-200",
+                  focusRing
+                )}
+              >
+                <Phone className="h-4 w-4" />
+                +49 211 87973999233
+              </a>
+
+              <Link
+                href="/compliance"
+                className={cx(
+                  "inline-flex items-center gap-2 font-medium",
+                  "text-brand-light-muted dark:text-brand-dark-muted",
+                  "hover:text-brand-diamond",
+                  "transition-colors duration-200",
+                  focusRing
+                )}
+              >
+                <ShieldCheck className="h-4 w-4" />
+                Status / Compliance
+              </Link>
+            </div>
+
+            <p className="text-brand-light-muted dark:text-brand-dark-muted font-medium">
+              Keine Tracking-Technologien ohne Einwilligung
+            </p>
+          </div>
         </div>
       </div>
     </header>
