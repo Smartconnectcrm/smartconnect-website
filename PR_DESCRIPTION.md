@@ -11,6 +11,27 @@ This PR implements **Concept B: Modern Institutional** design system for the Sma
 - Smooth, theatrical transitions (300-400ms)
 - Premium B2B/public-sector compatible
 
+## 🔍 Procurement Validation
+This PR includes an **automated procurement validation system** to ensure content maintains compliance-oriented, procurement-friendly language:
+
+### ✅ Validation Status: **PASSED**
+- **Files Scanned:** 46
+- **Errors:** 0
+- **Warnings:** 0
+
+### What's Validated:
+- ❌ **Forbidden:** Marketing hype, unverified claims, SaaS funnel language
+- ✅ **Required:** GDPR references, compliance language, legal entity names
+- 🔒 **Security:** No tracking without consent mechanisms
+
+### Validation System Components:
+1. **Script:** `scripts/validate-procurement.ts` - TypeScript validation logic
+2. **Workflow:** `.github/workflows/procurement-validation.yml` - CI/CD integration
+3. **Documentation:** `PROCUREMENT_VALIDATION.md` - Complete usage guide
+4. **NPM Script:** `npm run validate:procurement` - Local validation command
+
+See `PROCUREMENT_VALIDATION_REPORT.md` for detailed validation results.
+
 ## 📊 Changes Summary
 
 ### Files Modified: 13 files

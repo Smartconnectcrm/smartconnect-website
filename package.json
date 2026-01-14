@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "lint:strict": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate:procurement": "tsx scripts/validate-procurement.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",

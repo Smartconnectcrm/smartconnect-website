@@ -197,6 +197,30 @@ npm run lint
 npm run build
 ```
 
+### Procurement Validation
+
+**Automated validation** to ensure content maintains procurement-friendly, compliance-oriented language:
+
+```bash
+# Run procurement validation
+npm run validate:procurement
+```
+
+**What's validated:**
+- ❌ No marketing hype or unverified claims
+- ❌ No SaaS funnel or startup pitch language
+- ❌ No tracking without consent mechanisms
+- ✅ GDPR/DSGVO references present
+- ✅ Compliance and documentation language
+- ✅ Legal entity names correct
+
+**CI/CD Integration:**
+- Runs automatically on pull requests
+- Blocks merge if validation fails
+- Generates detailed validation reports
+
+📖 **Full guide**: [PROCUREMENT_VALIDATION.md](./PROCUREMENT_VALIDATION.md)
+
 ### Runtime Testing
 
 ```bash
@@ -215,6 +239,7 @@ curl http://localhost:3000/api/csp-report
 
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide
 - **[QUICKSTART.md](./QUICKSTART.md)** - Quick start deployment
+- **[PROCUREMENT_VALIDATION.md](./PROCUREMENT_VALIDATION.md)** - Procurement validation system
 - **[.env.example](./.env.example)** - Environment variables
 - **[vercel.json](./vercel.json)** - Vercel configuration
 
@@ -225,10 +250,11 @@ curl http://localhost:3000/api/csp-report
 ### Available Scripts
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm start        # Start production server
-npm run lint     # Run ESLint
+npm run dev                    # Start development server
+npm run build                  # Build for production
+npm start                      # Start production server
+npm run lint                   # Run ESLint
+npm run validate:procurement   # Run procurement validation
 ```
 
 ### Code Style
