@@ -1,9 +1,11 @@
 import Link from "next/link"
 
 import { BRAND } from "@/lib/branding"
+import { getCompactLegalText } from "@/lib/company"
 
 export default function Footer() {
   const yearText = new Date().getFullYear().toString()
+  const legalText = getCompactLegalText()
 
   return (
     <footer className="border-t-2 border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg">
@@ -106,6 +108,11 @@ export default function Footer() {
 
         {/* Divider with gradient */}
         <div className="my-10 h-px bg-gradient-to-r from-transparent via-brand-light-border dark:via-brand-dark-border to-transparent" />
+
+        {/* Legal Impressum - Compact German Format */}
+        <div className="mb-6 text-xs text-brand-light-muted dark:text-brand-dark-muted leading-relaxed text-center">
+          {legalText}
+        </div>
 
         {/* Copyright */}
         <div className="text-center text-sm text-brand-light-muted dark:text-brand-dark-muted">
