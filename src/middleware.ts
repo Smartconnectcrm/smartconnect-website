@@ -44,18 +44,22 @@ function buildCsp(nonce: string) {
 
     `style-src 'self' 'nonce-${nonce}' https:`,
 
-    // ⚠️ Removed 'strict-dynamic' to avoid breaking scripts you can't nonce (e.g. Vercel Speed Insights)
     // Three.js/fiber needs blob: for workers and data: for inline shaders
-    `script-src 'self' 'nonce-${nonce}' https: blob:`,
+    // Note: 'strict-dynamic' removed to support Vercel Speed Insights and other third-party scripts
+    `script-src 'self' 'nonce-${nonce}' https: blob: data:`,
 
+    // Allow WebSocket connections for dev tools and blob/data URIs for Three.js
     `connect-src 'self' https: wss: blob: data:`,
 
     `media-src 'self' https: blob: data:`,
-    `worker-src 'self' blob: data:`,
-    `manifest-src 'self'`,
     
-    // Allow child-src for workers (fallback for older browsers)
+    // Critical for @react-three/fiber: workers need blob: and data: URIs
+    `worker-src 'self' blob: data:`,
+    
+    // Fallback for older browsers that don't support worker-src
     `child-src 'self' blob: data:`,
+    
+    `manifest-src 'self'`,
 
     `report-to csp-endpoint`,
     `report-uri ${reportPath}`,

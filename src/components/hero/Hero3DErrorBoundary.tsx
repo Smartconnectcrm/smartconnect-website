@@ -1,10 +1,10 @@
 "use client"
 
-import React, { Component, type ReactNode } from "react"
+import * as React from "react"
 
 type Props = {
-  children: ReactNode
-  fallback?: ReactNode
+  children: React.ReactNode
+  fallback?: React.ReactNode
 }
 
 type State = {
@@ -12,11 +12,7 @@ type State = {
   error?: Error
 }
 
-/**
- * Error boundary for Hero3D component.
- * Catches Three.js/fiber errors and shows fallback.
- */
-export default class Hero3DErrorBoundary extends Component<Props, State> {
+export default class Hero3DErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = { hasError: false }
@@ -36,7 +32,7 @@ export default class Hero3DErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        this.props.fallback || (
+        this.props.fallback ?? (
           <div className="h-full w-full flex items-center justify-center bg-slate-950">
             <div className="text-white/40 text-sm">3D visualization unavailable</div>
           </div>

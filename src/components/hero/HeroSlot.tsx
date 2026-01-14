@@ -10,8 +10,8 @@ import Hero3DErrorBoundary from "./Hero3DErrorBoundary"
 const SmartConnectHero3D = dynamic(() => import("./SmartConnectHero3D"), {
   ssr: false,
   loading: () => (
-    <div className="h-full w-full flex items-center justify-center bg-slate-950">
-      <div className="text-white/60 text-sm">Loading 3D visualization...</div>
+    <div className="h-full w-full flex items-center justify-center bg-slate-950/50">
+      <div className="text-white/50 text-xs">Loading 3D...</div>
     </div>
   ),
 })
