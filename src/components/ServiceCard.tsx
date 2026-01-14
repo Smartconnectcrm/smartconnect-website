@@ -5,7 +5,6 @@ import {
   Boxes,
   CheckCircle2,
   ChevronDown,
-  ChevronUp,
   Cloud,
   Database,
   FileCheck,

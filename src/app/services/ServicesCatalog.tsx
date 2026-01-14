@@ -79,89 +79,85 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
   )
 
   return (
-    <div>
-      {/* Header */}
-      <div className="mt-2">
-        <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-black tracking-wide">
-          TENDER-READY • DOKUMENTATIONS- &amp; COMPLIANCE-ORIENTIERT
+    <div className="space-y-16">
+      {/* Pillars Grid */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="group rounded-2xl border border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg p-8 transition-all hover:border-brand-diamond hover:shadow-soft-lg">
+          <div className="mb-3 text-sm font-bold uppercase tracking-widest text-brand-diamond">Governance</div>
+          <p className="text-base leading-relaxed text-brand-light-muted dark:text-brand-dark-muted">
+            Audit-fähige Artefakte. Dokumentation als Teil der Lieferung.
+          </p>
         </div>
-
-        <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-          <div className="doc-prose">
-            <h1>Leistungen</h1>
-            <p className="lead">
-              Strukturierter Leistungskatalog für Beschaffung, Vergabe und EU-tendernahe Vorhaben — bewusst klar
-              abgegrenzt, prüfbar dokumentiert und auf Betriebs- und Übergabefähigkeit ausgelegt.
-            </p>
-          </div>
-
-          <div className="mt-1 flex items-center gap-3">
-            <Link href="/contact" className="btn-primary">
-              Kontakt
-            </Link>
-            <a href="#catalog" className="btn-secondary">
-              Zum Katalog
-            </a>
-          </div>
+        <div className="group rounded-2xl border border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg p-8 transition-all hover:border-brand-diamond hover:shadow-soft-lg">
+          <div className="mb-3 text-sm font-bold uppercase tracking-widest text-brand-diamond">Compliance</div>
+          <p className="text-base leading-relaxed text-brand-light-muted dark:text-brand-dark-muted">
+            Datensparsamkeit, Zweckbindung, Rollenprinzip, Minimal Logging.
+          </p>
         </div>
-
-        <hr className="hr-soft mt-6" />
-      </div>
-
-      {/* Pillars */}
-      <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <div className="policy-note">
-          <div className="section-title">Governance</div>
-          <p className="small-muted mt-2">Audit-fähige Artefakte. Dokumentation als Teil der Lieferung.</p>
+        <div className="group rounded-2xl border border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg p-8 transition-all hover:border-brand-diamond hover:shadow-soft-lg">
+          <div className="mb-3 text-sm font-bold uppercase tracking-widest text-brand-diamond">Transparenz</div>
+          <p className="text-base leading-relaxed text-brand-light-muted dark:text-brand-dark-muted">
+            Klare Abgrenzung. Änderungen über Change-Prozesse.
+          </p>
         </div>
-        <div className="policy-note">
-          <div className="section-title">Compliance</div>
-          <p className="small-muted mt-2">Datensparsamkeit, Zweckbindung, Rollenprinzip, Minimal Logging.</p>
-        </div>
-        <div className="policy-note">
-          <div className="section-title">Transparenz</div>
-          <p className="small-muted mt-2">Klare Abgrenzung. Änderungen über Change-Prozesse.</p>
-        </div>
-        <div className="policy-note">
-          <div className="section-title">Vergabe</div>
-          <p className="small-muted mt-2">Prüfkontext geeignet. Struktur für Beschaffung & Review.</p>
+        <div className="group rounded-2xl border border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg p-8 transition-all hover:border-brand-diamond hover:shadow-soft-lg">
+          <div className="mb-3 text-sm font-bold uppercase tracking-widest text-brand-diamond">Vergabe</div>
+          <p className="text-base leading-relaxed text-brand-light-muted dark:text-brand-dark-muted">
+            Prüfkontext geeignet. Struktur für Beschaffung & Review.
+          </p>
         </div>
       </div>
 
       {/* Controls */}
-      <div id="catalog" className="mt-7 card-soft p-5">
-        <div className="flex flex-col gap-4">
-          <div className="input-enterprise">
-            <Search className="h-4 w-4 opacity-70" />
+      <div id="catalog" className="rounded-2xl border border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg p-8 shadow-soft-lg">
+        <div className="flex flex-col gap-6">
+          {/* Search */}
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-brand-light-muted dark:text-brand-dark-muted" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Suchen: Leistung, Deliverable, Scope, Stichwort …"
               aria-label="Services durchsuchen"
+              className="w-full rounded-xl border border-brand-light-border dark:border-brand-dark-border bg-white dark:bg-brand-charcoal pl-12 pr-4 py-4 text-base text-brand-light-text dark:text-brand-dark-text placeholder:text-brand-light-muted dark:placeholder:text-brand-dark-muted focus:border-brand-diamond focus:outline-none focus:ring-2 focus:ring-brand-diamond/20 transition-all"
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Category Pills */}
+          <div className="flex flex-wrap items-center gap-3">
             {CATEGORIES.map((c) => (
               <button
                 key={c.key}
                 type="button"
                 onClick={() => setCat(c.key)}
-                className={cn("pill", cat === c.key && "pill-active")}
+                className={cn(
+                  "rounded-lg border px-6 py-3 text-sm font-bold uppercase tracking-wider transition-all",
+                  cat === c.key
+                    ? "border-brand-diamond bg-brand-diamond text-brand-charcoal shadow-soft-md"
+                    : "border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg text-brand-light-text dark:text-brand-dark-text hover:border-brand-diamond hover:bg-brand-diamond/10"
+                )}
               >
                 {c.label}
               </button>
             ))}
-            <div className="ml-auto text-sm font-black opacity-70">Treffer: {filtered.length}</div>
+            <div className="ml-auto text-sm font-bold text-brand-light-muted dark:text-brand-dark-muted">
+              Treffer: {filtered.length}
+            </div>
           </div>
 
-          {/* Jump index */}
+          {/* Jump Index */}
           {jumpItems.length > 0 && (
-            <div className="mt-1 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
-              <div className="text-xs font-black opacity-70">SPRINGE ZU</div>
-              <div className="mt-2 flex flex-wrap gap-2">
+            <div className="rounded-2xl border-2 border-brand-light-border/50 dark:border-brand-dark-border/50 bg-gradient-to-br from-brand-light-bg to-brand-light-muted/10 dark:from-brand-dark-bg dark:to-brand-dark-muted/10 p-6">
+              <div className="mb-4 text-xs font-bold uppercase tracking-widest text-brand-light-muted dark:text-brand-dark-muted">
+                Springe zu
+              </div>
+              <div className="flex flex-wrap gap-2">
                 {jumpItems.map((j) => (
-                  <a key={j.id} href={`#${j.id}`} className="pill">
+                  <a
+                    key={j.id}
+                    href={`#${j.id}`}
+                    className="rounded-lg border border-brand-light-border dark:border-brand-dark-border bg-white dark:bg-brand-charcoal px-4 py-2 text-sm font-semibold text-brand-light-text dark:text-brand-dark-text transition-all hover:border-brand-diamond hover:bg-brand-diamond/10 hover:text-brand-diamond"
+                  >
                     {j.label}
                   </a>
                 ))}
@@ -171,8 +167,8 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         </div>
       </div>
 
-      {/* List */}
-      <div className="mt-6 grid gap-5">
+      {/* Services Grid */}
+      <div className="grid gap-8 md:grid-cols-2">
         {filtered.map((s) => (
           <div key={s.title} id={slugify(s.title)} className="scroll-mt-24">
             <ServiceCard
@@ -188,21 +184,22 @@ export default function ServicesCatalog({ services }: { services: ServiceDTO[] }
         ))}
       </div>
 
-      {/* CTA */}
-      <section className="policy-note mt-10">
-        <div className="section-title">Anfrage / Abstimmung</div>
-        <p className="small-muted mt-2">
+      {/* CTA Section */}
+      <section className="rounded-2xl border-2 border-brand-gold/30 bg-gradient-to-br from-brand-gold/5 to-brand-diamond/5 p-10 text-center">
+        <h2 className="font-heading text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-4">
+          Anfrage / Abstimmung
+        </h2>
+        <p className="text-lg text-brand-light-muted dark:text-brand-dark-muted leading-relaxed max-w-2xl mx-auto mb-8">
           Für eine sachgerechte Einordnung sind ein kurzer Kontext (Ziel, Systemumfeld, Restriktionen) und ggf. die
           gewünschte Lieferform (Dokument, Umsetzung, Übergabe) hilfreich.
         </p>
-        <div className="mt-4">
-          <Link href="/contact" className="btn-primary">
-            Zur Geschäftsanfrage (Kontakt)
-          </Link>
-        </div>
+        <Link
+          href="/contact"
+          className="inline-flex items-center justify-center rounded-xl bg-brand-gold px-8 py-4 text-base font-bold text-brand-charcoal transition-all hover:bg-brand-gold/90 hover:shadow-soft-lg hover:scale-105"
+        >
+          Zur Geschäftsanfrage (Kontakt)
+        </Link>
       </section>
-
-      <div className="h-10" />
     </div>
   )
 }

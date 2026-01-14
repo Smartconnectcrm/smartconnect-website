@@ -1,5 +1,5 @@
-import { headers } from "next/headers"
 import { Sora, Inter, Space_Mono } from "next/font/google"
+import { headers } from "next/headers"
 
 import "./globals.css"
 
