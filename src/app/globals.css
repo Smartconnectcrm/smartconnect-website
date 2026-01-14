@@ -276,6 +276,30 @@ tr:first-child th {
   border-top: none;
 }
 
+.table-soft {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.9rem;
+}
+
+.table-soft td {
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text-muted);
+}
+
+.table-soft td:first-child {
+  font-weight: 900;
+  color: var(--text);
+  padding-right: 16px;
+}
+
+.table-soft tr:first-child td {
+  border-top: none;
+}
+
 /* ==================================================
    Accordion (Radix / shadcn)
 ================================================== */
@@ -451,6 +475,78 @@ tr:first-child th {
 }
 
 /* ==================================================
+   Form inputs (enterprise)
+================================================== */
+.input-enterprise {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.input-enterprise:focus-within {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px var(--focus);
+}
+
+.input-enterprise input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.input-enterprise input::placeholder {
+  color: var(--text-soft);
+  font-weight: 500;
+}
+
+/* ==================================================
+   Pills (filter/tag buttons)
+================================================== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+  cursor: pointer;
+}
+
+.pill:hover {
+  background: var(--bg-elev);
+  border-color: var(--border-strong);
+  text-decoration: none;
+}
+
+.pill-active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+.pill-active:hover {
+  background: color-mix(in srgb, var(--accent) 90%, black 10%);
+  border-color: color-mix(in srgb, var(--accent) 90%, black 10%);
+}
+
+/* ==================================================
    Buttons (luxury)
 ================================================== */
 .btn-primary {
@@ -538,4 +634,152 @@ tr:first-child th {
   .policy-note {
     padding: 16px;
   }
+}
+
+/* ==================================================
+   Utility Classes (Enterprise UI)
+================================================== */
+
+/* Enterprise-style input with icon */
+.input-enterprise {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(226 232 240);
+  background-color: white;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition: all 0.2s;
+}
+
+.input-enterprise:focus-within {
+  border-color: rgb(148 163 184);
+  ring: 2px solid rgb(226 232 240);
+}
+
+.input-enterprise input {
+  flex: 1;
+  background-color: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgb(15 23 42);
+  outline: none;
+}
+
+.input-enterprise input::placeholder {
+  color: rgb(148 163 184);
+}
+
+:is(.dark .input-enterprise) {
+  border-color: rgb(51 65 85);
+  background-color: rgb(15 23 42);
+}
+
+:is(.dark .input-enterprise:focus-within) {
+  border-color: rgb(100 116 139);
+  ring: 2px solid rgb(51 65 85);
+}
+
+:is(.dark .input-enterprise input) {
+  color: rgb(241 245 249);
+}
+
+:is(.dark .input-enterprise input::placeholder) {
+  color: rgb(100 116 139);
+}
+
+/* Pill button/tag */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(226 232 240);
+  background-color: white;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgb(51 65 85);
+  transition: all 0.2s;
+}
+
+.pill:hover {
+  background-color: rgb(248 250 252);
+  border-color: rgb(203 213 225);
+}
+
+.pill-active {
+  background-color: rgb(2 6 23);
+  color: white;
+  border-color: rgb(2 6 23);
+}
+
+.pill-active:hover {
+  background-color: rgb(15 23 42);
+  border-color: rgb(15 23 42);
+}
+
+:is(.dark .pill) {
+  border-color: rgb(51 65 85);
+  background-color: rgb(15 23 42);
+  color: rgb(203 213 225);
+}
+
+:is(.dark .pill:hover) {
+  background-color: rgb(30 41 59);
+  border-color: rgb(71 85 105);
+}
+
+:is(.dark .pill-active) {
+  background-color: white;
+  color: rgb(2 6 23);
+  border-color: white;
+}
+
+:is(.dark .pill-active:hover) {
+  background-color: rgb(241 245 249);
+  border-color: rgb(241 245 249);
+}
+
+/* Soft table styling */
+.table-soft {
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.table-soft tbody tr {
+  border-bottom: 1px solid rgb(241 245 249);
+}
+
+.table-soft tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.table-soft td {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  vertical-align: top;
+}
+
+.table-soft td:first-child {
+  font-weight: 600;
+  color: rgb(71 85 105);
+  padding-right: 1rem;
+}
+
+.table-soft td:last-child {
+  color: rgb(15 23 42);
+}
+
+:is(.dark .table-soft tbody tr) {
+  border-bottom-color: rgb(30 41 59);
+}
+
+:is(.dark .table-soft td:first-child) {
+  color: rgb(148 163 184);
+}
+
+:is(.dark .table-soft td:last-child) {
+  color: rgb(241 245 249);
 }

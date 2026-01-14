@@ -5,8 +5,15 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 
+import Hero3DErrorBoundary from "./Hero3DErrorBoundary"
+
 const SmartConnectHero3D = dynamic(() => import("./SmartConnectHero3D"), {
   ssr: false,
+  loading: () => (
+    <div className="h-full w-full flex items-center justify-center bg-slate-950/50">
+      <div className="text-white/50 text-xs">Loading 3D...</div>
+    </div>
+  ),
 })
 
 type HeroMode = "stable" | "scale" | "defense"
@@ -80,18 +87,24 @@ export default function HeroSlot() {
   return (
     <section ref={hostRef} className="relative w-full overflow-hidden">
       <div className="relative h-[70vh] min-h-[520px] w-full">
-        {!show3D && (
-          <Image
-            src="/hero/hero-poster.webp"
-            alt="SmartConnect CRM UG – Enterprise IT & Digital Solutions"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        )}
+        {/* Always render poster as base layer */}
+        <Image
+          src="/hero/hero-poster.webp"
+          alt="SmartConnect CRM UG – Enterprise IT & Digital Solutions"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
 
-        {show3D && <SmartConnectHero3D speed={preset.speed} intensity={preset.intensity} />}
+        {/* Overlay 3D when ready */}
+        {show3D && (
+          <div className="absolute inset-0 z-10">
+            <Hero3DErrorBoundary>
+              <SmartConnectHero3D speed={preset.speed} intensity={preset.intensity} />
+            </Hero3DErrorBoundary>
+          </div>
+        )}
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/5 to-transparent" />
 
