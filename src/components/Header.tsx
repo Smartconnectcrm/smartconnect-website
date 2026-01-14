@@ -21,6 +21,7 @@ const nav = [
   { href: "/services", label: "LEISTUNGEN", mega: true as const },
   { href: "/about", label: "UNTERNEHMEN" },
   { href: "/compliance", label: "COMPLIANCE" },
+  { href: "/procurement", label: "PROCUREMENT" },
 ]
 
 const megaPrimary: MegaItem[] = [

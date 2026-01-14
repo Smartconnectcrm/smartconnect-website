@@ -33,7 +33,7 @@ export interface CompanyLegal {
 export const COMPANY_LEGAL: CompanyLegal = {
   legalName: "SmartConnect CRM UG (haftungsbeschränkt)",
   legalForm: "UG (haftungsbeschränkt)",
-  address: "Düsseldorf, Germany",
+  address: "Otto-Braun-Str. 12, 40595 Düsseldorf, Deutschland",
   registerCourt: "Amtsgericht Düsseldorf",
   registerNumber: "HRB-XXXX", // TODO: Update with official HRB number
   managingDirector: "Abubakar Bolarinwa Alimi",

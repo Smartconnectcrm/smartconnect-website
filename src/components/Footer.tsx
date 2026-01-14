@@ -80,7 +80,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/imprint"
+                  href="/impressum"
                   className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Impressum
@@ -88,18 +88,26 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/datenschutz"
                   className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
-                  Datenschutzerklärung
+                  Datenschutz
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="/compliance"
                   className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
-                  AGB
+                  Compliance
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/procurement"
+                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                >
+                  Procurement
                 </Link>
               </li>
             </ul>
