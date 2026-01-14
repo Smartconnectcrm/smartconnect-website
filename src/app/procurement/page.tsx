@@ -1,328 +1,271 @@
-import type { Metadata } from "next";
+import Link from "next/link"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BRAND } from "@/lib/branding"
+import { PROCUREMENT_PROFILE, BAFA_CONSULTING_NEEDS } from "@/lib/content"
+import { COMPANY_LEGAL } from "@/lib/company"
 
-import { ProcurementProfile } from "@/components/ProcurementProfile";
-
-export const metadata: Metadata = {
-  title: "Procurement & Tender Profile | SmartConnect CRM UG",
+export const metadata = {
+  title: `Procurement | ${BRAND?.name ?? "SmartConnect CRM"}`,
   description:
-    "EU Procurement Profile, Tender-Dokumentation und BAFA-kompatible Unternehmensdarstellung für öffentliche Auftraggeber.",
-};
+    "EU Tender & Procurement Profile für öffentliche Auftraggeber. Leistungsgegenstand, Lieferobjekte, Dokumentationsumfang und Compliance-Arbeitsweise.",
+}
 
 export default function ProcurementPage() {
   return (
-    <main className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-24 md:py-32">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mx-auto max-w-4xl">
-            <h1 className="mb-6 text-5xl font-bold tracking-tight text-foreground md:text-6xl">
-              Procurement & Tender Profile
-            </h1>
-            <p className="text-xl text-muted-foreground md:text-2xl">
-              Strukturierte Darstellung für öffentliche Auftraggeber,
-              EU-Ausschreibungen und BAFA-Beratungsförderung
-            </p>
+    <div className="container py-16 md:py-20">
+      {/* Page Header */}
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        <div className="inline-block rounded-full bg-gradient-to-r from-brand-gold to-brand-diamond px-4 py-1.5 text-xs font-bold text-brand-charcoal mb-6">
+          EU Tender & Public Procurement
+        </div>
+        
+        <h1 className="font-heading text-4xl md:text-5xl font-bold tracking-tight text-brand-light-text dark:text-brand-dark-text mb-6 leading-tight">
+          Procurement-Profil
+        </h1>
+        
+        <p className="text-lg md:text-xl font-light text-brand-light-muted dark:text-brand-dark-muted leading-relaxed max-w-3xl mx-auto">
+          Strukturierte Informationen für öffentliche Beschaffung, EU-Tender und Vergabeverfahren mit prüffähiger Dokumentation und Compliance-Bausteinen.
+        </p>
+      </div>
+
+      {/* Leistungsgegenstand */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-brand-light-bg dark:bg-brand-dark-bg border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-4">
+            Leistungsgegenstand
+          </h2>
+          <p className="text-base text-brand-light-muted dark:text-brand-dark-muted leading-relaxed">
+            {PROCUREMENT_PROFILE.leistungsgegenstand}
+          </p>
+        </div>
+      </section>
+
+      {/* Lieferobjekte */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-brand-light-bg dark:bg-brand-dark-bg border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-6">
+            Lieferobjekte
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {PROCUREMENT_PROFILE.lieferobjekte.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-3 p-4 rounded-lg bg-brand-light-muted/30 dark:bg-brand-dark-muted/30 border border-brand-light-border dark:border-brand-dark-border"
+              >
+                <span className="w-6 h-6 rounded bg-brand-diamond/10 flex items-center justify-center text-xs font-bold text-brand-diamond shrink-0 mt-0.5">
+                  {idx + 1}
+                </span>
+                <span className="text-sm text-brand-light-text dark:text-brand-dark-text">{item}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Procurement Profile */}
-      <ProcurementProfile />
+      {/* Dokumentationsumfang */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-brand-light-bg dark:bg-brand-dark-bg border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-6">
+            Dokumentationsumfang
+          </h2>
+          <ul className="space-y-3">
+            {PROCUREMENT_PROFILE.dokumentationsumfang.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-base text-brand-light-muted dark:text-brand-dark-muted">
+                <span className="text-brand-diamond mt-1">→</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-      {/* BAFA-Compatible Consulting Need Statement */}
-      <section className="py-16 md:py-24 bg-muted/30">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mx-auto max-w-6xl space-y-16">
-            {/* Header */}
-            <div className="space-y-6">
-              <h2 className="text-4xl font-bold text-foreground md:text-5xl">
-                Unternehmensphase & Beratungsbedarf
-              </h2>
-              <p className="text-xl text-muted-foreground">
-                BAFA-kompatible Darstellung der aktuellen Unternehmensphase und
-                identifizierten Beratungsbedarfe für Wachstum und
-                Professionalisierung.
-              </p>
-            </div>
+      {/* Abgrenzung */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-brand-light-bg dark:bg-brand-dark-bg border-2 border-red-500/20 p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-6">
+            Abgrenzung
+          </h2>
+          <ul className="space-y-3">
+            {PROCUREMENT_PROFILE.abgrenzung.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-base text-brand-light-muted dark:text-brand-dark-muted">
+                <span className="text-red-500 mt-1">×</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-            {/* Current Phase */}
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-foreground">
-                Aktuelle Unternehmensphase
+      {/* Einsatzbereiche */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-brand-light-bg dark:bg-brand-dark-bg border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-6">
+            Einsatzbereiche
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            {PROCUREMENT_PROFILE.einsatzbereiche.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r from-brand-gold/10 to-brand-diamond/10 border border-brand-light-border dark:border-brand-dark-border"
+              >
+                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-gold to-brand-diamond flex items-center justify-center text-sm font-bold text-brand-charcoal shrink-0">
+                  {idx + 1}
+                </span>
+                <span className="text-sm font-bold text-brand-light-text dark:text-brand-dark-text">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Compliance-Arbeitsweise */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-gradient-to-br from-brand-light-muted/30 to-brand-light-muted/10 dark:from-brand-dark-muted/30 dark:to-brand-dark-muted/10 border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-6">
+            Compliance-Arbeitsweise
+          </h2>
+          <ul className="space-y-3">
+            {PROCUREMENT_PROFILE.complianceArbeitsweise.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-3 text-base text-brand-light-muted dark:text-brand-dark-muted">
+                <span className="text-brand-diamond mt-1">✓</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* BAFA Consulting Needs */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-brand-light-bg dark:bg-brand-dark-bg border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-4">
+            Unternehmensphase &amp; Beratungsbedarf
+          </h2>
+          <p className="text-base text-brand-light-muted dark:text-brand-dark-muted mb-8 leading-relaxed">
+            Strukturierte Darstellung der Unternehmensentwicklung und des Beratungsbedarfs für BAFA-Förderung und Organisationsentwicklung.
+          </p>
+
+          <div className="space-y-6">
+            {BAFA_CONSULTING_NEEDS.map((need, idx) => (
+              <div
+                key={idx}
+                className="rounded-xl p-6 bg-brand-light-muted/30 dark:bg-brand-dark-muted/30 border border-brand-light-border dark:border-brand-dark-border"
+              >
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-gold to-brand-diamond flex items-center justify-center text-sm font-bold text-brand-charcoal shrink-0">
+                    {idx + 1}
+                  </span>
+                  <div>
+                    <h3 className="font-heading text-lg font-bold text-brand-light-text dark:text-brand-dark-text mb-2">
+                      {need.phase}
+                    </h3>
+                    <p className="text-sm text-brand-light-muted dark:text-brand-dark-muted mb-3">
+                      {need.description}
+                    </p>
+                  </div>
+                </div>
+
+                <ul className="space-y-2 ml-11">
+                  {need.topics.map((topic, topicIdx) => (
+                    <li key={topicIdx} className="flex items-start gap-2 text-sm text-brand-light-muted dark:text-brand-dark-muted">
+                      <span className="text-brand-diamond mt-0.5">→</span>
+                      <span>{topic}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="mb-12">
+        <div className="rounded-2xl bg-gradient-to-br from-brand-light-bg to-brand-light-muted/30 dark:from-brand-dark-bg dark:to-brand-dark-muted/30 border-2 border-brand-light-border dark:border-brand-dark-border p-6 md:p-8">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-6">
+            Kontakt für Procurement-Anfragen
+          </h2>
+          
+          <div className="grid gap-6 md:grid-cols-2">
+            <div>
+              <h3 className="font-heading text-base font-bold text-brand-light-text dark:text-brand-dark-text mb-3">
+                Formale Kontaktdaten
               </h3>
-              <Card className="border-2 border-border bg-card">
-                <CardContent className="space-y-4 pt-6 text-lg text-muted-foreground">
-                  <p>
-                    SmartConnect CRM UG befindet sich in der Phase des
-                    Markteintritts und der Produktisierung. Das Unternehmen
-                    verfügt über technische Expertise in der Entwicklung von
-                    CRM-Systemen und strebt die Etablierung als zuverlässiger
-                    Partner für öffentliche Auftraggeber und Mittelstand an.
-                  </p>
-                  <p className="font-medium text-foreground">
-                    Unternehmensgründung: 2024 (UG-Gründung in Vorbereitung)
-                  </p>
-                  <p className="font-medium text-foreground">
-                    Mitarbeiter: Geschäftsführung + projektbasierte Ressourcen
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Consulting Needs */}
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-foreground">
-                Identifizierte Beratungsbedarfe
-              </h3>
-              <div className="grid gap-6 md:grid-cols-2">
-                <Card className="border-2 border-border bg-card hover:border-sky-500/50 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl">
-                      1. Markteintritt & Positionierung
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-muted-foreground">
-                    <p className="font-semibold text-foreground">Bedarf:</p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Entwicklung einer klaren Marktpositionierung für
-                        öffentliche Auftraggeber
-                      </li>
-                      <li>
-                        Identifikation von Zielkunden und Marktsegmenten
-                      </li>
-                      <li>
-                        Wettbewerbsanalyse und Differenzierungsstrategie
-                      </li>
-                      <li>
-                        Aufbau von Netzwerken und Partnerschaften
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-2 border-border bg-card hover:border-sky-500/50 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl">
-                      2. Produktisierung & Servicekatalog
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-muted-foreground">
-                    <p className="font-semibold text-foreground">Bedarf:</p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Strukturierung des Leistungsportfolios in
-                        standardisierte Produkte
-                      </li>
-                      <li>
-                        Entwicklung eines modularen Servicekatalogs
-                      </li>
-                      <li>
-                        Preisgestaltung und Kalkulationsmodelle
-                      </li>
-                      <li>
-                        Dokumentation von Leistungsbeschreibungen für
-                        Ausschreibungen
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-2 border-border bg-card hover:border-sky-500/50 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl">
-                      3. Vertriebs- & Angebotsprozesse
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-muted-foreground">
-                    <p className="font-semibold text-foreground">Bedarf:</p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Aufbau strukturierter Vertriebsprozesse
-                      </li>
-                      <li>
-                        Entwicklung von Angebotsvorlagen und -prozessen
-                      </li>
-                      <li>
-                        CRM-System für Lead-Management und Kundenbetreuung
-                      </li>
-                      <li>
-                        Schulung in Verhandlungsführung und Vertragsgestaltung
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-2 border-border bg-card hover:border-sky-500/50 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl">
-                      4. Ausschreibungsfähigkeit (Öffentliche Beschaffung)
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-muted-foreground">
-                    <p className="font-semibold text-foreground">Bedarf:</p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Verständnis von Vergabeverfahren (VgV, UVgO)
-                      </li>
-                      <li>
-                        Erstellung ausschreibungskonformer Angebote
-                      </li>
-                      <li>
-                        Aufbau von Referenzen und Nachweisen
-                      </li>
-                      <li>
-                        Präqualifikation und Zertifizierungsstrategien
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-2 border-border bg-card hover:border-sky-500/50 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl">
-                      5. Qualitätssicherung & Compliance
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-muted-foreground">
-                    <p className="font-semibold text-foreground">Bedarf:</p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Implementierung von Qualitätsmanagement-Prozessen
-                      </li>
-                      <li>
-                        DSGVO-Compliance und Datenschutz-Management
-                      </li>
-                      <li>
-                        Informationssicherheit und Security-by-Design
-                      </li>
-                      <li>
-                        ISO-Readiness und Zertifizierungsvorbereitung
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-2 border-border bg-card hover:border-sky-500/50 transition-all duration-300">
-                  <CardHeader>
-                    <CardTitle className="text-xl">
-                      6. Organisationsentwicklung & Skalierung
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-muted-foreground">
-                    <p className="font-semibold text-foreground">Bedarf:</p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Aufbau skalierbarer Organisationsstrukturen
-                      </li>
-                      <li>
-                        Personalplanung und Recruiting-Strategien
-                      </li>
-                      <li>
-                        Prozessoptimierung und Automatisierung
-                      </li>
-                      <li>
-                        Finanzplanung und Controlling
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
+              <div className="space-y-2 text-sm text-brand-light-muted dark:text-brand-dark-muted">
+                <div>
+                  <span className="font-bold">Unternehmen:</span> {COMPANY_LEGAL.legalName}
+                </div>
+                <div>
+                  <span className="font-bold">Adresse:</span> {COMPANY_LEGAL.address}
+                </div>
+                <div>
+                  <span className="font-bold">E-Mail:</span>{" "}
+                  <a
+                    href={`mailto:${COMPANY_LEGAL.email}`}
+                    className="text-brand-diamond hover:text-brand-gold transition-colors underline"
+                  >
+                    {COMPANY_LEGAL.email}
+                  </a>
+                </div>
+                <div>
+                  <span className="font-bold">Telefon:</span>{" "}
+                  <a
+                    href={`tel:${COMPANY_LEGAL.phone}`}
+                    className="text-brand-diamond hover:text-brand-gold transition-colors underline"
+                  >
+                    {COMPANY_LEGAL.phone}
+                  </a>
+                </div>
               </div>
             </div>
 
-            {/* BAFA Förderung */}
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-foreground">
-                BAFA-Förderung für Unternehmensberatung
+            <div>
+              <h3 className="font-heading text-base font-bold text-brand-light-text dark:text-brand-dark-text mb-3">
+                Geschäftsführung
               </h3>
-              <Card className="border-2 border-sky-500/30 bg-sky-500/10">
-                <CardContent className="space-y-4 pt-6 text-lg text-muted-foreground">
-                  <p className="font-semibold text-foreground">
-                    Förderfähigkeit:
-                  </p>
-                  <p>
-                    Als junges Unternehmen in der Wachstumsphase ist
-                    SmartConnect CRM UG grundsätzlich förderfähig für
-                    BAFA-Beratungsförderung im Rahmen des Programms
-                    &quot;Förderung unternehmerischen Know-hows&quot;.
-                  </p>
-                  <div className="space-y-3">
-                    <p className="font-semibold text-foreground">
-                      Förderschwerpunkte:
-                    </p>
-                    <ul className="ml-6 space-y-2 list-disc">
-                      <li>
-                        Unternehmensführung und Organisation
-                      </li>
-                      <li>
-                        Marketing und Vertrieb
-                      </li>
-                      <li>
-                        Finanzierung und Controlling
-                      </li>
-                      <li>
-                        Digitalisierung und Prozessoptimierung
-                      </li>
-                      <li>
-                        Qualitätsmanagement und Zertifizierung
-                      </li>
-                    </ul>
-                  </div>
-                  <p className="text-base pt-4">
-                    <strong className="text-foreground">Hinweis:</strong> Die
-                    tatsächliche Förderfähigkeit und Förderhöhe wird durch das
-                    BAFA im Einzelfall geprüft. Diese Darstellung dient der
-                    Vorbereitung eines Förderantrags.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="space-y-2 text-sm text-brand-light-muted dark:text-brand-dark-muted">
+                <div>
+                  <span className="font-bold">Geschäftsführer:</span> {COMPANY_LEGAL.managingDirector}
+                </div>
+                <div>
+                  <span className="font-bold">Registergericht:</span> {COMPANY_LEGAL.registerCourt}
+                </div>
+                <div>
+                  <span className="font-bold">Registernummer:</span>{" "}
+                  <span className="text-amber-500">{COMPANY_LEGAL.registerNumber}</span>
+                </div>
+              </div>
             </div>
+          </div>
 
-            {/* No Exaggerated Claims */}
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-foreground">
-                Transparenz und Realismus
+          <div className="mt-6 pt-6 border-t border-brand-light-border dark:border-brand-dark-border">
+            <Link href="/contact" className="btn btn-primary">
+              Geschäftsanfrage stellen
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Transparency Notice */}
+      <section>
+        <div className="rounded-xl p-6 bg-brand-light-muted/30 dark:bg-brand-dark-muted/30 border border-brand-light-border dark:border-brand-dark-border">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-lg bg-brand-diamond/10 flex items-center justify-center text-lg shrink-0">
+              ℹ️
+            </div>
+            <div>
+              <h3 className="font-heading text-base font-bold text-brand-light-text dark:text-brand-dark-text mb-2">
+                Hinweis zur Transparenz
               </h3>
-              <Card className="border-2 border-amber-500/30 bg-amber-500/10">
-                <CardContent className="space-y-4 pt-6 text-lg text-muted-foreground">
-                  <p className="font-semibold text-foreground">
-                    Keine übertriebenen Reifegrad-Behauptungen:
-                  </p>
-                  <ul className="ml-6 space-y-2 list-disc">
-                    <li>
-                      Wir befinden uns in der Aufbauphase und kommunizieren dies
-                      transparent
-                    </li>
-                    <li>
-                      Wir behaupten keine Zertifizierungen oder Standards, die
-                      nicht nachweisbar sind
-                    </li>
-                    <li>
-                      Wir nennen keine Umsatzzahlen oder Kundenzahlen ohne
-                      Nachweis
-                    </li>
-                    <li>
-                      Wir setzen auf dokumentierte Expertise und nachvollziehbare
-                      Leistungen
-                    </li>
-                    <li>
-                      Beratungsbedarf wird realistisch dargestellt, nicht als
-                      Schwäche, sondern als Wachstumschance
-                    </li>
-                  </ul>
-                  <p className="text-base pt-4 font-medium text-foreground">
-                    Diese Transparenz ist die Grundlage für vertrauensvolle
-                    Zusammenarbeit mit öffentlichen Auftraggebern und
-                    Beratungspartnern.
-                  </p>
-                </CardContent>
-              </Card>
+              <p className="text-sm text-brand-light-muted dark:text-brand-dark-muted leading-relaxed">
+                Alle Angaben auf dieser Seite sind faktisch und nachvollziehbar. Es werden keine unbestätigten Referenzen,
+                keine erfundenen Kennzahlen und keine Zertifikats-Badges ohne Nachweis verwendet. Für rechtliche Fragen
+                zu Vergabeverfahren konsultieren Sie bitte spezialisierte Rechtsstellen.
+              </p>
             </div>
           </div>
         </div>
       </section>
-    </main>
-  );
+    </div>
+  )
 }

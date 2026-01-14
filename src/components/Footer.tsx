@@ -9,14 +9,17 @@ export default function Footer() {
 
   return (
     <footer className="border-t-2 border-brand-light-border dark:border-brand-dark-border bg-brand-light-bg dark:bg-brand-dark-bg">
-      <div className="container py-16 md:py-20">
-        <div className="grid gap-12 md:grid-cols-3 lg:grid-cols-4">
+      <div className="container py-12 md:py-16">
+        <div className="grid gap-8 md:grid-cols-4">
           {/* Company */}
-          <div className="lg:col-span-2">
-            <div className="font-heading text-2xl font-bold text-brand-light-text dark:text-brand-dark-text mb-4">
+          <div className="md:col-span-2">
+            <div className="font-heading text-xl font-bold text-brand-light-text dark:text-brand-dark-text mb-3">
               {BRAND.legalName}
             </div>
-            <div className="space-y-2 text-base text-brand-light-muted dark:text-brand-dark-muted leading-relaxed">
+            <div className="text-sm text-brand-light-muted dark:text-brand-dark-muted leading-relaxed mb-4">
+              B2B IT &amp; Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.
+            </div>
+            <div className="space-y-2 text-sm text-brand-light-muted dark:text-brand-dark-muted">
               <div>{BRAND.location}</div>
               <div>
                 E-Mail:{" "}
@@ -41,22 +44,30 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <div className="text-sm font-bold uppercase tracking-widest text-brand-light-muted dark:text-brand-dark-muted mb-4">
+            <div className="text-xs font-bold uppercase tracking-widest text-brand-light-muted dark:text-brand-dark-muted mb-3">
               Navigation
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               <li>
                 <Link
                   href="/services"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Leistungen
                 </Link>
               </li>
               <li>
                 <Link
+                  href="/procurement"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                >
+                  Procurement
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/compliance"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Compliance
                 </Link>
@@ -64,7 +75,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Kontakt
                 </Link>
@@ -74,14 +85,14 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <div className="text-sm font-bold uppercase tracking-widest text-brand-light-muted dark:text-brand-dark-muted mb-4">
+            <div className="text-xs font-bold uppercase tracking-widest text-brand-light-muted dark:text-brand-dark-muted mb-3">
               Rechtliches
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               <li>
                 <Link
                   href="/impressum"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Impressum
                 </Link>
@@ -89,7 +100,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/datenschutz"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Datenschutz
                 </Link>
@@ -97,33 +108,25 @@ export default function Footer() {
               <li>
                 <Link
                   href="/compliance"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
+                  className="text-sm text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
                 >
                   Compliance
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/procurement"
-                  className="text-base text-brand-light-text dark:text-brand-dark-text hover:text-brand-diamond transition-colors"
-                >
-                  Procurement
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Divider with gradient */}
-        <div className="my-10 h-px bg-gradient-to-r from-transparent via-brand-light-border dark:via-brand-dark-border to-transparent" />
+        {/* Divider */}
+        <div className="my-8 h-px bg-gradient-to-r from-transparent via-brand-light-border dark:via-brand-dark-border to-transparent" />
 
         {/* Legal Impressum - Compact German Format */}
-        <div className="mb-6 text-xs text-brand-light-muted dark:text-brand-dark-muted leading-relaxed text-center">
+        <div className="mb-4 text-xs text-brand-light-muted dark:text-brand-dark-muted leading-relaxed text-center">
           {legalText}
         </div>
 
         {/* Copyright */}
-        <div className="text-center text-sm text-brand-light-muted dark:text-brand-dark-muted">
+        <div className="text-center text-xs text-brand-light-muted dark:text-brand-dark-muted">
           © {yearText} {BRAND.legalName}. Alle Rechte vorbehalten.
         </div>
       </div>
