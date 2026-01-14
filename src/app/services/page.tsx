@@ -201,18 +201,20 @@ export default function ServicesPage() {
   ]
 
   return (
-    <div className="container-fixed py-10 md:py-14">
-      <div className="doc-prose">
-        <h1>Leistungen</h1>
-        <p className="lead">
+    <div className="container py-24 md:py-32">
+      {/* Page Header */}
+      <div className="max-w-4xl mx-auto text-center mb-24">
+        <h1 className="font-heading text-5xl md:text-7xl font-bold tracking-tighter text-brand-light-text dark:text-brand-dark-text mb-8 leading-tight">
+          Leistungen
+        </h1>
+        <p className="text-xl md:text-2xl font-light text-brand-light-muted dark:text-brand-dark-muted leading-relaxed max-w-3xl mx-auto">
           Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und compliance-orientierter
           Umsetzung.
         </p>
       </div>
 
-      <div className="mt-8">
-        <ServicesCatalog services={services} />
-      </div>
+      {/* Services Catalog */}
+      <ServicesCatalog services={services} />
     </div>
   )
 }

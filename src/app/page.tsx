@@ -9,75 +9,136 @@ export default function HomePage() {
       {/* Full-bleed hero */}
       <HeroSlot />
 
-      {/* Constrained content */}
-      <div className="container-fixed py-8">
-        <div className="doc-prose">
-          {/* Brand name (NO legal suffix on homepage) */}
-          <h1>{BRAND.name}</h1>
+      {/* Main Content */}
+      <div id="content" className="container py-24 md:py-32">
+        {/* Hero Text Section */}
+        <div className="max-w-4xl mx-auto text-center mb-24">
+          <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-brand-light-text dark:text-brand-dark-text mb-8 leading-tight">
+            {BRAND.name}
+          </h1>
 
-          <p className="lead">
-            B2B IT &amp; Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben. Fokus:
-            strukturierte Umsetzung, nachvollziehbare Dokumentation und compliance-orientierte Arbeitsweise.
+          <p className="text-xl md:text-2xl lg:text-3xl font-light text-brand-light-muted dark:text-brand-dark-muted leading-relaxed mb-12">
+            B2B IT &amp; Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link href="/contact" className="btn-primary">
+          <p className="text-base md:text-lg text-brand-light-muted dark:text-brand-dark-muted max-w-2xl mx-auto mb-12">
+            Fokus: strukturierte Umsetzung, nachvollziehbare Dokumentation und compliance-orientierte Arbeitsweise.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link href="/contact" className="btn btn-primary btn-large">
               Geschäftsanfrage
             </Link>
 
-            <Link href="/services" className="btn-secondary">
+            <Link href="/services" className="btn btn-secondary btn-large">
               Leistungskatalog ansehen
             </Link>
           </div>
+        </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div className="card-soft p-5">
-              <h2 className="m-0 text-base">Arbeitsweise (procurement-tauglich)</h2>
-
-              <div className="mt-3 text-sm">
-                <ul>
-                  <li>Klare Leistungsabgrenzung, nachvollziehbare Deliverables</li>
-                  <li>Dokumentation (technisch + organisatorisch) für Audit-/Review-Kontexte</li>
-                  <li>Datensparsamkeit, Sicherheits- und Compliance-by-Design</li>
-                  <li>Keine unbestätigten Referenzen oder Kennzahlen auf der Website</li>
-                </ul>
+        {/* Feature Grid */}
+        <div className="grid gap-8 md:grid-cols-2 mb-24">
+          {/* Arbeitsweise Card */}
+          <div className="group rounded-2xl p-8 md:p-10 bg-brand-light-bg dark:bg-brand-dark-bg border border-brand-light-border dark:border-brand-dark-border hover:border-brand-diamond hover:shadow-soft-lg transition-all duration-300">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-gold to-brand-diamond flex items-center justify-center text-2xl font-bold text-brand-charcoal">
+                ✓
+              </div>
+              <div>
+                <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-2">
+                  Arbeitsweise
+                </h2>
+                <p className="text-sm text-brand-light-muted dark:text-brand-dark-muted">
+                  Procurement-tauglich
+                </p>
               </div>
             </div>
 
-            <div className="card-soft p-5">
-              <h2 className="m-0 text-base">Schnellübersicht</h2>
-
-              <table className="table-soft mt-3">
-                <tbody>
-                  <tr>
-                    <td>Standort</td>
-                    <td>Düsseldorf, Deutschland</td>
-                  </tr>
-                  <tr>
-                    <td>Einsatz</td>
-                    <td>Remote / On-site (nach Vereinbarung)</td>
-                  </tr>
-                  <tr>
-                    <td>Kontakt</td>
-                    <td>
-                      <a href="mailto:admin@smartclientcrm.com">admin@smartclientcrm.com</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Schwerpunkt</td>
-                    <td>IT Services, Integration, Security-by-Design, Betriebsnähe</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <ul className="space-y-4 text-base text-brand-light-muted dark:text-brand-dark-muted">
+              <li className="flex items-start gap-3">
+                <span className="text-brand-diamond mt-1">→</span>
+                <span>Klare Leistungsabgrenzung, nachvollziehbare Deliverables</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-brand-diamond mt-1">→</span>
+                <span>Dokumentation (technisch + organisatorisch) für Audit-/Review-Kontexte</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-brand-diamond mt-1">→</span>
+                <span>Datensparsamkeit, Sicherheits- und Compliance-by-Design</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-brand-diamond mt-1">→</span>
+                <span>Keine unbestätigten Referenzen oder Kennzahlen auf der Website</span>
+              </li>
+            </ul>
           </div>
 
-          <div className="mt-10 card-soft p-5">
-            <div className="font-extrabold">Hinweis zur Transparenz</div>
-            <p className="small-muted mt-2">
-              Diese Website enthält keine Marketing-Behauptungen, keine erfundenen Kennzahlen, keine Zertifikats-Badges
-              ohne Nachweis und keine Tracking-/Analytics-Tools ohne Einwilligung.
-            </p>
+          {/* Schnellübersicht Card */}
+          <div className="group rounded-2xl p-8 md:p-10 bg-brand-light-bg dark:bg-brand-dark-bg border border-brand-light-border dark:border-brand-dark-border hover:border-brand-gold hover:shadow-soft-lg transition-all duration-300">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-diamond to-brand-gold flex items-center justify-center text-2xl font-bold text-brand-charcoal">
+                ℹ
+              </div>
+              <div>
+                <h2 className="font-heading text-2xl md:text-3xl font-bold text-brand-light-text dark:text-brand-dark-text mb-2">
+                  Schnellübersicht
+                </h2>
+                <p className="text-sm text-brand-light-muted dark:text-brand-dark-muted">
+                  Wichtige Informationen
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-brand-light-border dark:border-brand-dark-border">
+                <span className="font-medium text-brand-light-muted dark:text-brand-dark-muted">Standort</span>
+                <span className="text-right font-medium text-brand-light-text dark:text-brand-dark-text">
+                  Düsseldorf, Deutschland
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-brand-light-border dark:border-brand-dark-border">
+                <span className="font-medium text-brand-light-muted dark:text-brand-dark-muted">Einsatz</span>
+                <span className="text-right font-medium text-brand-light-text dark:text-brand-dark-text">
+                  Remote / On-site
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-4 pb-4 border-b border-brand-light-border dark:border-brand-dark-border">
+                <span className="font-medium text-brand-light-muted dark:text-brand-dark-muted">Kontakt</span>
+                <a
+                  href="mailto:admin@smartclientcrm.com"
+                  className="text-right font-medium text-brand-diamond hover:underline"
+                >
+                  admin@smartclientcrm.com
+                </a>
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <span className="font-medium text-brand-light-muted dark:text-brand-dark-muted">Schwerpunkt</span>
+                <span className="text-right font-medium text-brand-light-text dark:text-brand-dark-text max-w-xs">
+                  IT Services, Integration, Security-by-Design
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Transparency Notice */}
+        <div className="max-w-4xl mx-auto">
+          <div className="rounded-2xl p-8 md:p-10 bg-gradient-to-br from-brand-light-muted/20 to-brand-light-muted/10 dark:from-brand-dark-muted/20 dark:to-brand-dark-muted/10 border-2 border-brand-light-border dark:border-brand-dark-border">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-lg bg-brand-diamond/10 flex items-center justify-center text-xl">
+                🔒
+              </div>
+              <div>
+                <h3 className="font-heading text-xl font-bold text-brand-light-text dark:text-brand-dark-text mb-3">
+                  Hinweis zur Transparenz
+                </h3>
+                <p className="text-base text-brand-light-muted dark:text-brand-dark-muted leading-relaxed">
+                  Diese Website enthält keine Marketing-Behauptungen, keine erfundenen Kennzahlen, keine Zertifikats-Badges
+                  ohne Nachweis und keine Tracking-/Analytics-Tools ohne Einwilligung.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { Sora, Inter, Space_Mono } from "next/font/google"
 import { headers } from "next/headers"
 
 import "./globals.css"
@@ -10,6 +11,27 @@ import Insights from "./insights"
 
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
+
+// Typography: Concept B - Modern Institutional
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-sora",
+  display: "swap",
+  weight: ["300", "400", "600", "700", "800"],
+})
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+  display: "swap",
+  weight: ["400", "700"],
+})
 
 export const dynamic = "force-dynamic"
 
@@ -57,8 +79,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const nonce = headers().get("x-nonce") || undefined
 
   return (
-    <html lang="de">
-      <body>
+    <html lang="de" className={`${sora.variable} ${inter.variable} ${spaceMono.variable}`}>
+      <body className="font-body">
         <NonceProvider nonce={nonce}>
           {/* Accessibility: Skip link (visible on keyboard focus) */}
           <a
