@@ -1,7 +1,7 @@
 /**
  * SmartConnect CRM UG (haftungsbeschränkt)
  * Centralized Company Legal Configuration
- * 
+ *
  * IMPORTANT: All data is official and verified.
  * Do NOT modify without legal authorization.
  */
@@ -29,32 +29,32 @@ export interface CompanyLegal {
 }
 
 export const COMPANY_LEGAL: CompanyLegal = {
-  legalName: 'SmartConnect CRM UG (haftungsbeschränkt)',
-  legalForm: 'UG (haftungsbeschränkt)',
-  
+  legalName: "SmartConnect CRM UG (haftungsbeschränkt)",
+  legalForm: "UG (haftungsbeschränkt)",
+
   address: {
-    street: 'Otto-Braun-Str. 12',
-    postalCode: '40595',
-    city: 'Düsseldorf',
-    country: 'Deutschland',
-    full: 'Otto-Braun-Str. 12, 40595 Düsseldorf, Deutschland',
+    street: "Otto-Braun-Str. 12",
+    postalCode: "40595",
+    city: "Düsseldorf",
+    country: "Deutschland",
+    full: "Otto-Braun-Str. 12, 40595 Düsseldorf, Deutschland",
   },
-  
-  registerCourt: 'Amtsgericht Düsseldorf',
-  registerNumber: 'HRB 110351',
-  managingDirector: 'Abubakar Bolarinwa Alimi',
-  taxNumber: '106/5725/5542',
+
+  registerCourt: "Amtsgericht Düsseldorf",
+  registerNumber: "HRB 110351",
+  managingDirector: "Abubakar Bolarinwa Alimi",
+  taxNumber: "106/5725/5542",
   vatId: null, // USt-IdNr not yet assigned
-  
+
   contact: {
-    email: 'admin@smartclientcrm.com',
-    phone: '+49 211 87973999233',
-    website: 'https://www.smartconnectcrm.eu',
+    email: "admin@smartclientcrm.com",
+    phone: "+49 211 87973999233",
+    website: "https://www.smartconnectcrm.eu",
   },
 };
 
 /**
- * Get formatted legal footer block (German)
+ * Multi-line legal block for full Impressum / footer if needed (German).
  */
 export function getFooterLegalBlock(): string {
   return `${COMPANY_LEGAL.legalName}
@@ -70,7 +70,28 @@ Telefon: ${COMPANY_LEGAL.contact.phone}`;
 }
 
 /**
- * Get formatted Impressum data
+ * Compact one-line legal text used in the global footer.
+ * Pathname is optional – Footer.tsx can pass it, but we do not need
+ * different content per route for now.
+ */
+export function getCompactLegalText(_pathname?: string): string {
+  const parts: string[] = [
+    COMPANY_LEGAL.legalName,
+    `${COMPANY_LEGAL.address.city}`,
+    `Registergericht: ${COMPANY_LEGAL.registerCourt}, ${COMPANY_LEGAL.registerNumber}`,
+    `Geschäftsführung: ${COMPANY_LEGAL.managingDirector}`,
+    `Steuernummer: ${COMPANY_LEGAL.taxNumber}`,
+  ];
+
+  if (COMPANY_LEGAL.vatId) {
+    parts.push(`USt-IdNr.: ${COMPANY_LEGAL.vatId}`);
+  }
+
+  return parts.join(" · ");
+}
+
+/**
+ * Structured data for the Impressum page.
  */
 export function getImpressumData() {
   return {
