@@ -8,6 +8,9 @@ import { COMPANY_LEGAL } from '@/lib/company';
 import { BRAND } from "@/lib/branding"
 import { getCompactLegalText } from "@/lib/company"
 
+import { BRAND } from "@/lib/branding"
+import { getCompactLegalText } from "@/lib/company"
+
 export default function Footer() {
   const pathname = usePathname();
 
