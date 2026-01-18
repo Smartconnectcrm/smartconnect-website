@@ -196,24 +196,24 @@ export default function ProcurementPage() {
                   <span className="font-bold">Unternehmen:</span> {COMPANY_LEGAL.legalName}
                 </div>
                 <div>
-                  <span className="font-bold">Adresse:</span> {COMPANY_LEGAL.address}
+                  <span className="font-bold">Adresse:</span> {COMPANY_LEGAL.address.full}
                 </div>
                 <div>
                   <span className="font-bold">E-Mail:</span>{" "}
                   <a
-                    href={`mailto:${COMPANY_LEGAL.email}`}
+                    href={`mailto:${COMPANY_LEGAL.contact.email}`}
                     className="text-brand-diamond hover:text-brand-gold transition-colors underline"
                   >
-                    {COMPANY_LEGAL.email}
+                    {COMPANY_LEGAL.contact.email}
                   </a>
                 </div>
                 <div>
                   <span className="font-bold">Telefon:</span>{" "}
                   <a
-                    href={`tel:${COMPANY_LEGAL.phone}`}
+                    href={`tel:${COMPANY_LEGAL.contact.phone}`}
                     className="text-brand-diamond hover:text-brand-gold transition-colors underline"
                   >
-                    {COMPANY_LEGAL.phone}
+                    {COMPANY_LEGAL.contact.phone}
                   </a>
                 </div>
               </div>

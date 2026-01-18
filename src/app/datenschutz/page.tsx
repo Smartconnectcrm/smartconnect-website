@@ -43,26 +43,26 @@ export default function DatenschutzPage() {
                   <p className="font-semibold text-foreground">
                     {COMPANY_LEGAL.legalName}
                   </p>
-                  <p>{COMPANY_LEGAL.address}</p>
+                  <p>{COMPANY_LEGAL.address.full}</p>
                   <p>
                     Geschäftsführung: {COMPANY_LEGAL.managingDirector}
                   </p>
                   <p>
                     E-Mail:{" "}
                     <a
-                      href={`mailto:${COMPANY_LEGAL.email}`}
+                      href={`mailto:${COMPANY_LEGAL.contact.email}`}
                       className="text-sky-500 hover:text-sky-400 transition-colors"
                     >
-                      {COMPANY_LEGAL.email}
+                      {COMPANY_LEGAL.contact.email}
                     </a>
                   </p>
                   <p>
                     Telefon:{" "}
                     <a
-                      href={`tel:${COMPANY_LEGAL.phone}`}
+                      href={`tel:${COMPANY_LEGAL.contact.phone}`}
                       className="text-sky-500 hover:text-sky-400 transition-colors"
                     >
-                      {COMPANY_LEGAL.phone}
+                      {COMPANY_LEGAL.contact.phone}
                     </a>
                   </p>
                 </div>
@@ -297,14 +297,14 @@ export default function DatenschutzPage() {
                     {COMPANY_LEGAL.legalName}
                   </p>
                   <p>Datenschutzanfragen</p>
-                  <p>{COMPANY_LEGAL.address}</p>
+                  <p>{COMPANY_LEGAL.address.full}</p>
                   <p>
                     E-Mail:{" "}
                     <a
-                      href={`mailto:${COMPANY_LEGAL.email}?subject=Datenschutzanfrage`}
+                      href={`mailto:${COMPANY_LEGAL.contact.email}?subject=Datenschutzanfrage`}
                       className="text-sky-500 hover:text-sky-400 transition-colors"
                     >
-                      {COMPANY_LEGAL.email}
+                      {COMPANY_LEGAL.contact.email}
                     </a>
                   </p>
                 </div>
