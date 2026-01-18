@@ -1,7 +1,7 @@
 /**
  * SmartConnect CRM UG (haftungsbeschränkt)
  * Centralized Company Legal Configuration
- * 
+ *
  * IMPORTANT: All data is official and verified.
  * Do NOT modify without legal authorization.
  */
@@ -29,27 +29,27 @@ export interface CompanyLegal {
 }
 
 export const COMPANY_LEGAL: CompanyLegal = {
-  legalName: 'SmartConnect CRM UG (haftungsbeschränkt)',
-  legalForm: 'UG (haftungsbeschränkt)',
-  
+  legalName: "SmartConnect CRM UG (haftungsbeschränkt)",
+  legalForm: "UG (haftungsbeschränkt)",
+
   address: {
-    street: 'Otto-Braun-Str. 12',
-    postalCode: '40595',
-    city: 'Düsseldorf',
-    country: 'Deutschland',
-    full: 'Otto-Braun-Str. 12, 40595 Düsseldorf, Deutschland',
+    street: "Otto-Braun-Str. 12",
+    postalCode: "40595",
+    city: "Düsseldorf",
+    country: "Deutschland",
+    full: "Otto-Braun-Str. 12, 40595 Düsseldorf, Deutschland",
   },
-  
-  registerCourt: 'Amtsgericht Düsseldorf',
-  registerNumber: 'HRB 110351',
-  managingDirector: 'Abubakar Bolarinwa Alimi',
-  taxNumber: '106/5725/5542',
+
+  registerCourt: "Amtsgericht Düsseldorf",
+  registerNumber: "HRB 110351",
+  managingDirector: "Abubakar Bolarinwa Alimi",
+  taxNumber: "106/5725/5542",
   vatId: null, // USt-IdNr not yet assigned
-  
+
   contact: {
-    email: 'admin@smartclientcrm.com',
-    phone: '+49 211 87973999233',
-    website: 'https://www.smartconnectcrm.eu',
+    email: "admin@smartclientcrm.com",
+    phone: "+49 211 87973999233",
+    website: "https://www.smartconnectcrm.eu",
   },
 };
 
@@ -86,4 +86,22 @@ export function getImpressumData() {
     phone: COMPANY_LEGAL.contact.phone,
     website: COMPANY_LEGAL.contact.website,
   };
+}
+
+/**
+ * Compact legal line for footer (public procurement safe)
+ * No Stammkapital, uses Steuernummer only, no contact repetition.
+ */
+export const COMPACT_LEGAL_TEXT =
+  `${COMPANY_LEGAL.legalName} · ` +
+  `Sitz: ${COMPANY_LEGAL.address.full} · ` +
+  `Registergericht: ${COMPANY_LEGAL.registerCourt}, ${COMPANY_LEGAL.registerNumber} · ` +
+  `Geschäftsführung: ${COMPANY_LEGAL.managingDirector} · ` +
+  `Steuernummer: ${COMPANY_LEGAL.taxNumber}`;
+
+/**
+ * Exported function for Footer.tsx compatibility
+ */
+export function getCompactLegalText(): string {
+  return COMPACT_LEGAL_TEXT;
 }
