@@ -145,7 +145,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Link to full services page */}
+          {/* CTA – View full services catalogue */}
           <div className="mt-8 text-center">
             <Link
               href="/services"
