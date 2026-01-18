@@ -1,13 +1,13 @@
-import Link from 'next/link';
-import { getTranslation, defaultLocale } from '@/lib/i18n';
-import { services, capabilities } from '@/lib/services';
+import Link from 'next/link'
+import { getTranslation, defaultLocale } from '@/lib/i18n'
+import { services, capabilities } from '@/lib/services'
 
 export default function HomePage() {
-  const t = getTranslation(defaultLocale);
+  const t = getTranslation(defaultLocale)
 
-  const runServices = services.filter((s) => s.category === 'run');
-  const changeServices = services.filter((s) => s.category === 'change');
-  const advisoryServices = services.filter((s) => s.category === 'advisory');
+  const runServices = services.filter((s) => s.category === 'run')
+  const changeServices = services.filter((s) => s.category === 'change')
+  const advisoryServices = services.filter((s) => s.category === 'advisory')
 
   return (
     <main className="min-h-screen">
