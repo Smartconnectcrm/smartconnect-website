@@ -5,18 +5,16 @@ import { usePathname } from 'next/navigation';
 import { type Locale, getTranslation, defaultLocale } from '@/lib/i18n';
 import { COMPANY_LEGAL } from '@/lib/company';
 
-import { BRAND } from "@/lib/branding"
-import { getCompactLegalText } from "@/lib/company"
-
 export default function Footer() {
   const pathname = usePathname();
 
   // Extract locale from pathname
-  const currentLocale: Locale = pathname.startsWith('/en')
-    ? 'en'
-    : pathname.startsWith('/fr')
-    ? 'fr'
-    : defaultLocale;
+  const currentLocale: Locale =
+    pathname.startsWith('/en')
+      ? 'en'
+      : pathname.startsWith('/fr')
+      ? 'fr'
+      : defaultLocale;
 
   const t = getTranslation(currentLocale);
 
@@ -32,15 +30,16 @@ export default function Footer() {
         {/* Legal Block - Single Instance */}
         <div className="mb-8 pb-8 border-b border-neutral-200">
           <div className="text-sm text-neutral-700 leading-relaxed space-y-1">
-            <p className="font-semibold text-neutral-900">{COMPANY_LEGAL.legalName}</p>
+            <p className="font-semibold text-neutral-900">
+              {COMPANY_LEGAL.legalName}
+            </p>
             <p>{COMPANY_LEGAL.address.street}</p>
             <p>
-              {COMPANY_LEGAL.address.postalCode} {COMPANY_LEGAL.address.city}
+              {COMPANY_LEGAL.address.postalCode}{' '}
+              {COMPANY_LEGAL.address.city}
             </p>
             <p>{COMPANY_LEGAL.address.country}</p>
-            <p className="pt-2">
-              {t.footer.registerCourt}
-            </p>
+            <p className="pt-2">{t.footer.registerCourt}</p>
             <p>{t.footer.registerNumber}</p>
             <p className="pt-2">{t.footer.managingDirector}</p>
             <p>{t.footer.taxNumber}</p>
