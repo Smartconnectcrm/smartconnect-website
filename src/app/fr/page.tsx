@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { getTranslation, defaultLocale } from '@/lib/i18n';
+import { getTranslation } from '@/lib/i18n';
 import { services, capabilities } from '@/lib/services';
 
-export default function HomePage() {
-  const t = getTranslation(defaultLocale);
+export default function HomePageFR() {
+  const t = getTranslation('fr');
+  const locale = 'fr';
 
   const runServices = services.filter((s) => s.category === 'run');
   const changeServices = services.filter((s) => s.category === 'change');
@@ -81,10 +82,10 @@ export default function HomePage() {
                   className="border border-neutral-200 rounded-lg p-5 bg-white"
                 >
                   <h4 className="font-semibold text-neutral-900 mb-2">
-                    {service.title[defaultLocale]}
+                    {service.title[locale]}
                   </h4>
                   <p className="text-sm text-neutral-600 leading-relaxed">
-                    {service.description[defaultLocale]}
+                    {service.description[locale]}
                   </p>
                 </div>
               ))}
@@ -106,10 +107,10 @@ export default function HomePage() {
                   className="border border-neutral-200 rounded-lg p-5 bg-white"
                 >
                   <h4 className="font-semibold text-neutral-900 mb-2">
-                    {service.title[defaultLocale]}
+                    {service.title[locale]}
                   </h4>
                   <p className="text-sm text-neutral-600 leading-relaxed">
-                    {service.description[defaultLocale]}
+                    {service.description[locale]}
                   </p>
                 </div>
               ))}
@@ -131,10 +132,10 @@ export default function HomePage() {
                   className="border border-neutral-200 rounded-lg p-5 bg-white"
                 >
                   <h4 className="font-semibold text-neutral-900 mb-2">
-                    {service.title[defaultLocale]}
+                    {service.title[locale]}
                   </h4>
                   <p className="text-sm text-neutral-600 leading-relaxed">
-                    {service.description[defaultLocale]}
+                    {service.description[locale]}
                   </p>
                 </div>
               ))}
@@ -143,7 +144,7 @@ export default function HomePage() {
 
           <div className="mt-8 text-center">
             <Link
-              href="/services"
+              href="/fr/services"
               className="inline-block px-6 py-3 bg-neutral-900 text-white text-sm font-medium rounded hover:bg-neutral-800 transition-colors"
             >
               {t.common.learnMore}
@@ -159,7 +160,7 @@ export default function HomePage() {
             {t.home.capabilitiesTitle}
           </h2>
           <div className="flex flex-wrap gap-3">
-            {capabilities[defaultLocale].map((capability, index) => (
+            {capabilities[locale].map((capability, index) => (
               <span
                 key={index}
                 className="px-4 py-2 bg-neutral-100 text-neutral-700 text-sm font-medium rounded-full border border-neutral-200"

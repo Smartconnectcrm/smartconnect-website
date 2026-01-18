@@ -38,7 +38,7 @@ export default function ImpressumPage() {
                 <p className="font-semibold text-foreground">
                   {COMPANY_LEGAL.legalName}
                 </p>
-                <p>{COMPANY_LEGAL.address}</p>
+                <p>{COMPANY_LEGAL.address.full}</p>
               </div>
             </div>
 
@@ -104,19 +104,21 @@ export default function ImpressumPage() {
                     </span>
                   )}
                 </p>
-                <p>
-                  <span className="font-medium text-foreground">
-                    Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:
-                  </span>{" "}
-                  <span className="text-amber-600 dark:text-amber-400">
-                    {COMPANY_LEGAL.vatId}
-                  </span>
-                  {COMPANY_LEGAL.vatId.includes("999999999") && (
-                    <span className="ml-2 text-sm text-amber-600 dark:text-amber-400">
-                      (TODO: Offizielle USt-IdNr eintragen)
+                {COMPANY_LEGAL.vatId && (
+                  <p>
+                    <span className="font-medium text-foreground">
+                      Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:
+                    </span>{" "}
+                    <span className="text-amber-600 dark:text-amber-400">
+                      {COMPANY_LEGAL.vatId}
                     </span>
-                  )}
-                </p>
+                    {COMPANY_LEGAL.vatId.includes("999999999") && (
+                      <span className="ml-2 text-sm text-amber-600 dark:text-amber-400">
+                        (TODO: Offizielle USt-IdNr eintragen)
+                      </span>
+                    )}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -127,30 +129,30 @@ export default function ImpressumPage() {
                 <p>
                   <span className="font-medium text-foreground">E-Mail:</span>{" "}
                   <a
-                    href={`mailto:${COMPANY_LEGAL.email}`}
+                    href={`mailto:${COMPANY_LEGAL.contact.email}`}
                     className="text-sky-500 hover:text-sky-400 transition-colors"
                   >
-                    {COMPANY_LEGAL.email}
+                    {COMPANY_LEGAL.contact.email}
                   </a>
                 </p>
                 <p>
                   <span className="font-medium text-foreground">Telefon:</span>{" "}
                   <a
-                    href={`tel:${COMPANY_LEGAL.phone}`}
+                    href={`tel:${COMPANY_LEGAL.contact.phone}`}
                     className="text-sky-500 hover:text-sky-400 transition-colors"
                   >
-                    {COMPANY_LEGAL.phone}
+                    {COMPANY_LEGAL.contact.phone}
                   </a>
                 </p>
                 <p>
                   <span className="font-medium text-foreground">Website:</span>{" "}
                   <a
-                    href={COMPANY_LEGAL.website}
+                    href={COMPANY_LEGAL.contact.website}
                     className="text-sky-500 hover:text-sky-400 transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {COMPANY_LEGAL.website}
+                    {COMPANY_LEGAL.contact.website}
                   </a>
                 </p>
               </div>
@@ -235,7 +237,7 @@ export default function ImpressumPage() {
                 <p className="font-semibold text-foreground">
                   {COMPANY_LEGAL.managingDirector}
                 </p>
-                <p>{COMPANY_LEGAL.address}</p>
+                <p>{COMPANY_LEGAL.address.full}</p>
               </div>
             </div>
           </div>
