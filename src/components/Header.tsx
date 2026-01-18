@@ -1,309 +1,157 @@
-"use client"
+'use client';
 
-import { ChevronDown } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import * as React from "react"
-
-import ThemeToggle from "@/components/ThemeToggle"
-import { BRAND } from "@/lib/branding"
-
-type MegaItem = {
-  href: string
-  title: string
-  desc: string
-  tag?: string
-}
-
-const nav = [
-  { href: "/", label: "START" },
-  { href: "/services", label: "LEISTUNGEN", mega: true as const },
-  { href: "/procurement", label: "PROCUREMENT" },
-  { href: "/compliance", label: "COMPLIANCE" },
-  { href: "/contact", label: "KONTAKT" },
-]
-
-const megaPrimary: MegaItem[] = [
-  {
-    href: "/services#it-service-operations-support",
-    title: "IT Service & Operations",
-    desc: "Runbooks, ITSM-nahe Prozesse, Übergabe & Betriebsfähigkeit.",
-    tag: "Run",
-  },
-  {
-    href: "/services#cloud-modern-workplace-operations",
-    title: "Cloud & Modern Workplace",
-    desc: "M365/Azure Ops, Identity, Endpoint, Governance & Monitoring.",
-    tag: "Run",
-  },
-  {
-    href: "/services#security-by-design-baseline-hardening",
-    title: "Security-by-Design",
-    desc: "Baseline Hardening, Maßnahmenplan, Audit-fähige Nachweise.",
-    tag: "Advisory",
-  },
-  {
-    href: "/services#systemintegration-schnittstellen",
-    title: "Systemintegration",
-    desc: "APIs/ETL, dokumentierte Datenflüsse, kontrollierte Changes.",
-    tag: "Change",
-  },
-]
-
-const megaSecondary: MegaItem[] = [
-  {
-    href: "/services#eu-tender-procurement-enablement",
-    title: "EU Tender Enablement",
-    desc: "Prüffähige Angebots-/Anhangstruktur, Compliance-Bausteine.",
-    tag: "Advisory",
-  },
-  {
-    href: "/services#data-reporting-foundations",
-    title: "Data & Reporting",
-    desc: "KPI-Katalog, Datenqualität, prüfbare Dashboard-Prototypen.",
-    tag: "Change",
-  },
-  {
-    href: "/services#delivery-support-project-recovery",
-    title: "Delivery & Recovery",
-    desc: "Stabilisierungssprints, Backlog, QS/Abnahme & Übergabe.",
-    tag: "Change",
-  },
-]
-
-function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/"
-  return pathname === href || pathname.startsWith(`${href}/`)
-}
-
-const focusRing =
-  "focus:outline-none focus-visible:ring-4 " +
-  "focus-visible:ring-brand-diamond/30 " +
-  "focus-visible:ring-offset-4 " +
-  "focus-visible:ring-offset-brand-light-bg dark:focus-visible:ring-offset-brand-dark-bg"
-
-function cx(...parts: Array<string | undefined | false | null>) {
-  return parts.filter(Boolean).join(" ")
-}
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
+import { type Locale, locales, localeNames, getTranslation, defaultLocale } from '@/lib/i18n';
 
 export default function Header() {
-  const pathname = usePathname()
-  const [megaOpen, setMegaOpen] = React.useState(false)
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const megaRef = React.useRef<HTMLDivElement | null>(null)
+  // Extract locale from pathname
+  const currentLocale: Locale = pathname.startsWith('/en')
+    ? 'en'
+    : pathname.startsWith('/fr')
+    ? 'fr'
+    : defaultLocale;
 
-  React.useEffect(() => {
-    function onDown(e: MouseEvent) {
-      if (!megaOpen) return
-      const el = megaRef.current
-      if (!el) return
-      if (e.target instanceof Node && !el.contains(e.target)) setMegaOpen(false)
-    }
-    document.addEventListener("mousedown", onDown)
-    return () => document.removeEventListener("mousedown", onDown)
-  }, [megaOpen])
+  const t = getTranslation(currentLocale);
 
-  React.useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (!megaOpen) return
-      if (e.key === "Escape") setMegaOpen(false)
-    }
-    document.addEventListener("keydown", onKey)
-    return () => document.removeEventListener("keydown", onKey)
-  }, [megaOpen])
+  // Get base path without locale
+  const getBasePath = () => {
+    if (pathname.startsWith('/en')) return pathname.slice(3) || '/';
+    if (pathname.startsWith('/fr')) return pathname.slice(3) || '/';
+    return pathname;
+  };
 
-  React.useEffect(() => {
-    setMegaOpen(false)
-  }, [pathname])
+  const basePath = getBasePath();
+
+  // Build localized path
+  const getLocalizedPath = (locale: Locale, path: string) => {
+    if (locale === defaultLocale) return path;
+    return `/${locale}${path}`;
+  };
+
+  const navItems = [
+    { label: t.nav.home, href: getLocalizedPath(currentLocale, '/') },
+    { label: t.nav.services, href: getLocalizedPath(currentLocale, '/services') },
+    { label: t.nav.procurement, href: getLocalizedPath(currentLocale, '/procurement') },
+    { label: t.nav.compliance, href: getLocalizedPath(currentLocale, '/compliance') },
+  ];
 
   return (
-    <header
-      className={cx(
-        "sticky top-0 z-40",
-        "bg-brand-light-bg/95 dark:bg-brand-dark-bg/95",
-        "backdrop-blur-md",
-        "border-b border-brand-light-border dark:border-brand-dark-border",
-        "shadow-soft-sm"
-      )}
-    >
-      <div className="container">
-        <div className="flex items-center justify-between gap-6 py-4">
-          {/* Brand */}
-          <Link
-            href="/"
-            className={cx(
-              "group inline-flex min-w-0 items-center gap-3 rounded-lg px-2 py-2",
-              "hover:bg-brand-light-muted/50 dark:hover:bg-brand-dark-muted/50",
-              "transition-all duration-200",
-              focusRing
-            )}
-            aria-label={`Startseite – ${BRAND.name}`}
-          >
-            <div
-              className={cx(
-                "relative h-10 w-10 shrink-0 overflow-hidden rounded-lg",
-                "bg-gradient-to-br from-brand-gold to-brand-diamond",
-                "shadow-soft-md",
-                "p-0.5"
-              )}
-            >
-              <div className="h-full w-full bg-white dark:bg-brand-nearblack rounded-lg p-1.5">
-                <Image
-                  src="/brand/smartconnect-logo.webp"
-                  alt={BRAND.name}
-                  fill
-                  sizes="40px"
-                  priority
-                  className="object-contain"
-                />
-              </div>
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-neutral-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href={getLocalizedPath(currentLocale, '/')} className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-neutral-900 rounded flex items-center justify-center">
+              <span className="text-white font-bold text-sm">SC</span>
             </div>
-
-            <div className="min-w-0">
-              <div className="truncate text-base font-heading font-bold tracking-tight text-brand-light-text dark:text-brand-dark-text">
-                {BRAND.name}
-              </div>
-              <div className="truncate text-xs font-medium text-brand-light-muted dark:text-brand-dark-muted">
-                Enterprise &amp; Public Sector
-              </div>
-            </div>
+            <span className="font-semibold text-neutral-900 text-sm hidden sm:inline">
+              SmartConnect CRM UG
+            </span>
           </Link>
 
-          {/* Desktop Nav with Mega Menu */}
-          <div className="hidden lg:flex items-center gap-1">
-            {nav.map((i) => {
-              const active = isActive(pathname, i.href)
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
+                  pathname === item.href
+                    ? 'text-neutral-900 bg-neutral-100'
+                    : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-              if (i.mega) {
-                return (
-                  <div
-                    key={i.href}
-                    className="relative"
-                    ref={megaRef}
-                    onMouseEnter={() => setMegaOpen(true)}
-                    onMouseLeave={() => setMegaOpen(false)}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setMegaOpen((v) => !v)}
-                      onFocus={() => setMegaOpen(true)}
-                      aria-haspopup="menu"
-                      aria-expanded={megaOpen}
-                      className={cx(
-                        "inline-flex items-center gap-2 rounded-lg px-4 py-2",
-                        "font-heading text-xs font-bold tracking-wide uppercase",
-                        "transition-all duration-200",
-                        active
-                          ? "bg-brand-gold text-brand-charcoal shadow-glow-gold"
-                          : "text-brand-light-text dark:text-brand-dark-text hover:bg-brand-light-muted/50 dark:hover:bg-brand-dark-muted/50",
-                        focusRing
-                      )}
-                    >
-                      {i.label}
-                      <ChevronDown className={cx("h-4 w-4 transition-transform duration-300", megaOpen && "rotate-180")} />
-                    </button>
-
-                    {megaOpen ? (
-                      <div
-                        role="menu"
-                        aria-label="Leistungen Menü"
-                        className={cx(
-                          "absolute left-1/2 -translate-x-1/2 mt-4 w-[900px] max-w-[90vw]",
-                          "rounded-2xl overflow-hidden",
-                          "bg-brand-light-bg dark:bg-brand-dark-bg",
-                          "border border-brand-light-border dark:border-brand-dark-border",
-                          "shadow-soft-xl",
-                          "animate-slide-down"
-                        )}
-                      >
-                        <div className="p-8">
-                          <div className="mb-6 pb-6 border-b-2 border-gradient-gold-diamond">
-                            <h3 className="font-heading text-2xl font-bold text-brand-light-text dark:text-brand-dark-text mb-2">
-                              Leistungen
-                            </h3>
-                            <p className="text-brand-light-muted dark:text-brand-dark-muted">
-                              Tender-ready Delivery · Klar abgegrenzt, prüfbar dokumentiert
-                            </p>
-                          </div>
-
-                          <div className="grid gap-4 sm:grid-cols-2">
-                            {[...megaPrimary, ...megaSecondary].map((m) => (
-                              <Link
-                                key={m.href}
-                                href={m.href}
-                                className={cx(
-                                  "group rounded-xl p-5",
-                                  "bg-brand-light-bg dark:bg-brand-dark-bg",
-                                  "border border-brand-light-border dark:border-brand-dark-border",
-                                  "hover:border-brand-diamond hover:shadow-soft-md",
-                                  "transition-all duration-300",
-                                  focusRing
-                                )}
-                              >
-                                <div className="flex items-start justify-between gap-3 mb-2">
-                                  <div className="font-heading text-base font-bold text-brand-light-text dark:text-brand-dark-text group-hover:text-brand-diamond transition-colors">
-                                    {m.title}
-                                  </div>
-                                  {m.tag ? (
-                                    <span className="shrink-0 rounded-full bg-gradient-to-r from-brand-gold to-brand-diamond px-3 py-1 text-xs font-bold text-brand-charcoal">
-                                      {m.tag}
-                                    </span>
-                                  ) : null}
-                                </div>
-                                <div className="text-sm text-brand-light-muted dark:text-brand-dark-muted">
-                                  {m.desc}
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-
-                          <div className="mt-6 pt-6 border-t border-brand-light-border dark:border-brand-dark-border flex items-center justify-between">
-                            <Link href="/services" className={cx("btn btn-primary", focusRing)}>
-                              Alle Leistungen
-                            </Link>
-                            <Link href="/contact" className={cx("btn btn-secondary", focusRing)}>
-                              Geschäftsanfrage
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-                    ) : null}
-                  </div>
-                )
-              }
-
-              return (
-                <Link
-                  key={i.href}
-                  href={i.href}
-                  aria-current={active ? "page" : undefined}
-                  className={cx(
-                    "rounded-lg px-4 py-2",
-                    "font-heading text-xs font-bold tracking-wide uppercase",
-                    "transition-all duration-200",
-                    active
-                      ? "bg-brand-gold text-brand-charcoal shadow-glow-gold"
-                      : "text-brand-light-text dark:text-brand-dark-text hover:bg-brand-light-muted/50 dark:hover:bg-brand-dark-muted/50",
-                    focusRing
-                  )}
-                >
-                  {i.label}
-                </Link>
-              )
-            })}
-          </div>
-
-          {/* Right Actions */}
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-
-            <Link href="/contact" className={cx("btn btn-primary hidden lg:inline-flex", focusRing)}>
-              Kontakt
+          {/* Right Section: Contact + Language Toggle */}
+          <div className="flex items-center space-x-4">
+            {/* Contact Button */}
+            <Link
+              href={getLocalizedPath(currentLocale, '/contact')}
+              className="px-4 py-2 text-sm font-medium text-white bg-neutral-900 rounded hover:bg-neutral-800 transition-colors"
+            >
+              {t.nav.contact}
             </Link>
+
+            {/* Language Toggle */}
+            <div className="flex items-center space-x-1 border border-neutral-300 rounded p-1">
+              {locales.map((locale) => (
+                <Link
+                  key={locale}
+                  href={getLocalizedPath(locale, basePath)}
+                  className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
+                    currentLocale === locale
+                      ? 'bg-neutral-900 text-white'
+                      : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
+                  }`}
+                >
+                  {localeNames[locale]}
+                </Link>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-neutral-600 hover:text-neutral-900"
+              aria-label="Toggle menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-4 border-t border-neutral-200">
+            <nav className="flex flex-col space-y-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`px-3 py-2 text-sm font-medium rounded transition-colors ${
+                    pathname === item.href
+                      ? 'text-neutral-900 bg-neutral-100'
+                      : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
-  )
+  );
 }

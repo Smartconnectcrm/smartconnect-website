@@ -1,13 +1,14 @@
-import Link from "next/link";
-import { getTranslation, defaultLocale } from "@/lib/i18n";
-import { services, capabilities } from "@/lib/services";
+import Link from 'next/link';
+import { getTranslation } from '@/lib/i18n';
+import { services, capabilities } from '@/lib/services';
 
-export default function HomePage() {
-  const t = getTranslation(defaultLocale);
+export default function HomePageFR() {
+  const t = getTranslation('fr');
+  const locale = 'fr';
 
-  const runServices = services.filter((s) => s.category === "run");
-  const changeServices = services.filter((s) => s.category === "change");
-  const advisoryServices = services.filter((s) => s.category === "advisory");
+  const runServices = services.filter((s) => s.category === 'run');
+  const changeServices = services.filter((s) => s.category === 'change');
+  const advisoryServices = services.filter((s) => s.category === 'advisory');
 
   return (
     <main className="min-h-screen">
@@ -18,9 +19,7 @@ export default function HomePage() {
             <h1 className="text-3xl font-bold text-neutral-900 mb-4">
               {t.home.heroTitle}
             </h1>
-            <p className="text-lg text-neutral-700 mb-6">
-              {t.home.heroSubtitle}
-            </p>
+            <p className="text-lg text-neutral-700 mb-6">{t.home.heroSubtitle}</p>
             <p className="text-base text-neutral-600 leading-relaxed">
               {t.home.positioning}
             </p>
@@ -31,9 +30,7 @@ export default function HomePage() {
       {/* ICP Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-neutral-900 mb-8">
-            {t.home.icpTitle}
-          </h2>
+          <h2 className="text-2xl font-bold text-neutral-900 mb-8">{t.home.icpTitle}</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="border border-neutral-200 rounded-lg p-6 bg-white">
               <h3 className="text-lg font-semibold text-neutral-900 mb-3">
@@ -85,10 +82,10 @@ export default function HomePage() {
                   className="border border-neutral-200 rounded-lg p-5 bg-white"
                 >
                   <h4 className="font-semibold text-neutral-900 mb-2">
-                    {service.title[defaultLocale]}
+                    {service.title[locale]}
                   </h4>
                   <p className="text-sm text-neutral-600 leading-relaxed">
-                    {service.description[defaultLocale]}
+                    {service.description[locale]}
                   </p>
                 </div>
               ))}
@@ -110,10 +107,10 @@ export default function HomePage() {
                   className="border border-neutral-200 rounded-lg p-5 bg-white"
                 >
                   <h4 className="font-semibold text-neutral-900 mb-2">
-                    {service.title[defaultLocale]}
+                    {service.title[locale]}
                   </h4>
                   <p className="text-sm text-neutral-600 leading-relaxed">
-                    {service.description[defaultLocale]}
+                    {service.description[locale]}
                   </p>
                 </div>
               ))}
@@ -135,22 +132,19 @@ export default function HomePage() {
                   className="border border-neutral-200 rounded-lg p-5 bg-white"
                 >
                   <h4 className="font-semibold text-neutral-900 mb-2">
-                    {service.title[defaultLocale]}
+                    {service.title[locale]}
                   </h4>
                   <p className="text-sm text-neutral-600 leading-relaxed">
-                    {service.description[defaultLocale]}
+                    {service.description[locale]}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-          {/* CTA – View full services catalogue */}
           <div className="mt-8 text-center">
             <Link
-              href="/services"
+              href="/fr/services"
               className="inline-block px-6 py-3 bg-neutral-900 text-white text-sm font-medium rounded hover:bg-neutral-800 transition-colors"
             >
               {t.common.learnMore}
@@ -166,7 +160,7 @@ export default function HomePage() {
             {t.home.capabilitiesTitle}
           </h2>
           <div className="flex flex-wrap gap-3">
-            {capabilities[defaultLocale].map((capability, index) => (
+            {capabilities[locale].map((capability, index) => (
               <span
                 key={index}
                 className="px-4 py-2 bg-neutral-100 text-neutral-700 text-sm font-medium rounded-full border border-neutral-200"
