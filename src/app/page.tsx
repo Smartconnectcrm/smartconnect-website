@@ -140,6 +140,8 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
           <div className="mt-8 text-center">
             <Link
