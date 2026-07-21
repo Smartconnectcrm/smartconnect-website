@@ -29,6 +29,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || process.env.DATABASE_URI || '',
     },
+    push: true, // Forces Drizzle to automatically create and sync tables in Supabase
   }),
   sharp,
   plugins: [],
