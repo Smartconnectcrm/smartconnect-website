@@ -8,7 +8,6 @@ export default function Header() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
   useEffect(() => {
-    // Check initial saved theme or system preference
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
     if (savedTheme) {
       setTheme(savedTheme)
@@ -35,6 +34,38 @@ export default function Header() {
         boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
       }}
     >
+      {/* Absolute Top-Right Utility Position for Light/Dark Toggle */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '6px',
+          right: '16px',
+          zIndex: 10,
+        }}
+      >
+        <button
+          onClick={toggleTheme}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '26px',
+            height: '26px',
+            borderRadius: '4px',
+            border: '1px solid #cbd5e1',
+            backgroundColor: '#f8fafc',
+            cursor: 'pointer',
+            fontSize: '12px',
+            padding: 0,
+            transition: 'all 0.2s ease',
+          }}
+          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+        >
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
+      </div>
+
+      {/* Main Header Container */}
       <div
         style={{
           maxWidth: '1240px',
@@ -68,7 +99,7 @@ export default function Header() {
         </div>
 
         {/* Navigation & Actions Section */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Link
             href="/"
             style={{
@@ -114,7 +145,7 @@ export default function Header() {
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* EU Multi-Language Selector Dropdown (Includes Hungarian) */}
+          {/* EU Multi-Language Selector Dropdown */}
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <select
               defaultValue="DE"
@@ -157,29 +188,8 @@ export default function Header() {
             </span>
           </div>
 
-          {/* Light / Dark Mode Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '32px',
-              borderRadius: '4px',
-              border: '1px solid #cbd5e1',
-              backgroundColor: '#f8fafc',
-              cursor: 'pointer',
-              fontSize: '14px',
-              padding: 0,
-            }}
-            title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-          >
-            {theme === 'light' ? '🌙' : '☀️'}
-          </button>
-
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '2px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '4px' }}>
             {/* Secondary CTA: RFP / Tender Submit */}
             <Link
               href="/procurement#tender"
