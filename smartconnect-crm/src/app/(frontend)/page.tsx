@@ -56,9 +56,9 @@ export default async function HomePage() {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-          gap: '32px',
-          alignItems: 'start',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '24px',
+          alignItems: 'stretch',
         }}
       >
         {services.map((service) => (

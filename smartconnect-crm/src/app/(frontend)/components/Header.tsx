@@ -11,7 +11,7 @@ export default function Header() {
         backgroundColor: '#ffffff',
         position: 'sticky',
         top: 0,
-        zIndex: 50,
+        zIndex: 100, // Elevated layer so cards don't bleed through
       }}
     >
       <div
@@ -23,6 +23,7 @@ export default function Header() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          backgroundColor: '#ffffff',
         }}
       >
         {/* Brand Section */}
