@@ -1,40 +1,12 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
-import { SiteSetting, Media } from '@/payload-types'
-
-const FALLBACK_LIGHT = '/media/logo_white-3.png'
 
 interface BrandLogoProps {
   variant?: 'light' | 'dark'
   priority?: boolean
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = async ({
-  variant = 'light',
-  priority = false,
-}) => {
-  let logoSrc = FALLBACK_LIGHT
-  let altText = 'SmartConnect CRM Logo'
-
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const settings = (await payload.findGlobal({
-      slug: 'site-settings',
-    })) as SiteSetting
-
-    const logoField = variant === 'light' ? settings?.lightLogo : settings?.darkLogo
-    const isMediaObject = typeof logoField === 'object' && logoField !== null
-    const mediaObj = isMediaObject ? (logoField as Media) : null
-
-    if (mediaObj?.url) logoSrc = mediaObj.url
-    if (mediaObj?.alt) altText = mediaObj.alt
-  } catch (error) {
-    console.warn('BrandLogo fallback in use:', error)
-  }
-
+export const BrandLogo: React.FC<BrandLogoProps> = () => {
   return (
     <Link
       href="/"
@@ -46,35 +18,55 @@ export const BrandLogo: React.FC<BrandLogoProps> = async ({
       }}
       title="SmartConnect CRM - Home"
     >
-      {/* Icon Graphic */}
+      {/* Interconnected Metallic Infinity Mark */}
       <div
         style={{
-          position: 'relative',
-          width: '42px',
-          height: '42px',
-          flexShrink: 0,
-          overflow: 'hidden',
+          width: '38px',
+          height: '38px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          flexShrink: 0,
         }}
       >
-        <Image
-          src={logoSrc}
-          alt={altText}
-          width={120}
-          height={120}
-          priority={priority}
-          style={{
-            height: '180%',
-            width: 'auto',
-            maxWidth: 'none',
-            objectFit: 'contain',
-            objectPosition: '12% center', // Focuses directly on the metallic mark, hiding stray text
-            mixBlendMode: 'multiply',
-            filter: 'contrast(115%) brightness(102%)',
-          }}
-        />
+        <svg
+          viewBox="0 0 100 100"
+          width="38"
+          height="38"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#1e3a8a" />
+              <stop offset="50%" stopColor="#2563eb" />
+              <stop offset="100%" stopColor="#60a5fa" />
+            </linearGradient>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#b45309" />
+              <stop offset="50%" stopColor="#f59e0b" />
+              <stop offset="100%" stopColor="#fbbf24" />
+            </linearGradient>
+          </defs>
+
+          {/* Left Loop (Blue) */}
+          <path
+            d="M 32,25 C 18,25 10,36 10,50 C 10,64 18,75 32,75 C 44,75 52,63 60,50 C 52,37 44,25 32,25 Z"
+            stroke="url(#blueGrad)"
+            strokeWidth="11"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Right Loop (Gold) */}
+          <path
+            d="M 68,25 C 82,25 90,36 90,50 C 90,64 82,75 68,75 C 56,75 48,63 40,50 C 48,37 56,25 68,25 Z"
+            stroke="url(#goldGrad)"
+            strokeWidth="11"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
       </div>
 
       {/* Brand Company Name */}
