@@ -6,12 +6,13 @@ export default function Header() {
   return (
     <header
       style={{
-        width: '100%',
-        borderBottom: '2px solid black',
-        backgroundColor: '#ffffff',
         position: 'sticky',
         top: 0,
-        zIndex: 100, // Elevated layer so cards don't bleed through
+        zIndex: 9999,
+        width: '100%',
+        backgroundColor: '#ffffff',
+        borderBottom: '2px solid #000000',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
       }}
     >
       <div

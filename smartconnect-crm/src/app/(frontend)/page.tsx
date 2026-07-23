@@ -13,7 +13,9 @@ export default async function HomePage() {
       style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '32px 24px 64px 24px',
+        padding: '48px 24px 64px 24px',
+        position: 'relative',
+        zIndex: 1,
       }}
     >
       {/* Hero Section Header */}
@@ -52,11 +54,11 @@ export default async function HomePage() {
         </p>
       </section>
 
-      {/* Grid */}
+      {/* Grid - Clean 2-column or 3-column auto wrapping */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '24px',
           alignItems: 'stretch',
         }}
@@ -178,6 +180,7 @@ export default async function HomePage() {
                   border: '1px solid #e2e8f0',
                   padding: '16px',
                   borderRadius: '6px',
+                  marginTop: '16px',
                 }}
               >
                 <h3
