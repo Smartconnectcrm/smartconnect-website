@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
-export default function Header() {
+function HeaderNav() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
 
@@ -13,9 +13,7 @@ export default function Header() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // 1. Sync theme and language from localStorage / URL on mount
   useEffect(() => {
-    // Theme setup
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
     if (savedTheme === 'dark') {
@@ -24,14 +22,12 @@ export default function Header() {
       document.documentElement.classList.remove('dark')
     }
 
-    // Language setup from URL query ?lang= or localStorage
     const urlLang = searchParams.get('lang')
     const savedLang = localStorage.getItem('preferred_lang') || 'DE'
     const activeLang = urlLang || savedLang
     setLang(activeLang)
   }, [searchParams])
 
-  // 2. Functional Theme Toggle
   const toggleTheme = () => {
     const isDark = document.documentElement.classList.contains('dark')
     const nextTheme = isDark ? 'light' : 'dark'
@@ -46,24 +42,19 @@ export default function Header() {
     }
   }
 
-  // 3. Functional Language Switcher (Updates URL & LocalStorage)
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = e.target.value
     setLang(selectedLang)
     localStorage.setItem('preferred_lang', selectedLang)
 
-    // Update query params without full page reload
     const params = new URLSearchParams(searchParams.toString())
     params.set('lang', selectedLang)
     router.push(`${pathname}?${params.toString()}`)
   }
 
   return (
-    <header
-      className="sticky top-0 z-[9999] w-full border-b-2 border-black bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-white transition-colors duration-200"
-      style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}
-    >
-      {/* Absolute Top-Right Light/Dark Toggle */}
+    <>
+      {/* Absolute Top-Right Toggle */}
       <div className="absolute top-1.5 right-4 z-10">
         <button
           onClick={toggleTheme}
@@ -111,7 +102,7 @@ export default function Header() {
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* Functional Language Dropdown */}
+          {/* Language Dropdown */}
           <div className="relative inline-block">
             <select
               value={lang}
@@ -150,6 +141,19 @@ export default function Header() {
           </div>
         </nav>
       </div>
+    </>
+  )
+}
+
+export default function Header() {
+  return (
+    <header
+      className="sticky top-0 z-[9999] w-full border-b-2 border-black bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-white transition-colors duration-200"
+      style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}
+    >
+      <Suspense fallback={<div className="h-[80px]" />}>
+        <HeaderNav />
+      </Suspense>
     </header>
   )
 }
