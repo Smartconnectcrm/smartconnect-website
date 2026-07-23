@@ -2,10 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
 export default function Header() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [lang, setLang] = useState('DE')
+  const router = useRouter()
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
@@ -22,6 +25,13 @@ export default function Header() {
     document.documentElement.classList.toggle('dark', nextTheme === 'dark')
   }
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLang = e.target.value
+    setLang(newLang)
+    localStorage.setItem('preferred_lang', newLang)
+    // Optional: trigger locale routing or translation state here
+  }
+
   return (
     <header
       style={{
@@ -34,7 +44,7 @@ export default function Header() {
         boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
       }}
     >
-      {/* Absolute Top-Right Position for Light/Dark Toggle */}
+      {/* Top-Right Light/Dark Toggle */}
       <div
         style={{
           position: 'absolute',
@@ -144,10 +154,11 @@ export default function Header() {
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* EU Multi-Language Selector Dropdown */}
+          {/* Functional Language Dropdown */}
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <select
-              defaultValue="DE"
+              value={lang}
+              onChange={handleLanguageChange}
               style={{
                 appearance: 'none',
                 WebkitAppearance: 'none',
@@ -189,7 +200,6 @@ export default function Header() {
 
           {/* Action Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '4px' }}>
-            {/* RFP / Tender Button */}
             <Link
               href="/procurement#tender"
               style={{
@@ -209,7 +219,6 @@ export default function Header() {
               RFP / Tender
             </Link>
 
-            {/* Direct Contact Button */}
             <Link
               href="/contact"
               style={{
