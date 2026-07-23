@@ -1,9 +1,20 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
+import { translations } from './lib/dictionary'
 
-export default async function HomePage() {
+// Force Next.js to re-evaluate searchParams on every navigation/language change
+export const dynamic = 'force-dynamic'
+
+type Props = {
+  searchParams: Promise<{ lang?: string }>
+}
+
+export default async function HomePage({ searchParams }: Props) {
+  const resolvedSearchParams = await searchParams
+  const activeLang = (resolvedSearchParams.lang || 'DE').toUpperCase()
+  const dict = translations[activeLang as keyof typeof translations] || translations.DE
+
   const payload = await getPayload({ config: configPromise })
-
   const { docs: services } = await payload.find({
     collection: 'services',
   })
@@ -14,7 +25,7 @@ export default async function HomePage() {
         maxWidth: '1240px',
         margin: '0 auto',
         padding: '40px 20px 80px 20px',
-        minHeight: 'calc(100vh - 80px - 300px)', // Ensures footer sits properly at bottom even if content is short
+        minHeight: 'calc(100vh - 80px - 300px)',
       }}
     >
       {/* Hero Section Header */}
@@ -31,16 +42,14 @@ export default async function HomePage() {
             fontWeight: '900',
             textTransform: 'uppercase',
             letterSpacing: '-0.02em',
-            color: '#0f172a',
             marginBottom: '10px',
             fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
-          Leistungskatalog
+          {dict.title}
         </h1>
         <p
           style={{
-            color: '#475569',
             fontWeight: '500',
             maxWidth: '680px',
             fontSize: '15px',
@@ -48,12 +57,11 @@ export default async function HomePage() {
             margin: 0,
           }}
         >
-          Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und
-          compliance-orientierter Umsetzung.
+          {dict.subtitle}
         </p>
       </section>
 
-      {/* Responsive Grid */}
+      {/* Grid */}
       <div
         style={{
           display: 'grid',
@@ -65,11 +73,11 @@ export default async function HomePage() {
         {services.map((service) => (
           <div
             key={service.id}
+            className="service-card"
             style={{
               border: '2px solid #000000',
               padding: '24px',
               borderRadius: '8px',
-              backgroundColor: '#ffffff',
               boxShadow: '4px 4px 0px 0px #000000',
               display: 'flex',
               flexDirection: 'column',
@@ -91,7 +99,6 @@ export default async function HomePage() {
                   style={{
                     fontSize: '18px',
                     fontWeight: '800',
-                    color: '#0f172a',
                     margin: 0,
                     lineHeight: '1.3',
                   }}
@@ -104,11 +111,9 @@ export default async function HomePage() {
                       fontSize: '11px',
                       fontWeight: '700',
                       padding: '4px 8px',
-                      backgroundColor: '#f1f5f9',
                       border: '1px solid #cbd5e1',
                       borderRadius: '4px',
                       whiteSpace: 'nowrap',
-                      color: '#334155',
                     }}
                   >
                     {service.categoryTag}
@@ -120,7 +125,6 @@ export default async function HomePage() {
               <p
                 style={{
                   fontSize: '13px',
-                  color: '#475569',
                   marginBottom: '24px',
                   lineHeight: '1.5',
                   margin: '0 0 24px 0',
@@ -136,14 +140,13 @@ export default async function HomePage() {
                     style={{
                       fontSize: '12px',
                       fontWeight: '800',
-                      color: '#0f172a',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
                       marginBottom: '8px',
                       margin: '0 0 8px 0',
                     }}
                   >
-                    ✓ Deliverables
+                    ✓ {dict.deliverables}
                   </h3>
                   <ul
                     style={{
@@ -154,7 +157,6 @@ export default async function HomePage() {
                       flexDirection: 'column',
                       gap: '6px',
                       fontSize: '12px',
-                      color: '#334155',
                     }}
                   >
                     {service.deliverables.map((item, idx) => (
@@ -171,11 +173,11 @@ export default async function HomePage() {
               )}
             </div>
 
-            {/* Abgrenzung */}
+            {/* Boundaries / Abgrenzung */}
             {service.boundaries && service.boundaries.length > 0 && (
               <div
+                className="boundary-box"
                 style={{
-                  backgroundColor: '#f8fafc',
                   border: '1px solid #e2e8f0',
                   padding: '16px',
                   borderRadius: '6px',
@@ -186,14 +188,13 @@ export default async function HomePage() {
                   style={{
                     fontSize: '12px',
                     fontWeight: '800',
-                    color: '#0f172a',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em',
                     marginBottom: '8px',
                     margin: '0 0 8px 0',
                   }}
                 >
-                  ⊘ Abgrenzung
+                  ⊘ {dict.boundaries}
                 </h3>
                 <ul
                   style={{
@@ -204,7 +205,6 @@ export default async function HomePage() {
                     flexDirection: 'column',
                     gap: '6px',
                     fontSize: '12px',
-                    color: '#64748b',
                   }}
                 >
                   {service.boundaries.map((item, idx) => (
