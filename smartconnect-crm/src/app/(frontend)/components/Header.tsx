@@ -1,8 +1,28 @@
-import React from 'react'
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { BrandLogo } from './BrandLogo'
 
 export default function Header() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+
+  useEffect(() => {
+    // Check initial saved theme or system preference
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
+    if (savedTheme) {
+      setTheme(savedTheme)
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark')
+    }
+  }, [])
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(nextTheme)
+    localStorage.setItem('theme', nextTheme)
+    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
+  }
+
   return (
     <header
       style={{
@@ -48,7 +68,7 @@ export default function Header() {
         </div>
 
         {/* Navigation & Actions Section */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <Link
             href="/"
             style={{
@@ -94,7 +114,7 @@ export default function Header() {
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* EU Multi-Language Selector Dropdown */}
+          {/* EU Multi-Language Selector Dropdown (Includes Hungarian) */}
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <select
               defaultValue="DE"
@@ -104,7 +124,7 @@ export default function Header() {
                 backgroundColor: '#f8fafc',
                 border: '1px solid #cbd5e1',
                 borderRadius: '4px',
-                padding: '6px 24px 6px 10px',
+                padding: '6px 22px 6px 10px',
                 fontSize: '12px',
                 fontWeight: '800',
                 color: '#0f172a',
@@ -115,17 +135,17 @@ export default function Header() {
             >
               <option value="DE">🇩🇪 DE (Deutsch)</option>
               <option value="EN">🇪🇺 EN (English)</option>
+              <option value="HU">🇭🇺 HU (Magyar)</option>
               <option value="FR">🇫🇷 FR (Français)</option>
               <option value="ES">🇪🇸 ES (Español)</option>
               <option value="IT">🇮🇹 IT (Italiano)</option>
               <option value="NL">🇳🇱 NL (Nederlands)</option>
               <option value="PL">🇵🇱 PL (Polski)</option>
             </select>
-            {/* Custom Caret Arrow */}
             <span
               style={{
                 position: 'absolute',
-                right: '8px',
+                right: '7px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 fontSize: '9px',
@@ -137,8 +157,29 @@ export default function Header() {
             </span>
           </div>
 
+          {/* Light / Dark Mode Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '32px',
+              borderRadius: '4px',
+              border: '1px solid #cbd5e1',
+              backgroundColor: '#f8fafc',
+              cursor: 'pointer',
+              fontSize: '14px',
+              padding: 0,
+            }}
+            title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '2px' }}>
             {/* Secondary CTA: RFP / Tender Submit */}
             <Link
               href="/procurement#tender"
