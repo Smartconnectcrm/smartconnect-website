@@ -5,9 +5,13 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+// Collections
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Services } from './collections/Services'
+
+// Globals
+import { SiteSettings } from './payload/globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -20,6 +24,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Services],
+  globals: [SiteSettings], // <-- Registered SiteSettings global
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
