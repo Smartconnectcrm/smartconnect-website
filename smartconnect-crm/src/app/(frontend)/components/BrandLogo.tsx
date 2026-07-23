@@ -62,15 +62,17 @@ export const BrandLogo: React.FC<BrandLogoProps> = async ({
         <Image
           src={logoSrc}
           alt={altText}
-          width={80}
-          height={80}
+          width={120}
+          height={120}
           priority={priority}
           style={{
-            height: '140%',
+            height: '180%',
             width: 'auto',
+            maxWidth: 'none',
             objectFit: 'contain',
+            objectPosition: '12% center', // Focuses directly on the metallic mark, hiding stray text
             mixBlendMode: 'multiply',
-            filter: 'contrast(120%) brightness(102%)',
+            filter: 'contrast(115%) brightness(102%)',
           }}
         />
       </div>
