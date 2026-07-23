@@ -1,92 +1,190 @@
 import React from 'react'
+import Link from 'next/link'
 
 export default function ProcurementPage() {
   return (
-    <div className="catalog-container">
-      {/* Page Header */}
-      <header className="catalog-header">
-        <span
+    <main
+      style={{
+        maxWidth: '1000px',
+        margin: '0 auto',
+        padding: '40px 20px 80px 20px',
+      }}
+    >
+      {/* Hero */}
+      <section
+        style={{
+          marginBottom: '40px',
+          borderBottom: '2px solid #000000',
+          paddingBottom: '24px',
+        }}
+      >
+        <div
           style={{
-            fontSize: '13px',
-            fontFamily: 'monospace',
+            display: 'inline-block',
+            backgroundColor: '#f1f5f9',
+            border: '1px solid #cbd5e1',
+            padding: '4px 10px',
+            borderRadius: '4px',
+            fontSize: '11px',
+            fontWeight: '800',
+            color: '#334155',
             textTransform: 'uppercase',
-            letterSpacing: '1px',
+            letterSpacing: '0.05em',
+            marginBottom: '12px',
           }}
         >
-          EU Tender & Public Procurement
-        </span>
-        <h1 style={{ fontSize: '52px', fontWeight: '900', margin: '10px 0' }}>
+          🇪🇺 Public Sector Compliance Profile
+        </div>
+        <h1
+          style={{
+            fontSize: '32px',
+            fontWeight: '900',
+            textTransform: 'uppercase',
+            color: '#0f172a',
+            marginBottom: '12px',
+          }}
+        >
           Procurement-Profil
         </h1>
-        <p>
-          Strukturierte Informationen für öffentliche Beschaffung, EU-Tender und Vergabeverfahren
-          mit prüffähiger Dokumentation und Compliance-Bausteinen.
+        <p
+          style={{
+            color: '#475569',
+            fontSize: '15px',
+            lineHeight: '1.6',
+            margin: 0,
+            maxWidth: '700px',
+          }}
+        >
+          Qualifikationsprofil, Standards und Compliance-Richtlinien für die Beschaffung im
+          öffentlichen Sektor und in Enterprise-Umgebungen.
         </p>
-      </header>
+      </section>
 
-      {/* Procurement Brutalist Table / Grid */}
-      <div style={{ border: '2px solid black', backgroundColor: '#ffffff' }}>
-        {/* Section 1: Leistungsgegenstand */}
-        <div style={{ borderBottom: '2px solid black', padding: '24px' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 12px 0' }}>
-            Leistungsgegenstand
+      {/* Grid Specs */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '24px',
+          marginBottom: '48px',
+        }}
+      >
+        <div
+          style={{
+            border: '2px solid #000000',
+            padding: '24px',
+            borderRadius: '8px',
+            backgroundColor: '#ffffff',
+            boxShadow: '4px 4px 0px 0px #000000',
+          }}
+        >
+          <h2
+            style={{ fontSize: '16px', fontWeight: '800', marginBottom: '12px', color: '#0f172a' }}
+          >
+            ✓ EVB-IT Standard
           </h2>
-          <p style={{ fontSize: '15px', lineHeight: '1.6', margin: 0, color: '#222' }}>
-            IT-Dienstleistungen im Bereich Operations, Integration, Security, Cloud, Data und
-            Delivery mit Fokus auf strukturierte Umsetzung, nachvollziehbare Dokumentation und
-            compliance-orientierte Arbeitsweise für öffentliche Auftraggeber und regulierte
-            Unternehmen.
+          <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0 }}>
+            Vollständige Konformität mit Ergänzenden Vertragsbedingungen für die Beschaffung von
+            IT-Leistungen (EVB-IT Dienstleistung / Erstellung).
           </p>
         </div>
 
-        {/* Section 2: Lieferobjekte */}
-        <div style={{ borderBottom: '2px solid black', padding: '24px' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 16px 0' }}>
-            Lieferobjekte
-          </h2>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0px',
-              border: '1px solid black',
-            }}
+        <div
+          style={{
+            border: '2px solid #000000',
+            padding: '24px',
+            borderRadius: '8px',
+            backgroundColor: '#ffffff',
+            boxShadow: '4px 4px 0px 0px #000000',
+          }}
+        >
+          <h2
+            style={{ fontSize: '16px', fontWeight: '800', marginBottom: '12px', color: '#0f172a' }}
           >
-            {[
-              '1. Betriebs- und Service-Dokumentation (Runbooks, SOPs, Admin-Handbücher)',
-              '2. Integrations- und Schnittstellenbeschreibungen (APIs, ETL, Datenflüsse)',
-              '3. Sicherheitskonzepte und Baseline-Hardening-Checklisten',
-              '4. Tender-Readiness-Packs und Angebotsstrukturen',
-              '5. Cloud-Governance-Richtlinien und Betriebsprozesse',
-              '6. KPI-Kataloge, Datenmodelle und Dashboard-Prototypen',
-              '7. Stabilisierungspläne, Backlogs und Übergabeunterlagen',
-            ].map((item, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: '12px 16px',
-                  borderBottom: index === 6 ? 'none' : '1px solid black',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9',
-                }}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
+            🔒 DSGVO & Compliance
+          </h2>
+          <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0 }}>
+            Dokumentierte AVV-Muster, Auftragsverarbeitung gemäß Art. 28 DSGVO, Sitz &
+            Datenverarbeitung exklusiv in der Europäischen Union.
+          </p>
         </div>
 
-        {/* Section 3: Dokumentationsumfang */}
-        <div style={{ padding: '24px' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: '900', margin: '0 0 12px 0' }}>
-            Dokumentationsumfang
+        <div
+          style={{
+            border: '2px solid #000000',
+            padding: '24px',
+            borderRadius: '8px',
+            backgroundColor: '#ffffff',
+            boxShadow: '4px 4px 0px 0px #000000',
+          }}
+        >
+          <h2
+            style={{ fontSize: '16px', fontWeight: '800', marginBottom: '12px', color: '#0f172a' }}
+          >
+            🛡️ Information Security
           </h2>
-          <p style={{ fontSize: '14px', margin: 0 }}>
-            → Technische Dokumentation (Architektur, Konfiguration, Schnittstellen)
+          <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0 }}>
+            ISO 27001-orientierte Betriebsstrukturen, striktes Rollen- & Rechtemodell, MFA-Zwang für
+            administrative Zugriffe.
           </p>
         </div>
       </div>
-    </div>
+
+      {/* Tender Anchor Section */}
+      <section
+        id="tender"
+        style={{
+          border: '2px solid #000000',
+          padding: '32px',
+          borderRadius: '8px',
+          backgroundColor: '#0f172a',
+          color: '#ffffff',
+          boxShadow: '4px 4px 0px 0px #000000',
+        }}
+      >
+        <h2
+          style={{
+            fontSize: '20px',
+            fontWeight: '900',
+            textTransform: 'uppercase',
+            marginBottom: '8px',
+            color: '#ffffff',
+          }}
+        >
+          RFP & Ausschreibung Einreichen
+        </h2>
+        <p
+          style={{
+            fontSize: '14px',
+            color: '#94a3b8',
+            marginBottom: '24px',
+            maxWidth: '600px',
+            lineHeight: '1.5',
+          }}
+        >
+          Senden Sie Ihre Ausschreibungsunterlagen oder unverbindliche Voranfragen direkt an unser
+          Procurement-Spezialistenteam.
+        </p>
+        <Link
+          href="/contact"
+          style={{
+            display: 'inline-block',
+            backgroundColor: '#fbbf24',
+            color: '#000000',
+            border: '2px solid #000000',
+            padding: '12px 24px',
+            borderRadius: '4px',
+            fontWeight: '900',
+            fontSize: '12px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            textDecoration: 'none',
+            boxShadow: '2px 2px 0px 0px #ffffff',
+          }}
+        >
+          Ausschreibung Übermitteln →
+        </Link>
+      </section>
+    </main>
   )
 }
