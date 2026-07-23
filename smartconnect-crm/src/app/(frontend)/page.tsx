@@ -9,21 +9,20 @@ export default async function HomePage() {
   })
 
   return (
-    <div
+    <main
       style={{
-        maxWidth: '1200px',
+        maxWidth: '1240px',
         margin: '0 auto',
-        padding: '48px 24px 64px 24px',
-        position: 'relative',
-        zIndex: 1,
+        padding: '40px 20px 80px 20px',
+        minHeight: 'calc(100vh - 80px - 300px)', // Ensures footer sits properly at bottom even if content is short
       }}
     >
       {/* Hero Section Header */}
       <section
         style={{
-          marginBottom: '40px',
+          marginBottom: '36px',
           borderBottom: '2px solid #000000',
-          paddingBottom: '24px',
+          paddingBottom: '20px',
         }}
       >
         <h1
@@ -33,7 +32,7 @@ export default async function HomePage() {
             textTransform: 'uppercase',
             letterSpacing: '-0.02em',
             color: '#0f172a',
-            marginBottom: '12px',
+            marginBottom: '10px',
             fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
@@ -43,7 +42,7 @@ export default async function HomePage() {
           style={{
             color: '#475569',
             fontWeight: '500',
-            maxWidth: '650px',
+            maxWidth: '680px',
             fontSize: '15px',
             lineHeight: '1.6',
             margin: 0,
@@ -54,11 +53,11 @@ export default async function HomePage() {
         </p>
       </section>
 
-      {/* Grid - Clean 2-column or 3-column auto wrapping */}
+      {/* Responsive Grid */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
           gap: '24px',
           alignItems: 'stretch',
         }}
@@ -220,6 +219,6 @@ export default async function HomePage() {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   )
 }
