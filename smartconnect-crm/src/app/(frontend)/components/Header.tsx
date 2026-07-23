@@ -2,72 +2,72 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
 export default function Header() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
+
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
+  // 1. Sync theme and language from localStorage / URL on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
-    if (savedTheme) {
-      setTheme(savedTheme)
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark')
+    // Theme setup
+    const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
+    setTheme(savedTheme)
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
     }
-  }, [])
 
+    // Language setup from URL query ?lang= or localStorage
+    const urlLang = searchParams.get('lang')
+    const savedLang = localStorage.getItem('preferred_lang') || 'DE'
+    const activeLang = urlLang || savedLang
+    setLang(activeLang)
+  }, [searchParams])
+
+  // 2. Functional Theme Toggle
   const toggleTheme = () => {
-    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    const isDark = document.documentElement.classList.contains('dark')
+    const nextTheme = isDark ? 'light' : 'dark'
+
     setTheme(nextTheme)
     localStorage.setItem('theme', nextTheme)
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
+
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   }
 
+  // 3. Functional Language Switcher (Updates URL & LocalStorage)
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLang = e.target.value
-    setLang(newLang)
-    localStorage.setItem('preferred_lang', newLang)
-    // Optional: trigger locale routing or translation state here
+    const selectedLang = e.target.value
+    setLang(selectedLang)
+    localStorage.setItem('preferred_lang', selectedLang)
+
+    // Update query params without full page reload
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('lang', selectedLang)
+    router.push(`${pathname}?${params.toString()}`)
   }
 
   return (
     <header
-      style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 9999,
-        width: '100%',
-        backgroundColor: '#ffffff',
-        borderBottom: '2px solid #000000',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-      }}
+      className="sticky top-0 z-[9999] w-full border-b-2 border-black bg-white dark:bg-slate-900 dark:border-slate-700 dark:text-white transition-colors duration-200"
+      style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}
     >
-      {/* Top-Right Light/Dark Toggle */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '6px',
-          right: '16px',
-          zIndex: 10,
-        }}
-      >
+      {/* Absolute Top-Right Light/Dark Toggle */}
+      <div className="absolute top-1.5 right-4 z-10">
         <button
           onClick={toggleTheme}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '26px',
-            height: '26px',
-            borderRadius: '4px',
-            border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
-            cursor: 'pointer',
-            fontSize: '12px',
-            padding: 0,
-          }}
+          className="inline-flex items-center justify-center w-7 h-7 rounded border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-xs cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
         >
           {theme === 'light' ? '🌙' : '☀️'}
@@ -75,60 +75,29 @@ export default function Header() {
       </div>
 
       {/* Main Header Container */}
-      <div
-        style={{
-          maxWidth: '1240px',
-          margin: '0 auto',
-          padding: '0 20px',
-          height: '80px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#ffffff',
-        }}
-      >
+      <div className="max-w-[1240px] mx-auto px-5 h-[80px] flex items-center justify-between">
         {/* Brand Section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <BrandLogo variant="light" priority={true} />
+        <div className="flex items-center gap-3.5">
+          <BrandLogo variant={theme === 'dark' ? 'dark' : 'light'} priority={true} />
 
-          <div
-            style={{
-              borderLeft: '1px solid #e2e8f0',
-              paddingLeft: '12px',
-              fontSize: '11px',
-              fontWeight: '700',
-              color: '#64748b',
-              textTransform: 'uppercase',
-              lineHeight: '1.3',
-            }}
-          >
+          <div className="border-l border-slate-300 dark:border-slate-700 pl-3 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase leading-snug">
             Enterprise &<br />
             Public Sector
           </div>
         </div>
 
         {/* Navigation Section */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <nav className="flex items-center gap-4">
           <Link
             href="/"
-            style={{
-              textDecoration: 'none',
-              color: '#0f172a',
-              fontWeight: '700',
-              fontSize: '13.5px',
-            }}
+            className="text-sm font-bold text-slate-900 dark:text-slate-100 no-underline hover:text-blue-600 dark:hover:text-blue-400"
           >
             Leistungskatalog
           </Link>
 
           <Link
             href="/procurement"
-            style={{
-              textDecoration: 'none',
-              color: '#0f172a',
-              fontWeight: '700',
-              fontSize: '13.5px',
-            }}
+            className="text-sm font-bold text-slate-900 dark:text-slate-100 no-underline hover:text-blue-600 dark:hover:text-blue-400"
           >
             Procurement-Profil
           </Link>
@@ -136,43 +105,18 @@ export default function Header() {
           {/* CMS Admin Link */}
           <Link
             href="/admin"
-            style={{
-              textDecoration: 'none',
-              color: '#2563eb',
-              fontWeight: '700',
-              fontSize: '12.5px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '5px 9px',
-              borderRadius: '4px',
-              backgroundColor: '#eff6ff',
-              border: '1px solid #bfdbfe',
-            }}
+            className="no-underline text-blue-600 dark:text-blue-400 font-bold text-xs inline-flex items-center gap-1 px-2.5 py-1.5 rounded bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-blue-900 hover:bg-blue-100 dark:hover:bg-slate-700"
             title="Payload CMS Portal"
           >
             <span>🔒</span> CMS Login
           </Link>
 
           {/* Functional Language Dropdown */}
-          <div style={{ position: 'relative', display: 'inline-block' }}>
+          <div className="relative inline-block">
             <select
               value={lang}
               onChange={handleLanguageChange}
-              style={{
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #cbd5e1',
-                borderRadius: '4px',
-                padding: '6px 22px 6px 10px',
-                fontSize: '12px',
-                fontWeight: '800',
-                color: '#0f172a',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                outline: 'none',
-              }}
+              className="appearance-none bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded py-1.5 pl-2.5 pr-6 text-xs font-extrabold text-slate-900 dark:text-slate-100 cursor-pointer outline-none"
             >
               <option value="DE">🇩🇪 DE (Deutsch)</option>
               <option value="EN">🇪🇺 EN (English)</option>
@@ -183,57 +127,23 @@ export default function Header() {
               <option value="NL">🇳🇱 NL (Nederlands)</option>
               <option value="PL">🇵🇱 PL (Polski)</option>
             </select>
-            <span
-              style={{
-                position: 'absolute',
-                right: '7px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                fontSize: '9px',
-                pointerEvents: 'none',
-                color: '#64748b',
-              }}
-            >
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] pointer-events-none text-slate-500">
               ▼
             </span>
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '4px' }}>
+          <div className="flex items-center gap-2 ml-1">
             <Link
               href="/procurement#tender"
-              style={{
-                textDecoration: 'none',
-                color: '#ffffff',
-                backgroundColor: '#0f172a',
-                padding: '8px 14px',
-                borderRadius: '4px',
-                border: '1px solid #0f172a',
-                fontWeight: '800',
-                fontSize: '11.5px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px #000000',
-              }}
+              className="no-underline text-white bg-slate-900 dark:bg-slate-800 px-3.5 py-2 rounded border border-slate-900 dark:border-slate-700 font-extrabold text-[11.5px] uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.2)]"
             >
               RFP / Tender
             </Link>
 
             <Link
               href="/contact"
-              style={{
-                textDecoration: 'none',
-                color: '#000000',
-                backgroundColor: '#fbbf24',
-                padding: '8px 16px',
-                borderRadius: '4px',
-                border: '1px solid #000000',
-                fontWeight: '800',
-                fontSize: '11.5px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px #000000',
-              }}
+              className="no-underline text-black bg-amber-400 px-4 py-2 rounded border border-black font-extrabold text-[11.5px] uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-amber-300 transition-colors"
             >
               Kontakt
             </Link>
