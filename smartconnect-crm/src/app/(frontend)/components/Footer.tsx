@@ -7,42 +7,103 @@ export default function Footer() {
       style={{
         borderTop: '2px solid #000000',
         backgroundColor: '#ffffff',
-        padding: '48px 24px 24px 24px',
-        marginTop: '64px',
+        padding: '56px 24px 28px 24px',
+        marginTop: '80px',
       }}
     >
       <div
         style={{
-          maxWidth: '1200px',
+          maxWidth: '1240px',
           margin: '0 auto',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '32px',
-          paddingBottom: '32px',
-          borderBottom: '1px solid #e5e5e5',
+          gap: '40px',
+          paddingBottom: '40px',
+          borderBottom: '1px solid #e2e8f0',
         }}
       >
-        {/* Brand Column */}
+        {/* Column 1: Brand & Sub-tag */}
         <div>
           <div
-            style={{ fontSize: '18px', fontWeight: '900', color: '#0f172a', marginBottom: '8px' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '14px',
+            }}
           >
-            SmartConnect <span style={{ color: '#2563eb' }}>CRM</span>
+            {/* Embedded Mini Logo */}
+            <svg
+              viewBox="0 0 100 100"
+              width="28"
+              height="28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="footerBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#1e3a8a" />
+                  <stop offset="50%" stopColor="#2563eb" />
+                  <stop offset="100%" stopColor="#60a5fa" />
+                </linearGradient>
+                <linearGradient id="footerGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#b45309" />
+                  <stop offset="50%" stopColor="#f59e0b" />
+                  <stop offset="100%" stopColor="#fbbf24" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M 32,25 C 18,25 10,36 10,50 C 10,64 18,75 32,75 C 44,75 52,63 60,50 C 52,37 44,25 32,25 Z"
+                stroke="url(#footerBlueGrad)"
+                strokeWidth="11"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M 68,25 C 82,25 90,36 90,50 C 90,64 82,75 68,75 C 56,75 48,63 40,50 C 48,37 56,25 68,25 Z"
+                stroke="url(#footerGoldGrad)"
+                strokeWidth="11"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+
+            <span
+              style={{
+                fontSize: '18px',
+                fontWeight: '900',
+                color: '#0f172a',
+                letterSpacing: '-0.02em',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+              }}
+            >
+              SmartConnect <span style={{ color: '#2563eb' }}>CRM</span>
+            </span>
           </div>
-          <p style={{ fontSize: '13px', color: '#555555', lineHeight: '1.5', margin: 0 }}>
+
+          <p
+            style={{
+              fontSize: '13px',
+              color: '#475569',
+              lineHeight: '1.6',
+              margin: 0,
+            }}
+          >
             Strukturierte IT-Leistungsbausteine, dokumentierte Übergaben und konforme Umsetzung für
             Enterprise und den öffentlichen Sektor.
           </p>
         </div>
 
-        {/* Navigation Column */}
+        {/* Column 2: Navigation */}
         <div>
           <div
             style={{
-              fontSize: '14px',
-              fontWeight: '800',
+              fontSize: '12px',
+              fontWeight: '900',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              letterSpacing: '0.06em',
+              color: '#0f172a',
+              marginBottom: '16px',
             }}
           >
             Navigation
@@ -54,14 +115,18 @@ export default function Footer() {
               margin: 0,
               display: 'flex',
               flexDirection: 'column',
-              gap: '8px',
+              gap: '10px',
               fontSize: '13px',
             }}
           >
             <li>
               <Link
                 href="/"
-                style={{ color: '#000000', textDecoration: 'none', fontWeight: '600' }}
+                style={{
+                  color: '#334155',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                }}
               >
                 Leistungskatalog
               </Link>
@@ -69,7 +134,11 @@ export default function Footer() {
             <li>
               <Link
                 href="/procurement"
-                style={{ color: '#000000', textDecoration: 'none', fontWeight: '600' }}
+                style={{
+                  color: '#334155',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                }}
               >
                 Procurement-Profil
               </Link>
@@ -77,22 +146,31 @@ export default function Footer() {
             <li>
               <Link
                 href="/admin"
-                style={{ color: '#2563eb', textDecoration: 'none', fontWeight: '600' }}
+                style={{
+                  color: '#2563eb',
+                  textDecoration: 'none',
+                  fontWeight: '700',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                }}
               >
-                CMS Dashboard
+                <span>🔒</span> CMS Dashboard
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Compliance Column */}
+        {/* Column 3: Compliance & Standards */}
         <div>
           <div
             style={{
-              fontSize: '14px',
-              fontWeight: '800',
+              fontSize: '12px',
+              fontWeight: '900',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              letterSpacing: '0.06em',
+              color: '#0f172a',
+              marginBottom: '16px',
             }}
           >
             Compliance & Standards
@@ -104,25 +182,34 @@ export default function Footer() {
               margin: 0,
               display: 'flex',
               flexDirection: 'column',
-              gap: '6px',
+              gap: '8px',
               fontSize: '13px',
-              color: '#444444',
+              color: '#475569',
+              fontWeight: '500',
             }}
           >
-            <li>✓ ISO 27001 Ready</li>
-            <li>✓ DSGVO / GDPR Konform</li>
-            <li>✓ EVB-IT Standard</li>
+            <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span> ISO 27001 Ready
+            </li>
+            <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span> DSGVO / GDPR Konform
+            </li>
+            <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span> EVB-IT Standard
+            </li>
           </ul>
         </div>
 
-        {/* Rechtliches Column */}
+        {/* Column 4: Rechtliches */}
         <div>
           <div
             style={{
-              fontSize: '14px',
-              fontWeight: '800',
+              fontSize: '12px',
+              fontWeight: '900',
               textTransform: 'uppercase',
-              marginBottom: '12px',
+              letterSpacing: '0.06em',
+              color: '#0f172a',
+              marginBottom: '16px',
             }}
           >
             Rechtliches
@@ -134,14 +221,18 @@ export default function Footer() {
               margin: 0,
               display: 'flex',
               flexDirection: 'column',
-              gap: '8px',
+              gap: '10px',
               fontSize: '13px',
             }}
           >
             <li>
               <Link
                 href="/impressum"
-                style={{ color: '#000000', textDecoration: 'none', fontWeight: '600' }}
+                style={{
+                  color: '#334155',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                }}
               >
                 Impressum
               </Link>
@@ -149,7 +240,11 @@ export default function Footer() {
             <li>
               <Link
                 href="/datenschutz"
-                style={{ color: '#000000', textDecoration: 'none', fontWeight: '600' }}
+                style={{
+                  color: '#334155',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                }}
               >
                 Datenschutz
               </Link>
@@ -161,21 +256,37 @@ export default function Footer() {
       {/* Copyright Bar */}
       <div
         style={{
-          maxWidth: '1200px',
+          maxWidth: '1240px',
           margin: '0 auto',
-          paddingTop: '20px',
+          paddingTop: '24px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '12px',
+          gap: '16px',
           fontSize: '12px',
-          color: '#666666',
+          color: '#64748b',
         }}
       >
-        <div>© 2026 SmartConnect CRM. All rights reserved.</div>
-        <div style={{ fontWeight: '700', color: '#1e3a8a' }}>
-          EU Tender & Public Procurement Ready
+        <div>© {new Date().getFullYear()} SmartConnect CRM. All rights reserved.</div>
+
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            backgroundColor: '#f8fafc',
+            border: '1px solid #e2e8f0',
+            padding: '4px 10px',
+            borderRadius: '4px',
+            fontWeight: '700',
+            color: '#1e3a8a',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.04em',
+          }}
+        >
+          <span>🇪🇺</span> EU Tender & Public Procurement Ready
         </div>
       </div>
     </footer>
