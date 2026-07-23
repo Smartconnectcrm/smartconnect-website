@@ -1,4 +1,9 @@
-/* Dark Mode Global Styles */
+/* Dark Mode Override Rules */
+html.dark {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
 html.dark body {
   background-color: #0f172a !important;
   color: #f8fafc !important;
@@ -10,17 +15,11 @@ html.dark footer {
   border-color: #334155 !important;
 }
 
-html.dark header *,
-html.dark footer * {
-  color: #f8fafc !important;
-}
-
-html.dark main div[style*="background-color: #ffffff"],
-html.dark form {
+html.dark main div,
+html.dark main section {
   background-color: #1e293b !important;
-  color: #ffffff !important;
+  color: #f8fafc !important;
   border-color: #475569 !important;
-  box-shadow: 4px 4px 0px 0px #000000 !important;
 }
 
 html.dark input,
