@@ -34,7 +34,7 @@ export default function Header() {
         boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
       }}
     >
-      {/* Absolute Top-Right Utility Position for Light/Dark Toggle */}
+      {/* Absolute Top-Right Position for Light/Dark Toggle */}
       <div
         style={{
           position: 'absolute',
@@ -57,7 +57,6 @@ export default function Header() {
             cursor: 'pointer',
             fontSize: '12px',
             padding: 0,
-            transition: 'all 0.2s ease',
           }}
           title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
         >
@@ -98,7 +97,7 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Navigation & Actions Section */}
+        {/* Navigation Section */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <Link
             href="/"
@@ -190,7 +189,7 @@ export default function Header() {
 
           {/* Action Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '4px' }}>
-            {/* Secondary CTA: RFP / Tender Submit */}
+            {/* RFP / Tender Button */}
             <Link
               href="/procurement#tender"
               style={{
@@ -210,7 +209,7 @@ export default function Header() {
               RFP / Tender
             </Link>
 
-            {/* Primary CTA: Direct Contact */}
+            {/* Direct Contact Button */}
             <Link
               href="/contact"
               style={{
