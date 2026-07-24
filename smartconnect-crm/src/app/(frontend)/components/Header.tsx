@@ -16,12 +16,19 @@ function HeaderNav() {
   const [lang, setLang] = useState('DE')
 
   useEffect(() => {
+    // 1. Theme Setup
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
     document.documentElement.classList.toggle('dark', savedTheme === 'dark')
 
-    const savedLang = localStorage.getItem('preferred_lang') || 'DE'
-    setLang(savedLang)
+    // 2. Read active language directly from Google's cookie or fallback to localStorage
+    const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
+    if (match && match[1]) {
+      setLang(match[1].toUpperCase())
+    } else {
+      const savedLang = localStorage.getItem('preferred_lang') || 'DE'
+      setLang(savedLang.toUpperCase())
+    }
   }, [])
 
   const toggleTheme = () => {
@@ -34,20 +41,27 @@ function HeaderNav() {
   }
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLang = e.target.value
+    const selectedLang = e.target.value.toUpperCase()
     setLang(selectedLang)
     localStorage.setItem('preferred_lang', selectedLang)
 
     const googleLangCode = selectedLang.toLowerCase()
 
-    document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
-    document.cookie = `googtrans=/de/${googleLangCode}; path=/`
+    // Clear previous cookies across domain levels to prevent stale translation conflicts
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`
 
+    // Set fresh Google Translate cookie for the chosen language
+    document.cookie = `googtrans=/de/${googleLangCode}; path=/;`
+    document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
+
+    // Trigger Google Translate select element if loaded in DOM
     const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
     if (googleSelect) {
       googleSelect.value = googleLangCode
       googleSelect.dispatchEvent(new Event('change'))
     } else {
+      // Reload page to apply google translation cookie seamlessly
       window.location.reload()
     }
   }
