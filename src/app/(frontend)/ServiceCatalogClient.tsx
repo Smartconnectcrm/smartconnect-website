@@ -41,8 +41,11 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
 
   return (
     <div>
-      {/* Category Filter Buttons (Wired directly to Payload Options) */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '28px', flexWrap: 'wrap' }}>
+      {/* Category Filter Buttons */}
+      <div
+        className="category-filter-row"
+        style={{ display: 'flex', gap: '8px', marginBottom: '28px', flexWrap: 'wrap' }}
+      >
         {tags.map((tag) => {
           const isActive = (selectedTag === null && tag === 'ALL') || selectedTag === tag
           return (
@@ -50,16 +53,17 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
               key={tag}
               type="button"
               onClick={() => setSelectedTag(tag === 'ALL' ? null : tag)}
+              className="category-tag"
               style={{
                 padding: '6px 14px',
                 borderRadius: '6px',
-                border: '2px solid #000000',
-                backgroundColor: isActive ? '#0f172a' : '#f8fafc',
-                color: isActive ? '#ffffff' : '#0f172a',
+                border: '2px solid var(--border-color)',
+                backgroundColor: isActive ? 'var(--text-primary)' : 'var(--bg-tag)',
+                color: isActive ? 'var(--bg-page)' : 'var(--text-primary)',
                 fontSize: '12px',
                 fontWeight: '800',
                 cursor: 'pointer',
-                boxShadow: isActive ? '2px 2px 0px 0px #000000' : 'none',
+                boxShadow: isActive ? '2px 2px 0px 0px var(--shadow-color)' : 'none',
                 transition: 'all 0.1s ease',
               }}
             >
@@ -71,6 +75,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
 
       {/* Services Grid */}
       <div
+        className="services-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
@@ -89,10 +94,12 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
               key={service.id}
               className="service-card"
               style={{
-                border: '2px solid #000000',
+                border: '2px solid var(--border-color)',
+                backgroundColor: 'var(--bg-card)',
+                color: 'var(--text-primary)',
                 padding: '24px',
                 borderRadius: '8px',
-                boxShadow: '4px 4px 0px 0px #000000',
+                boxShadow: '4px 4px 0px 0px var(--shadow-color)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -109,7 +116,15 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                     marginBottom: '16px',
                   }}
                 >
-                  <h2 style={{ fontSize: '18px', fontWeight: '800', margin: 0, lineHeight: '1.3' }}>
+                  <h2
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: '800',
+                      margin: 0,
+                      lineHeight: '1.3',
+                      color: 'var(--text-primary)',
+                    }}
+                  >
                     {service.title}
                   </h2>
 
@@ -121,14 +136,19 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                         fontSize: '11px',
                         fontWeight: '800',
                         padding: '4px 8px',
-                        border: '1px solid #000000',
+                        border: '1px solid var(--border-color)',
                         borderRadius: '4px',
                         whiteSpace: 'nowrap',
                         cursor: 'pointer',
                         backgroundColor:
-                          selectedTag === service.categoryTag ? '#0f172a' : '#f1f5f9',
-                        color: selectedTag === service.categoryTag ? '#ffffff' : '#334155',
-                        boxShadow: '1px 1px 0px 0px #000000',
+                          selectedTag === service.categoryTag
+                            ? 'var(--text-primary)'
+                            : 'var(--bg-tag)',
+                        color:
+                          selectedTag === service.categoryTag
+                            ? 'var(--bg-page)'
+                            : 'var(--text-primary)',
+                        boxShadow: '1px 1px 0px 0px var(--shadow-color)',
                       }}
                       title={`Filter by ${service.categoryTag}`}
                     >
@@ -138,7 +158,14 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                 </div>
 
                 {/* Description */}
-                <p style={{ fontSize: '13px', lineHeight: '1.5', margin: '0 0 20px 0' }}>
+                <p
+                  style={{
+                    fontSize: '13px',
+                    lineHeight: '1.5',
+                    margin: '0 0 20px 0',
+                    color: 'var(--text-secondary)',
+                  }}
+                >
                   {service.description}
                 </p>
 
@@ -152,6 +179,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
                         margin: '0 0 6px 0',
+                        color: 'var(--text-primary)',
                       }}
                     >
                       ✓ {labels.deliverables}
@@ -165,6 +193,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                         flexDirection: 'column',
                         gap: '4px',
                         fontSize: '12px',
+                        color: 'var(--text-secondary)',
                       }}
                     >
                       {deliverablesList.map((itemText, idx) => (
@@ -180,7 +209,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                   </div>
                 )}
 
-                {/* Inputs & Outputs (From Payload CMS Schema) */}
+                {/* Inputs & Outputs */}
                 {(inputsList.length > 0 || outputsList.length > 0) && (
                   <div
                     style={{
@@ -189,9 +218,9 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                       gap: '12px',
                       marginBottom: '16px',
                       padding: '12px',
-                      backgroundColor: 'rgba(0,0,0,0.02)',
+                      backgroundColor: 'var(--bg-secondary)',
                       borderRadius: '6px',
-                      border: '1px dashed #cbd5e1',
+                      border: '1px dashed var(--border-color)',
                     }}
                   >
                     {/* Inputs */}
@@ -208,7 +237,15 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                         >
                           ↓ Inputs
                         </h4>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '11px' }}>
+                        <ul
+                          style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            margin: 0,
+                            fontSize: '11px',
+                            color: 'var(--text-muted)',
+                          }}
+                        >
                           {inputsList.map((itemText, idx) => (
                             <li key={idx} style={{ marginBottom: '2px' }}>
                               • {itemText}
@@ -232,7 +269,15 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                         >
                           ↑ Outputs
                         </h4>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '11px' }}>
+                        <ul
+                          style={{
+                            listStyle: 'none',
+                            padding: 0,
+                            margin: 0,
+                            fontSize: '11px',
+                            color: 'var(--text-muted)',
+                          }}
+                        >
                           {outputsList.map((itemText, idx) => (
                             <li key={idx} style={{ marginBottom: '2px' }}>
                               • {itemText}
@@ -250,7 +295,8 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                 <div
                   className="boundary-box"
                   style={{
-                    border: '1px solid #e2e8f0',
+                    border: '1px solid var(--border-color)',
+                    backgroundColor: 'var(--bg-secondary)',
                     padding: '12px',
                     borderRadius: '6px',
                     marginTop: '12px',
@@ -263,6 +309,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
                       margin: '0 0 6px 0',
+                      color: 'var(--text-primary)',
                     }}
                   >
                     ⊘ {labels.boundaries}
@@ -276,6 +323,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                       flexDirection: 'column',
                       gap: '4px',
                       fontSize: '11.5px',
+                      color: 'var(--text-muted)',
                     }}
                   >
                     {boundariesList.map((itemText, idx) => (

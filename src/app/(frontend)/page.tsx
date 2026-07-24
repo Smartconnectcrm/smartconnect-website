@@ -104,7 +104,7 @@ export default async function HomePage({ searchParams }: Props) {
       <section
         style={{
           marginBottom: '36px',
-          borderBottom: '2px solid #000000',
+          borderBottom: '2px solid var(--border-color)',
           paddingBottom: '20px',
         }}
       >
@@ -115,6 +115,7 @@ export default async function HomePage({ searchParams }: Props) {
             textTransform: 'uppercase',
             letterSpacing: '-0.02em',
             marginBottom: '10px',
+            color: 'var(--text-primary)',
             fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
@@ -127,6 +128,7 @@ export default async function HomePage({ searchParams }: Props) {
             fontSize: '15px',
             lineHeight: '1.6',
             margin: 0,
+            color: 'var(--text-secondary)',
           }}
         >
           {labels.subtitle}
