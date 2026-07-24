@@ -6,6 +6,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
 function HeaderNav() {
+  const [mounted, setMounted] = useState(false)
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
 
@@ -13,13 +14,20 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  // 1. Safe Client Hydration
   useEffect(() => {
-    // 1. Theme Hydration
+    setMounted(true)
+
+    // Load saved theme
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark')
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
 
-    // 2. Read language parameter from URL or fallback
+    // Load active language parameter
     const urlLang = searchParams.get('lang')
     if (urlLang) {
       setLang(urlLang.toUpperCase())
@@ -30,30 +38,40 @@ function HeaderNav() {
     }
   }, [searchParams])
 
-  const toggleTheme = () => {
-    const isDark = document.documentElement.classList.contains('dark')
-    const nextTheme = isDark ? 'light' : 'dark'
+  // 2. Toggle Dark / Light Theme
+  const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
 
     setTheme(nextTheme)
     localStorage.setItem('theme', nextTheme)
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
+
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   }
 
+  // 3. Switch Language & Trigger Immediate URL & Payload Re-fetch
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = e.target.value.toUpperCase()
     setLang(selectedLang)
     localStorage.setItem('preferred_lang', selectedLang)
 
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
     params.set('lang', selectedLang.toLowerCase())
 
-    router.push(`${pathname}?${params.toString()}`)
+    const newUrl = `${pathname}?${params.toString()}`
+
+    // Push new route and refresh server components
+    router.push(newUrl)
+    router.refresh()
   }
 
-  // Helper to preserve active ?lang= param when clicking navigation links
   const createLocalizedHref = (path: string) => {
-    const langParam = searchParams.get('lang') || lang.toLowerCase()
-    return langParam ? `${path}?lang=${langParam.toLowerCase()}` : path
+    const activeLang = searchParams.get('lang') || lang.toLowerCase()
+    return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
   return (
@@ -65,27 +83,29 @@ function HeaderNav() {
           position: 'absolute',
           top: '6px',
           right: '16px',
-          zIndex: 10,
+          zIndex: 20,
         }}
       >
         <button
-          onClick={toggleTheme}
+          type="button"
+          onClick={handleToggleTheme}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '26px',
-            height: '26px',
+            width: '28px',
+            height: '28px',
             borderRadius: '4px',
             border: '1px solid #cbd5e1',
-            backgroundColor: 'var(--toggle-bg, #f8fafc)',
+            backgroundColor: '#f8fafc',
             cursor: 'pointer',
-            fontSize: '12px',
+            fontSize: '14px',
             padding: 0,
+            zIndex: 30,
           }}
           title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
         >
-          {theme === 'light' ? '🌙' : '☀️'}
+          {mounted ? (theme === 'light' ? '🌙' : '☀️') : '🌙'}
         </button>
       </div>
 
@@ -104,7 +124,7 @@ function HeaderNav() {
           gap: '16px',
         }}
       >
-        {/* Brand Section */}
+        {/* Brand Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div className="notranslate">
             <Link href={createLocalizedHref('/')}>
@@ -129,7 +149,7 @@ function HeaderNav() {
           </div>
         </div>
 
-        {/* Navigation Section */}
+        {/* Navigation & Controls */}
         <nav
           style={{
             display: 'flex',
@@ -166,7 +186,6 @@ function HeaderNav() {
             Procurement-Profil
           </Link>
 
-          {/* CMS Admin Link */}
           <Link
             href="/admin"
             className="notranslate cms-link"
@@ -183,13 +202,15 @@ function HeaderNav() {
               border: '1px solid #bfdbfe',
               whiteSpace: 'nowrap',
             }}
-            title="Payload CMS Portal"
           >
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* Language Dropdown Selector */}
-          <div className="notranslate" style={{ position: 'relative', display: 'inline-block' }}>
+          {/* Active Language Dropdown Switcher */}
+          <div
+            className="notranslate"
+            style={{ position: 'relative', display: 'inline-block', zIndex: 20 }}
+          >
             <select
               value={lang}
               onChange={handleLanguageChange}
