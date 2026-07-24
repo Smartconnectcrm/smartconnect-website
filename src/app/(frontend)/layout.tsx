@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import Script from 'next/script'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import './styles.css'
@@ -13,17 +12,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de">
+    <html lang="de" suppressHydrationWarning>
       <head>
-        {/* Hide Google Translate top toolbar frame and banner */}
-        <style>{`
-          .goog-te-banner-frame { display: none !important; }
-          body { top: 0px !important; }
-          .skiptranslate { display: none !important; }
-          #google_translate_element { display: none !important; }
-        `}</style>
+        {/* Anti-Flicker Script for Dark Mode Theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const savedTheme = localStorage.getItem('theme');
+                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
-      <body className="bg-white text-neutral-900 antialiased min-h-screen flex flex-col">
+      <body className="bg-white dark:bg-slate-900 text-neutral-900 dark:text-slate-100 antialiased min-h-screen flex flex-col">
         {/* Dynamic Header Component */}
         <Header />
 
@@ -32,23 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Footer */}
         <Footer />
-
-        {/* Silent Google Translate Engine Initialization */}
-        <Script id="google-translate-init" strategy="afterInteractive">
-          {`
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement({
-                pageLanguage: 'de',
-                includedLanguages: 'de,en,hu,fr,es,it,nl,pl',
-                autoDisplay: false
-              }, 'google_translate_element');
-            }
-          `}
-        </Script>
-        <Script
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   )

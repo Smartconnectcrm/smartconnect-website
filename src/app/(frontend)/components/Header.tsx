@@ -14,12 +14,12 @@ function HeaderNav() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    // 1. Setup Theme
+    // 1. Theme Hydration
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
     document.documentElement.classList.toggle('dark', savedTheme === 'dark')
 
-    // 2. Read language parameter from URL query (e.g., ?lang=fr) or localStorage fallback
+    // 2. Read language parameter from URL or fallback
     const urlLang = searchParams.get('lang')
     if (urlLang) {
       setLang(urlLang.toUpperCase())
@@ -44,7 +44,6 @@ function HeaderNav() {
     setLang(selectedLang)
     localStorage.setItem('preferred_lang', selectedLang)
 
-    // Append ?lang= param to current route to trigger Payload CMS server re-fetch instantly
     const params = new URLSearchParams(searchParams.toString())
     params.set('lang', selectedLang.toLowerCase())
 
@@ -79,7 +78,7 @@ function HeaderNav() {
             height: '26px',
             borderRadius: '4px',
             border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
+            backgroundColor: 'var(--toggle-bg, #f8fafc)',
             cursor: 'pointer',
             fontSize: '12px',
             padding: 0,
@@ -92,6 +91,7 @@ function HeaderNav() {
 
       {/* Flexible Header Container */}
       <div
+        className="header-inner"
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
@@ -102,24 +102,23 @@ function HeaderNav() {
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '16px',
-          backgroundColor: '#ffffff',
         }}
       >
         {/* Brand Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div className="notranslate">
             <Link href={createLocalizedHref('/')}>
-              <BrandLogo variant="light" priority={true} />
+              <BrandLogo variant={theme === 'dark' ? 'dark' : 'light'} priority={true} />
             </Link>
           </div>
 
           <div
+            className="brand-subtext"
             style={{
               borderLeft: '1px solid #e2e8f0',
               paddingLeft: '12px',
               fontSize: '10.5px',
               fontWeight: '700',
-              color: '#64748b',
               textTransform: 'uppercase',
               lineHeight: '1.25',
               whiteSpace: 'nowrap',
@@ -143,9 +142,9 @@ function HeaderNav() {
         >
           <Link
             href={createLocalizedHref('/')}
+            className="nav-link"
             style={{
               textDecoration: 'none',
-              color: '#0f172a',
               fontWeight: '700',
               fontSize: '13px',
               whiteSpace: 'nowrap',
@@ -156,9 +155,9 @@ function HeaderNav() {
 
           <Link
             href={createLocalizedHref('/procurement')}
+            className="nav-link"
             style={{
               textDecoration: 'none',
-              color: '#0f172a',
               fontWeight: '700',
               fontSize: '13px',
               whiteSpace: 'nowrap',
@@ -170,7 +169,7 @@ function HeaderNav() {
           {/* CMS Admin Link */}
           <Link
             href="/admin"
-            className="notranslate"
+            className="notranslate cms-link"
             style={{
               textDecoration: 'none',
               color: '#2563eb',
@@ -181,7 +180,6 @@ function HeaderNav() {
               gap: '4px',
               padding: '5px 9px',
               borderRadius: '4px',
-              backgroundColor: '#eff6ff',
               border: '1px solid #bfdbfe',
               whiteSpace: 'nowrap',
             }}
@@ -195,16 +193,14 @@ function HeaderNav() {
             <select
               value={lang}
               onChange={handleLanguageChange}
+              className="lang-select"
               style={{
                 appearance: 'none',
                 WebkitAppearance: 'none',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #cbd5e1',
                 borderRadius: '4px',
                 padding: '6px 22px 6px 10px',
                 fontSize: '12px',
                 fontWeight: '800',
-                color: '#0f172a',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
                 outline: 'none',
@@ -238,13 +234,11 @@ function HeaderNav() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             <Link
               href={createLocalizedHref('/procurement#tender')}
+              className="btn-tender"
               style={{
                 textDecoration: 'none',
-                color: '#ffffff',
-                backgroundColor: '#0f172a',
                 padding: '8px 14px',
                 borderRadius: '4px',
-                border: '1px solid #0f172a',
                 fontWeight: '800',
                 fontSize: '11px',
                 textTransform: 'uppercase',
@@ -258,6 +252,7 @@ function HeaderNav() {
 
             <Link
               href={createLocalizedHref('/contact')}
+              className="btn-kontakt"
               style={{
                 textDecoration: 'none',
                 color: '#000000',
@@ -284,18 +279,8 @@ function HeaderNav() {
 
 export default function Header() {
   return (
-    <header
-      style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 9999,
-        width: '100%',
-        backgroundColor: '#ffffff',
-        borderBottom: '2px solid #000000',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-      }}
-    >
-      <Suspense fallback={<div style={{ minHeight: '80px', backgroundColor: '#ffffff' }} />}>
+    <header className="header-root">
+      <Suspense fallback={<div style={{ minHeight: '80px' }} />}>
         <HeaderNav />
       </Suspense>
     </header>
