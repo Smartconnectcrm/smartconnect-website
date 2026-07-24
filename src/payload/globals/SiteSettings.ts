@@ -1,29 +1,32 @@
-import { GlobalConfig } from 'payload'
+import type { GlobalConfig } from 'payload'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
+  admin: {
+    group: 'Admin Settings',
+  },
   access: {
-    read: () => true, // Publicly readable
+    read: () => true, // Publicly readable for Next.js frontend
   },
   fields: [
     {
-      name: 'lightLogo', // This is image_3d6c3b.jpg
+      name: 'lightLogo',
       type: 'upload',
       relationTo: 'media',
       required: true,
       label: 'Main Logo (Full Color)',
       admin: {
-        description: 'For use on light backgrounds (image_3d6c3b.jpg)',
+        description: 'Displayed on light backgrounds / Light theme',
       },
     },
     {
-      name: 'darkLogo', // This is your logo_white.png
+      name: 'darkLogo',
       type: 'upload',
       relationTo: 'media',
       required: true,
-      label: 'Knockout Logo (White)',
+      label: 'Knockout Logo (White / Inverted)',
       admin: {
-        description: 'For use on dark backgrounds (your processed inverted file)',
+        description: 'Displayed on dark, neon, and enterprise blue backgrounds',
       },
     },
   ],

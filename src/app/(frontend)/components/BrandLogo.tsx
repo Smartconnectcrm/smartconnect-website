@@ -1,22 +1,22 @@
 import React from 'react'
-import Link from 'next/link'
+import type { Theme } from '../../../context/ThemeContext'
 
-interface BrandLogoProps {
+export interface BrandLogoProps {
   variant?: 'light' | 'dark'
+  theme?: Theme | string
   priority?: boolean
 }
 
-export const BrandLogo: React.FC<BrandLogoProps> = () => {
+export const BrandLogo: React.FC<BrandLogoProps> = ({ variant = 'light', theme }) => {
   return (
-    <Link
-      href="/"
+    <div
       style={{
         display: 'inline-flex',
         alignItems: 'center',
         gap: '12px',
         textDecoration: 'none',
       }}
-      title="SmartConnect CRM - Home"
+      title="SmartConnect CRM"
     >
       {/* Interconnected Metallic Infinity Mark */}
       <div
@@ -69,19 +69,20 @@ export const BrandLogo: React.FC<BrandLogoProps> = () => {
         </svg>
       </div>
 
-      {/* Brand Company Name */}
+      {/* Brand Company Name - Uses CSS variable for full theme responsiveness */}
       <span
         style={{
           fontSize: '20px',
           fontWeight: '900',
-          color: '#0f172a',
+          color: 'var(--text-primary)',
           letterSpacing: '-0.02em',
           fontFamily: 'system-ui, -apple-system, sans-serif',
           whiteSpace: 'nowrap',
+          transition: 'color 0.25s ease',
         }}
       >
         SmartConnect <span style={{ color: '#2563eb' }}>CRM</span>
       </span>
-    </Link>
+    </div>
   )
 }

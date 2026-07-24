@@ -43,8 +43,6 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
-  const isDark = theme === 'dark' || theme === 'neon' || theme === 'blue'
-
   const toggleTheme = () => {
     if (theme === 'light') setTheme('dark')
     else if (theme === 'dark') setTheme('neon')
@@ -68,11 +66,11 @@ function HeaderNav() {
         position: 'relative',
       }}
     >
-      {/* Brand Logo */}
+      {/* Brand Logo & Subtext */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
         <div>
           <Link href={createLocalizedHref('/')}>
-            <BrandLogo variant={isDark ? 'dark' : 'light'} priority={true} />
+            <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} priority={true} />
           </Link>
         </div>
 
@@ -86,6 +84,7 @@ function HeaderNav() {
             textTransform: 'uppercase',
             lineHeight: '1.25',
             whiteSpace: 'nowrap',
+            color: 'var(--text-secondary)',
           }}
         >
           Enterprise &<br />
@@ -112,6 +111,7 @@ function HeaderNav() {
             fontWeight: '700',
             fontSize: '13px',
             whiteSpace: 'nowrap',
+            color: 'var(--text-primary)',
           }}
         >
           Leistungskatalog
@@ -125,6 +125,7 @@ function HeaderNav() {
             fontWeight: '700',
             fontSize: '13px',
             whiteSpace: 'nowrap',
+            color: 'var(--text-primary)',
           }}
         >
           Procurement-Profil
@@ -144,6 +145,7 @@ function HeaderNav() {
             padding: '5px 9px',
             borderRadius: '4px',
             border: '1px solid #bfdbfe',
+            backgroundColor: 'var(--bg-card)',
             whiteSpace: 'nowrap',
           }}
         >
@@ -166,6 +168,9 @@ function HeaderNav() {
               cursor: 'pointer',
               fontFamily: 'inherit',
               outline: 'none',
+              backgroundColor: 'var(--bg-tag)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-color)',
             }}
           >
             <option value="DE">🇩🇪 DE (Deutsch)</option>
@@ -192,7 +197,7 @@ function HeaderNav() {
           </span>
         </div>
 
-        {/* --- NATIVE DIRECT THEME SWITCHER --- */}
+        {/* Native Direct Theme Switcher */}
         {mounted && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
@@ -254,6 +259,9 @@ function HeaderNav() {
               fontSize: '11px',
               textTransform: 'uppercase',
               letterSpacing: '0.04em',
+              backgroundColor: 'var(--text-primary)',
+              color: 'var(--bg-page)',
+              border: '1px solid var(--border-color)',
               boxShadow: '2px 2px 0px 0px var(--shadow-color)',
               whiteSpace: 'nowrap',
             }}
@@ -270,7 +278,7 @@ function HeaderNav() {
               backgroundColor: '#fbbf24',
               padding: '8px 16px',
               borderRadius: '4px',
-              border: '1px solid #000000',
+              border: '1px solid var(--border-color)',
               fontWeight: '800',
               fontSize: '11px',
               textTransform: 'uppercase',
@@ -289,7 +297,10 @@ function HeaderNav() {
 
 export default function Header() {
   return (
-    <header className="header-root" style={{ borderBottom: '2px solid var(--border-color)' }}>
+    <header
+      className="header-root"
+      style={{ borderBottom: '2px solid var(--border-color)', backgroundColor: 'var(--bg-page)' }}
+    >
       <Suspense fallback={<div style={{ minHeight: '80px' }} />}>
         <HeaderNav />
       </Suspense>
