@@ -1,0 +1,46 @@
+/* Dark Mode Core Styles */
+html.dark {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark body {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark header,
+html.dark footer {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark header *,
+html.dark footer * {
+  color: #f8fafc !important;
+}
+
+html.dark .service-card,
+html.dark form {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+html.dark .boundary-box {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark h1, html.dark h2, html.dark h3, html.dark p, html.dark span, html.dark li {
+  color: #f8fafc !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+}
