@@ -21,15 +21,11 @@ export default async function RootLayout({ children }: Props) {
       <head>
         <meta name="google" content="notranslate" />
       </head>
+      {/* Clean body without hardcoded Tailwind bg-white */}
       <body className="antialiased min-h-screen flex flex-col">
         <ThemeProvider>
-          {/* Dynamic Header Component */}
           <Header />
-
-          {/* Main Page Content */}
           <main className="flex-1">{children}</main>
-
-          {/* Footer */}
           <Footer />
         </ThemeProvider>
       </body>

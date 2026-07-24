@@ -46,11 +46,19 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
-  const isDark = resolvedTheme === 'dark' || theme === 'dark'
+  const isDark =
+    resolvedTheme === 'dark' || theme === 'dark' || theme === 'neon' || theme === 'blue'
+
+  const toggleTheme = () => {
+    if (theme === 'light') setTheme('dark')
+    else if (theme === 'dark') setTheme('neon')
+    else if (theme === 'neon') setTheme('blue')
+    else setTheme('light')
+  }
 
   return (
     <>
-      {/* Top-Right Theme Toggle Dropdown & Button */}
+      {/* Top-Right Theme Controls */}
       <div
         style={{
           position: 'absolute',
@@ -64,9 +72,10 @@ function HeaderNav() {
       >
         {mounted && (
           <>
+            {/* Cycle Theme Button */}
             <button
               type="button"
-              onClick={() => setTheme(isDark ? 'light' : 'dark')}
+              onClick={toggleTheme}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -74,31 +83,32 @@ function HeaderNav() {
                 width: '28px',
                 height: '28px',
                 borderRadius: '4px',
-                border: '1px solid var(--border-color, #cbd5e1)',
-                backgroundColor: 'var(--bg-tag, #f8fafc)',
-                color: 'var(--text-primary, #000000)',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'var(--bg-tag)',
+                color: 'var(--text-primary)',
                 cursor: 'pointer',
                 fontSize: '14px',
                 padding: 0,
               }}
-              title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
+              title="Cycle Theme"
             >
-              {isDark ? '☀️' : '🌙'}
+              {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : isDark ? '🌙' : '☀️'}
             </button>
 
-            {/* Multi-Color Accent Selector */}
+            {/* Direct Multi-Color Theme Switcher */}
             <select
-              value={theme || 'system'}
+              value={theme || 'light'}
               onChange={(e) => setTheme(e.target.value)}
               style={{
                 fontSize: '11px',
                 fontWeight: 'bold',
                 padding: '2px 6px',
                 borderRadius: '4px',
-                border: '1px solid var(--border-color, #cbd5e1)',
-                backgroundColor: 'var(--bg-tag, #ffffff)',
-                color: 'var(--text-primary, #000000)',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'var(--bg-tag)',
+                color: 'var(--text-primary)',
                 cursor: 'pointer',
+                outline: 'none',
               }}
             >
               <option value="light">☀️ Light</option>
@@ -136,7 +146,7 @@ function HeaderNav() {
           <div
             className="brand-subtext"
             style={{
-              borderLeft: '1px solid var(--border-color, #e2e8f0)',
+              borderLeft: '1px solid var(--border-color)',
               paddingLeft: '12px',
               fontSize: '10.5px',
               fontWeight: '700',
@@ -242,7 +252,7 @@ function HeaderNav() {
                 transform: 'translateY(-50%)',
                 fontSize: '9px',
                 pointerEvents: 'none',
-                color: '#64748b',
+                color: 'var(--text-muted)',
               }}
             >
               ▼
@@ -262,7 +272,7 @@ function HeaderNav() {
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px var(--shadow-color, #000000)',
+                boxShadow: '2px 2px 0px 0px var(--shadow-color)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -283,7 +293,7 @@ function HeaderNav() {
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px var(--shadow-color, #000000)',
+                boxShadow: '2px 2px 0px 0px var(--shadow-color)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -298,10 +308,7 @@ function HeaderNav() {
 
 export default function Header() {
   return (
-    <header
-      className="header-root"
-      style={{ borderBottom: '2px solid var(--border-color, #000000)' }}
-    >
+    <header className="header-root" style={{ borderBottom: '2px solid var(--border-color)' }}>
       <Suspense fallback={<div style={{ minHeight: '80px' }} />}>
         <HeaderNav />
       </Suspense>
