@@ -8,13 +8,15 @@ type Props = {
   searchParams: Promise<{ lang?: string }>
 }
 
-// Complete multi-language translation map for card contents
+// Complete multi-language translation map for card contents & bullet items
 const cardContentTranslations: Record<
   string,
   Array<{
     titleKeywords: string[]
     title: string
     description: string
+    deliverables?: string[]
+    boundaries?: string[]
   }>
 > = {
   ES: [
@@ -23,18 +25,60 @@ const cardContentTranslations: Record<
       title: 'Soporte de Entrega y Recuperación de Proyectos',
       description:
         'Soporte orientado a la estabilización y la entrega bajo presión, puntos abiertos y responsabilidades no aclaradas.',
+      deliverables: [
+        'Análisis del estado actual y backlog de problemas (priorización por riesgo)',
+        'Sprint de estabilización (contención, victorias rápidas, plan de solución)',
+        'Entrega limpia (RACI, guías de ejecución, riesgos abiertos, siguientes pasos)',
+        'Listas de verificación de QA y aceptación (criterios, evidencia)',
+        'Estructura de comunicación y escalado (mapa de partes interesadas)',
+        'Documentación de lecciones aprendidas',
+      ],
+      boundaries: [
+        'Sin responsabilidad por decisiones o arquitecturas heredadas sin transparencia',
+        'Sin expansión de alcance sin proceso de control de cambios y priorización',
+        'Sin cambios en producción sin aprobación y prueba documentada',
+        'Sin garantía de éxito del proyecto en caso de responsabilidades no claras',
+      ],
     },
     {
       titleKeywords: ['Data', 'Reporting Foundations'],
       title: 'Bases de Datos e Informes',
       description:
         'Establecimiento de bases de datos e informes con definiciones claras, controles de calidad y lógica de KPI rastreable.',
+      deliverables: [
+        'Catálogo de KPI y métricas (definiciones, lógica de cálculo)',
+        'Bases del modelo de datos (mapeo, responsabilidades, flujos)',
+        'Controles de calidad de datos (completitud, duplicados, consistencia)',
+        'Prototipos de cuadro de mando e informes (alcance limitado)',
+        'Documentación para operaciones y desarrollo posterior',
+        'Concepto de protección de datos y retención',
+      ],
+      boundaries: [
+        'Sin interpretación de KPI como consultoría de gestión sin mandato separado',
+        'Sin consolidación de datos sin base legal y propósito documentado',
+        'Sin automatización productiva de ETL sin pruebas de aceptación',
+        'Sin garantía de calidad de datos con fuentes originales defectuosas',
+      ],
     },
     {
       titleKeywords: ['Cloud', 'Workplace Operations'],
       title: 'Operaciones de Nube y Entorno de Trabajo Moderno',
       description:
         'Soporte operativo para entornos Microsoft 365/Azure, incluyendo identidades, dispositivos, gobernanza y monitoreo.',
+      deliverables: [
+        'Procesos operativos para servicios en la nube (Incidencia/Solicitud/Cambio ITIL)',
+        'Configuración de identidad y acceso (MFA, Acceso Condicional, PIM)',
+        'Estándares de gestión de puntos finales (Políticas, estándares de dispositivos)',
+        'Gobernanza de inquilinos y servicios (Convenciones de nombres, ciclo de vida)',
+        'Bases de monitoreo y alertas (Integración en sistemas existentes)',
+        'Documentación de entrega (Manuales de administración, límites de servicio)',
+      ],
+      boundaries: [
+        'Sin operaciones 24/7 sin acuerdo explícito y definición de SLA',
+        'Sin cambios en sistemas de producción sin proceso de cambio documentado',
+        'Sin adopción de responsabilidad de proveedores/licencias sin mandato',
+        'Sin disponibilidad 24/7 sin acuerdo de nivel de servicio dedicado',
+      ],
     },
   ],
   FR: [
@@ -75,86 +119,6 @@ const cardContentTranslations: Record<
       title: 'Felhő és Modern Munkahelyi Üzemeltetés',
       description:
         'Üzemeltetési támogatás Microsoft 365/Azure környezetekhez, beleértve a személyazonosságokat, végpontokat és felügyeletet.',
-    },
-  ],
-  IT: [
-    {
-      titleKeywords: ['Delivery Support', 'Project Recovery'],
-      title: 'Supporto alla Consegna e Recupero Progetti',
-      description:
-        'Supporto orientato alla stabilizzazione e al passaggio di consegne in condizioni di pressione, problemi aperti e responsabilità non chiarite.',
-    },
-    {
-      titleKeywords: ['Data', 'Reporting Foundations'],
-      title: 'Fondamenta di Dati e Reporting',
-      description:
-        'Creazione di basi di dati e reporting con definizioni chiare, controlli di qualità dei dati e logica KPI tracciabile.',
-    },
-    {
-      titleKeywords: ['Cloud', 'Workplace Operations'],
-      title: 'Operazioni Cloud e Workplace Moderno',
-      description:
-        'Supporto operativo per ambienti orientati a Microsoft 365/Azure tra cui identità, endpoint, governance e monitoraggio.',
-    },
-  ],
-  NL: [
-    {
-      titleKeywords: ['Delivery Support', 'Project Recovery'],
-      title: 'Leveringsondersteuning & Herstel van Projecten',
-      description:
-        'Stabilisatie- en overdrachtsgerichte ondersteuning bij leveringsdruk, openstaande punten en onduidelijke verantwoordelijkheden.',
-    },
-    {
-      titleKeywords: ['Data', 'Reporting Foundations'],
-      title: 'Data- en Rapportagefundamenten',
-      description:
-        'Opbouw van data- en rapportagebasis met heldere definities, datakwaliteitscontroles en navolgbare KPI-logica.',
-    },
-    {
-      titleKeywords: ['Cloud', 'Workplace Operations'],
-      title: 'Cloud & Modern Workplace Operations',
-      description:
-        'Operationele ondersteuning voor Microsoft 365/Azure-omgevingen inclusief identiteiten, endpoints, governance en monitoring.',
-    },
-  ],
-  PL: [
-    {
-      titleKeywords: ['Delivery Support', 'Project Recovery'],
-      title: 'Wsparcie Dostaw i Naprawa Projektów',
-      description:
-        'Wsparcie ukierunkowane na stabilizację i przekazanie projektu pod presją czasu, z otwartymi punktami i niejasną odpowiedzialnością.',
-    },
-    {
-      titleKeywords: ['Data', 'Reporting Foundations'],
-      title: 'Fundamenty Danych i Raportowania',
-      description:
-        'Budowa podstaw danych i raportowania z jasnymi definicjami, kontrolą jakości danych i prześledzalną logiką KPI.',
-    },
-    {
-      titleKeywords: ['Cloud', 'Workplace Operations'],
-      title: 'Operacje Chmurowe i Nowoczesne Miejsce Pracy',
-      description:
-        'Wsparcie operacyjne dla środowisk opartych na Microsoft 365/Azure, w tym tożsamości, punkty końcowe, nadzór i monitoring.',
-    },
-  ],
-  EN: [
-    {
-      titleKeywords: ['Delivery Support', 'Project Recovery'],
-      title: 'Delivery Support & Project Recovery',
-      description:
-        'Stabilization and handover-oriented support under delivery pressure, open issues, and unresolved responsibilities.',
-    },
-    {
-      titleKeywords: ['Data', 'Reporting Foundations'],
-      title: 'Data & Reporting Foundations',
-      description:
-        'Establishment of data and reporting foundations with clear definitions, data quality checks, and traceable KPI logic.',
-    },
-    {
-      titleKeywords: ['Cloud', 'Workplace Operations'],
-      title: 'Cloud & Modern Workplace Operations',
-      description:
-        'Operational support for Microsoft 365/Azure-oriented environments including identities, endpoints, governance, and monitoring.',
     },
   ],
 }
@@ -229,6 +193,13 @@ export default async function HomePage({ searchParams }: Props) {
           const displayTitle = matchedTranslation?.title || service.title
           const displayDescription = matchedTranslation?.description || service.description
 
+          // Fallback array mapping for bullets
+          const deliverablesList =
+            matchedTranslation?.deliverables || service.deliverables?.map((d) => d.item) || []
+
+          const boundariesList =
+            matchedTranslation?.boundaries || service.boundaries?.map((b) => b.item) || []
+
           return (
             <div
               key={service.id}
@@ -297,7 +268,7 @@ export default async function HomePage({ searchParams }: Props) {
                 </p>
 
                 {/* Deliverables */}
-                {service.deliverables && service.deliverables.length > 0 && (
+                {deliverablesList.length > 0 && (
                   <div style={{ marginBottom: '24px' }}>
                     <h3
                       style={{
@@ -323,13 +294,13 @@ export default async function HomePage({ searchParams }: Props) {
                         color: '#334155',
                       }}
                     >
-                      {service.deliverables.map((item, idx) => (
+                      {deliverablesList.map((itemText, idx) => (
                         <li
                           key={idx}
                           style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
                         >
                           <span style={{ color: '#2563eb', fontWeight: 'bold' }}>→</span>
-                          <span style={{ lineHeight: '1.4' }}>{item.item}</span>
+                          <span style={{ lineHeight: '1.4' }}>{itemText}</span>
                         </li>
                       ))}
                     </ul>
@@ -337,8 +308,8 @@ export default async function HomePage({ searchParams }: Props) {
                 )}
               </div>
 
-              {/* Boundaries */}
-              {service.boundaries && service.boundaries.length > 0 && (
+              {/* Boundaries / Out of Scope */}
+              {boundariesList.length > 0 && (
                 <div
                   className="boundary-box"
                   style={{
@@ -373,13 +344,13 @@ export default async function HomePage({ searchParams }: Props) {
                       color: '#64748b',
                     }}
                   >
-                    {service.boundaries.map((item, idx) => (
+                    {boundariesList.map((itemText, idx) => (
                       <li
                         key={idx}
                         style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
                       >
                         <span style={{ color: '#94a3b8' }}>×</span>
-                        <span style={{ lineHeight: '1.4' }}>{item.item}</span>
+                        <span style={{ lineHeight: '1.4' }}>{itemText}</span>
                       </li>
                     ))}
                   </ul>
