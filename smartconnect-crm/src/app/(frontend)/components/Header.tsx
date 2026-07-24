@@ -8,6 +8,7 @@ import { BrandLogo } from './BrandLogo'
 declare global {
   interface Window {
     google: any
+    googleTranslateElementInit: () => void
   }
 }
 
@@ -15,21 +16,38 @@ function HeaderNav() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
 
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // 1. Re-trigger Google Translate on Client Route Navigation
   useEffect(() => {
-    // 1. Theme Setup
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
     document.documentElement.classList.toggle('dark', savedTheme === 'dark')
 
-    // 2. Read active language directly from Google's cookie or fallback to localStorage
     const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
-    if (match && match[1]) {
-      setLang(match[1].toUpperCase())
-    } else {
-      const savedLang = localStorage.getItem('preferred_lang') || 'DE'
-      setLang(savedLang.toUpperCase())
+    const currentLang =
+      match && match[1]
+        ? match[1].toUpperCase()
+        : (localStorage.getItem('preferred_lang') || 'DE').toUpperCase()
+    setLang(currentLang)
+
+    // Re-trigger Google Translate DOM re-parse after Next.js page transition
+    if (currentLang !== 'DE') {
+      const timer = setTimeout(() => {
+        const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
+        if (googleSelect) {
+          googleSelect.value = currentLang.toLowerCase()
+          googleSelect.dispatchEvent(new Event('change'))
+        } else if (window.googleTranslateElementInit) {
+          window.googleTranslateElementInit()
+        }
+      }, 300)
+
+      return () => clearTimeout(timer)
     }
-  }, [])
+  }, [pathname, searchParams])
 
   const toggleTheme = () => {
     const isDark = document.documentElement.classList.contains('dark')
@@ -47,31 +65,30 @@ function HeaderNav() {
 
     const googleLangCode = selectedLang.toLowerCase()
 
-    // Clear previous cookies across domain levels to prevent stale translation conflicts
+    // Clear stale cookies
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`
 
-    // Set fresh Google Translate cookie for the chosen language
-    document.cookie = `googtrans=/de/${googleLangCode}; path=/;`
-    document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
+    if (selectedLang !== 'DE') {
+      document.cookie = `googtrans=/de/${googleLangCode}; path=/;`
+      document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
+    }
 
-    // Trigger Google Translate select element if loaded in DOM
     const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
     if (googleSelect) {
       googleSelect.value = googleLangCode
       googleSelect.dispatchEvent(new Event('change'))
-    } else {
-      // Reload page to apply google translation cookie seamlessly
-      window.location.reload()
     }
+
+    // Force full page reload on explicit user drop-down change to ensure clean DOM re-translation
+    window.location.reload()
   }
 
   return (
     <>
-      {/* Hidden Container for Google Translate Initialization */}
       <div id="google_translate_element" style={{ display: 'none' }} />
 
-      {/* Top-Right Light/Dark Toggle */}
+      {/* Top-Right Toggle */}
       <div
         className="notranslate"
         style={{
