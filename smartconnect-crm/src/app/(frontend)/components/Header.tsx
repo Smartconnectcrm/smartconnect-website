@@ -5,6 +5,12 @@ import Link from 'next/link'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
+declare global {
+  interface Window {
+    google: any
+  }
+}
+
 function HeaderNav() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
@@ -18,11 +24,10 @@ function HeaderNav() {
     setTheme(savedTheme)
     document.documentElement.classList.toggle('dark', savedTheme === 'dark')
 
-    const urlLang = searchParams.get('lang')
+    // Read stored language preference or default to DE
     const savedLang = localStorage.getItem('preferred_lang') || 'DE'
-    const activeLang = urlLang || savedLang
-    setLang(activeLang)
-  }, [searchParams])
+    setLang(savedLang)
+  }, [])
 
   const toggleTheme = () => {
     const isDark = document.documentElement.classList.contains('dark')
@@ -38,13 +43,28 @@ function HeaderNav() {
     setLang(selectedLang)
     localStorage.setItem('preferred_lang', selectedLang)
 
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('lang', selectedLang)
-    router.push(`${pathname}?${params.toString()}`)
+    const googleLangCode = selectedLang.toLowerCase()
+
+    // 1. Set Google Translate cookie directly so translations persist across pages
+    document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
+    document.cookie = `googtrans=/de/${googleLangCode}; path=/`
+
+    // 2. Trigger Google Translate dropdown element if rendered in DOM
+    const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
+    if (googleSelect) {
+      googleSelect.value = googleLangCode
+      googleSelect.dispatchEvent(new Event('change'))
+    } else {
+      // Reload page to apply google translation cookie if engine hasn't fully loaded
+      window.location.reload()
+    }
   }
 
   return (
     <>
+      {/* Hidden Container for Google Engine script initialization */}
+      <div id="google_translate_element" style={{ display: 'none' }} />
+
       {/* Absolute Top-Right Toggle */}
       <div
         style={{
