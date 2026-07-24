@@ -15,16 +15,11 @@ function HeaderNav() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
 
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
   useEffect(() => {
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
     document.documentElement.classList.toggle('dark', savedTheme === 'dark')
 
-    // Read stored language preference or default to DE
     const savedLang = localStorage.getItem('preferred_lang') || 'DE'
     setLang(savedLang)
   }, [])
@@ -45,28 +40,26 @@ function HeaderNav() {
 
     const googleLangCode = selectedLang.toLowerCase()
 
-    // 1. Set Google Translate cookie directly so translations persist across pages
     document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
     document.cookie = `googtrans=/de/${googleLangCode}; path=/`
 
-    // 2. Trigger Google Translate dropdown element if rendered in DOM
     const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
     if (googleSelect) {
       googleSelect.value = googleLangCode
       googleSelect.dispatchEvent(new Event('change'))
     } else {
-      // Reload page to apply google translation cookie if engine hasn't fully loaded
       window.location.reload()
     }
   }
 
   return (
     <>
-      {/* Hidden Container for Google Engine script initialization */}
+      {/* Hidden Container for Google Translate Initialization */}
       <div id="google_translate_element" style={{ display: 'none' }} />
 
-      {/* Absolute Top-Right Toggle */}
+      {/* Top-Right Light/Dark Toggle */}
       <div
+        className="notranslate"
         style={{
           position: 'absolute',
           top: '6px',
@@ -95,32 +88,37 @@ function HeaderNav() {
         </button>
       </div>
 
-      {/* Main Header Container */}
+      {/* Flexible Header Container */}
       <div
         style={{
-          maxWidth: '1240px',
+          maxWidth: '1280px',
           margin: '0 auto',
-          padding: '0 20px',
-          height: '80px',
+          padding: '12px 20px',
+          minHeight: '80px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
           backgroundColor: '#ffffff',
         }}
       >
         {/* Brand Section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <BrandLogo variant="light" priority={true} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+          <div className="notranslate">
+            <BrandLogo variant="light" priority={true} />
+          </div>
 
           <div
             style={{
               borderLeft: '1px solid #e2e8f0',
               paddingLeft: '12px',
-              fontSize: '11px',
+              fontSize: '10.5px',
               fontWeight: '700',
               color: '#64748b',
               textTransform: 'uppercase',
-              lineHeight: '1.3',
+              lineHeight: '1.25',
+              whiteSpace: 'nowrap',
             }}
           >
             Enterprise &<br />
@@ -129,14 +127,24 @@ function HeaderNav() {
         </div>
 
         {/* Navigation Section */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <nav
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+            flex: '1 1 auto',
+          }}
+        >
           <Link
             href="/"
             style={{
               textDecoration: 'none',
               color: '#0f172a',
               fontWeight: '700',
-              fontSize: '13.5px',
+              fontSize: '13px',
+              whiteSpace: 'nowrap',
             }}
           >
             Leistungskatalog
@@ -148,7 +156,8 @@ function HeaderNav() {
               textDecoration: 'none',
               color: '#0f172a',
               fontWeight: '700',
-              fontSize: '13.5px',
+              fontSize: '13px',
+              whiteSpace: 'nowrap',
             }}
           >
             Procurement-Profil
@@ -157,11 +166,12 @@ function HeaderNav() {
           {/* CMS Admin Link */}
           <Link
             href="/admin"
+            className="notranslate"
             style={{
               textDecoration: 'none',
               color: '#2563eb',
               fontWeight: '700',
-              fontSize: '12.5px',
+              fontSize: '12px',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
@@ -169,14 +179,15 @@ function HeaderNav() {
               borderRadius: '4px',
               backgroundColor: '#eff6ff',
               border: '1px solid #bfdbfe',
+              whiteSpace: 'nowrap',
             }}
             title="Payload CMS Portal"
           >
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* Functional Language Dropdown */}
-          <div style={{ position: 'relative', display: 'inline-block' }}>
+          {/* Language Dropdown Selector */}
+          <div className="notranslate" style={{ position: 'relative', display: 'inline-block' }}>
             <select
               value={lang}
               onChange={handleLanguageChange}
@@ -220,7 +231,7 @@ function HeaderNav() {
           </div>
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             <Link
               href="/procurement#tender"
               style={{
@@ -231,10 +242,11 @@ function HeaderNav() {
                 borderRadius: '4px',
                 border: '1px solid #0f172a',
                 fontWeight: '800',
-                fontSize: '11.5px',
+                fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
                 boxShadow: '2px 2px 0px 0px #000000',
+                whiteSpace: 'nowrap',
               }}
             >
               RFP / Tender
@@ -250,10 +262,11 @@ function HeaderNav() {
                 borderRadius: '4px',
                 border: '1px solid #000000',
                 fontWeight: '800',
-                fontSize: '11.5px',
+                fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
                 boxShadow: '2px 2px 0px 0px #000000',
+                whiteSpace: 'nowrap',
               }}
             >
               Kontakt
@@ -278,7 +291,7 @@ export default function Header() {
         boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
       }}
     >
-      <Suspense fallback={<div style={{ height: '80px', backgroundColor: '#ffffff' }} />}>
+      <Suspense fallback={<div style={{ minHeight: '80px', backgroundColor: '#ffffff' }} />}>
         <HeaderNav />
       </Suspense>
     </header>
