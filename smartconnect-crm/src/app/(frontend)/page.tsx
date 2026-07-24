@@ -8,7 +8,7 @@ type Props = {
   searchParams: Promise<{ lang?: string }>
 }
 
-// Full translation map for cards across all languages
+// Complete multi-language translation map for card contents
 const cardContentTranslations: Record<
   string,
   Array<{
@@ -17,6 +17,46 @@ const cardContentTranslations: Record<
     description: string
   }>
 > = {
+  ES: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
+      title: 'Soporte de Entrega y Recuperación de Proyectos',
+      description:
+        'Soporte orientado a la estabilización y la entrega bajo presión, puntos abiertos y responsabilidades no aclaradas.',
+    },
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
+      title: 'Bases de Datos e Informes',
+      description:
+        'Establecimiento de bases de datos e informes con definiciones claras, controles de calidad y lógica de KPI rastreable.',
+    },
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
+      title: 'Operaciones de Nube y Entorno de Trabajo Moderno',
+      description:
+        'Soporte operativo para entornos Microsoft 365/Azure, incluyendo identidades, dispositivos, gobernanza y monitoreo.',
+    },
+  ],
+  FR: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
+      title: 'Support de Livraison & Redressement de Projet',
+      description:
+        'Accompagnement axé sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non clarifiées.',
+    },
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
+      title: 'Bases de Données & Reporting',
+      description:
+        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
+    },
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
+      title: 'Opérations Cloud & Workplace Moderne',
+      description:
+        'Support opérationnel pour les environnements Microsoft 365/Azure, y compris identités, terminaux, gouvernance et surveillance.',
+    },
+  ],
   HU: [
     {
       titleKeywords: ['Delivery Support', 'Project Recovery'],
@@ -37,24 +77,64 @@ const cardContentTranslations: Record<
         'Üzemeltetési támogatás Microsoft 365/Azure környezetekhez, beleértve a személyazonosságokat, végpontokat és felügyeletet.',
     },
   ],
-  FR: [
+  IT: [
     {
       titleKeywords: ['Delivery Support', 'Project Recovery'],
-      title: 'Support de Livraison & Redressement de Projet',
+      title: 'Supporto alla Consegna e Recupero Progetti',
       description:
-        'Accompagnement axé sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non clarifiées.',
+        'Supporto orientato alla stabilizzazione e al passaggio di consegne in condizioni di pressione, problemi aperti e responsabilità non chiarite.',
     },
     {
       titleKeywords: ['Data', 'Reporting Foundations'],
-      title: 'Bases de Données & Reporting',
+      title: 'Fondamenta di Dati e Reporting',
       description:
-        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
+        'Creazione di basi di dati e reporting con definizioni chiare, controlli di qualità dei dati e logica KPI tracciabile.',
     },
     {
       titleKeywords: ['Cloud', 'Workplace Operations'],
-      title: 'Operations Cloud & Workplace Moderne',
+      title: 'Operazioni Cloud e Workplace Moderno',
       description:
-        'Support opérationnel pour les environnements Microsoft 365/Azure, y compris identités, terminaux, gouvernance et surveillance.',
+        'Supporto operativo per ambienti orientati a Microsoft 365/Azure tra cui identità, endpoint, governance e monitoraggio.',
+    },
+  ],
+  NL: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
+      title: 'Leveringsondersteuning & Herstel van Projecten',
+      description:
+        'Stabilisatie- en overdrachtsgerichte ondersteuning bij leveringsdruk, openstaande punten en onduidelijke verantwoordelijkheden.',
+    },
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
+      title: 'Data- en Rapportagefundamenten',
+      description:
+        'Opbouw van data- en rapportagebasis met heldere definities, datakwaliteitscontroles en navolgbare KPI-logica.',
+    },
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
+      title: 'Cloud & Modern Workplace Operations',
+      description:
+        'Operationele ondersteuning voor Microsoft 365/Azure-omgevingen inclusief identiteiten, endpoints, governance en monitoring.',
+    },
+  ],
+  PL: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
+      title: 'Wsparcie Dostaw i Naprawa Projektów',
+      description:
+        'Wsparcie ukierunkowane na stabilizację i przekazanie projektu pod presją czasu, z otwartymi punktami i niejasną odpowiedzialnością.',
+    },
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
+      title: 'Fundamenty Danych i Raportowania',
+      description:
+        'Budowa podstaw danych i raportowania z jasnymi definicjami, kontrolą jakości danych i prześledzalną logiką KPI.',
+    },
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
+      title: 'Operacje Chmurowe i Nowoczesne Miejsce Pracy',
+      description:
+        'Wsparcie operacyjne dla środowisk opartych na Microsoft 365/Azure, w tym tożsamości, punkty końcowe, nadzór i monitoring.',
     },
   ],
   EN: [
@@ -131,7 +211,7 @@ export default async function HomePage({ searchParams }: Props) {
         </p>
       </section>
 
-      {/* Responsive Grid */}
+      {/* Grid */}
       <div
         style={{
           display: 'grid',
@@ -141,7 +221,6 @@ export default async function HomePage({ searchParams }: Props) {
         }}
       >
         {services.map((service) => {
-          // Dynamic keyword matching for titles
           const langMap = cardContentTranslations[activeLang]
           const matchedTranslation = langMap?.find((item) =>
             item.titleKeywords.some((kw) => service.title.toLowerCase().includes(kw.toLowerCase())),
@@ -166,7 +245,7 @@ export default async function HomePage({ searchParams }: Props) {
               }}
             >
               <div>
-                {/* Title & Category Tag */}
+                {/* Title & Tag */}
                 <div
                   style={{
                     display: 'flex',
@@ -258,7 +337,7 @@ export default async function HomePage({ searchParams }: Props) {
                 )}
               </div>
 
-              {/* Boundaries / Out of Scope */}
+              {/* Boundaries */}
               {service.boundaries && service.boundaries.length > 0 && (
                 <div
                   className="boundary-box"
