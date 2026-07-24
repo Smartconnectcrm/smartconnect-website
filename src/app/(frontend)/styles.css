@@ -50,95 +50,100 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Force Dark Mode onto main container elements */
-html.dark header,
-html.dark footer,
-html.dark main,
-html.dark .header-root,
-html.dark .header-inner {
-  background-color: var(--bg-page) !important;
-  color: var(--text-primary) !important;
-  border-color: #334155 !important;
-}
-
-/* Page Layout */
+/* Container */
 .catalog-container {
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 32px 16px;
 }
 
-.catalog-header {
-  border-bottom: 3px solid var(--border-color);
-  padding-bottom: 24px;
-  margin-bottom: 40px;
+@media (min-width: 768px) {
+  .catalog-container {
+    padding: 40px 24px;
+  }
 }
 
-.catalog-header h1 {
-  font-size: 42px;
-  font-weight: 900;
-  margin: 0 0 12px 0;
-  text-transform: uppercase;
-  letter-spacing: -0.5px;
-  color: var(--text-primary);
+/* --- Responsive Filter Buttons Row --- */
+.category-filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  flex-wrap: wrap; /* Allows filter buttons to wrap smoothly on smaller screens */
+  align-items: center;
 }
 
-.catalog-header p {
-  font-size: 16px;
-  color: var(--text-muted);
-  margin: 0;
-  max-width: 700px;
-}
-
-/* 2-Column Grid Layout */
+/* --- Responsive Services Grid --- */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 24px;
+  /* Auto-fit with a min-width of 280px ensures cards expand on desktop and shrink down smoothly on mobile */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  align-items: stretch;
 }
 
-/* Service Card Box */
+@media (min-width: 768px) {
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+}
+
+/* --- Responsive Service Card --- */
 .service-card {
   border: 2px solid var(--border-color);
-  padding: 24px;
+  padding: 20px;
   background-color: var(--bg-card) !important;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 16px;
   box-shadow: 4px 4px 0px 0px var(--shadow-color);
   border-radius: 6px;
+  word-wrap: break-word; /* Prevents long translated words from overflowing */
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  .service-card {
+    padding: 24px;
+  }
 }
 
 .service-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 12px;
 }
 
 .service-card-header h2 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   margin: 0;
+  line-height: 1.35;
   color: var(--text-primary);
 }
 
-/* --- Interactive Category Tag Button --- */
+/* --- Responsive Category Tag Buttons --- */
 .category-tag {
   font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 800;
   background-color: var(--bg-tag);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 4px 10px;
-  white-space: nowrap;
-  cursor: pointer !important;
-  pointer-events: auto !important;
+  padding: 4px 8px;
   border-radius: 4px;
   transition: all 0.15s ease;
   outline: none;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  /* Allow tag labels to wrap on small screens if translated text is long */
+  white-space: normal;
+  text-align: center;
+  max-width: 140px;
 }
 
 .category-tag:hover {
@@ -147,31 +152,22 @@ html.dark .header-inner {
   border-color: #0f172a;
 }
 
-.category-tag:active {
-  transform: translate(1px, 1px);
-}
-
 html.dark .category-tag:hover {
   background-color: #fbbf24;
   color: #000000;
   border-color: #fbbf24;
 }
 
-.service-description {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-/* Deliverables Section */
+/* --- Deliverables & List Blocks --- */
 .section-block {
   margin-top: 8px;
 }
 
 .section-block h3 {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   margin: 0 0 8px 0;
   color: var(--text-primary);
 }
@@ -180,15 +176,21 @@ html.dark .category-tag:hover {
   list-style: none;
   padding-left: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   font-size: 13px;
+  line-height: 1.45;
   color: var(--text-secondary);
 }
 
 .section-block li {
-  padding: 3px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
 }
 
-/* Abgrenzung / Scope Boundaries Block */
+/* --- Scope Boundaries / Abgrenzung Block --- */
 .boundary-block {
   background-color: var(--bg-secondary) !important;
   border: 1px solid var(--border-color);
@@ -198,8 +200,9 @@ html.dark .category-tag:hover {
 }
 
 .boundary-block h3 {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
   color: var(--text-primary);
   margin: 0 0 6px 0;
 }
@@ -208,33 +211,15 @@ html.dark .category-tag:hover {
   list-style: none;
   padding-left: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   font-size: 12px;
+  line-height: 1.4;
   color: var(--text-muted);
 }
 
-.boundary-block li {
-  padding: 2px 0;
-}
-
-/* Dark Mode Specific Overrides */
-html.dark nav a,
-html.dark .nav-link {
-  color: #ffffff !important;
-}
-
-html.dark select {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border-color: #475569 !important;
-}
-
-html.dark p, 
-html.dark span, 
-html.dark li {
-  color: var(--text-secondary);
-}
-
-/* Global Pointer Overrides */
+/* --- Interactive Pointer Overrides --- */
 button, select, a, input {
   pointer-events: auto !important;
   cursor: pointer;
