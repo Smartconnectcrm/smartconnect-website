@@ -3,11 +3,11 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useTheme } from 'next-themes'
+import { useCustomTheme, type Theme } from '../../../context/ThemeContext'
 import { BrandLogo } from './BrandLogo'
 
 function HeaderNav() {
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { theme, setTheme } = useCustomTheme()
   const [mounted, setMounted] = useState(false)
   const [lang, setLang] = useState('DE')
 
@@ -43,8 +43,7 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
-  const isDark =
-    resolvedTheme === 'dark' || theme === 'dark' || theme === 'neon' || theme === 'blue'
+  const isDark = theme === 'dark' || theme === 'neon' || theme === 'blue'
 
   const toggleTheme = () => {
     if (theme === 'light') setTheme('dark')
@@ -151,7 +150,7 @@ function HeaderNav() {
           <span>🔒</span> CMS Login
         </Link>
 
-        {/* Active Language Dropdown Switcher */}
+        {/* Active Language Switcher */}
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <select
             value={lang}
@@ -193,7 +192,7 @@ function HeaderNav() {
           </span>
         </div>
 
-        {/* --- INLINE THEME SWITCHER (Light, Dark, Neon, Blue) --- */}
+        {/* --- NATIVE DIRECT THEME SWITCHER --- */}
         {mounted && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <button
@@ -215,12 +214,12 @@ function HeaderNav() {
               }}
               title="Cycle Theme"
             >
-              {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : isDark ? '🌙' : '☀️'}
+              {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : theme === 'dark' ? '🌙' : '☀️'}
             </button>
 
             <select
-              value={theme || 'light'}
-              onChange={(e) => setTheme(e.target.value)}
+              value={theme}
+              onChange={(e) => setTheme(e.target.value as Theme)}
               style={{
                 fontSize: '12px',
                 fontWeight: '800',
