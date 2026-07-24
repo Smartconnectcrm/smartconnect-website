@@ -147,6 +147,10 @@ html.dark .header-inner {
   border-color: #0f172a;
 }
 
+.category-tag:active {
+  transform: translate(1px, 1px);
+}
+
 html.dark .category-tag:hover {
   background-color: #fbbf24;
   color: #000000;
@@ -212,8 +216,9 @@ html.dark .category-tag:hover {
   padding: 2px 0;
 }
 
-/* Dark Mode Navigation Rules */
-html.dark nav a {
+/* Dark Mode Specific Overrides */
+html.dark nav a,
+html.dark .nav-link {
   color: #ffffff !important;
 }
 
@@ -221,6 +226,12 @@ html.dark select {
   background-color: #0f172a !important;
   color: #ffffff !important;
   border-color: #475569 !important;
+}
+
+html.dark p, 
+html.dark span, 
+html.dark li {
+  color: var(--text-secondary);
 }
 
 /* Global Pointer Overrides */

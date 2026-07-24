@@ -1,12 +1,21 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 export default function Footer() {
+  const searchParams = useSearchParams()
+  const activeLang = searchParams.get('lang') || 'de'
+
+  const createLocalizedHref = (path: string) => {
+    return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
+  }
+
   return (
     <footer
       style={{
-        borderTop: '2px solid #000000',
-        backgroundColor: '#ffffff',
+        borderTop: '2px solid var(--border-color, #000000)',
         padding: '56px 24px 28px 24px',
         marginTop: '80px',
       }}
@@ -19,10 +28,10 @@ export default function Footer() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
           gap: '40px',
           paddingBottom: '40px',
-          borderBottom: '1px solid #e2e8f0',
+          borderBottom: '1px solid var(--border-color, #e2e8f0)',
         }}
       >
-        {/* Column 1: Brand & Sub-tag */}
+        {/* Column 1: Brand & Description */}
         <div>
           <div
             style={{
@@ -32,7 +41,7 @@ export default function Footer() {
               marginBottom: '14px',
             }}
           >
-            {/* Embedded Mini Logo */}
+            {/* Mini Logo */}
             <svg
               viewBox="0 0 100 100"
               width="28"
@@ -72,7 +81,6 @@ export default function Footer() {
               style={{
                 fontSize: '18px',
                 fontWeight: '900',
-                color: '#0f172a',
                 letterSpacing: '-0.02em',
                 fontFamily: 'system-ui, -apple-system, sans-serif',
               }}
@@ -84,7 +92,6 @@ export default function Footer() {
           <p
             style={{
               fontSize: '13px',
-              color: '#475569',
               lineHeight: '1.6',
               margin: 0,
             }}
@@ -102,7 +109,6 @@ export default function Footer() {
               fontWeight: '900',
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
-              color: '#0f172a',
               marginBottom: '16px',
             }}
           >
@@ -121,9 +127,9 @@ export default function Footer() {
           >
             <li>
               <Link
-                href="/"
+                href={createLocalizedHref('/')}
+                className="nav-link"
                 style={{
-                  color: '#334155',
                   textDecoration: 'none',
                   fontWeight: '600',
                 }}
@@ -133,9 +139,9 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/procurement"
+                href={createLocalizedHref('/procurement')}
+                className="nav-link"
                 style={{
-                  color: '#334155',
                   textDecoration: 'none',
                   fontWeight: '600',
                 }}
@@ -146,6 +152,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/admin"
+                className="cms-link"
                 style={{
                   color: '#2563eb',
                   textDecoration: 'none',
@@ -169,7 +176,6 @@ export default function Footer() {
               fontWeight: '900',
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
-              color: '#0f172a',
               marginBottom: '16px',
             }}
           >
@@ -184,7 +190,6 @@ export default function Footer() {
               flexDirection: 'column',
               gap: '8px',
               fontSize: '13px',
-              color: '#475569',
               fontWeight: '500',
             }}
           >
@@ -208,7 +213,6 @@ export default function Footer() {
               fontWeight: '900',
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
-              color: '#0f172a',
               marginBottom: '16px',
             }}
           >
@@ -227,9 +231,9 @@ export default function Footer() {
           >
             <li>
               <Link
-                href="/impressum"
+                href={createLocalizedHref('/impressum')}
+                className="nav-link"
                 style={{
-                  color: '#334155',
                   textDecoration: 'none',
                   fontWeight: '600',
                 }}
@@ -239,9 +243,9 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/datenschutz"
+                href={createLocalizedHref('/datenschutz')}
+                className="nav-link"
                 style={{
-                  color: '#334155',
                   textDecoration: 'none',
                   fontWeight: '600',
                 }}
@@ -265,22 +269,19 @@ export default function Footer() {
           flexWrap: 'wrap',
           gap: '16px',
           fontSize: '12px',
-          color: '#64748b',
         }}
       >
         <div>© {new Date().getFullYear()} SmartConnect CRM. All rights reserved.</div>
 
         <div
+          className="boundary-box"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
-            backgroundColor: '#f8fafc',
-            border: '1px solid #e2e8f0',
             padding: '4px 10px',
             borderRadius: '4px',
             fontWeight: '700',
-            color: '#1e3a8a',
             fontSize: '11px',
             textTransform: 'uppercase',
             letterSpacing: '0.04em',

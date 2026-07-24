@@ -19,8 +19,10 @@ function HeaderNav() {
     setTheme(savedTheme)
     if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
     }
 
     // 2. Language sync
@@ -47,8 +49,10 @@ function HeaderNav() {
 
     if (nextTheme === 'dark') {
       document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
     }
   }
 
@@ -77,7 +81,7 @@ function HeaderNav() {
           position: 'absolute',
           top: '6px',
           right: '16px',
-          zIndex: 999,
+          zIndex: 9999,
         }}
       >
         <button
@@ -91,8 +95,6 @@ function HeaderNav() {
             height: '28px',
             borderRadius: '4px',
             border: '1px solid #cbd5e1',
-            backgroundColor: theme === 'dark' ? '#1e293b' : '#f8fafc',
-            color: theme === 'dark' ? '#ffffff' : '#000000',
             cursor: 'pointer',
             fontSize: '14px',
             padding: 0,
@@ -201,7 +203,7 @@ function HeaderNav() {
           </Link>
 
           {/* Active Language Dropdown Switcher */}
-          <div style={{ position: 'relative', display: 'inline-block', zIndex: 999 }}>
+          <div style={{ position: 'relative', display: 'inline-block', zIndex: 9999 }}>
             <select
               value={lang}
               onChange={handleLanguageChange}
@@ -291,7 +293,7 @@ function HeaderNav() {
 
 export default function Header() {
   return (
-    <header className="header-root">
+    <header className="header-root" style={{ borderBottom: '2px solid #000000' }}>
       <Suspense fallback={<div style={{ minHeight: '80px' }} />}>
         <HeaderNav />
       </Suspense>
