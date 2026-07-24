@@ -11,6 +11,21 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
+const ALL_THEMES: Theme[] = ['light', 'dark', 'neon', 'blue']
+
+function applyThemeToDOM(theme: Theme) {
+  const root = document.documentElement
+
+  // 1. Set data-theme attribute
+  root.setAttribute('data-theme', theme)
+
+  // 2. Clear all theme classes first to prevent layout collisions
+  root.classList.remove(...ALL_THEMES)
+
+  // 3. Add active theme class (e.g. html.neon, html.blue, html.dark)
+  root.classList.add(theme)
+}
+
 export function CustomThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('light')
 
@@ -18,27 +33,13 @@ export function CustomThemeProvider({ children }: { children: React.ReactNode })
     // Read stored theme or default to light
     const savedTheme = (localStorage.getItem('app-theme') as Theme) || 'light'
     setThemeState(savedTheme)
-
-    // Direct DOM mutation on the root html element
-    document.documentElement.setAttribute('data-theme', savedTheme)
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    applyThemeToDOM(savedTheme)
   }, [])
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme)
     localStorage.setItem('app-theme', newTheme)
-
-    // Update data-theme and dark class immediately
-    document.documentElement.setAttribute('data-theme', newTheme)
-    if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
+    applyThemeToDOM(newTheme)
   }
 
   return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
