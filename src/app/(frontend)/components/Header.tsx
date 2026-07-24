@@ -6,30 +6,24 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
 function HeaderNav() {
-  const [mounted, setMounted] = useState(false)
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
 
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // 1. Safe Client Hydration
+  // Sync state with localStorage & URL params on load
   useEffect(() => {
-    setMounted(true)
-
-    // Load saved theme
+    // 1. Theme sync
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
-
     if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark')
-      document.body.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
-      document.body.classList.remove('dark')
     }
 
-    // Load active language parameter from URL or LocalStorage
+    // 2. Language sync
     const urlLang = searchParams.get('lang')
     if (urlLang) {
       setLang(urlLang.toUpperCase())
@@ -40,26 +34,25 @@ function HeaderNav() {
     }
   }, [searchParams])
 
-  // 2. Toggle Dark / Light Theme (Direct DOM + State update)
+  // Toggle Theme Handler
   const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
+    e.stopPropagation()
 
-    const isCurrentlyDark = document.documentElement.classList.contains('dark')
-    const nextTheme = isCurrentlyDark ? 'light' : 'dark'
+    const isDark = document.documentElement.classList.contains('dark')
+    const nextTheme = isDark ? 'light' : 'dark'
 
     setTheme(nextTheme)
     localStorage.setItem('theme', nextTheme)
 
     if (nextTheme === 'dark') {
       document.documentElement.classList.add('dark')
-      document.body.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
-      document.body.classList.remove('dark')
     }
   }
 
-  // 3. Switch Language & Trigger Clean Navigation
+  // Language Change Handler
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = e.target.value.toUpperCase()
     setLang(selectedLang)
@@ -68,10 +61,7 @@ function HeaderNav() {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
     params.set('lang', selectedLang.toLowerCase())
 
-    const newUrl = `${pathname}?${params.toString()}`
-
-    // Force location navigation so Payload CMS fetches new language from server instantly
-    window.location.href = newUrl
+    window.location.href = `${pathname}?${params.toString()}`
   }
 
   const createLocalizedHref = (path: string) => {
@@ -83,12 +73,11 @@ function HeaderNav() {
     <>
       {/* Top-Right Theme Toggle */}
       <div
-        className="notranslate"
         style={{
           position: 'absolute',
           top: '6px',
           right: '16px',
-          zIndex: 20,
+          zIndex: 999,
         }}
       >
         <button
@@ -107,11 +96,10 @@ function HeaderNav() {
             cursor: 'pointer',
             fontSize: '14px',
             padding: 0,
-            zIndex: 30,
           }}
           title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
         >
-          {mounted ? (theme === 'light' ? '🌙' : '☀️') : '🌙'}
+          {theme === 'light' ? '🌙' : '☀️'}
         </button>
       </div>
 
@@ -132,7 +120,7 @@ function HeaderNav() {
       >
         {/* Brand Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-          <div className="notranslate">
+          <div>
             <Link href={createLocalizedHref('/')}>
               <BrandLogo variant={theme === 'dark' ? 'dark' : 'light'} priority={true} />
             </Link>
@@ -155,7 +143,7 @@ function HeaderNav() {
           </div>
         </div>
 
-        {/* Navigation & Controls */}
+        {/* Navigation Controls */}
         <nav
           style={{
             display: 'flex',
@@ -194,7 +182,7 @@ function HeaderNav() {
 
           <Link
             href="/admin"
-            className="notranslate cms-link"
+            className="cms-link"
             style={{
               textDecoration: 'none',
               color: '#2563eb',
@@ -213,10 +201,7 @@ function HeaderNav() {
           </Link>
 
           {/* Active Language Dropdown Switcher */}
-          <div
-            className="notranslate"
-            style={{ position: 'relative', display: 'inline-block', zIndex: 20 }}
-          >
+          <div style={{ position: 'relative', display: 'inline-block', zIndex: 999 }}>
             <select
               value={lang}
               onChange={handleLanguageChange}
