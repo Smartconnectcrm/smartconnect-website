@@ -3,29 +3,22 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { BrandLogo } from './BrandLogo'
 
 function HeaderNav() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const { theme, setTheme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const [lang, setLang] = useState('DE')
 
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Sync state with localStorage & URL params on load
+  // Ensure client-side mounting to avoid hydration mismatches
   useEffect(() => {
-    // 1. Theme sync
-    const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
-    setTheme(savedTheme)
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-      document.body.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      document.body.classList.remove('dark')
-    }
+    setMounted(true)
 
-    // 2. Language sync
+    // Language sync
     const urlLang = searchParams.get('lang')
     if (urlLang) {
       setLang(urlLang.toUpperCase())
@@ -35,26 +28,6 @@ function HeaderNav() {
       setLang(savedLang.toUpperCase())
     }
   }, [searchParams])
-
-  // Toggle Theme Handler
-  const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    const isDark = document.documentElement.classList.contains('dark')
-    const nextTheme = isDark ? 'light' : 'dark'
-
-    setTheme(nextTheme)
-    localStorage.setItem('theme', nextTheme)
-
-    if (nextTheme === 'dark') {
-      document.documentElement.classList.add('dark')
-      document.body.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-      document.body.classList.remove('dark')
-    }
-  }
 
   // Language Change Handler
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -73,36 +46,68 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
+  const isDark = resolvedTheme === 'dark' || theme === 'dark'
+
   return (
     <>
-      {/* Top-Right Theme Toggle */}
+      {/* Top-Right Theme Toggle Dropdown & Button */}
       <div
         style={{
           position: 'absolute',
           top: '6px',
           right: '16px',
           zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
         }}
       >
-        <button
-          type="button"
-          onClick={handleToggleTheme}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '28px',
-            height: '28px',
-            borderRadius: '4px',
-            border: '1px solid #cbd5e1',
-            cursor: 'pointer',
-            fontSize: '14px',
-            padding: 0,
-          }}
-          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-        >
-          {theme === 'light' ? '🌙' : '☀️'}
-        </button>
+        {mounted && (
+          <>
+            <button
+              type="button"
+              onClick={() => setTheme(isDark ? 'light' : 'dark')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '28px',
+                height: '28px',
+                borderRadius: '4px',
+                border: '1px solid var(--border-color, #cbd5e1)',
+                backgroundColor: 'var(--bg-tag, #f8fafc)',
+                color: 'var(--text-primary, #000000)',
+                cursor: 'pointer',
+                fontSize: '14px',
+                padding: 0,
+              }}
+              title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode`}
+            >
+              {isDark ? '☀️' : '🌙'}
+            </button>
+
+            {/* Multi-Color Accent Selector */}
+            <select
+              value={theme || 'system'}
+              onChange={(e) => setTheme(e.target.value)}
+              style={{
+                fontSize: '11px',
+                fontWeight: 'bold',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                border: '1px solid var(--border-color, #cbd5e1)',
+                backgroundColor: 'var(--bg-tag, #ffffff)',
+                color: 'var(--text-primary, #000000)',
+                cursor: 'pointer',
+              }}
+            >
+              <option value="light">☀️ Light</option>
+              <option value="dark">🌙 Dark</option>
+              <option value="neon">⚡ Neon Gold</option>
+              <option value="blue">🔵 Enterprise Blue</option>
+            </select>
+          </>
+        )}
       </div>
 
       {/* Flexible Header Container */}
@@ -124,14 +129,14 @@ function HeaderNav() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div>
             <Link href={createLocalizedHref('/')}>
-              <BrandLogo variant={theme === 'dark' ? 'dark' : 'light'} priority={true} />
+              <BrandLogo variant={isDark ? 'dark' : 'light'} priority={true} />
             </Link>
           </div>
 
           <div
             className="brand-subtext"
             style={{
-              borderLeft: '1px solid #e2e8f0',
+              borderLeft: '1px solid var(--border-color, #e2e8f0)',
               paddingLeft: '12px',
               fontSize: '10.5px',
               fontWeight: '700',
@@ -257,7 +262,7 @@ function HeaderNav() {
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px #000000',
+                boxShadow: '2px 2px 0px 0px var(--shadow-color, #000000)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -278,7 +283,7 @@ function HeaderNav() {
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px #000000',
+                boxShadow: '2px 2px 0px 0px var(--shadow-color, #000000)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -293,7 +298,10 @@ function HeaderNav() {
 
 export default function Header() {
   return (
-    <header className="header-root" style={{ borderBottom: '2px solid #000000' }}>
+    <header
+      className="header-root"
+      style={{ borderBottom: '2px solid var(--border-color, #000000)' }}
+    >
       <Suspense fallback={<div style={{ minHeight: '80px' }} />}>
         <HeaderNav />
       </Suspense>
