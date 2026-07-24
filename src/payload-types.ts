@@ -88,14 +88,19 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale:
+    | ('false' | 'none' | 'null')
+    | false
+    | null
+    | ('de' | 'en' | 'hu' | 'fr' | 'es' | 'it' | 'nl' | 'pl')
+    | ('de' | 'en' | 'hu' | 'fr' | 'es' | 'it' | 'nl' | 'pl')[];
   globals: {
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: null;
+  locale: 'de' | 'en' | 'hu' | 'fr' | 'es' | 'it' | 'nl' | 'pl';
   widgets: {
     collections: CollectionsWidget;
   };
