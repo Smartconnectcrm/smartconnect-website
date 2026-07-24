@@ -3,10 +3,92 @@ import configPromise from '@payload-config'
 
 export const dynamic = 'force-dynamic'
 
-export default async function HomePage() {
+type Props = {
+  searchParams: Promise<{ lang?: string }>
+}
+
+// UI Section Label Translations
+const uiLabels: Record<
+  string,
+  {
+    title: string
+    subtitle: string
+    deliverables: string
+    boundaries: string
+  }
+> = {
+  EN: {
+    title: 'Service Catalog',
+    subtitle:
+      'Structured service modules with clear scope definition, documented handover, and compliance-driven execution.',
+    deliverables: 'Deliverables',
+    boundaries: 'Out of Scope / Boundaries',
+  },
+  HU: {
+    title: 'Szolgáltatási Katalógus',
+    subtitle:
+      'Strukturált szolgáltatási modulok világos határokkal, dokumentált átadással és megfelelőség-orientált megvalósítással.',
+    deliverables: 'Mérföldkövek / Deliverables',
+    boundaries: 'Kiterjedési Határok',
+  },
+  FR: {
+    title: 'Catalogue de Services',
+    subtitle:
+      'Modules de service structurés avec une délimitation claire, un transfert documenté et une mise en œuvre axée sur la conformité.',
+    deliverables: 'Livrables',
+    boundaries: 'Limites du Périmètre',
+  },
+  ES: {
+    title: 'Catálogo de Servicios',
+    subtitle:
+      'Módulos de servicio estructurados con delimitación clara, entrega documentada e implementación orientada al cumplimiento.',
+    deliverables: 'Entregables',
+    boundaries: 'Límites del Alcance',
+  },
+  IT: {
+    title: 'Catalogo dei Servizi',
+    subtitle:
+      'Moduli di servizio strutturati con chiara delimitazione, passaggio di consegne documentato e implementazione orientata alla conformità.',
+    deliverables: 'Risultati Attesi',
+    boundaries: 'Limiti Operativi',
+  },
+  NL: {
+    title: 'Dienstenencatalogus',
+    subtitle:
+      'Gestructureerde servicemodules met duidelijke afbakening, gedocumenteerde overdracht en compliance-gerichte uitvoering.',
+    deliverables: 'Opleveringen',
+    boundaries: 'Afbakening / Buiten Scope',
+  },
+  PL: {
+    title: 'Katalog Usług',
+    subtitle:
+      'Strukturyzowane moduły usługowe z jasnym rozgraniczeniem, udokumentowanym przekazaniem i wdrożeniem zorientowanym na zgodność.',
+    deliverables: 'Wyniki / Deliverables',
+    boundaries: 'Zakres / Wyłączenia',
+  },
+  DE: {
+    title: 'Leistungskatalog',
+    subtitle:
+      'Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und compliance-orientierter Umsetzung.',
+    deliverables: 'Deliverables',
+    boundaries: 'Abgrenzung',
+  },
+}
+
+export default async function HomePage({ searchParams }: Props) {
+  const resolvedSearchParams = await searchParams
+  const activeLangCode = (resolvedSearchParams.lang || 'de').toUpperCase()
+  const localeKey = activeLangCode.toLowerCase()
+
+  const labels = uiLabels[activeLangCode] || uiLabels.DE
+
   const payload = await getPayload({ config: configPromise })
+
+  // Fetch services natively filtered by locale from Payload CMS
   const { docs: services } = await payload.find({
     collection: 'services',
+    locale: localeKey as any,
+    fallbackLocale: true as any,
   })
 
   return (
@@ -36,7 +118,7 @@ export default async function HomePage() {
             fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
-          Leistungskatalog
+          {labels.title}
         </h1>
         <p
           style={{
@@ -47,8 +129,7 @@ export default async function HomePage() {
             margin: 0,
           }}
         >
-          Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und
-          compliance-orientierter Umsetzung.
+          {labels.subtitle}
         </p>
       </section>
 
@@ -62,8 +143,8 @@ export default async function HomePage() {
         }}
       >
         {services.map((service) => {
-          const deliverablesList = service.deliverables?.map((d) => d.item) || []
-          const boundariesList = service.boundaries?.map((b) => b.item) || []
+          const deliverablesList = service.deliverables?.map((d: any) => d.item) || []
+          const boundariesList = service.boundaries?.map((b: any) => b.item) || []
 
           return (
             <div
@@ -145,7 +226,7 @@ export default async function HomePage() {
                         margin: '0 0 8px 0',
                       }}
                     >
-                      ✓ Deliverables
+                      ✓ {labels.deliverables}
                     </h3>
                     <ul
                       style={{
@@ -159,7 +240,7 @@ export default async function HomePage() {
                         color: '#334155',
                       }}
                     >
-                      {deliverablesList.map((itemText, idx) => (
+                      {deliverablesList.map((itemText: string, idx: number) => (
                         <li
                           key={idx}
                           style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
@@ -195,7 +276,7 @@ export default async function HomePage() {
                       margin: '0 0 8px 0',
                     }}
                   >
-                    ⊘ Abgrenzung
+                    ⊘ {labels.boundaries}
                   </h3>
                   <ul
                     style={{
@@ -209,7 +290,7 @@ export default async function HomePage() {
                       color: '#64748b',
                     }}
                   >
-                    {boundariesList.map((itemText, idx) => (
+                    {boundariesList.map((itemText: string, idx: number) => (
                       <li
                         key={idx}
                         style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}

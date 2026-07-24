@@ -12,7 +12,8 @@ export const Services: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
-      required: true, // e.g. "Systemintegration & Schnittstellen"
+      required: true,
+      localized: true, // <--- Enabled multi-language support
     },
     {
       name: 'categoryTag',
@@ -24,34 +25,60 @@ export const Services: CollectionConfig = {
         { label: 'Advisory', value: 'Advisory' },
         { label: 'Security', value: 'Security' },
       ],
+      // Category tag stays fixed across languages (or set localized: true if you want tag labels translated)
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true, // <--- Enabled multi-language support
     },
     {
       name: 'deliverables',
       label: '✓ Deliverables',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true, // <--- Enabled multi-language support
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'inputs',
       label: '↓ Typische Inputs',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true, // <--- Enabled multi-language support
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'outputs',
       label: '↑ Typische Outputs',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true, // <--- Enabled multi-language support
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'boundaries',
       label: '⊘ Abgrenzung',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true, // <--- Enabled multi-language support
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
   ],
 }

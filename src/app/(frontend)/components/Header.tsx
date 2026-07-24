@@ -5,13 +5,6 @@ import Link from 'next/link'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
-declare global {
-  interface Window {
-    google: any
-    googleTranslateElementInit: () => void
-  }
-}
-
 function HeaderNav() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
@@ -20,34 +13,22 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // 1. Re-trigger Google Translate on Client Route Navigation
   useEffect(() => {
+    // 1. Setup Theme
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
     document.documentElement.classList.toggle('dark', savedTheme === 'dark')
 
-    const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
-    const currentLang =
-      match && match[1]
-        ? match[1].toUpperCase()
-        : (localStorage.getItem('preferred_lang') || 'DE').toUpperCase()
-    setLang(currentLang)
-
-    // Re-trigger Google Translate DOM re-parse after Next.js page transition
-    if (currentLang !== 'DE') {
-      const timer = setTimeout(() => {
-        const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
-        if (googleSelect) {
-          googleSelect.value = currentLang.toLowerCase()
-          googleSelect.dispatchEvent(new Event('change'))
-        } else if (window.googleTranslateElementInit) {
-          window.googleTranslateElementInit()
-        }
-      }, 300)
-
-      return () => clearTimeout(timer)
+    // 2. Read language parameter from URL query (e.g., ?lang=fr) or localStorage fallback
+    const urlLang = searchParams.get('lang')
+    if (urlLang) {
+      setLang(urlLang.toUpperCase())
+      localStorage.setItem('preferred_lang', urlLang.toUpperCase())
+    } else {
+      const savedLang = localStorage.getItem('preferred_lang') || 'DE'
+      setLang(savedLang.toUpperCase())
     }
-  }, [pathname, searchParams])
+  }, [searchParams])
 
   const toggleTheme = () => {
     const isDark = document.documentElement.classList.contains('dark')
@@ -63,32 +44,22 @@ function HeaderNav() {
     setLang(selectedLang)
     localStorage.setItem('preferred_lang', selectedLang)
 
-    const googleLangCode = selectedLang.toLowerCase()
+    // Append ?lang= param to current route to trigger Payload CMS server re-fetch instantly
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('lang', selectedLang.toLowerCase())
 
-    // Clear stale cookies
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`
+    router.push(`${pathname}?${params.toString()}`)
+  }
 
-    if (selectedLang !== 'DE') {
-      document.cookie = `googtrans=/de/${googleLangCode}; path=/;`
-      document.cookie = `googtrans=/de/${googleLangCode}; path=/; domain=${window.location.hostname}`
-    }
-
-    const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
-    if (googleSelect) {
-      googleSelect.value = googleLangCode
-      googleSelect.dispatchEvent(new Event('change'))
-    }
-
-    // Force full page reload on explicit user drop-down change to ensure clean DOM re-translation
-    window.location.reload()
+  // Helper to preserve active ?lang= param when clicking navigation links
+  const createLocalizedHref = (path: string) => {
+    const langParam = searchParams.get('lang') || lang.toLowerCase()
+    return langParam ? `${path}?lang=${langParam.toLowerCase()}` : path
   }
 
   return (
     <>
-      <div id="google_translate_element" style={{ display: 'none' }} />
-
-      {/* Top-Right Toggle */}
+      {/* Top-Right Theme Toggle */}
       <div
         className="notranslate"
         style={{
@@ -137,7 +108,9 @@ function HeaderNav() {
         {/* Brand Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div className="notranslate">
-            <BrandLogo variant="light" priority={true} />
+            <Link href={createLocalizedHref('/')}>
+              <BrandLogo variant="light" priority={true} />
+            </Link>
           </div>
 
           <div
@@ -169,7 +142,7 @@ function HeaderNav() {
           }}
         >
           <Link
-            href="/"
+            href={createLocalizedHref('/')}
             style={{
               textDecoration: 'none',
               color: '#0f172a',
@@ -182,7 +155,7 @@ function HeaderNav() {
           </Link>
 
           <Link
-            href="/procurement"
+            href={createLocalizedHref('/procurement')}
             style={{
               textDecoration: 'none',
               color: '#0f172a',
@@ -264,7 +237,7 @@ function HeaderNav() {
           {/* Action Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             <Link
-              href="/procurement#tender"
+              href={createLocalizedHref('/procurement#tender')}
               style={{
                 textDecoration: 'none',
                 color: '#ffffff',
@@ -284,7 +257,7 @@ function HeaderNav() {
             </Link>
 
             <Link
-              href="/contact"
+              href={createLocalizedHref('/contact')}
               style={{
                 textDecoration: 'none',
                 color: '#000000',

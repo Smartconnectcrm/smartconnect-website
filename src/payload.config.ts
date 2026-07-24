@@ -23,8 +23,23 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  // --- Native Multi-Language Localization Configuration ---
+  localization: {
+    locales: [
+      { code: 'de', label: 'Deutsch' },
+      { code: 'en', label: 'English' },
+      { code: 'hu', label: 'Magyar' },
+      { code: 'fr', label: 'Français' },
+      { code: 'es', label: 'Español' },
+      { code: 'it', label: 'Italiano' },
+      { code: 'nl', label: 'Nederlands' },
+      { code: 'pl', label: 'Polski' },
+    ],
+    defaultLocale: 'de',
+    fallback: true, // Fallback to German if a field isn't translated yet
+  },
   collections: [Users, Media, Services],
-  globals: [SiteSettings], // <-- Registered SiteSettings global
+  globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -34,7 +49,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || process.env.DATABASE_URI || '',
     },
-    push: true, // Forces Drizzle to automatically create and sync tables in Supabase
+    push: true, // Automatically syncs localized schema columns into PostgreSQL/Supabase
   }),
   sharp,
   plugins: [],
