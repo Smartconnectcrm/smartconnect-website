@@ -20,27 +20,8 @@ export default async function RootLayout({ children }: Props) {
       <head>
         {/* Prevent Google Translate popups */}
         <meta name="google" content="notranslate" />
-
-        {/* Anti-Flicker Script for Dark Mode Theme */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  const savedTheme = localStorage.getItem('theme');
-                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
       </head>
-      <body className="bg-white dark:bg-slate-900 text-neutral-900 dark:text-slate-100 antialiased min-h-screen flex flex-col">
+      <body className="antialiased min-h-screen flex flex-col">
         {/* Dynamic Header Component */}
         <Header />
 
