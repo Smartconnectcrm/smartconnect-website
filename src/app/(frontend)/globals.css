@@ -10,18 +10,20 @@ body {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* --- Dark Mode Core Styles --- */
+/* --- Dark Mode Core Styles (Forces Inline Style Overrides) --- */
 html.dark,
-html.dark body {
+html.dark body,
+html.dark main {
   background-color: #0f172a !important;
   color: #f8fafc !important;
 }
 
-/* Header & Footer Container Styling */
+/* Header & Footer Containers */
 html.dark header,
 html.dark footer,
 html.dark .header-root,
-html.dark .header-inner {
+html.dark .header-inner,
+html.dark header > div {
   background-color: #0f172a !important;
   border-color: #334155 !important;
 }
@@ -34,20 +36,22 @@ html.dark .brand-subtext {
 
 /* Header Navigation Links */
 html.dark .nav-link,
-html.dark header nav a:not([style*="backgroundColor"]) {
+html.dark header nav a:not([class*="btn-"]) {
   color: #f8fafc !important;
 }
 
-/* CMS Admin Button in Dark Mode */
+/* CMS Admin Link */
 html.dark .cms-link {
   background-color: #1e293b !important;
   border-color: #3b82f6 !important;
   color: #60a5fa !important;
 }
 
-/* Service Cards, Form Boxes & Containers */
+/* Service Cards, Form Boxes & Containers (Forces dark surface over inline style) */
 html.dark .service-card,
-html.dark form {
+html.dark form,
+html.dark div[style*="backgroundColor: '#ffffff'"],
+html.dark div[style*="background-color: #ffffff"] {
   background-color: #1e293b !important;
   color: #ffffff !important;
   border-color: #475569 !important;
@@ -60,7 +64,7 @@ html.dark .boundary-box {
   border-color: #334155 !important;
 }
 
-/* General Text Overrides */
+/* General Typography in Dark Mode */
 html.dark h1, 
 html.dark h2, 
 html.dark h3, 
@@ -70,13 +74,13 @@ html.dark li {
   color: #f8fafc !important;
 }
 
-/* Subtext & Muted Text */
+/* Subtext & Muted Items */
 html.dark .service-card p,
 html.dark .boundary-box li span {
   color: #cbd5e1 !important;
 }
 
-/* Form Controls & Select Dropdowns */
+/* Form Controls & Dropdowns */
 html.dark input,
 html.dark select,
 html.dark textarea,
@@ -86,7 +90,7 @@ html.dark .lang-select {
   border-color: #475569 !important;
 }
 
-/* Header Action Buttons in Dark Mode */
+/* RFP / Tender Button */
 html.dark .btn-tender {
   background-color: #334155 !important;
   border-color: #64748b !important;
@@ -94,7 +98,7 @@ html.dark .btn-tender {
   box-shadow: 2px 2px 0px 0px #000000 !important;
 }
 
-/* Preserve Yellow Action Button Contrast */
+/* Yellow Contact Button (Preserve High Contrast) */
 html.dark .btn-kontakt,
 html.dark a[href*="contact"] {
   background-color: #fbbf24 !important;

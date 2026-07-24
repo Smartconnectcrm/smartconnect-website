@@ -10,10 +10,17 @@ export const metadata: Metadata = {
     'B2B IT & Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: React.ReactNode
+}
+
+export default async function RootLayout({ children }: Props) {
   return (
-    <html lang="de" suppressHydrationWarning>
+    <html lang="de" translate="no" className="notranslate" suppressHydrationWarning>
       <head>
+        {/* Prevent Google Translate popups */}
+        <meta name="google" content="notranslate" />
+
         {/* Anti-Flicker Script for Dark Mode Theme */}
         <script
           dangerouslySetInnerHTML={{

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
 function HeaderNav() {
@@ -10,7 +10,6 @@ function HeaderNav() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [lang, setLang] = useState('DE')
 
-  const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -21,13 +20,16 @@ function HeaderNav() {
     // Load saved theme
     const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
     setTheme(savedTheme)
+
     if (savedTheme === 'dark') {
       document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
     }
 
-    // Load active language parameter
+    // Load active language parameter from URL or LocalStorage
     const urlLang = searchParams.get('lang')
     if (urlLang) {
       setLang(urlLang.toUpperCase())
@@ -38,22 +40,26 @@ function HeaderNav() {
     }
   }, [searchParams])
 
-  // 2. Toggle Dark / Light Theme
+  // 2. Toggle Dark / Light Theme (Direct DOM + State update)
   const handleToggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const nextTheme = theme === 'light' ? 'dark' : 'light'
+
+    const isCurrentlyDark = document.documentElement.classList.contains('dark')
+    const nextTheme = isCurrentlyDark ? 'light' : 'dark'
 
     setTheme(nextTheme)
     localStorage.setItem('theme', nextTheme)
 
     if (nextTheme === 'dark') {
       document.documentElement.classList.add('dark')
+      document.body.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
+      document.body.classList.remove('dark')
     }
   }
 
-  // 3. Switch Language & Trigger Immediate URL & Payload Re-fetch
+  // 3. Switch Language & Trigger Clean Navigation
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = e.target.value.toUpperCase()
     setLang(selectedLang)
@@ -64,9 +70,8 @@ function HeaderNav() {
 
     const newUrl = `${pathname}?${params.toString()}`
 
-    // Push new route and refresh server components
-    router.push(newUrl)
-    router.refresh()
+    // Force location navigation so Payload CMS fetches new language from server instantly
+    window.location.href = newUrl
   }
 
   const createLocalizedHref = (path: string) => {
@@ -97,7 +102,8 @@ function HeaderNav() {
             height: '28px',
             borderRadius: '4px',
             border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
+            backgroundColor: theme === 'dark' ? '#1e293b' : '#f8fafc',
+            color: theme === 'dark' ? '#ffffff' : '#000000',
             cursor: 'pointer',
             fontSize: '14px',
             padding: 0,

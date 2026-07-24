@@ -158,7 +158,6 @@ export default async function HomePage({ searchParams }: Props) {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                backgroundColor: '#ffffff',
               }}
             >
               <div>
@@ -178,7 +177,6 @@ export default async function HomePage({ searchParams }: Props) {
                       fontWeight: '800',
                       margin: 0,
                       lineHeight: '1.3',
-                      color: '#0f172a',
                     }}
                   >
                     {service.title}
@@ -192,8 +190,6 @@ export default async function HomePage({ searchParams }: Props) {
                         border: '1px solid #cbd5e1',
                         borderRadius: '4px',
                         whiteSpace: 'nowrap',
-                        backgroundColor: '#f1f5f9',
-                        color: '#334155',
                       }}
                     >
                       {service.categoryTag}
@@ -205,7 +201,6 @@ export default async function HomePage({ searchParams }: Props) {
                 <p
                   style={{
                     fontSize: '13px',
-                    color: '#475569',
                     lineHeight: '1.5',
                     margin: '0 0 24px 0',
                   }}
@@ -222,7 +217,6 @@ export default async function HomePage({ searchParams }: Props) {
                         fontWeight: '800',
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
-                        color: '#0f172a',
                         margin: '0 0 8px 0',
                       }}
                     >
@@ -237,7 +231,6 @@ export default async function HomePage({ searchParams }: Props) {
                         flexDirection: 'column',
                         gap: '6px',
                         fontSize: '12px',
-                        color: '#334155',
                       }}
                     >
                       {deliverablesList.map((itemText: string, idx: number) => (
@@ -259,7 +252,6 @@ export default async function HomePage({ searchParams }: Props) {
                 <div
                   className="boundary-box"
                   style={{
-                    backgroundColor: '#f8fafc',
                     border: '1px solid #e2e8f0',
                     padding: '16px',
                     borderRadius: '6px',
@@ -272,7 +264,6 @@ export default async function HomePage({ searchParams }: Props) {
                       fontWeight: '800',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      color: '#0f172a',
                       margin: '0 0 8px 0',
                     }}
                   >
@@ -287,7 +278,6 @@ export default async function HomePage({ searchParams }: Props) {
                       flexDirection: 'column',
                       gap: '6px',
                       fontSize: '12px',
-                      color: '#64748b',
                     }}
                   >
                     {boundariesList.map((itemText: string, idx: number) => (
@@ -295,7 +285,7 @@ export default async function HomePage({ searchParams }: Props) {
                         key={idx}
                         style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
                       >
-                        <span style={{ color: '#94a3b8' }}>×</span>
+                        <span style={{ opacity: 0.6 }}>×</span>
                         <span style={{ lineHeight: '1.4' }}>{itemText}</span>
                       </li>
                     ))}
