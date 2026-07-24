@@ -8,62 +8,75 @@ type Props = {
   searchParams: Promise<{ lang?: string }>
 }
 
-// Service content fallback dictionary for dynamic translations
-const serviceTranslations: Record<
+// Full translation map for cards across all languages
+const cardContentTranslations: Record<
   string,
-  Record<string, { title: string; description: string }>
+  Array<{
+    titleKeywords: string[]
+    title: string
+    description: string
+  }>
 > = {
-  FR: {
-    'Delivery Support & Project Recovery': {
-      title: 'Support de Livraison & Redressement de Projet',
-      description:
-        'Accompagnement axé sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non clarifiées.',
-    },
-    'Data & Reporting Foundations': {
-      title: 'Bases de Données & Reporting',
-      description:
-        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
-    },
-    'Cloud & Modern Workplace Operations': {
-      title: 'Operations Cloud & Workplace Moderne',
-      description:
-        'Support opérationnel pour les environnements Microsoft 365/Azure, y compris identités, terminaux, gouvernance et surveillance.',
-    },
-  },
-  EN: {
-    'Delivery Support & Project Recovery': {
-      title: 'Delivery Support & Project Recovery',
-      description:
-        'Stabilization and handover-oriented support under delivery pressure, open issues, and unresolved responsibilities.',
-    },
-    'Data & Reporting Foundations': {
-      title: 'Data & Reporting Foundations',
-      description:
-        'Establishment of data and reporting foundations with clear definitions, data quality checks, and traceable KPI logic.',
-    },
-    'Cloud & Modern Workplace Operations': {
-      title: 'Cloud & Modern Workplace Operations',
-      description:
-        'Operational support for Microsoft 365/Azure-oriented environments including identities, endpoints, governance, and monitoring.',
-    },
-  },
-  HU: {
-    'Delivery Support & Project Recovery': {
+  HU: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
       title: 'Szállítási Támogatás és Projekt Helyreállítás',
       description:
         'Stabilizációs és átadás-orientált támogatás szállítási nyomás, nyitott pontok és tisztázatlan felelősségek esetén.',
     },
-    'Data & Reporting Foundations': {
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
       title: 'Adat- és Jelentési Alapok',
       description:
         'Adat- és jelentési alapok kiépítése világos definíciókkal, adatminőség-ellenőrzéssel és nyomon követhető KPI-logikával.',
     },
-    'Cloud & Modern Workplace Operations': {
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
       title: 'Felhő és Modern Munkahelyi Üzemeltetés',
       description:
         'Üzemeltetési támogatás Microsoft 365/Azure környezetekhez, beleértve a személyazonosságokat, végpontokat és felügyeletet.',
     },
-  },
+  ],
+  FR: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
+      title: 'Support de Livraison & Redressement de Projet',
+      description:
+        'Accompagnement axé sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non clarifiées.',
+    },
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
+      title: 'Bases de Données & Reporting',
+      description:
+        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
+    },
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
+      title: 'Operations Cloud & Workplace Moderne',
+      description:
+        'Support opérationnel pour les environnements Microsoft 365/Azure, y compris identités, terminaux, gouvernance et surveillance.',
+    },
+  ],
+  EN: [
+    {
+      titleKeywords: ['Delivery Support', 'Project Recovery'],
+      title: 'Delivery Support & Project Recovery',
+      description:
+        'Stabilization and handover-oriented support under delivery pressure, open issues, and unresolved responsibilities.',
+    },
+    {
+      titleKeywords: ['Data', 'Reporting Foundations'],
+      title: 'Data & Reporting Foundations',
+      description:
+        'Establishment of data and reporting foundations with clear definitions, data quality checks, and traceable KPI logic.',
+    },
+    {
+      titleKeywords: ['Cloud', 'Workplace Operations'],
+      title: 'Cloud & Modern Workplace Operations',
+      description:
+        'Operational support for Microsoft 365/Azure-oriented environments including identities, endpoints, governance, and monitoring.',
+    },
+  ],
 }
 
 export default async function HomePage({ searchParams }: Props) {
@@ -118,7 +131,7 @@ export default async function HomePage({ searchParams }: Props) {
         </p>
       </section>
 
-      {/* Grid */}
+      {/* Responsive Grid */}
       <div
         style={{
           display: 'grid',
@@ -128,10 +141,14 @@ export default async function HomePage({ searchParams }: Props) {
         }}
       >
         {services.map((service) => {
-          // Check for card-level localized override
-          const localizedCard = serviceTranslations[activeLang]?.[service.title]
-          const displayTitle = localizedCard?.title || service.title
-          const displayDescription = localizedCard?.description || service.description
+          // Dynamic keyword matching for titles
+          const langMap = cardContentTranslations[activeLang]
+          const matchedTranslation = langMap?.find((item) =>
+            item.titleKeywords.some((kw) => service.title.toLowerCase().includes(kw.toLowerCase())),
+          )
+
+          const displayTitle = matchedTranslation?.title || service.title
+          const displayDescription = matchedTranslation?.description || service.description
 
           return (
             <div
@@ -145,10 +162,11 @@ export default async function HomePage({ searchParams }: Props) {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
+                backgroundColor: '#ffffff',
               }}
             >
               <div>
-                {/* Title & Tag */}
+                {/* Title & Category Tag */}
                 <div
                   style={{
                     display: 'flex',
@@ -164,6 +182,7 @@ export default async function HomePage({ searchParams }: Props) {
                       fontWeight: '800',
                       margin: 0,
                       lineHeight: '1.3',
+                      color: '#0f172a',
                     }}
                   >
                     {displayTitle}
@@ -177,6 +196,8 @@ export default async function HomePage({ searchParams }: Props) {
                         border: '1px solid #cbd5e1',
                         borderRadius: '4px',
                         whiteSpace: 'nowrap',
+                        backgroundColor: '#f1f5f9',
+                        color: '#334155',
                       }}
                     >
                       {service.categoryTag}
@@ -188,7 +209,7 @@ export default async function HomePage({ searchParams }: Props) {
                 <p
                   style={{
                     fontSize: '13px',
-                    marginBottom: '24px',
+                    color: '#475569',
                     lineHeight: '1.5',
                     margin: '0 0 24px 0',
                   }}
@@ -205,7 +226,7 @@ export default async function HomePage({ searchParams }: Props) {
                         fontWeight: '800',
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
-                        marginBottom: '8px',
+                        color: '#0f172a',
                         margin: '0 0 8px 0',
                       }}
                     >
@@ -220,6 +241,7 @@ export default async function HomePage({ searchParams }: Props) {
                         flexDirection: 'column',
                         gap: '6px',
                         fontSize: '12px',
+                        color: '#334155',
                       }}
                     >
                       {service.deliverables.map((item, idx) => (
@@ -236,11 +258,12 @@ export default async function HomePage({ searchParams }: Props) {
                 )}
               </div>
 
-              {/* Boundaries */}
+              {/* Boundaries / Out of Scope */}
               {service.boundaries && service.boundaries.length > 0 && (
                 <div
                   className="boundary-box"
                   style={{
+                    backgroundColor: '#f8fafc',
                     border: '1px solid #e2e8f0',
                     padding: '16px',
                     borderRadius: '6px',
@@ -253,7 +276,7 @@ export default async function HomePage({ searchParams }: Props) {
                       fontWeight: '800',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      marginBottom: '8px',
+                      color: '#0f172a',
                       margin: '0 0 8px 0',
                     }}
                   >
@@ -268,6 +291,7 @@ export default async function HomePage({ searchParams }: Props) {
                       flexDirection: 'column',
                       gap: '6px',
                       fontSize: '12px',
+                      color: '#64748b',
                     }}
                   >
                     {service.boundaries.map((item, idx) => (
