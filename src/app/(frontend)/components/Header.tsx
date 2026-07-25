@@ -8,7 +8,6 @@ import { BrandLogo } from './BrandLogo'
 
 function HeaderNav() {
   const { theme, setTheme } = useCustomTheme()
-  const [mounted, setMounted] = useState(false)
   const [lang, setLang] = useState('DE')
 
   const router = useRouter()
@@ -16,8 +15,6 @@ function HeaderNav() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    setMounted(true)
-
     const urlLang = searchParams.get('lang')
     if (urlLang) {
       setLang(urlLang.toUpperCase())
@@ -36,7 +33,6 @@ function HeaderNav() {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
     params.set('lang', selectedLang.toLowerCase())
 
-    // Smooth client-side navigation without full page reload
     router.push(`${pathname}?${params.toString()}`)
   }
 
@@ -199,7 +195,7 @@ function HeaderNav() {
           </span>
         </div>
 
-        {/* Dynamic Multi-Color Theme Switcher (Hydration-Safe) */}
+        {/* Dynamic Multi-Color Theme Switcher (Always Rendered & Hydration Safe) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }} suppressHydrationWarning>
           <button
             type="button"
@@ -220,19 +216,11 @@ function HeaderNav() {
             }}
             title="Cycle Theme"
           >
-            {mounted
-              ? theme === 'neon'
-                ? '⚡'
-                : theme === 'blue'
-                  ? '🔵'
-                  : theme === 'dark'
-                    ? '🌙'
-                    : '☀️'
-              : '☀️'}
+            {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : theme === 'dark' ? '🌙' : '☀️'}
           </button>
 
           <select
-            value={mounted ? theme : 'light'}
+            value={theme || 'light'}
             onChange={(e) => setTheme(e.target.value as Theme)}
             style={{
               fontSize: '12px',
