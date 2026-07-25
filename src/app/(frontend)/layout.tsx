@@ -13,13 +13,20 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col">
-        <CustomThemeProvider>
+      <CustomThemeProvider>
+        <body
+          className="min-h-screen flex flex-col antialiased"
+          style={{
+            backgroundColor: 'var(--bg-page, #ffffff)',
+            color: 'var(--text-primary, #0f172a)',
+            transition: 'background-color 0.25s ease, color 0.25s ease',
+          }}
+        >
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-        </CustomThemeProvider>
-      </body>
+        </body>
+      </CustomThemeProvider>
     </html>
   )
 }
