@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useCustomTheme, type Theme } from '../../../context/ThemeContext'
 import { BrandLogo } from './BrandLogo'
 
@@ -11,6 +11,7 @@ function HeaderNav() {
   const [mounted, setMounted] = useState(false)
   const [lang, setLang] = useState('DE')
 
+  const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -35,7 +36,8 @@ function HeaderNav() {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
     params.set('lang', selectedLang.toLowerCase())
 
-    window.location.href = `${pathname}?${params.toString()}`
+    // Smooth client-side navigation without full page reload
+    router.push(`${pathname}?${params.toString()}`)
   }
 
   const createLocalizedHref = (path: string) => {
@@ -197,54 +199,60 @@ function HeaderNav() {
           </span>
         </div>
 
-        {/* Native Direct Theme Switcher */}
-        {mounted && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '30px',
-                borderRadius: '4px',
-                border: '1px solid var(--border-color)',
-                backgroundColor: 'var(--bg-tag)',
-                color: 'var(--text-primary)',
-                cursor: 'pointer',
-                fontSize: '14px',
-                padding: 0,
-              }}
-              title="Cycle Theme"
-            >
-              {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : theme === 'dark' ? '🌙' : '☀️'}
-            </button>
+        {/* Dynamic Multi-Color Theme Switcher (Hydration-Safe) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }} suppressHydrationWarning>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '32px',
+              height: '30px',
+              borderRadius: '4px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-tag)',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              fontSize: '14px',
+              padding: 0,
+            }}
+            title="Cycle Theme"
+          >
+            {mounted
+              ? theme === 'neon'
+                ? '⚡'
+                : theme === 'blue'
+                  ? '🔵'
+                  : theme === 'dark'
+                    ? '🌙'
+                    : '☀️'
+              : '☀️'}
+          </button>
 
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value as Theme)}
-              style={{
-                fontSize: '12px',
-                fontWeight: '800',
-                padding: '5px 8px',
-                borderRadius: '4px',
-                border: '1px solid var(--border-color)',
-                backgroundColor: 'var(--bg-tag)',
-                color: 'var(--text-primary)',
-                cursor: 'pointer',
-                outline: 'none',
-                height: '30px',
-              }}
-            >
-              <option value="light">☀️ Light</option>
-              <option value="dark">🌙 Dark</option>
-              <option value="neon">⚡ Neon</option>
-              <option value="blue">🔵 Blue</option>
-            </select>
-          </div>
-        )}
+          <select
+            value={mounted ? theme : 'light'}
+            onChange={(e) => setTheme(e.target.value as Theme)}
+            style={{
+              fontSize: '12px',
+              fontWeight: '800',
+              padding: '5px 8px',
+              borderRadius: '4px',
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-tag)',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              outline: 'none',
+              height: '30px',
+            }}
+          >
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="neon">⚡ Neon</option>
+            <option value="blue">🔵 Blue</option>
+          </select>
+        </div>
 
         {/* Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
