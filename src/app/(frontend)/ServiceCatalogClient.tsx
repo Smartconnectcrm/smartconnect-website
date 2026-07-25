@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 
-type ArrayItem = { item: string }
+type ArrayItem = { item?: string; text?: string } | string
 
 type Service = {
   id: string
@@ -13,6 +13,7 @@ type Service = {
   inputs?: ArrayItem[]
   outputs?: ArrayItem[]
   boundaries?: ArrayItem[]
+  outOfScope?: ArrayItem[]
 }
 
 type ServiceCatalogClientProps = {
@@ -21,6 +22,12 @@ type ServiceCatalogClientProps = {
     deliverables: string
     boundaries: string
   }
+}
+
+// Helper function to extract text safely regardless of Payload's internal array format
+function parseItemText(item: ArrayItem): string {
+  if (typeof item === 'string') return item
+  return item?.text || item?.item || ''
 }
 
 export default function ServiceCatalogClient({ services, labels }: ServiceCatalogClientProps) {
@@ -84,10 +91,16 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
         }}
       >
         {filteredServices.map((service) => {
-          const deliverablesList = service.deliverables?.map((d) => d.item) || []
-          const inputsList = service.inputs?.map((i) => i.item) || []
-          const outputsList = service.outputs?.map((o) => o.item) || []
-          const boundariesList = service.boundaries?.map((b) => b.item) || []
+          const deliverablesList = service.deliverables?.map(parseItemText).filter(Boolean) || []
+          const inputsList = service.inputs?.map(parseItemText).filter(Boolean) || []
+          const outputsList = service.outputs?.map(parseItemText).filter(Boolean) || []
+
+          // Support both `outOfScope` (from Payload) and `boundaries`
+          const rawBoundaries =
+            service.outOfScope && service.outOfScope.length > 0
+              ? service.outOfScope
+              : service.boundaries
+          const boundariesList = rawBoundaries?.map(parseItemText).filter(Boolean) || []
 
           return (
             <div
@@ -158,16 +171,18 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                 </div>
 
                 {/* Description */}
-                <p
-                  style={{
-                    fontSize: '13px',
-                    lineHeight: '1.5',
-                    margin: '0 0 20px 0',
-                    color: 'var(--text-secondary)',
-                  }}
-                >
-                  {service.description}
-                </p>
+                {service.description && (
+                  <p
+                    style={{
+                      fontSize: '13px',
+                      lineHeight: '1.5',
+                      margin: '0 0 20px 0',
+                      color: 'var(--text-secondary)',
+                    }}
+                  >
+                    {service.description}
+                  </p>
+                )}
 
                 {/* Deliverables */}
                 {deliverablesList.length > 0 && (
@@ -201,7 +216,9 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                           key={idx}
                           style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
                         >
-                          <span style={{ color: '#2563eb', fontWeight: 'bold' }}>→</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>
+                            →
+                          </span>
                           <span style={{ lineHeight: '1.4' }}>{itemText}</span>
                         </li>
                       ))}
@@ -232,7 +249,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                             fontWeight: '800',
                             textTransform: 'uppercase',
                             margin: '0 0 4px 0',
-                            color: '#2563eb',
+                            color: 'var(--text-primary)',
                           }}
                         >
                           ↓ Inputs
@@ -264,7 +281,7 @@ export default function ServiceCatalogClient({ services, labels }: ServiceCatalo
                             fontWeight: '800',
                             textTransform: 'uppercase',
                             margin: '0 0 4px 0',
-                            color: '#16a34a',
+                            color: 'var(--text-primary)',
                           }}
                         >
                           ↑ Outputs

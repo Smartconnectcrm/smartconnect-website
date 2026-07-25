@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import ServiceCatalogClient from './ServiceCatalogClient'
+import { translateText } from '@/utilities/autoTranslate'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -85,11 +86,51 @@ export default async function HomePage({ searchParams }: Props) {
 
   const payload = await getPayload({ config: configPromise })
 
-  const { docs: services } = await payload.find({
+  const { docs: rawServices } = await payload.find({
     collection: 'services',
     locale: localeKey as any,
     fallbackLocale: true as any,
   })
+
+  // Dynamically translate services if target language is not German
+  const services = await Promise.all(
+    rawServices.map(async (service: any) => {
+      if (activeLangCode === 'DE') return service
+
+      const [translatedTitle, translatedDescription] = await Promise.all([
+        translateText(service.title || '', localeKey),
+        translateText(service.description || '', localeKey),
+      ])
+
+      let translatedDeliverables = service.deliverables
+      if (Array.isArray(service.deliverables)) {
+        translatedDeliverables = await Promise.all(
+          service.deliverables.map(async (item: any) => ({
+            ...item,
+            text: await translateText(item.text || item, localeKey),
+          })),
+        )
+      }
+
+      let translatedOutofScope = service.outOfScope
+      if (Array.isArray(service.outOfScope)) {
+        translatedOutofScope = await Promise.all(
+          service.outOfScope.map(async (item: any) => ({
+            ...item,
+            text: await translateText(item.text || item, localeKey),
+          })),
+        )
+      }
+
+      return {
+        ...service,
+        title: translatedTitle,
+        description: translatedDescription,
+        deliverables: translatedDeliverables,
+        outOfScope: translatedOutofScope,
+      }
+    }),
+  )
 
   return (
     <main
