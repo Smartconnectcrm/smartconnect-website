@@ -13,6 +13,7 @@ html.light {
   --text-muted: #555555;
   --border-color: #000000;
   --shadow-color: #000000;
+  color-scheme: light;
 }
 
 /* Dark Theme */
@@ -23,10 +24,11 @@ html.dark {
   --bg-secondary: #0f172a;
   --bg-tag: #334155;
   --text-primary: #ffffff;
-  --text-secondary: #f8fafc;
-  --text-muted: #cbd5e1;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
   --border-color: #475569;
   --shadow-color: #000000;
+  color-scheme: dark;
 }
 
 /* Neon Gold Accent Theme */
@@ -40,7 +42,8 @@ html.neon {
   --text-secondary: #fef08a;
   --text-muted: #d97706;
   --border-color: #fbbf24;
-  --shadow-color: #000000;
+  --shadow-color: #fbbf24;
+  color-scheme: dark;
 }
 
 /* Enterprise Blue Accent Theme */
@@ -54,7 +57,8 @@ html.blue {
   --text-secondary: #e2e8f0;
   --text-muted: #93c5fd;
   --border-color: #3b82f6;
-  --shadow-color: #000000;
+  --shadow-color: #1d4ed8;
+  color-scheme: dark;
 }
 
 /* --- 2. Global DOM Rule Overrides --- */
@@ -87,14 +91,34 @@ section,
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.service-card {
+/* Service Cards & Component Styling */
+.service-card,
+[class*="card"] {
   background-color: var(--bg-card) !important;
   color: var(--text-primary) !important;
   border-color: var(--border-color) !important;
+  box-shadow: 4px 4px 0px var(--shadow-color) !important;
   transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Fix dropdown options and select inputs */
+/* Force text elements inside cards to adapt */
+.service-card p,
+.service-card span,
+.service-card li,
+p, 
+span:not([style*="color"]) {
+  color: var(--text-secondary) !important;
+}
+
+.service-card h1,
+.service-card h2,
+.service-card h3,
+.service-card h4,
+h1, h2, h3, h4 {
+  color: var(--text-primary) !important;
+}
+
+/* Native Selects & Dropdowns Fix */
 select, 
 option {
   background-color: var(--bg-card) !important;
