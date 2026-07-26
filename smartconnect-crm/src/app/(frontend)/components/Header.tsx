@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { useTheme as useCustomTheme, type ThemeMode as Theme } from '@/context/ThemeContext'
+import { useTheme as useCustomTheme } from '@/context/ThemeContext'
 
 function HeaderNav() {
   const { theme, setTheme } = useCustomTheme()
@@ -265,9 +265,9 @@ function HeaderNav() {
           </Link>
         </div>
 
-        {/* Dual Theme Switcher (Extreme Top-Right Position) */}
+        {/* Single Theme Toggle Button (Far Top-Right) */}
         <div
-          style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '4px' }}
+          style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }}
           suppressHydrationWarning
         >
           <button
@@ -277,44 +277,20 @@ function HeaderNav() {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '32px',
-              height: '30px',
-              borderRadius: '4px',
+              width: '36px',
+              height: '34px',
+              borderRadius: '6px',
               border: '1px solid var(--border-color)',
               backgroundColor: 'var(--bg-tag)',
               color: 'var(--text-primary)',
               cursor: 'pointer',
-              fontSize: '14px',
+              fontSize: '16px',
               padding: 0,
             }}
-            title="Cycle Theme"
+            title="Toggle Theme"
           >
             {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : theme === 'dark' ? '🌙' : '☀️'}
           </button>
-
-          <select
-            id="theme-select"
-            name="theme"
-            value={theme || 'light'}
-            onChange={(e) => setTheme(e.target.value as Theme)}
-            style={{
-              fontSize: '12px',
-              fontWeight: '800',
-              padding: '5px 8px',
-              borderRadius: '4px',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'var(--bg-tag)',
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-              outline: 'none',
-              height: '30px',
-            }}
-          >
-            <option value="light">☀️ Light</option>
-            <option value="dark">🌙 Dark</option>
-            <option value="neon">⚡ Neon</option>
-            <option value="blue">🔵 Blue</option>
-          </select>
         </div>
       </nav>
     </div>
