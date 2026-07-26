@@ -14,7 +14,7 @@ export function BrandLogo({
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      {/* Brand Mark Image */}
+      {/* Official Metallic Ribbon Logo Mark */}
       <Image
         src="/media/logo_white.png"
         alt="SmartConnect CRM Logo"
@@ -24,7 +24,7 @@ export function BrandLogo({
         style={{ objectFit: 'contain', flexShrink: 0 }}
       />
 
-      {/* Brand Text */}
+      {/* Brand Text with High Contrast Support */}
       <span
         style={{
           fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -37,7 +37,7 @@ export function BrandLogo({
           whiteSpace: 'nowrap',
         }}
       >
-        {/* SmartConnect: Bright blue on dark/blue/neon themes, corporate blue on light themes */}
+        {/* SmartConnect: Bright light-blue on dark/neon/blue themes, dark corporate blue on light theme */}
         <span
           style={{
             color: isDark ? '#60a5fa' : '#2563eb',
@@ -47,7 +47,7 @@ export function BrandLogo({
           SmartConnect
         </span>
 
-        {/* CRM: Gold across all themes */}
+        {/* CRM: Vibrant Gold across all themes */}
         <span style={{ color: '#fbbf24' }}>CRM</span>
       </span>
     </div>
