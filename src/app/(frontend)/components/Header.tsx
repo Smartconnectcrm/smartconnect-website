@@ -16,7 +16,6 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Close theme popover when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
@@ -64,290 +63,278 @@ function HeaderNav() {
   const currentModeInfo = themeModes.find((m) => m.id === theme) || themeModes[0]
 
   return (
-    <>
-      {/* Permanently Floating Compact Theme Switcher (Top-Right Corner) */}
-      <div
-        ref={themeRef}
-        className="notranslate"
+    <div
+      className="header-inner"
+      style={{
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '12px 20px',
+        minHeight: '80px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '16px',
+        position: 'relative',
+      }}
+    >
+      {/* Brand Logo & Subtext */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+        <div>
+          <Link href={createLocalizedHref('/')}>
+            <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} />
+          </Link>
+        </div>
+
+        <div
+          className="brand-subtext"
+          style={{
+            borderLeft: '1px solid var(--border-color)',
+            paddingLeft: '12px',
+            fontSize: '10.5px',
+            fontWeight: '700',
+            textTransform: 'uppercase',
+            lineHeight: '1.25',
+            whiteSpace: 'nowrap',
+            color: 'var(--text-secondary)',
+          }}
+        >
+          Enterprise &<br />
+          Public Sector
+        </div>
+      </div>
+
+      {/* Navigation Controls */}
+      <nav
         style={{
-          position: 'fixed',
-          top: '10px',
-          right: '12px',
-          zIndex: 100000,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-end',
+          flex: '1 1 auto',
         }}
       >
-        <button
-          type="button"
-          onClick={() => setIsThemeOpen((prev) => !prev)}
+        <Link
+          href={createLocalizedHref('/')}
+          className="nav-link"
           style={{
+            textDecoration: 'none',
+            fontWeight: '700',
+            fontSize: '13px',
+            whiteSpace: 'nowrap',
+            color: 'var(--text-primary)',
+          }}
+        >
+          Leistungskatalog
+        </Link>
+
+        <Link
+          href={createLocalizedHref('/procurement')}
+          className="nav-link"
+          style={{
+            textDecoration: 'none',
+            fontWeight: '700',
+            fontSize: '13px',
+            whiteSpace: 'nowrap',
+            color: 'var(--text-primary)',
+          }}
+        >
+          Procurement-Profil
+        </Link>
+
+        <Link
+          href="/admin"
+          className="cms-link"
+          style={{
+            textDecoration: 'none',
+            color: '#2563eb',
+            fontWeight: '700',
+            fontSize: '12px',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
-            padding: '3px 8px',
-            borderRadius: '16px',
-            border: '1px solid var(--border-color)',
-            backgroundColor: 'var(--bg-card, #ffffff)',
-            color: 'var(--text-primary)',
-            fontSize: '10px',
-            fontWeight: '800',
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+            padding: '5px 9px',
+            borderRadius: '4px',
+            border: '1px solid #bfdbfe',
+            backgroundColor: 'var(--bg-card)',
+            whiteSpace: 'nowrap',
           }}
-          title="Switch Theme"
         >
-          <span>{currentModeInfo.icon}</span>
-          <span style={{ textTransform: 'uppercase' }}>{currentModeInfo.label}</span>
-          <span style={{ fontSize: '7px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
-        </button>
+          <span>🔒</span> CMS Login
+        </Link>
 
-        {isThemeOpen && (
-          <div
+        {/* Language Switcher */}
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+          <select
+            id="lang-select"
+            name="language"
+            value={lang}
+            onChange={handleLanguageChange}
+            className="lang-select"
+            style={{
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              borderRadius: '4px',
+              padding: '6px 22px 6px 10px',
+              fontSize: '12px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              outline: 'none',
+              backgroundColor: 'var(--bg-tag)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-color)',
+            }}
+          >
+            <option value="DE">🇩🇪 DE (Deutsch)</option>
+            <option value="EN">🇪🇺 EN (English)</option>
+            <option value="HU">🇭🇺 HU (Magyar)</option>
+            <option value="FR">🇫🇷 FR (Français)</option>
+            <option value="ES">🇪🇸 ES (Español)</option>
+            <option value="IT">🇮🇹 IT (Italiano)</option>
+            <option value="NL">🇳🇱 NL (Nederlands)</option>
+            <option value="PL">🇵🇱 PL (Polski)</option>
+          </select>
+          <span
             style={{
               position: 'absolute',
-              top: 'calc(100% + 4px)',
-              right: 0,
-              zIndex: 100001,
-              width: '120px',
-              backgroundColor: 'var(--bg-card, #ffffff)',
-              border: '1px solid var(--border-color)',
-              borderRadius: '8px',
-              padding: '4px',
-              boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2px',
+              right: '7px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              fontSize: '9px',
+              pointerEvents: 'none',
+              color: 'var(--text-muted)',
             }}
           >
-            {themeModes.map((mode) => {
-              const isActive = theme === mode.id
-              return (
-                <button
-                  key={mode.id}
-                  type="button"
-                  onClick={() => {
-                    setTheme(mode.id)
-                    setIsThemeOpen(false)
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '5px 8px',
-                    borderRadius: '4px',
-                    border: 'none',
-                    backgroundColor: isActive ? 'var(--border-color)' : 'transparent',
-                    color: isActive ? 'var(--bg-page)' : 'var(--text-primary)',
-                    fontSize: '11px',
-                    fontWeight: isActive ? '800' : '600',
-                    cursor: 'pointer',
-                    width: '100%',
-                    textAlign: 'left',
-                  }}
-                >
-                  <span>{mode.icon}</span>
-                  <span>{mode.label}</span>
-                </button>
-              )
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* Main Header Inner Container */}
-      <div
-        className="header-inner"
-        style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '12px 20px',
-          minHeight: '80px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '16px',
-          position: 'relative',
-        }}
-      >
-        {/* Brand Logo & Subtext */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-          <div>
-            <Link href={createLocalizedHref('/')}>
-              <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} />
-            </Link>
-          </div>
-
-          <div
-            className="brand-subtext"
-            style={{
-              borderLeft: '1px solid var(--border-color)',
-              paddingLeft: '12px',
-              fontSize: '10.5px',
-              fontWeight: '700',
-              textTransform: 'uppercase',
-              lineHeight: '1.25',
-              whiteSpace: 'nowrap',
-              color: 'var(--text-secondary)',
-            }}
-          >
-            Enterprise &<br />
-            Public Sector
-          </div>
+            ▼
+          </span>
         </div>
 
-        {/* Navigation Controls */}
-        <nav
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            flexWrap: 'wrap',
-            justifyContent: 'flex-end',
-            flex: '1 1 auto',
-            paddingRight: '60px',
-          }}
-        >
-          <Link
-            href={createLocalizedHref('/')}
-            className="nav-link"
+        {/* Inline Theme Switcher (No Overlapping) */}
+        <div ref={themeRef} className="notranslate" style={{ position: 'relative' }}>
+          <button
+            type="button"
+            onClick={() => setIsThemeOpen((prev) => !prev)}
             style={{
-              textDecoration: 'none',
-              fontWeight: '700',
-              fontSize: '13px',
-              whiteSpace: 'nowrap',
-              color: 'var(--text-primary)',
-            }}
-          >
-            Leistungskatalog
-          </Link>
-
-          <Link
-            href={createLocalizedHref('/procurement')}
-            className="nav-link"
-            style={{
-              textDecoration: 'none',
-              fontWeight: '700',
-              fontSize: '13px',
-              whiteSpace: 'nowrap',
-              color: 'var(--text-primary)',
-            }}
-          >
-            Procurement-Profil
-          </Link>
-
-          <Link
-            href="/admin"
-            className="cms-link"
-            style={{
-              textDecoration: 'none',
-              color: '#2563eb',
-              fontWeight: '700',
-              fontSize: '12px',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '5px 9px',
+              padding: '6px 10px',
               borderRadius: '4px',
-              border: '1px solid #bfdbfe',
-              backgroundColor: 'var(--bg-card)',
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-card, #ffffff)',
+              color: 'var(--text-primary)',
+              fontSize: '11px',
+              fontWeight: '800',
+              cursor: 'pointer',
+            }}
+            title="Switch Theme"
+          >
+            <span>{currentModeInfo.icon}</span>
+            <span style={{ textTransform: 'uppercase' }}>{currentModeInfo.label}</span>
+            <span style={{ fontSize: '7px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
+          </button>
+
+          {isThemeOpen && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                right: 0,
+                zIndex: 100001,
+                width: '120px',
+                backgroundColor: 'var(--bg-card, #ffffff)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '8px',
+                padding: '4px',
+                boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2px',
+              }}
+            >
+              {themeModes.map((mode) => {
+                const isActive = theme === mode.id
+                return (
+                  <button
+                    key={mode.id}
+                    type="button"
+                    onClick={() => {
+                      setTheme(mode.id)
+                      setIsThemeOpen(false)
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '5px 8px',
+                      borderRadius: '4px',
+                      border: 'none',
+                      backgroundColor: isActive ? 'var(--border-color)' : 'transparent',
+                      color: isActive ? 'var(--bg-page)' : 'var(--text-primary)',
+                      fontSize: '11px',
+                      fontWeight: isActive ? '800' : '600',
+                      cursor: 'pointer',
+                      width: '100%',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <span>{mode.icon}</span>
+                    <span>{mode.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          <Link
+            href={createLocalizedHref('/procurement#tender')}
+            className="btn-tender"
+            style={{
+              textDecoration: 'none',
+              padding: '8px 14px',
+              borderRadius: '4px',
+              fontWeight: '800',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              backgroundColor: 'var(--text-primary)',
+              color: 'var(--bg-page)',
+              border: '1px solid var(--border-color)',
+              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
               whiteSpace: 'nowrap',
             }}
           >
-            <span>🔒</span> CMS Login
+            RFP / Tender
           </Link>
 
-          {/* Active Language Switcher */}
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-            <select
-              value={lang}
-              onChange={handleLanguageChange}
-              className="lang-select"
-              style={{
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                borderRadius: '4px',
-                padding: '6px 22px 6px 10px',
-                fontSize: '12px',
-                fontWeight: '800',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                outline: 'none',
-                backgroundColor: 'var(--bg-tag)',
-                color: 'var(--text-primary)',
-                border: '1px solid var(--border-color)',
-              }}
-            >
-              <option value="DE">🇩🇪 DE (Deutsch)</option>
-              <option value="EN">🇪🇺 EN (English)</option>
-              <option value="HU">🇭🇺 HU (Magyar)</option>
-              <option value="FR">🇫🇷 FR (Français)</option>
-              <option value="ES">🇪🇸 ES (Español)</option>
-              <option value="IT">🇮🇹 IT (Italiano)</option>
-              <option value="NL">🇳🇱 NL (Nederlands)</option>
-              <option value="PL">🇵🇱 PL (Polski)</option>
-            </select>
-            <span
-              style={{
-                position: 'absolute',
-                right: '7px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                fontSize: '9px',
-                pointerEvents: 'none',
-                color: 'var(--text-muted)',
-              }}
-            >
-              ▼
-            </span>
-          </div>
-
-          {/* Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            <Link
-              href={createLocalizedHref('/procurement#tender')}
-              className="btn-tender"
-              style={{
-                textDecoration: 'none',
-                padding: '8px 14px',
-                borderRadius: '4px',
-                fontWeight: '800',
-                fontSize: '11px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                backgroundColor: 'var(--text-primary)',
-                color: 'var(--bg-page)',
-                border: '1px solid var(--border-color)',
-                boxShadow: '2px 2px 0px 0px var(--shadow-color)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              RFP / Tender
-            </Link>
-
-            <Link
-              href={createLocalizedHref('/contact')}
-              className="btn-kontakt"
-              style={{
-                textDecoration: 'none',
-                color: '#000000',
-                backgroundColor: '#fbbf24',
-                padding: '8px 16px',
-                borderRadius: '4px',
-                border: '1px solid var(--border-color)',
-                fontWeight: '800',
-                fontSize: '11px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px var(--shadow-color)',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Kontakt
-            </Link>
-          </div>
-        </nav>
-      </div>
-    </>
+          <Link
+            href={createLocalizedHref('/contact')}
+            className="btn-kontakt"
+            style={{
+              textDecoration: 'none',
+              color: '#000000',
+              backgroundColor: '#fbbf24',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              border: '1px solid var(--border-color)',
+              fontWeight: '800',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Kontakt
+          </Link>
+        </div>
+      </nav>
+    </div>
   )
 }
 
