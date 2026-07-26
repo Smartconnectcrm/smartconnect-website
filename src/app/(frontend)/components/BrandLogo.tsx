@@ -12,96 +12,132 @@ export function BrandLogo({
   const isDark = variant === 'dark'
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      {/* Exact Vector Recreation of the Interlocking Loop Logo */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+      {/* Exact 3D Circular Coin Emblem SVG */}
       <svg
-        width="36"
-        height="36"
-        viewBox="0 0 200 200"
+        width="42"
+        height="42"
+        viewBox="0 0 500 500"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{ flexShrink: 0 }}
       >
         <defs>
-          {/* Brushed Blue Metallic Gradient */}
-          <linearGradient
-            id="scBlueGrad"
-            x1="30"
-            y1="30"
-            x2="170"
-            y2="170"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0%" stopColor="#2563eb" />
-            <stop offset="50%" stopColor="#1d4ed8" />
-            <stop offset="100%" stopColor="#1e3a8a" />
+          {/* Metallic Gold / Bronze Ring Gradient */}
+          <linearGradient id="scCoinGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#fef08a" />
+            <stop offset="25%" stopColor="#d97706" />
+            <stop offset="50%" stopColor="#b45309" />
+            <stop offset="75%" stopColor="#f59e0b" />
+            <stop offset="100%" stopColor="#78350f" />
           </linearGradient>
 
-          {/* Brushed Gold/Bronze Metallic Gradient */}
-          <linearGradient
-            id="scGoldGrad"
-            x1="170"
-            y1="30"
-            x2="30"
-            y2="170"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0%" stopColor="#f59e0b" />
+          {/* Brushed Blue Interlocking Loop Gradient */}
+          <linearGradient id="scLoopBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="50%" stopColor="#1d4ed8" />
+            <stop offset="100%" stopColor="#0f172a" />
+          </linearGradient>
+
+          {/* Brushed Gold Interlocking Loop Gradient */}
+          <linearGradient id="scLoopGold" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#fde047" />
             <stop offset="50%" stopColor="#d97706" />
             <stop offset="100%" stopColor="#92400e" />
           </linearGradient>
 
-          {/* Bevel Shadow Filter */}
-          <filter id="scShadow" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="1" dy="2" stdDeviation="2" floodColor="#000000" floodOpacity="0.3" />
+          {/* Circular Path for Top Outer Text */}
+          <path id="scTopTextPath" d="M 65 250 A 185 185 0 1 1 435 250" />
+
+          {/* Circular Path for Bottom Outer Text */}
+          <path id="scBottomTextPath" d="M 435 250 A 185 185 0 0 1 65 250" />
+
+          {/* Soft 3D Drop Shadow */}
+          <filter id="sc3dDepth" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="2" dy="4" stdDeviation="4" floodColor="#000000" floodOpacity="0.45" />
           </filter>
         </defs>
 
-        <g filter="url(#scShadow)">
-          {/* Gold Interlocking Loop Component */}
-          <path
-            d="M 60 70 
-               C 45 85, 45 115, 60 130 
-               L 80 150 
-               C 95 165, 120 165, 135 150 
-               L 145 140 
-               C 152 133, 152 122, 145 115 
-               L 130 100 
-               L 115 115 
-               L 125 125 
-               C 128 128, 128 132, 125 135 
-               C 118 142, 107 142, 100 135 
-               L 80 115 
-               C 72 107, 72 93, 80 85 
-               L 90 75 
-               L 75 60 
-               Z"
-            fill="url(#scGoldGrad)"
+        <g filter="url(#sc3dDepth)">
+          {/* Outer Gold Coin Bevel Rim */}
+          <circle
+            cx="250"
+            cy="250"
+            r="240"
+            fill="url(#scCoinGold)"
+            stroke="#fef08a"
+            strokeWidth="3"
           />
 
-          {/* Blue Interlocking Loop Component */}
-          <path
-            d="M 140 130 
-               C 155 115, 155 85, 140 70 
-               L 120 50 
-               C 105 35, 80 35, 65 50 
-               L 55 60 
-               C 48 67, 48 78, 55 85 
-               L 70 100 
-               L 85 85 
-               L 75 75 
-               C 72 72, 72 68, 75 65 
-               C 82 58, 93 58, 100 65 
-               L 120 85 
-               C 128 93, 128 107, 120 115 
-               L 110 125 
-               L 125 140 
-               Z"
-            fill="url(#scBlueGrad)"
+          {/* Inner Dark Rim Recess */}
+          <circle
+            cx="250"
+            cy="250"
+            r="215"
+            fill="#1e1810"
+            stroke="url(#scCoinGold)"
+            strokeWidth="4"
           />
 
-          {/* Central Intersecting Joint Overlap */}
-          <path d="M 85 85 L 115 115 L 100 130 L 70 100 Z" fill="url(#scBlueGrad)" />
+          {/* Inner Transparent Glass Core Background */}
+          <circle
+            cx="250"
+            cy="250"
+            r="160"
+            fill="var(--bg-card, #0f172a)"
+            fillOpacity="0.85"
+            stroke="url(#scCoinGold)"
+            strokeWidth="3"
+          />
+
+          {/* Outer Engraved Top Arch Text */}
+          <text fill="#fef08a" fontSize="21" fontWeight="800" letterSpacing="2.5">
+            <textPath href="#scTopTextPath" startOffset="50%" textAnchor="middle">
+              SMARTCONNECT CRM UG (HAFTUNGSBESCHRÄNKT)
+            </textPath>
+          </text>
+
+          {/* Outer Engraved Bottom Arch Text */}
+          <text fill="#fef08a" fontSize="19" fontWeight="800" letterSpacing="2">
+            <textPath href="#scBottomTextPath" startOffset="50%" textAnchor="middle">
+              • HRB 110351 • AMTSGERICHT DÜSSELDORF
+            </textPath>
+          </text>
+
+          {/* Center Interlocking Blue/Gold Mark */}
+          <g transform="translate(130, 125) scale(0.95)">
+            {/* Gold Interlocking Loop */}
+            <path
+              d="M 80 80 C 60 100, 60 140, 80 160 L 110 190 C 130 210, 170 210, 190 190 L 205 175 C 215 165, 215 150, 205 140 L 180 115 L 160 135 L 175 150 C 180 155, 180 160, 175 165 C 165 175, 150 175, 140 165 L 110 135 C 100 125, 100 105, 110 95 L 125 80 L 105 60 Z"
+              fill="url(#scLoopGold)"
+              stroke="#78350f"
+              strokeWidth="2"
+            />
+
+            {/* Blue Interlocking Loop */}
+            <path
+              d="M 170 170 C 190 150, 190 110, 170 90 L 140 60 C 120 40, 80 40, 60 60 L 45 75 C 35 85, 35 100, 45 110 L 70 135 L 90 115 L 75 100 C 70 95, 70 90, 75 85 C 85 75, 100 75, 110 85 L 140 115 C 150 125, 150 145, 140 155 L 125 170 L 145 190 Z"
+              fill="url(#scLoopBlue)"
+              stroke="#0f172a"
+              strokeWidth="2"
+            />
+
+            {/* Overlap Intersect Joint */}
+            <path d="M 120 115 L 150 145 L 135 160 L 105 130 Z" fill="url(#scLoopBlue)" />
+          </g>
+
+          {/* Bottom City Accent Text */}
+          <text
+            x="250"
+            y="350"
+            fill="url(#scCoinGold)"
+            fontSize="18"
+            fontWeight="900"
+            letterSpacing="3"
+            textAnchor="middle"
+          >
+            DÜSSELDORF • GERMANY
+          </text>
         </g>
       </svg>
 
@@ -120,7 +156,7 @@ export function BrandLogo({
       >
         <span
           style={{
-            color: isDark ? '#38bdf8' : '#2563eb',
+            color: isDark ? '#38bdf8' : '#2563eb', // High contrast cyan on dark/blue/neon themes
             transition: 'color 0.2s ease',
           }}
         >
