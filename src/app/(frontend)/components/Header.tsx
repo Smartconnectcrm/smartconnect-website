@@ -173,7 +173,7 @@ function HeaderNav() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div>
             <Link href={createLocalizedHref('/')}>
-              <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} priority={true} />
+              <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} />{' '}
             </Link>
           </div>
 
