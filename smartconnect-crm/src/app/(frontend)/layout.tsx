@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: 'SmartConnect CRM | Enterprise & Public Sector IT Services',
   description:
     'B2B IT & Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   other: {
     google: 'notranslate',
   },
