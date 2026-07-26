@@ -23,6 +23,7 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
+  // Close theme dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
@@ -33,6 +34,7 @@ function HeaderNav() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  // Re-trigger Google Translate state on Client Route Navigation
   useEffect(() => {
     const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
     const currentLang =
@@ -88,7 +90,6 @@ function HeaderNav() {
   ]
 
   const currentModeInfo = themeModes.find((m) => m.id === theme) || themeModes[0]
-  const isDarkTheme = theme === 'dark' || theme === 'neon' || theme === 'blue'
 
   return (
     <>
@@ -99,7 +100,7 @@ function HeaderNav() {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: '16px 20px 12px 20px',
+          padding: '12px 20px',
           minHeight: '80px',
           display: 'flex',
           alignItems: 'center',
@@ -109,18 +110,10 @@ function HeaderNav() {
           color: 'var(--text-primary, #0f172a)',
         }}
       >
-        {/* Brand Section - Fixed Bright White / Dark Blue Text Rendering */}
+        {/* Brand Section - Natural Blue & Gold Colors */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-          <div
-            className="notranslate"
-            style={{
-              color: isDarkTheme ? '#ffffff' : '#0f172a',
-              // Uses CSS filter to safely lift dark SVG path text to white on dark themes without washing out the orange logo mark
-              filter: isDarkTheme ? 'brightness(1.8) contrast(1.2)' : 'none',
-              transition: 'all 0.25s ease',
-            }}
-          >
-            <BrandLogo variant={isDarkTheme ? 'dark' : 'light'} priority={true} />
+          <div className="notranslate">
+            <BrandLogo priority={true} />
           </div>
 
           <div
@@ -243,7 +236,7 @@ function HeaderNav() {
             </span>
           </div>
 
-          {/* Upper Right Corner Theme Popover Toggle */}
+          {/* Stylish Upper Right Pop-in Pop-out Theme Switcher */}
           <div ref={themeRef} className="notranslate" style={{ position: 'relative' }}>
             <button
               onClick={() => setIsThemeOpen((prev) => !prev)}
