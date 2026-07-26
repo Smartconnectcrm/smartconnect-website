@@ -23,7 +23,7 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Close theme dropdown when clicking outside
+  // Close theme dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
@@ -89,17 +89,109 @@ function HeaderNav() {
   ]
 
   const currentModeInfo = themeModes.find((m) => m.id === theme) || themeModes[0]
+  const isDarkTheme = theme === 'dark' || theme === 'neon' || theme === 'blue'
 
   return (
     <>
       <div id="google_translate_element" style={{ display: 'none' }} />
 
-      {/* Main Header Container */}
+      {/* Stylish Upper Right Corner Floating Switcher */}
+      <div
+        ref={themeRef}
+        className="notranslate"
+        style={{
+          position: 'absolute',
+          top: '6px',
+          right: '16px',
+          zIndex: 10000,
+        }}
+      >
+        <button
+          onClick={() => setIsThemeOpen((prev) => !prev)}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: '20px',
+            border: '1px solid var(--border-color, #cbd5e1)',
+            backgroundColor: 'var(--bg-card, #ffffff)',
+            color: 'var(--text-primary, #0f172a)',
+            fontSize: '11px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
+            backdropFilter: 'blur(8px)',
+            transition: 'all 0.2s ease',
+          }}
+          title="Change Site Theme"
+        >
+          <span>{currentModeInfo.icon}</span>
+          <span style={{ textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+            {currentModeInfo.label}
+          </span>
+          <span style={{ fontSize: '8px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
+        </button>
+
+        {/* Pop-in Dropdown Menu */}
+        {isThemeOpen && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 6px)',
+              right: 0,
+              zIndex: 10001,
+              width: '140px',
+              backgroundColor: 'var(--bg-card, #ffffff)',
+              border: '1px solid var(--border-color, #cbd5e1)',
+              borderRadius: '10px',
+              padding: '6px',
+              boxShadow: '0 10px 25px rgba(0,0,0,0.25)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '3px',
+            }}
+          >
+            {themeModes.map((mode) => {
+              const isActive = theme === mode.id
+              return (
+                <button
+                  key={mode.id}
+                  onClick={() => {
+                    setTheme(mode.id)
+                    setIsThemeOpen(false)
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '6px 10px',
+                    borderRadius: '6px',
+                    border: 'none',
+                    backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
+                    color: isActive ? 'var(--bg-page, #ffffff)' : 'var(--text-primary, #0f172a)',
+                    fontSize: '12px',
+                    fontWeight: isActive ? '800' : '600',
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span>{mode.icon}</span>
+                  <span>{mode.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Main Header Row */}
       <div
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: '12px 20px',
+          padding: '16px 20px 12px 20px',
           minHeight: '80px',
           display: 'flex',
           alignItems: 'center',
@@ -109,16 +201,16 @@ function HeaderNav() {
           color: 'var(--text-primary, #0f172a)',
         }}
       >
-        {/* Brand Section - Ensure Text Is Legible On Dark Themes */}
+        {/* Brand Section - High Visibility Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div
             className="notranslate"
             style={{
-              filter: theme === 'light' ? 'none' : 'brightness(0) invert(1)',
-              transition: 'filter 0.2s ease',
+              color: isDarkTheme ? '#ffffff' : '#0f172a',
+              transition: 'color 0.25s ease',
             }}
           >
-            <BrandLogo variant="light" priority={true} />
+            <BrandLogo variant={isDarkTheme ? 'dark' : 'light'} priority={true} />
           </div>
 
           <div
@@ -138,12 +230,12 @@ function HeaderNav() {
           </div>
         </div>
 
-        {/* Navigation Section */}
+        {/* Navigation Actions */}
         <nav
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px',
+            gap: '14px',
             justifyContent: 'flex-end',
             flex: '1 1 auto',
           }}
@@ -197,90 +289,7 @@ function HeaderNav() {
             <span>🔒</span> CMS Login
           </Link>
 
-          {/* Pop-in / Pop-out Theme Switcher Dropdown */}
-          <div ref={themeRef} className="notranslate" style={{ position: 'relative' }}>
-            <button
-              onClick={() => setIsThemeOpen((prev) => !prev)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 12px',
-                borderRadius: '6px',
-                border: '1px solid var(--border-color, #cbd5e1)',
-                backgroundColor: 'var(--bg-card, #f8fafc)',
-                color: 'var(--text-primary, #0f172a)',
-                fontSize: '12px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-              }}
-              title="Change Theme"
-            >
-              <span>{currentModeInfo.icon}</span>
-              <span style={{ textTransform: 'capitalize' }}>{currentModeInfo.label}</span>
-              <span style={{ fontSize: '9px', marginLeft: '2px', opacity: 0.7 }}>
-                {isThemeOpen ? '▲' : '▼'}
-              </span>
-            </button>
-
-            {/* Popover Menu */}
-            {isThemeOpen && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 'calc(100% + 6px)',
-                  right: 0,
-                  zIndex: 100,
-                  width: '130px',
-                  backgroundColor: 'var(--bg-card, #ffffff)',
-                  border: '1px solid var(--border-color, #cbd5e1)',
-                  borderRadius: '8px',
-                  padding: '4px',
-                  boxShadow: '0 8px 16px rgba(0,0,0,0.15)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '2px',
-                  animation: 'fadeInPop 0.15s ease-out',
-                }}
-              >
-                {themeModes.map((mode) => {
-                  const isActive = theme === mode.id
-                  return (
-                    <button
-                      key={mode.id}
-                      onClick={() => {
-                        setTheme(mode.id)
-                        setIsThemeOpen(false)
-                      }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        padding: '6px 10px',
-                        borderRadius: '4px',
-                        border: 'none',
-                        backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
-                        color: isActive
-                          ? 'var(--bg-page, #ffffff)'
-                          : 'var(--text-primary, #0f172a)',
-                        fontSize: '12px',
-                        fontWeight: isActive ? '800' : '500',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        width: '100%',
-                      }}
-                    >
-                      <span>{mode.icon}</span>
-                      <span>{mode.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Language Dropdown Selector */}
+          {/* Language Selector */}
           <div className="notranslate" style={{ position: 'relative', display: 'inline-block' }}>
             <select
               value={lang}
