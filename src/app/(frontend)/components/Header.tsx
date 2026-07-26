@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useCustomTheme, type Theme } from '../../../context/ThemeContext'
@@ -9,10 +9,23 @@ import { BrandLogo } from './BrandLogo'
 function HeaderNav() {
   const { theme, setTheme } = useCustomTheme()
   const [lang, setLang] = useState('DE')
+  const [isThemeOpen, setIsThemeOpen] = useState(false)
+  const themeRef = useRef<HTMLDivElement>(null)
 
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+
+  // Close theme popover when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
+        setIsThemeOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   useEffect(() => {
     const urlLang = searchParams.get('lang')
@@ -41,253 +54,300 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
-  const toggleTheme = () => {
-    if (theme === 'light') setTheme('dark')
-    else if (theme === 'dark') setTheme('neon')
-    else if (theme === 'neon') setTheme('blue')
-    else setTheme('light')
-  }
+  const themeModes: { id: Theme; label: string; icon: string }[] = [
+    { id: 'light', label: 'Light', icon: '☀️' },
+    { id: 'dark', label: 'Dark', icon: '🌙' },
+    { id: 'neon', label: 'Neon', icon: '⚡' },
+    { id: 'blue', label: 'Blue', icon: '🔵' },
+  ]
+
+  const currentModeInfo = themeModes.find((m) => m.id === theme) || themeModes[0]
 
   return (
-    <div
-      className="header-inner"
-      style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: '12px 20px',
-        minHeight: '80px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '16px',
-        position: 'relative',
-      }}
-    >
-      {/* Brand Logo & Subtext */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-        <div>
-          <Link href={createLocalizedHref('/')}>
-            <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} priority={true} />
-          </Link>
-        </div>
-
-        <div
-          className="brand-subtext"
-          style={{
-            borderLeft: '1px solid var(--border-color)',
-            paddingLeft: '12px',
-            fontSize: '10.5px',
-            fontWeight: '700',
-            textTransform: 'uppercase',
-            lineHeight: '1.25',
-            whiteSpace: 'nowrap',
-            color: 'var(--text-secondary)',
-          }}
-        >
-          Enterprise &<br />
-          Public Sector
-        </div>
-      </div>
-
-      {/* Navigation Controls */}
-      <nav
+    <>
+      {/* Permanently Floating Compact Theme Switcher (Top-Right Corner) */}
+      <div
+        ref={themeRef}
+        className="notranslate"
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          flexWrap: 'wrap',
-          justifyContent: 'flex-end',
-          flex: '1 1 auto',
+          position: 'fixed',
+          top: '10px',
+          right: '12px',
+          zIndex: 100000,
         }}
       >
-        <Link
-          href={createLocalizedHref('/')}
-          className="nav-link"
+        <button
+          type="button"
+          onClick={() => setIsThemeOpen((prev) => !prev)}
           style={{
-            textDecoration: 'none',
-            fontWeight: '700',
-            fontSize: '13px',
-            whiteSpace: 'nowrap',
-            color: 'var(--text-primary)',
-          }}
-        >
-          Leistungskatalog
-        </Link>
-
-        <Link
-          href={createLocalizedHref('/procurement')}
-          className="nav-link"
-          style={{
-            textDecoration: 'none',
-            fontWeight: '700',
-            fontSize: '13px',
-            whiteSpace: 'nowrap',
-            color: 'var(--text-primary)',
-          }}
-        >
-          Procurement-Profil
-        </Link>
-
-        <Link
-          href="/admin"
-          className="cms-link"
-          style={{
-            textDecoration: 'none',
-            color: '#2563eb',
-            fontWeight: '700',
-            fontSize: '12px',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
-            padding: '5px 9px',
-            borderRadius: '4px',
-            border: '1px solid #bfdbfe',
-            backgroundColor: 'var(--bg-card)',
-            whiteSpace: 'nowrap',
+            padding: '3px 8px',
+            borderRadius: '16px',
+            border: '1px solid var(--border-color)',
+            backgroundColor: 'var(--bg-card, #ffffff)',
+            color: 'var(--text-primary)',
+            fontSize: '10px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
           }}
+          title="Switch Theme"
         >
-          <span>🔒</span> CMS Login
-        </Link>
+          <span>{currentModeInfo.icon}</span>
+          <span style={{ textTransform: 'uppercase' }}>{currentModeInfo.label}</span>
+          <span style={{ fontSize: '7px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
+        </button>
 
-        {/* Active Language Switcher */}
-        <div style={{ position: 'relative', display: 'inline-block' }}>
-          <select
-            value={lang}
-            onChange={handleLanguageChange}
-            className="lang-select"
-            style={{
-              appearance: 'none',
-              WebkitAppearance: 'none',
-              borderRadius: '4px',
-              padding: '6px 22px 6px 10px',
-              fontSize: '12px',
-              fontWeight: '800',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              outline: 'none',
-              backgroundColor: 'var(--bg-tag)',
-              color: 'var(--text-primary)',
-              border: '1px solid var(--border-color)',
-            }}
-          >
-            <option value="DE">🇩🇪 DE (Deutsch)</option>
-            <option value="EN">🇪🇺 EN (English)</option>
-            <option value="HU">🇭🇺 HU (Magyar)</option>
-            <option value="FR">🇫🇷 FR (Français)</option>
-            <option value="ES">🇪🇸 ES (Español)</option>
-            <option value="IT">🇮🇹 IT (Italiano)</option>
-            <option value="NL">🇳🇱 NL (Nederlands)</option>
-            <option value="PL">🇵🇱 PL (Polski)</option>
-          </select>
-          <span
+        {isThemeOpen && (
+          <div
             style={{
               position: 'absolute',
-              right: '7px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              fontSize: '9px',
-              pointerEvents: 'none',
-              color: 'var(--text-muted)',
+              top: 'calc(100% + 4px)',
+              right: 0,
+              zIndex: 100001,
+              width: '120px',
+              backgroundColor: 'var(--bg-card, #ffffff)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '8px',
+              padding: '4px',
+              boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2px',
             }}
           >
-            ▼
-          </span>
+            {themeModes.map((mode) => {
+              const isActive = theme === mode.id
+              return (
+                <button
+                  key={mode.id}
+                  type="button"
+                  onClick={() => {
+                    setTheme(mode.id)
+                    setIsThemeOpen(false)
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '5px 8px',
+                    borderRadius: '4px',
+                    border: 'none',
+                    backgroundColor: isActive ? 'var(--border-color)' : 'transparent',
+                    color: isActive ? 'var(--bg-page)' : 'var(--text-primary)',
+                    fontSize: '11px',
+                    fontWeight: isActive ? '800' : '600',
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span>{mode.icon}</span>
+                  <span>{mode.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Main Header Inner Container */}
+      <div
+        className="header-inner"
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '12px 20px',
+          minHeight: '80px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
+          position: 'relative',
+        }}
+      >
+        {/* Brand Logo & Subtext */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+          <div>
+            <Link href={createLocalizedHref('/')}>
+              <BrandLogo priority={true} />{' '}
+            </Link>
+          </div>
+
+          <div
+            className="brand-subtext"
+            style={{
+              borderLeft: '1px solid var(--border-color)',
+              paddingLeft: '12px',
+              fontSize: '10.5px',
+              fontWeight: '700',
+              textTransform: 'uppercase',
+              lineHeight: '1.25',
+              whiteSpace: 'nowrap',
+              color: 'var(--text-secondary)',
+            }}
+          >
+            Enterprise &<br />
+            Public Sector
+          </div>
         </div>
 
-        {/* Dynamic Multi-Color Theme Switcher (Always Rendered & Hydration Safe) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }} suppressHydrationWarning>
-          <button
-            type="button"
-            onClick={toggleTheme}
+        {/* Navigation Controls */}
+        <nav
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+            flex: '1 1 auto',
+            paddingRight: '60px', // Extra offset to keep navigation clear of fixed theme toggle
+          }}
+        >
+          <Link
+            href={createLocalizedHref('/')}
+            className="nav-link"
             style={{
+              textDecoration: 'none',
+              fontWeight: '700',
+              fontSize: '13px',
+              whiteSpace: 'nowrap',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Leistungskatalog
+          </Link>
+
+          <Link
+            href={createLocalizedHref('/procurement')}
+            className="nav-link"
+            style={{
+              textDecoration: 'none',
+              fontWeight: '700',
+              fontSize: '13px',
+              whiteSpace: 'nowrap',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Procurement-Profil
+          </Link>
+
+          <Link
+            href="/admin"
+            className="cms-link"
+            style={{
+              textDecoration: 'none',
+              color: '#2563eb',
+              fontWeight: '700',
+              fontSize: '12px',
               display: 'inline-flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              width: '32px',
-              height: '30px',
+              gap: '4px',
+              padding: '5px 9px',
               borderRadius: '4px',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'var(--bg-tag)',
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-              fontSize: '14px',
-              padding: 0,
-            }}
-            title="Cycle Theme"
-          >
-            {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : theme === 'dark' ? '🌙' : '☀️'}
-          </button>
-
-          <select
-            value={theme || 'light'}
-            onChange={(e) => setTheme(e.target.value as Theme)}
-            style={{
-              fontSize: '12px',
-              fontWeight: '800',
-              padding: '5px 8px',
-              borderRadius: '4px',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'var(--bg-tag)',
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-              outline: 'none',
-              height: '30px',
-            }}
-          >
-            <option value="light">☀️ Light</option>
-            <option value="dark">🌙 Dark</option>
-            <option value="neon">⚡ Neon</option>
-            <option value="blue">🔵 Blue</option>
-          </select>
-        </div>
-
-        {/* Action Buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-          <Link
-            href={createLocalizedHref('/procurement#tender')}
-            className="btn-tender"
-            style={{
-              textDecoration: 'none',
-              padding: '8px 14px',
-              borderRadius: '4px',
-              fontWeight: '800',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              backgroundColor: 'var(--text-primary)',
-              color: 'var(--bg-page)',
-              border: '1px solid var(--border-color)',
-              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
+              border: '1px solid #bfdbfe',
+              backgroundColor: 'var(--bg-card)',
               whiteSpace: 'nowrap',
             }}
           >
-            RFP / Tender
+            <span>🔒</span> CMS Login
           </Link>
 
-          <Link
-            href={createLocalizedHref('/contact')}
-            className="btn-kontakt"
-            style={{
-              textDecoration: 'none',
-              color: '#000000',
-              backgroundColor: '#fbbf24',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              border: '1px solid var(--border-color)',
-              fontWeight: '800',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Kontakt
-          </Link>
-        </div>
-      </nav>
-    </div>
+          {/* Active Language Switcher */}
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <select
+              value={lang}
+              onChange={handleLanguageChange}
+              className="lang-select"
+              style={{
+                appearance: 'none',
+                WebkitAppearance: 'none',
+                borderRadius: '4px',
+                padding: '6px 22px 6px 10px',
+                fontSize: '12px',
+                fontWeight: '800',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                outline: 'none',
+                backgroundColor: 'var(--bg-tag)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border-color)',
+              }}
+            >
+              <option value="DE">🇩🇪 DE (Deutsch)</option>
+              <option value="EN">🇪🇺 EN (English)</option>
+              <option value="HU">🇭🇺 HU (Magyar)</option>
+              <option value="FR">🇫🇷 FR (Français)</option>
+              <option value="ES">🇪🇸 ES (Español)</option>
+              <option value="IT">🇮🇹 IT (Italiano)</option>
+              <option value="NL">🇳🇱 NL (Nederlands)</option>
+              <option value="PL">🇵🇱 PL (Polski)</option>
+            </select>
+            <span
+              style={{
+                position: 'absolute',
+                right: '7px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: '9px',
+                pointerEvents: 'none',
+                color: 'var(--text-muted)',
+              }}
+            >
+              ▼
+            </span>
+          </div>
+
+          {/* Action Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            <Link
+              href={createLocalizedHref('/procurement#tender')}
+              className="btn-tender"
+              style={{
+                textDecoration: 'none',
+                padding: '8px 14px',
+                borderRadius: '4px',
+                fontWeight: '800',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                backgroundColor: 'var(--text-primary)',
+                color: 'var(--bg-page)',
+                border: '1px solid var(--border-color)',
+                boxShadow: '2px 2px 0px 0px var(--shadow-color)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              RFP / Tender
+            </Link>
+
+            <Link
+              href={createLocalizedHref('/contact')}
+              className="btn-kontakt"
+              style={{
+                textDecoration: 'none',
+                color: '#000000',
+                backgroundColor: '#fbbf24',
+                padding: '8px 16px',
+                borderRadius: '4px',
+                border: '1px solid var(--border-color)',
+                fontWeight: '800',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                boxShadow: '2px 2px 0px 0px var(--shadow-color)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Kontakt
+            </Link>
+          </div>
+        </nav>
+      </div>
+    </>
   )
 }
 
