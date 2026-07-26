@@ -2,72 +2,50 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-export type Theme = 'light' | 'dark' | 'neon' | 'blue'
+export type ThemeMode = 'light' | 'dark' | 'neon' | 'blue'
 
 interface ThemeContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-  toggleTheme: () => void
+  theme: ThemeMode
+  setTheme: (theme: ThemeMode) => void
 }
-
-const ALL_THEMES: Theme[] = ['light', 'dark', 'neon', 'blue']
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-function applyThemeToDOM(theme: Theme) {
-  if (typeof document === 'undefined') return
-  const root = document.documentElement
-
-  // 1. Set data-theme attribute on <html> tag
-  root.setAttribute('data-theme', theme)
-
-  // 2. Clear theme classes on <html> tag to prevent collisions
-  root.classList.remove(...ALL_THEMES)
-  root.classList.add(theme)
-}
-
-export function CustomThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light')
+export const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [theme, setThemeState] = useState<ThemeMode>('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Read saved theme preference from localStorage or fallback to default
-    const savedTheme = localStorage.getItem('theme') as Theme | null
-    if (savedTheme && ALL_THEMES.includes(savedTheme)) {
-      setThemeState(savedTheme)
-      applyThemeToDOM(savedTheme)
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark')
-      applyThemeToDOM('dark')
-    } else {
-      applyThemeToDOM('light')
-    }
+    // Load saved theme or fall back to 'light'
+    const savedTheme = (localStorage.getItem('sc_theme') as ThemeMode) || 'light'
+    setThemeState(savedTheme)
+    applyTheme(savedTheme)
+    setMounted(true)
   }, [])
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme)
-    localStorage.setItem('theme', newTheme)
-    applyThemeToDOM(newTheme)
+    localStorage.setItem('sc_theme', newTheme)
+    applyTheme(newTheme)
   }
 
-  const toggleTheme = () => {
-    const nextThemeMap: Record<Theme, Theme> = {
-      light: 'dark',
-      dark: 'neon',
-      neon: 'blue',
-      blue: 'light',
-    }
-    const nextTheme = nextThemeMap[theme] || 'light'
-    setTheme(nextTheme)
+  const applyTheme = (mode: ThemeMode) => {
+    const root = document.documentElement
+    // Remove previous theme classes
+    root.classList.remove('theme-light', 'theme-dark', 'theme-neon', 'theme-blue')
+    // Add current theme class
+    root.classList.add(`theme-${mode}`)
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      {children}
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {/* Prevent hydration mismatch flash before mounted */}
+      <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>{children}</div>
     </ThemeContext.Provider>
   )
 }
 
-export function useTheme() {
+export const useTheme = () => {
   const context = useContext(ThemeContext)
   if (!context) {
     throw new Error('useTheme must be used within a CustomThemeProvider')

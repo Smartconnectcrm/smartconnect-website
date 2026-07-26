@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
+import { useTheme, ThemeMode } from '../../../context/ThemeContext'
 
 declare global {
   interface Window {
@@ -13,7 +14,7 @@ declare global {
 }
 
 function HeaderNav() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const { theme, setTheme } = useTheme()
   const [lang, setLang] = useState('DE')
 
   const router = useRouter()
@@ -22,10 +23,6 @@ function HeaderNav() {
 
   // 1. Re-trigger Google Translate on Client Route Navigation
   useEffect(() => {
-    const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
-    setTheme(savedTheme)
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark')
-
     const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
     const currentLang =
       match && match[1]
@@ -48,15 +45,6 @@ function HeaderNav() {
       return () => clearTimeout(timer)
     }
   }, [pathname, searchParams])
-
-  const toggleTheme = () => {
-    const isDark = document.documentElement.classList.contains('dark')
-    const nextTheme = isDark ? 'light' : 'dark'
-
-    setTheme(nextTheme)
-    localStorage.setItem('theme', nextTheme)
-    document.documentElement.classList.toggle('dark', nextTheme === 'dark')
-  }
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLang = e.target.value.toUpperCase()
@@ -84,11 +72,18 @@ function HeaderNav() {
     window.location.reload()
   }
 
+  const themeModes: { id: ThemeMode; label: string; icon: string }[] = [
+    { id: 'light', label: 'Light', icon: '☀️' },
+    { id: 'dark', label: 'Dark', icon: '🌙' },
+    { id: 'neon', label: 'Neon', icon: '⚡' },
+    { id: 'blue', label: 'Blue', icon: '🌊' },
+  ]
+
   return (
     <>
       <div id="google_translate_element" style={{ display: 'none' }} />
 
-      {/* Top-Right Toggle */}
+      {/* Top-Right Multi-Theme Selector */}
       <div
         className="notranslate"
         style={{
@@ -96,27 +91,41 @@ function HeaderNav() {
           top: '6px',
           right: '16px',
           zIndex: 10,
+          display: 'flex',
+          gap: '4px',
+          backgroundColor: 'var(--bg-card, #f8fafc)',
+          padding: '2px',
+          borderRadius: '6px',
+          border: '1px solid var(--border-color, #cbd5e1)',
         }}
       >
-        <button
-          onClick={toggleTheme}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '26px',
-            height: '26px',
-            borderRadius: '4px',
-            border: '1px solid #cbd5e1',
-            backgroundColor: '#f8fafc',
-            cursor: 'pointer',
-            fontSize: '12px',
-            padding: 0,
-          }}
-          title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-        >
-          {theme === 'light' ? '🌙' : '☀️'}
-        </button>
+        {themeModes.map((mode) => {
+          const isActive = theme === mode.id
+          return (
+            <button
+              key={mode.id}
+              onClick={() => setTheme(mode.id)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '3px',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                border: 'none',
+                backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
+                color: isActive ? 'var(--bg-page, #ffffff)' : 'var(--text-secondary, #64748b)',
+                cursor: 'pointer',
+                fontSize: '11px',
+                fontWeight: isActive ? '800' : '600',
+                transition: 'all 0.2s ease',
+              }}
+              title={`Switch to ${mode.label} Mode`}
+            >
+              <span>{mode.icon}</span>
+              <span className="hidden sm:inline">{mode.label}</span>
+            </button>
+          )
+        })}
       </div>
 
       {/* Flexible Header Container */}
@@ -131,22 +140,26 @@ function HeaderNav() {
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '16px',
-          backgroundColor: '#ffffff',
+          backgroundColor: 'var(--bg-page, #ffffff)',
+          color: 'var(--text-primary, #0f172a)',
         }}
       >
         {/* Brand Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div className="notranslate">
-            <BrandLogo variant="light" priority={true} />
+            <BrandLogo
+              variant={theme === 'dark' || theme === 'neon' || theme === 'blue' ? 'dark' : 'light'}
+              priority={true}
+            />
           </div>
 
           <div
             style={{
-              borderLeft: '1px solid #e2e8f0',
+              borderLeft: '1px solid var(--border-color, #e2e8f0)',
               paddingLeft: '12px',
               fontSize: '10.5px',
               fontWeight: '700',
-              color: '#64748b',
+              color: 'var(--text-secondary, #64748b)',
               textTransform: 'uppercase',
               lineHeight: '1.25',
               whiteSpace: 'nowrap',
@@ -172,7 +185,7 @@ function HeaderNav() {
             href="/"
             style={{
               textDecoration: 'none',
-              color: '#0f172a',
+              color: 'var(--text-primary, #0f172a)',
               fontWeight: '700',
               fontSize: '13px',
               whiteSpace: 'nowrap',
@@ -185,7 +198,7 @@ function HeaderNav() {
             href="/procurement"
             style={{
               textDecoration: 'none',
-              color: '#0f172a',
+              color: 'var(--text-primary, #0f172a)',
               fontWeight: '700',
               fontSize: '13px',
               whiteSpace: 'nowrap',
@@ -200,7 +213,7 @@ function HeaderNav() {
             className="notranslate"
             style={{
               textDecoration: 'none',
-              color: '#2563eb',
+              color: 'var(--accent, #2563eb)',
               fontWeight: '700',
               fontSize: '12px',
               display: 'inline-flex',
@@ -208,8 +221,8 @@ function HeaderNav() {
               gap: '4px',
               padding: '5px 9px',
               borderRadius: '4px',
-              backgroundColor: '#eff6ff',
-              border: '1px solid #bfdbfe',
+              backgroundColor: 'var(--bg-card, #eff6ff)',
+              border: '1px solid var(--border-color, #bfdbfe)',
               whiteSpace: 'nowrap',
             }}
             title="Payload CMS Portal"
@@ -225,13 +238,13 @@ function HeaderNav() {
               style={{
                 appearance: 'none',
                 WebkitAppearance: 'none',
-                backgroundColor: '#f8fafc',
-                border: '1px solid #cbd5e1',
+                backgroundColor: 'var(--bg-card, #f8fafc)',
+                border: '1px solid var(--border-color, #cbd5e1)',
                 borderRadius: '4px',
                 padding: '6px 22px 6px 10px',
                 fontSize: '12px',
                 fontWeight: '800',
-                color: '#0f172a',
+                color: 'var(--text-primary, #0f172a)',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
                 outline: 'none',
@@ -254,7 +267,7 @@ function HeaderNav() {
                 transform: 'translateY(-50%)',
                 fontSize: '9px',
                 pointerEvents: 'none',
-                color: '#64748b',
+                color: 'var(--text-secondary, #64748b)',
               }}
             >
               ▼
@@ -267,16 +280,16 @@ function HeaderNav() {
               href="/procurement#tender"
               style={{
                 textDecoration: 'none',
-                color: '#ffffff',
-                backgroundColor: '#0f172a',
+                color: 'var(--bg-page, #ffffff)',
+                backgroundColor: 'var(--text-primary, #0f172a)',
                 padding: '8px 14px',
                 borderRadius: '4px',
-                border: '1px solid #0f172a',
+                border: '1px solid var(--border-color, #0f172a)',
                 fontWeight: '800',
                 fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
-                boxShadow: '2px 2px 0px 0px #000000',
+                boxShadow: '2px 2px 0px 0px var(--border-color, #000000)',
                 whiteSpace: 'nowrap',
               }}
             >
@@ -317,12 +330,15 @@ export default function Header() {
         top: 0,
         zIndex: 9999,
         width: '100%',
-        backgroundColor: '#ffffff',
-        borderBottom: '2px solid #000000',
+        backgroundColor: 'var(--bg-page, #ffffff)',
+        borderBottom: '2px solid var(--border-color, #000000)',
         boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
+        transition: 'background-color 0.25s ease, border-color 0.25s ease',
       }}
     >
-      <Suspense fallback={<div style={{ minHeight: '80px', backgroundColor: '#ffffff' }} />}>
+      <Suspense
+        fallback={<div style={{ minHeight: '80px', backgroundColor: 'var(--bg-page, #ffffff)' }} />}
+      >
         <HeaderNav />
       </Suspense>
     </header>
