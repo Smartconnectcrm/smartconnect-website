@@ -21,7 +21,7 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // 1. Re-trigger Google Translate on Client Route Navigation
+  // Re-trigger Google Translate on Client Route Navigation
   useEffect(() => {
     const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
     const currentLang =
@@ -30,7 +30,6 @@ function HeaderNav() {
         : (localStorage.getItem('preferred_lang') || 'DE').toUpperCase()
     setLang(currentLang)
 
-    // Re-trigger Google Translate DOM re-parse after Next.js page transition
     if (currentLang !== 'DE') {
       const timer = setTimeout(() => {
         const googleSelect = document.querySelector('.goog-te-combo') as HTMLSelectElement
@@ -53,7 +52,6 @@ function HeaderNav() {
 
     const googleLangCode = selectedLang.toLowerCase()
 
-    // Clear stale cookies
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
     document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`
 
@@ -68,7 +66,6 @@ function HeaderNav() {
       googleSelect.dispatchEvent(new Event('change'))
     }
 
-    // Force full page reload on explicit user drop-down change to ensure clean DOM re-translation
     window.location.reload()
   }
 
@@ -146,11 +143,14 @@ function HeaderNav() {
       >
         {/* Brand Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-          <div className="notranslate">
-            <BrandLogo
-              variant={theme === 'dark' || theme === 'neon' || theme === 'blue' ? 'dark' : 'light'}
-              priority={true}
-            />
+          <div
+            className="notranslate"
+            style={{
+              filter: theme === 'light' ? 'none' : 'brightness(0) invert(1)',
+              transition: 'filter 0.25s ease',
+            }}
+          >
+            <BrandLogo variant="light" priority={true} />
           </div>
 
           <div
