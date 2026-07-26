@@ -23,7 +23,6 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Close theme dropdown on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
@@ -95,98 +94,7 @@ function HeaderNav() {
     <>
       <div id="google_translate_element" style={{ display: 'none' }} />
 
-      {/* Stylish Upper Right Corner Floating Switcher */}
-      <div
-        ref={themeRef}
-        className="notranslate"
-        style={{
-          position: 'absolute',
-          top: '6px',
-          right: '16px',
-          zIndex: 10000,
-        }}
-      >
-        <button
-          onClick={() => setIsThemeOpen((prev) => !prev)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '4px 10px',
-            borderRadius: '20px',
-            border: '1px solid var(--border-color, #cbd5e1)',
-            backgroundColor: 'var(--bg-card, #ffffff)',
-            color: 'var(--text-primary, #0f172a)',
-            fontSize: '11px',
-            fontWeight: '800',
-            cursor: 'pointer',
-            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
-            backdropFilter: 'blur(8px)',
-            transition: 'all 0.2s ease',
-          }}
-          title="Change Site Theme"
-        >
-          <span>{currentModeInfo.icon}</span>
-          <span style={{ textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-            {currentModeInfo.label}
-          </span>
-          <span style={{ fontSize: '8px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
-        </button>
-
-        {/* Pop-in Dropdown Menu */}
-        {isThemeOpen && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 'calc(100% + 6px)',
-              right: 0,
-              zIndex: 10001,
-              width: '140px',
-              backgroundColor: 'var(--bg-card, #ffffff)',
-              border: '1px solid var(--border-color, #cbd5e1)',
-              borderRadius: '10px',
-              padding: '6px',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.25)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3px',
-            }}
-          >
-            {themeModes.map((mode) => {
-              const isActive = theme === mode.id
-              return (
-                <button
-                  key={mode.id}
-                  onClick={() => {
-                    setTheme(mode.id)
-                    setIsThemeOpen(false)
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '6px 10px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
-                    color: isActive ? 'var(--bg-page, #ffffff)' : 'var(--text-primary, #0f172a)',
-                    fontSize: '12px',
-                    fontWeight: isActive ? '800' : '600',
-                    cursor: 'pointer',
-                    width: '100%',
-                    textAlign: 'left',
-                  }}
-                >
-                  <span>{mode.icon}</span>
-                  <span>{mode.label}</span>
-                </button>
-              )
-            })}
-          </div>
-        )}
-      </div>
-
-      {/* Main Header Row */}
+      {/* Main Header Container */}
       <div
         style={{
           maxWidth: '1280px',
@@ -201,13 +109,15 @@ function HeaderNav() {
           color: 'var(--text-primary, #0f172a)',
         }}
       >
-        {/* Brand Section - High Visibility Logo */}
+        {/* Brand Section - Fixed Bright White / Dark Blue Text Rendering */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div
             className="notranslate"
             style={{
               color: isDarkTheme ? '#ffffff' : '#0f172a',
-              transition: 'color 0.25s ease',
+              // Uses CSS filter to safely lift dark SVG path text to white on dark themes without washing out the orange logo mark
+              filter: isDarkTheme ? 'brightness(1.8) contrast(1.2)' : 'none',
+              transition: 'all 0.25s ease',
             }}
           >
             <BrandLogo variant={isDarkTheme ? 'dark' : 'light'} priority={true} />
@@ -230,7 +140,7 @@ function HeaderNav() {
           </div>
         </div>
 
-        {/* Navigation Actions */}
+        {/* Navigation & Utilities */}
         <nav
           style={{
             display: 'flex',
@@ -331,6 +241,89 @@ function HeaderNav() {
             >
               ▼
             </span>
+          </div>
+
+          {/* Upper Right Corner Theme Popover Toggle */}
+          <div ref={themeRef} className="notranslate" style={{ position: 'relative' }}>
+            <button
+              onClick={() => setIsThemeOpen((prev) => !prev)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '5px 12px',
+                borderRadius: '20px',
+                border: '1px solid var(--border-color, #cbd5e1)',
+                backgroundColor: 'var(--bg-card, #ffffff)',
+                color: 'var(--text-primary, #0f172a)',
+                fontSize: '11px',
+                fontWeight: '800',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
+                transition: 'all 0.2s ease',
+              }}
+              title="Change Site Theme"
+            >
+              <span>{currentModeInfo.icon}</span>
+              <span style={{ textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+                {currentModeInfo.label}
+              </span>
+              <span style={{ fontSize: '8px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
+            </button>
+
+            {/* Popover Menu */}
+            {isThemeOpen && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 6px)',
+                  right: 0,
+                  zIndex: 10001,
+                  width: '140px',
+                  backgroundColor: 'var(--bg-card, #ffffff)',
+                  border: '1px solid var(--border-color, #cbd5e1)',
+                  borderRadius: '10px',
+                  padding: '6px',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.25)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '3px',
+                }}
+              >
+                {themeModes.map((mode) => {
+                  const isActive = theme === mode.id
+                  return (
+                    <button
+                      key={mode.id}
+                      onClick={() => {
+                        setTheme(mode.id)
+                        setIsThemeOpen(false)
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '6px 10px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
+                        color: isActive
+                          ? 'var(--bg-page, #ffffff)'
+                          : 'var(--text-primary, #0f172a)',
+                        fontSize: '12px',
+                        fontWeight: isActive ? '800' : '600',
+                        cursor: 'pointer',
+                        width: '100%',
+                        textAlign: 'left',
+                      }}
+                    >
+                      <span>{mode.icon}</span>
+                      <span>{mode.label}</span>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
           {/* Action Buttons */}
