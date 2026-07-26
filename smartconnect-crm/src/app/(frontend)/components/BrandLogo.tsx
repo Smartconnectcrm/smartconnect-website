@@ -19,7 +19,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = () => {
       title="SmartConnect CRM - Home"
     >
       <img
-        src="https://i.postimg.cc/cHXm12qd/3D-Smart-Connect-LOGO.png"
+        src="https://i.postimg.cc/mkn4Ywn7/LOGO-Chain.png"
         alt="SmartConnect CRM Logo"
         width="38"
         height="38"

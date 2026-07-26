@@ -63,13 +63,14 @@ function HeaderNav() {
         position: 'relative',
       }}
     >
+      {/* Brand Logo & Subtext */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
         <Link
           href={createLocalizedHref('/')}
           style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
         >
           <img
-            src="https://i.postimg.cc/cHXm12qd/3D-Smart-Connect-LOGO.png"
+            src="https://i.postimg.cc/mkn4Ywn7/LOGO-Chain.png"
             alt="SmartConnect CRM Logo"
             width="38"
             height="38"
@@ -112,6 +113,7 @@ function HeaderNav() {
         </div>
       </div>
 
+      {/* Navigation Controls */}
       <nav
         style={{
           display: 'flex',
@@ -171,6 +173,7 @@ function HeaderNav() {
           <span>🔒</span> CMS Login
         </Link>
 
+        {/* Language Switcher */}
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <select
             id="lang-select"
@@ -217,7 +220,56 @@ function HeaderNav() {
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }} suppressHydrationWarning>
+        {/* Action Buttons */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+          <Link
+            href={createLocalizedHref('/procurement#tender')}
+            className="btn-tender"
+            style={{
+              textDecoration: 'none',
+              padding: '8px 14px',
+              borderRadius: '4px',
+              fontWeight: '800',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              backgroundColor: 'var(--text-primary)',
+              color: 'var(--bg-page)',
+              border: '1px solid var(--border-color)',
+              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            RFP / Tender
+          </Link>
+
+          <Link
+            href={createLocalizedHref('/contact')}
+            className="btn-kontakt"
+            style={{
+              textDecoration: 'none',
+              color: '#000000',
+              backgroundColor: '#fbbf24',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              border: '1px solid var(--border-color)',
+              fontWeight: '800',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Kontakt
+          </Link>
+        </div>
+
+        {/* Dual Theme Switcher (Extreme Top-Right Position) */}
+        <div
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: '4px' }}
+          suppressHydrationWarning
+        >
           <button
             type="button"
             onClick={toggleTheme}
@@ -263,50 +315,6 @@ function HeaderNav() {
             <option value="neon">⚡ Neon</option>
             <option value="blue">🔵 Blue</option>
           </select>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-          <Link
-            href={createLocalizedHref('/procurement#tender')}
-            className="btn-tender"
-            style={{
-              textDecoration: 'none',
-              padding: '8px 14px',
-              borderRadius: '4px',
-              fontWeight: '800',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              backgroundColor: 'var(--text-primary)',
-              color: 'var(--bg-page)',
-              border: '1px solid var(--border-color)',
-              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            RFP / Tender
-          </Link>
-
-          <Link
-            href={createLocalizedHref('/contact')}
-            className="btn-kontakt"
-            style={{
-              textDecoration: 'none',
-              color: '#000000',
-              backgroundColor: '#fbbf24',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              border: '1px solid var(--border-color)',
-              fontWeight: '800',
-              fontSize: '11px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              boxShadow: '2px 2px 0px 0px var(--shadow-color)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Kontakt
-          </Link>
         </div>
       </nav>
     </div>
