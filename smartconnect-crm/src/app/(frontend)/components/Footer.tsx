@@ -1,92 +1,48 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
+import { BrandLogo } from './BrandLogo'
+import { useTheme } from '../../../context/ThemeContext'
 
 export default function Footer() {
+  const { theme } = useTheme()
+
   return (
     <footer
       style={{
-        borderTop: '2px solid #000000',
-        backgroundColor: '#ffffff',
-        padding: '56px 24px 28px 24px',
-        marginTop: '80px',
+        backgroundColor: 'var(--bg-page, #ffffff)',
+        color: 'var(--text-primary, #0f172a)',
+        borderTop: '2px solid var(--border-color, #e2e8f0)',
+        padding: '40px 20px',
+        transition: 'background-color 0.25s ease, color 0.25s ease',
       }}
     >
       <div
         style={{
-          maxWidth: '1240px',
+          maxWidth: '1280px',
           margin: '0 auto',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '40px',
-          paddingBottom: '40px',
-          borderBottom: '1px solid #e2e8f0',
+          gap: '32px',
         }}
       >
-        {/* Column 1: Brand & Sub-tag */}
+        {/* Brand Column */}
         <div>
           <div
+            className="notranslate"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              marginBottom: '14px',
+              filter: theme === 'light' ? 'none' : 'brightness(0) invert(1)',
+              marginBottom: '12px',
             }}
           >
-            {/* Embedded Mini Logo */}
-            <svg
-              viewBox="0 0 100 100"
-              width="28"
-              height="28"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <linearGradient id="footerBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#1e3a8a" />
-                  <stop offset="50%" stopColor="#2563eb" />
-                  <stop offset="100%" stopColor="#60a5fa" />
-                </linearGradient>
-                <linearGradient id="footerGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#b45309" />
-                  <stop offset="50%" stopColor="#f59e0b" />
-                  <stop offset="100%" stopColor="#fbbf24" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M 32,25 C 18,25 10,36 10,50 C 10,64 18,75 32,75 C 44,75 52,63 60,50 C 52,37 44,25 32,25 Z"
-                stroke="url(#footerBlueGrad)"
-                strokeWidth="11"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M 68,25 C 82,25 90,36 90,50 C 90,64 82,75 68,75 C 56,75 48,63 40,50 C 48,37 56,25 68,25 Z"
-                stroke="url(#footerGoldGrad)"
-                strokeWidth="11"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-
-            <span
-              style={{
-                fontSize: '18px',
-                fontWeight: '900',
-                color: '#0f172a',
-                letterSpacing: '-0.02em',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-              }}
-            >
-              SmartConnect <span style={{ color: '#2563eb' }}>CRM</span>
-            </span>
+            <BrandLogo variant="light" />
           </div>
-
           <p
             style={{
-              fontSize: '13px',
-              color: '#475569',
+              fontSize: '12px',
+              color: 'var(--text-secondary, #64748b)',
               lineHeight: '1.6',
-              margin: 0,
             }}
           >
             Strukturierte IT-Leistungsbausteine, dokumentierte Übergaben und konforme Umsetzung für
@@ -94,51 +50,40 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Column 2: Navigation */}
+        {/* Navigation */}
         <div>
-          <div
+          <h4
             style={{
-              fontSize: '12px',
-              fontWeight: '900',
+              fontSize: '11px',
+              fontWeight: '800',
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              color: '#0f172a',
-              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              marginBottom: '12px',
+              color: 'var(--text-primary)',
             }}
           >
             Navigation
-          </div>
+          </h4>
           <ul
             style={{
               listStyle: 'none',
               padding: 0,
               margin: 0,
+              fontSize: '13px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '10px',
-              fontSize: '13px',
+              gap: '8px',
             }}
           >
             <li>
-              <Link
-                href="/"
-                style={{
-                  color: '#334155',
-                  textDecoration: 'none',
-                  fontWeight: '600',
-                }}
-              >
+              <Link href="/" style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}>
                 Leistungskatalog
               </Link>
             </li>
             <li>
               <Link
                 href="/procurement"
-                style={{
-                  color: '#334155',
-                  textDecoration: 'none',
-                  fontWeight: '600',
-                }}
+                style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
               >
                 Procurement-Profil
               </Link>
@@ -146,93 +91,75 @@ export default function Footer() {
             <li>
               <Link
                 href="/admin"
-                style={{
-                  color: '#2563eb',
-                  textDecoration: 'none',
-                  fontWeight: '700',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
+                style={{ textDecoration: 'none', color: 'var(--accent)', fontWeight: 'bold' }}
               >
-                <span>🔒</span> CMS Dashboard
+                🔒 CMS Dashboard
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Column 3: Compliance & Standards */}
+        {/* Compliance */}
         <div>
-          <div
+          <h4
             style={{
-              fontSize: '12px',
-              fontWeight: '900',
+              fontSize: '11px',
+              fontWeight: '800',
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              color: '#0f172a',
-              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              marginBottom: '12px',
+              color: 'var(--text-primary)',
             }}
           >
             Compliance & Standards
-          </div>
+          </h4>
           <ul
             style={{
               listStyle: 'none',
               padding: 0,
               margin: 0,
+              fontSize: '12px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '8px',
-              fontSize: '13px',
-              color: '#475569',
-              fontWeight: '500',
+              gap: '6px',
+              color: 'var(--text-secondary)',
             }}
           >
-            <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span> ISO 27001 Ready
-            </li>
-            <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span> DSGVO / GDPR Konform
-            </li>
-            <li style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ color: '#16a34a', fontWeight: 'bold' }}>✓</span> EVB-IT Standard
-            </li>
+            <li>✓ ISO 27001 Ready</li>
+            <li>✓ DSGVO / GDPR Konform</li>
+            <li>✓ EVB-IT Standard</li>
           </ul>
         </div>
 
-        {/* Column 4: Rechtliches */}
+        {/* Legal */}
         <div>
-          <div
+          <h4
             style={{
-              fontSize: '12px',
-              fontWeight: '900',
+              fontSize: '11px',
+              fontWeight: '800',
               textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              color: '#0f172a',
-              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              marginBottom: '12px',
+              color: 'var(--text-primary)',
             }}
           >
             Rechtliches
-          </div>
+          </h4>
           <ul
             style={{
               listStyle: 'none',
               padding: 0,
               margin: 0,
+              fontSize: '13px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '10px',
-              fontSize: '13px',
+              gap: '8px',
             }}
           >
             <li>
               <Link
                 href="/impressum"
-                style={{
-                  color: '#334155',
-                  textDecoration: 'none',
-                  fontWeight: '600',
-                }}
+                style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
               >
                 Impressum
               </Link>
@@ -240,11 +167,7 @@ export default function Footer() {
             <li>
               <Link
                 href="/datenschutz"
-                style={{
-                  color: '#334155',
-                  textDecoration: 'none',
-                  fontWeight: '600',
-                }}
+                style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
               >
                 Datenschutz
               </Link>
@@ -253,41 +176,33 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Copyright Bar */}
       <div
         style={{
-          maxWidth: '1240px',
-          margin: '0 auto',
-          paddingTop: '24px',
+          maxWidth: '1280px',
+          margin: '32px auto 0 auto',
+          paddingTop: '20px',
+          borderTop: '1px solid var(--border-subtle, var(--border-color))',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '16px',
-          fontSize: '12px',
-          color: '#64748b',
+          gap: '12px',
+          fontSize: '11px',
+          color: 'var(--text-secondary)',
         }}
       >
-        <div>© {new Date().getFullYear()} SmartConnect CRM. All rights reserved.</div>
-
-        <div
+        <span>© 2026 SmartConnect CRM. All rights reserved.</span>
+        <span
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: '#f8fafc',
-            border: '1px solid #e2e8f0',
-            padding: '4px 10px',
+            padding: '3px 8px',
+            border: '1px solid var(--border-color)',
             borderRadius: '4px',
             fontWeight: '700',
-            color: '#1e3a8a',
-            fontSize: '11px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.04em',
+            backgroundColor: 'var(--bg-card)',
           }}
         >
-          <span>🇪🇺</span> EU Tender & Public Procurement Ready
-        </div>
+          EU TENDER & PUBLIC PROCUREMENT READY
+        </span>
       </div>
     </footer>
   )
