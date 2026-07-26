@@ -9,11 +9,6 @@ export const metadata: Metadata = {
   title: 'SmartConnect CRM | Enterprise & Public Sector IT Services',
   description:
     'B2B IT & Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.',
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-  },
   other: {
     google: 'notranslate',
   },
@@ -22,6 +17,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" className="notranslate" suppressHydrationWarning>
+      <head>
+        {/* Manual Favicon Link Tags pointing to public/media/logo_white.png */}
+        <link rel="icon" type="image/png" href="/media/logo_white.png" />
+        <link rel="shortcut icon" type="image/png" href="/media/logo_white.png" />
+        <link rel="apple-touch-icon" href="/media/logo_white.png" />
+      </head>
       <body
         className="min-h-screen flex flex-col antialiased notranslate"
         style={{
