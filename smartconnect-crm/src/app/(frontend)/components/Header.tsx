@@ -23,7 +23,6 @@ function HeaderNav() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  // Close theme dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
@@ -34,7 +33,6 @@ function HeaderNav() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Re-trigger Google Translate state on Client Route Navigation
   useEffect(() => {
     const match = document.cookie.match(/googtrans=\/de\/([a-z]{2})/i)
     const currentLang =
@@ -95,6 +93,92 @@ function HeaderNav() {
     <>
       <div id="google_translate_element" style={{ display: 'none' }} />
 
+      {/* Permanently Floating Compact Theme Toggle (Top Right Corner) */}
+      <div
+        ref={themeRef}
+        className="notranslate"
+        style={{
+          position: 'fixed',
+          top: '10px',
+          right: '12px',
+          zIndex: 100000,
+        }}
+      >
+        <button
+          onClick={() => setIsThemeOpen((prev) => !prev)}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '3px 8px',
+            borderRadius: '16px',
+            border: '1px solid var(--border-color, #cbd5e1)',
+            backgroundColor: 'var(--bg-card, #ffffff)',
+            color: 'var(--text-primary, #0f172a)',
+            fontSize: '10px',
+            fontWeight: '800',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+          }}
+          title="Switch Theme"
+        >
+          <span>{currentModeInfo.icon}</span>
+          <span style={{ textTransform: 'uppercase' }}>{currentModeInfo.label}</span>
+          <span style={{ fontSize: '7px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
+        </button>
+
+        {isThemeOpen && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 4px)',
+              right: 0,
+              zIndex: 100001,
+              width: '120px',
+              backgroundColor: 'var(--bg-card, #ffffff)',
+              border: '1px solid var(--border-color, #cbd5e1)',
+              borderRadius: '8px',
+              padding: '4px',
+              boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2px',
+            }}
+          >
+            {themeModes.map((mode) => {
+              const isActive = theme === mode.id
+              return (
+                <button
+                  key={mode.id}
+                  onClick={() => {
+                    setTheme(mode.id)
+                    setIsThemeOpen(false)
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '5px 8px',
+                    borderRadius: '4px',
+                    border: 'none',
+                    backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
+                    color: isActive ? 'var(--bg-page, #ffffff)' : 'var(--text-primary, #0f172a)',
+                    fontSize: '11px',
+                    fontWeight: isActive ? '800' : '600',
+                    cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span>{mode.icon}</span>
+                  <span>{mode.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
       {/* Main Header Container */}
       <div
         style={{
@@ -110,7 +194,7 @@ function HeaderNav() {
           color: 'var(--text-primary, #0f172a)',
         }}
       >
-        {/* Brand Section - Natural Blue & Gold Colors */}
+        {/* Brand Section */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div className="notranslate">
             <BrandLogo priority={true} />
@@ -133,7 +217,7 @@ function HeaderNav() {
           </div>
         </div>
 
-        {/* Navigation & Utilities */}
+        {/* Navigation Section */}
         <nav
           style={{
             display: 'flex',
@@ -141,6 +225,7 @@ function HeaderNav() {
             gap: '14px',
             justifyContent: 'flex-end',
             flex: '1 1 auto',
+            paddingRight: '60px', // Extra padding so navigation items don't overlap with top-right fixed toggle
           }}
         >
           <Link
@@ -234,89 +319,6 @@ function HeaderNav() {
             >
               ▼
             </span>
-          </div>
-
-          {/* Stylish Upper Right Pop-in Pop-out Theme Switcher */}
-          <div ref={themeRef} className="notranslate" style={{ position: 'relative' }}>
-            <button
-              onClick={() => setIsThemeOpen((prev) => !prev)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '5px 12px',
-                borderRadius: '20px',
-                border: '1px solid var(--border-color, #cbd5e1)',
-                backgroundColor: 'var(--bg-card, #ffffff)',
-                color: 'var(--text-primary, #0f172a)',
-                fontSize: '11px',
-                fontWeight: '800',
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
-                transition: 'all 0.2s ease',
-              }}
-              title="Change Site Theme"
-            >
-              <span>{currentModeInfo.icon}</span>
-              <span style={{ textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                {currentModeInfo.label}
-              </span>
-              <span style={{ fontSize: '8px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
-            </button>
-
-            {/* Popover Menu */}
-            {isThemeOpen && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 'calc(100% + 6px)',
-                  right: 0,
-                  zIndex: 10001,
-                  width: '140px',
-                  backgroundColor: 'var(--bg-card, #ffffff)',
-                  border: '1px solid var(--border-color, #cbd5e1)',
-                  borderRadius: '10px',
-                  padding: '6px',
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.25)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '3px',
-                }}
-              >
-                {themeModes.map((mode) => {
-                  const isActive = theme === mode.id
-                  return (
-                    <button
-                      key={mode.id}
-                      onClick={() => {
-                        setTheme(mode.id)
-                        setIsThemeOpen(false)
-                      }}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        padding: '6px 10px',
-                        borderRadius: '6px',
-                        border: 'none',
-                        backgroundColor: isActive ? 'var(--border-color, #0f172a)' : 'transparent',
-                        color: isActive
-                          ? 'var(--bg-page, #ffffff)'
-                          : 'var(--text-primary, #0f172a)',
-                        fontSize: '12px',
-                        fontWeight: isActive ? '800' : '600',
-                        cursor: 'pointer',
-                        width: '100%',
-                        textAlign: 'left',
-                      }}
-                    >
-                      <span>{mode.icon}</span>
-                      <span>{mode.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
           </div>
 
           {/* Action Buttons */}

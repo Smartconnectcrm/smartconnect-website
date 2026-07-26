@@ -3,11 +3,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { BrandLogo } from './BrandLogo'
-import { useTheme } from '../../../context/ThemeContext'
 
 export default function Footer() {
-  const { theme } = useTheme()
-
   return (
     <footer
       style={{
@@ -29,14 +26,8 @@ export default function Footer() {
       >
         {/* Brand Column */}
         <div>
-          <div
-            className="notranslate"
-            style={{
-              filter: theme === 'light' ? 'none' : 'brightness(0) invert(1)',
-              marginBottom: '12px',
-            }}
-          >
-            <BrandLogo variant="light" />
+          <div className="notranslate" style={{ marginBottom: '12px' }}>
+            <BrandLogo />
           </div>
           <p
             style={{
@@ -181,7 +172,7 @@ export default function Footer() {
           maxWidth: '1280px',
           margin: '32px auto 0 auto',
           paddingTop: '20px',
-          borderTop: '1px solid var(--border-subtle, var(--border-color))',
+          borderTop: '1px solid var(--border-color, #e2e8f0)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
