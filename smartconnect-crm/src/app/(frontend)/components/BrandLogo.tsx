@@ -4,6 +4,7 @@ import React from 'react'
 
 export function BrandLogo({ priority = false }: { priority?: boolean }) {
   return (
+<<<<<<< Updated upstream
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
       {/* Official Interlocking Ring Mark (No PNG) */}
       <svg
@@ -29,6 +30,39 @@ export function BrandLogo({ priority = false }: { priority?: boolean }) {
       {/* Corporate Brand Name */}
       <span
         style={{
+=======
+    <Link
+      href="/"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '12px',
+        textDecoration: 'none',
+      }}
+      title="SmartConnect CRM - Home"
+    >
+      {/* 3D Logo Image */}
+      <img
+        src="https://i.postimg.cc/cHXm12qd/3D-Smart-Connect-LOGO.png"
+        alt="SmartConnect CRM Logo"
+        width="38"
+        height="38"
+        style={{
+          objectFit: 'contain',
+          flexShrink: 0,
+          borderRadius: '50%',
+          display: 'block',
+        }}
+      />
+
+      {/* Brand Company Name */}
+      <span
+        style={{
+          fontSize: '20px',
+          fontWeight: '900',
+          color: 'var(--text-primary, #0f172a)',
+          letterSpacing: '-0.02em',
+>>>>>>> Stashed changes
           fontFamily: 'system-ui, -apple-system, sans-serif',
           fontWeight: 900,
           fontSize: '18px',
@@ -39,8 +73,12 @@ export function BrandLogo({ priority = false }: { priority?: boolean }) {
           whiteSpace: 'nowrap',
         }}
       >
+<<<<<<< Updated upstream
         <span style={{ color: '#2563eb' }}>SmartConnect</span>
         <span style={{ color: '#f59e0b' }}>CRM</span>
+=======
+        SmartConnect <span style={{ color: '#fbbf24' }}>CRM</span>
+>>>>>>> Stashed changes
       </span>
     </div>
   )
