@@ -2,74 +2,124 @@
 
 import React from 'react'
 
-export function BrandLogo({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
+export function BrandLogo({
+  variant = 'light',
+  priority, // Destructure priority to prevent prop bleed warning
+}: {
+  variant?: 'light' | 'dark'
+  priority?: boolean
+}) {
   const isDark = variant === 'dark'
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      {/* 100% Self-Contained Inline Vector Emblem (Never Breaks or Fails to Load) */}
+      {/* Precision 3D Interlocking Ribbon Emblem */}
       <svg
-        width="34"
-        height="34"
-        viewBox="0 0 240 240"
+        width="36"
+        height="36"
+        viewBox="0 0 200 200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{ flexShrink: 0 }}
       >
         <defs>
+          {/* Blue Loop Metallic Gradient */}
           <linearGradient
-            id="scBlueGrad"
+            id="scBlueMetallic"
             x1="20"
             y1="20"
-            x2="120"
-            y2="220"
+            x2="140"
+            y2="180"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0%" stopColor="#1e3a5f" />
-            <stop offset="50%" stopColor="#2563eb" />
+            <stop offset="0%" stopColor="#1e3a8a" />
+            <stop offset="35%" stopColor="#3b82f6" />
+            <stop offset="70%" stopColor="#1d4ed8" />
             <stop offset="100%" stopColor="#0f172a" />
           </linearGradient>
 
+          {/* Gold Loop Metallic Gradient */}
           <linearGradient
-            id="scGoldGrad"
-            x1="100"
+            id="scGoldMetallic"
+            x1="80"
             y1="20"
-            x2="220"
-            y2="220"
+            x2="180"
+            y2="180"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset="0%" stopColor="#fbbf24" />
-            <stop offset="50%" stopColor="#d97706" />
-            <stop offset="100%" stopColor="#b45309" />
+            <stop offset="0%" stopColor="#fef08a" />
+            <stop offset="30%" stopColor="#f59e0b" />
+            <stop offset="70%" stopColor="#d97706" />
+            <stop offset="100%" stopColor="#78350f" />
           </linearGradient>
 
-          <filter id="scDropShadow" x="-10%" y="-10%" width="130%" height="130%">
-            <feDropShadow dx="2" dy="4" stdDeviation="4" floodColor="#000000" floodOpacity="0.3" />
+          {/* Soft Emboss Drop Shadow */}
+          <filter id="sc3dShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="1" dy="3" stdDeviation="3" floodColor="#000000" floodOpacity="0.4" />
           </filter>
         </defs>
 
-        <g filter="url(#scDropShadow)">
-          {/* Gold Ribbon Loop */}
+        <g filter="url(#sc3dShadow)">
+          {/* Bottom Layer: Full Gold Loop */}
           <path
-            d="M 115 50 C 135 25, 175 25, 195 50 C 215 75, 215 115, 195 140 L 155 180 C 135 200, 105 200, 85 180 L 70 165 C 60 155, 60 140, 70 130 L 100 100 Z"
-            fill="url(#scGoldGrad)"
+            d="M 100 55
+               C 120 30, 160 30, 175 50
+               C 190 70, 190 100, 175 120
+               L 145 150
+               C 130 165, 110 165, 95 150
+               L 80 135
+               C 70 125, 70 110, 80 100
+               L 100 80
+               C 110 70, 125 70, 135 80
+               C 145 90, 145 105, 135 115
+               L 125 125
+               L 110 110
+               L 120 100
+               C 122 98, 122 94, 120 92
+               C 118 90, 114 90, 112 92
+               L 95 110
+               C 88 117, 88 128, 95 135
+               C 102 142, 113 142, 120 135
+               L 155 100
+               C 165 90, 165 75, 155 65
+               C 145 55, 130 55, 120 65
+               Z"
+            fill="url(#scGoldMetallic)"
           />
 
-          {/* Blue Ribbon Loop */}
+          {/* Middle Layer: Blue Interlocking Loop */}
           <path
-            d="M 125 190 C 105 215, 65 215, 45 190 C 25 165, 25 125, 45 100 L 85 60 C 105 40, 135 40, 155 60 L 170 75 C 180 85, 180 100, 170 110 L 140 140 Z"
-            fill="url(#scBlueGrad)"
+            d="M 100 145
+               C 80 170, 40 170, 25 150
+               C 10 130, 10 100, 25 80
+               L 55 50
+               C 70 35, 90 35, 105 50
+               L 120 65
+               C 130 75, 130 90, 120 100
+               L 100 120
+               C 90 130, 75 130, 65 120
+               C 55 110, 55 95, 65 85
+               L 75 75
+               L 90 90
+               L 80 100
+               C 78 102, 78 106, 80 108
+               C 82 110, 86 110, 88 108
+               L 105 90
+               C 112 83, 112 72, 105 65
+               C 98 58, 87 58, 80 65
+               L 45 100
+               C 35 110, 35 125, 45 135
+               C 55 145, 70 145, 80 135
+               Z"
+            fill="url(#scBlueMetallic)"
           />
 
-          {/* Interlocking Joint */}
-          <path
-            d="M 105 95 C 115 85, 130 85, 140 95 L 150 105 C 160 115, 160 130, 150 140 Z"
-            fill="url(#scGoldGrad)"
-          />
+          {/* Top Layer: Overlap Bridge for the 3D Weave Effect */}
+          <path d="M 85 70 L 115 100 L 100 115 L 70 85 Z" fill="url(#scBlueMetallic)" />
         </g>
       </svg>
 
-      {/* Brand Text */}
+      {/* Dynamic Contrast Text */}
       <span
         style={{
           fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -84,7 +134,7 @@ export function BrandLogo({ variant = 'light' }: { variant?: 'light' | 'dark' })
       >
         <span
           style={{
-            color: isDark ? '#38bdf8' : '#2563eb',
+            color: isDark ? '#38bdf8' : '#2563eb', // Light cyan on dark/neon, blue on light
             transition: 'color 0.2s ease',
           }}
         >
