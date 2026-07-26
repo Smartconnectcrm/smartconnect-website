@@ -173,7 +173,7 @@ function HeaderNav() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
           <div>
             <Link href={createLocalizedHref('/')}>
-              <BrandLogo priority={true} />{' '}
+              <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} priority={true} />
             </Link>
           </div>
 
@@ -204,7 +204,7 @@ function HeaderNav() {
             flexWrap: 'wrap',
             justifyContent: 'flex-end',
             flex: '1 1 auto',
-            paddingRight: '60px', // Extra offset to keep navigation clear of fixed theme toggle
+            paddingRight: '60px',
           }}
         >
           <Link

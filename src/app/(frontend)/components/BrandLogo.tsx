@@ -10,8 +10,11 @@ export function BrandLogo({
   variant?: 'light' | 'dark'
   priority?: boolean
 }) {
+  const isDark = variant === 'dark'
+
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Brand Mark Image */}
       <Image
         src="/media/logo_white.png"
         alt="SmartConnect CRM Logo"
@@ -21,6 +24,7 @@ export function BrandLogo({
         style={{ objectFit: 'contain', flexShrink: 0 }}
       />
 
+      {/* Brand Text */}
       <span
         style={{
           fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -33,8 +37,18 @@ export function BrandLogo({
           whiteSpace: 'nowrap',
         }}
       >
-        <span style={{ color: '#2563eb' }}>SmartConnect</span>
-        <span style={{ color: '#f59e0b' }}>CRM</span>
+        {/* SmartConnect: Bright blue on dark/blue/neon themes, corporate blue on light themes */}
+        <span
+          style={{
+            color: isDark ? '#60a5fa' : '#2563eb',
+            transition: 'color 0.2s ease',
+          }}
+        >
+          SmartConnect
+        </span>
+
+        {/* CRM: Gold across all themes */}
+        <span style={{ color: '#fbbf24' }}>CRM</span>
       </span>
     </div>
   )
