@@ -9,13 +9,16 @@ export const metadata: Metadata = {
   title: 'SmartConnect CRM | Enterprise & Public Sector IT Services',
   description:
     'B2B IT & Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.',
+  other: {
+    google: 'notranslate',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" suppressHydrationWarning>
+    <html lang="de" className="notranslate" suppressHydrationWarning>
       <body
-        className="min-h-screen flex flex-col antialiased"
+        className="min-h-screen flex flex-col antialiased notranslate"
         style={{
           backgroundColor: 'var(--bg-page, #ffffff)',
           color: 'var(--text-primary, #0f172a)',
