@@ -4,6 +4,7 @@ import React from 'react'
 
 export function BrandLogo({
   variant = 'light',
+  priority,
 }: {
   variant?: 'light' | 'dark'
   priority?: boolean
@@ -12,14 +13,25 @@ export function BrandLogo({
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Self-contained 3D Logo (Handles primary image + CDN fallback gracefully) */}
       <img
         src="https://i.postimg.cc/cHXm12qd/3D-Smart-Connect-LOGO.png"
+        onError={(e) => {
+          // Fallback to local media path if CDN is blocked
+          e.currentTarget.src = '/media/logo_white.png'
+        }}
         alt="SmartConnect CRM Logo"
         width="38"
         height="38"
-        style={{ objectFit: 'contain', flexShrink: 0, borderRadius: '50%' }}
+        style={{
+          objectFit: 'contain',
+          flexShrink: 0,
+          borderRadius: '50%',
+          display: 'block',
+        }}
       />
 
+      {/* High-Contrast Brand Text */}
       <span
         style={{
           fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -34,7 +46,7 @@ export function BrandLogo({
       >
         <span
           style={{
-            color: isDark ? '#38bdf8' : '#2563eb',
+            color: isDark ? '#38bdf8' : '#2563eb', // Light cyan on dark/neon, blue on light
             transition: 'color 0.2s ease',
           }}
         >
