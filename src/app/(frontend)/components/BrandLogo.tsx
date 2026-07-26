@@ -13,13 +13,9 @@ export function BrandLogo({
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      {/* Self-contained 3D Logo (Handles primary image + CDN fallback gracefully) */}
+      {/* Direct 3D Logo Asset with standard img element */}
       <img
         src="https://i.postimg.cc/cHXm12qd/3D-Smart-Connect-LOGO.png"
-        onError={(e) => {
-          // Fallback to local media path if CDN is blocked
-          e.currentTarget.src = '/media/logo_white.png'
-        }}
         alt="SmartConnect CRM Logo"
         width="38"
         height="38"
@@ -31,7 +27,7 @@ export function BrandLogo({
         }}
       />
 
-      {/* High-Contrast Brand Text */}
+      {/* Brand Text */}
       <span
         style={{
           fontFamily: 'system-ui, -apple-system, sans-serif',
@@ -46,7 +42,7 @@ export function BrandLogo({
       >
         <span
           style={{
-            color: isDark ? '#38bdf8' : '#2563eb', // Light cyan on dark/neon, blue on light
+            color: isDark ? '#38bdf8' : '#2563eb',
             transition: 'color 0.2s ease',
           }}
         >
