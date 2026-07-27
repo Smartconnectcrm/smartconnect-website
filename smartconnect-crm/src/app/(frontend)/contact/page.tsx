@@ -1,24 +1,43 @@
 'use client'
 
 import React, { useState } from 'react'
+import { sendContactEmail } from '@/app/actions/sendContactEmail'
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [formData, setFormData] = useState({
     org: '',
     email: '',
     message: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setErrorMessage('')
 
-    setTimeout(() => {
+    try {
+      const payload = new FormData()
+      payload.append('name', formData.org) // send org name in the name field
+      payload.append('email', formData.email)
+      payload.append('subject', `Inquiry from ${formData.org}`)
+      payload.append('message', formData.message)
+
+      const result = await sendContactEmail(payload)
+
+      if (result.success) {
+        setSubmitted(true)
+      } else {
+        setErrorMessage(result.error || 'Fehler beim Senden der Anfrage.')
+      }
+    } catch (err) {
+      console.error(err)
+      setErrorMessage('Ein unerwarteter Fehler ist aufgetreten.')
+    } finally {
       setLoading(false)
-      setSubmitted(true)
-    }, 600)
+    }
   }
 
   return (
@@ -44,6 +63,22 @@ export default function ContactPage() {
         Nehmen Sie direkt Kontakt mit unserem Enterprise-Team auf oder übermitteln Sie Ihre
         Tender-Unterlagen.
       </p>
+
+      {errorMessage && (
+        <div
+          style={{
+            border: '2px solid #ef4444',
+            padding: '16px',
+            borderRadius: '8px',
+            backgroundColor: '#fef2f2',
+            color: '#b91c1c',
+            marginBottom: '20px',
+            fontWeight: 'bold',
+          }}
+        >
+          {errorMessage}
+        </div>
+      )}
 
       {submitted ? (
         <div
