@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { useTheme as useCustomTheme } from '@/context/ThemeContext'
+import { useTheme as useCustomTheme, type ThemeMode as Theme } from '@/context/ThemeContext'
 
 function HeaderNav() {
   const { theme, setTheme } = useCustomTheme()
@@ -38,13 +38,6 @@ function HeaderNav() {
   const createLocalizedHref = (path: string) => {
     const activeLang = searchParams.get('lang') || lang.toLowerCase()
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
-  }
-
-  const toggleTheme = () => {
-    if (theme === 'light') setTheme('dark')
-    else if (theme === 'dark') setTheme('neon')
-    else if (theme === 'neon') setTheme('blue')
-    else setTheme('light')
   }
 
   return (
@@ -173,7 +166,7 @@ function HeaderNav() {
           <span>🔒</span> CMS Login
         </Link>
 
-        {/* Language Switcher */}
+        {/* Language Switcher Dropdown */}
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <select
             id="lang-select"
@@ -265,32 +258,50 @@ function HeaderNav() {
           </Link>
         </div>
 
-        {/* Single Theme Toggle Button (Far Top-Right) */}
+        {/* Theme Select Dropdown with Icons & Names (Far Top-Right) */}
         <div
-          style={{ display: 'flex', alignItems: 'center', marginLeft: '4px' }}
+          style={{ position: 'relative', display: 'inline-block', marginLeft: '4px' }}
           suppressHydrationWarning
         >
-          <button
-            type="button"
-            onClick={toggleTheme}
+          <select
+            id="theme-select"
+            name="theme"
+            value={theme || 'light'}
+            onChange={(e) => setTheme(e.target.value as Theme)}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '36px',
-              height: '34px',
-              borderRadius: '6px',
-              border: '1px solid var(--border-color)',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              borderRadius: '4px',
+              padding: '6px 22px 6px 10px',
+              fontSize: '12px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              outline: 'none',
               backgroundColor: 'var(--bg-tag)',
               color: 'var(--text-primary)',
-              cursor: 'pointer',
-              fontSize: '16px',
-              padding: 0,
+              border: '1px solid var(--border-color)',
+              height: '32px',
             }}
-            title="Toggle Theme"
           >
-            {theme === 'neon' ? '⚡' : theme === 'blue' ? '🔵' : theme === 'dark' ? '🌙' : '☀️'}
-          </button>
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="neon">⚡ Neon</option>
+            <option value="blue">🔵 Blue</option>
+          </select>
+          <span
+            style={{
+              position: 'absolute',
+              right: '7px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              fontSize: '9px',
+              pointerEvents: 'none',
+              color: 'var(--text-muted)',
+            }}
+          >
+            ▼
+          </span>
         </div>
       </nav>
     </div>
