@@ -5,6 +5,74 @@ import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
 import { useTheme as useCustomTheme, type ThemeMode as Theme } from '@/context/ThemeContext'
 
+// Translation Dictionary for Header UI Elements
+const translations: Record<string, Record<string, string>> = {
+  DE: {
+    catalog: 'Leistungskatalog',
+    procurement: 'Procurement-Profil',
+    contact: 'Kontakt',
+    tender: 'RFP / Tender',
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Public Sector',
+  },
+  EN: {
+    catalog: 'Service Catalog',
+    procurement: 'Procurement Profile',
+    contact: 'Contact',
+    tender: 'RFP / Tender',
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Public Sector',
+  },
+  HU: {
+    catalog: 'Szolgáltatási Katalógus',
+    procurement: 'Beszerzési Profil',
+    contact: 'Kapcsolat',
+    tender: 'RFP / Ajánlatkérés',
+    subtextLine1: 'Vállalati és',
+    subtextLine2: 'Közszféra',
+  },
+  FR: {
+    catalog: 'Catalogue de Services',
+    procurement: "Profil d'Achats",
+    contact: 'Contact',
+    tender: "Appel d'Offres",
+    subtextLine1: 'Entreprises &',
+    subtextLine2: 'Secteur Public',
+  },
+  ES: {
+    catalog: 'Catálogo de Servicios',
+    procurement: 'Perfil de Contratación',
+    contact: 'Contacto',
+    tender: 'Licitación / RFP',
+    subtextLine1: 'Empresas y',
+    subtextLine2: 'Sector Público',
+  },
+  IT: {
+    catalog: 'Catalogo Servizi',
+    procurement: 'Profilo Appalti',
+    contact: 'Contatto',
+    tender: "Gara d'Appalto",
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Settore Pubblico',
+  },
+  NL: {
+    catalog: 'Dienstencatalogus',
+    procurement: 'Inkoopprofiel',
+    contact: 'Contact',
+    tender: 'Aanbesteding',
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Publieke Sector',
+  },
+  PL: {
+    catalog: 'Katalog Usług',
+    procurement: 'Profil Zamówień',
+    contact: 'Kontakt',
+    tender: 'Przetarg / RFP',
+    subtextLine1: 'Przedsiębiorstwa i',
+    subtextLine2: 'Sektor Publiczny',
+  },
+}
+
 function HeaderNav() {
   const { theme, setTheme } = useCustomTheme()
   const [lang, setLang] = useState('DE')
@@ -39,6 +107,9 @@ function HeaderNav() {
     const activeLang = searchParams.get('lang') || lang.toLowerCase()
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
+
+  // Active translation dictionary fallback
+  const t = translations[lang] || translations.DE
 
   return (
     <div
@@ -101,8 +172,9 @@ function HeaderNav() {
             color: 'var(--text-secondary)',
           }}
         >
-          Enterprise &<br />
-          Public Sector
+          {t.subtextLine1}
+          <br />
+          {t.subtextLine2}
         </div>
       </div>
 
@@ -128,7 +200,7 @@ function HeaderNav() {
             color: 'var(--text-primary)',
           }}
         >
-          Leistungskatalog
+          {t.catalog}
         </Link>
 
         <Link
@@ -142,7 +214,7 @@ function HeaderNav() {
             color: 'var(--text-primary)',
           }}
         >
-          Procurement-Profil
+          {t.procurement}
         </Link>
 
         <Link
@@ -233,7 +305,7 @@ function HeaderNav() {
               whiteSpace: 'nowrap',
             }}
           >
-            RFP / Tender
+            {t.tender}
           </Link>
 
           <Link
@@ -254,11 +326,11 @@ function HeaderNav() {
               whiteSpace: 'nowrap',
             }}
           >
-            Kontakt
+            {t.contact}
           </Link>
         </div>
 
-        {/* Theme Select Dropdown with Icons & Names (Far Top-Right) */}
+        {/* Theme Select Dropdown (Top-Right Position) */}
         <div
           style={{ position: 'relative', display: 'inline-block', marginLeft: '4px' }}
           suppressHydrationWarning

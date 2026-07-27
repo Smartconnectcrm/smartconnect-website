@@ -3,10 +3,85 @@ import configPromise from '@payload-config'
 
 export const dynamic = 'force-dynamic'
 
-export default async function HomePage() {
+// Translation Dictionary for Page UI Labels
+const pageTranslations: Record<string, Record<string, string>> = {
+  DE: {
+    heroTitle: 'Leistungskatalog',
+    heroSub:
+      'Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und compliance-orientierter Umsetzung.',
+    deliverables: '✓ Deliverables',
+    boundaries: '⊘ Abgrenzung',
+  },
+  EN: {
+    heroTitle: 'Service Catalog',
+    heroSub:
+      'Structured service modules with clear scope, documented handover, and compliance-oriented execution.',
+    deliverables: '✓ Deliverables',
+    boundaries: '⊘ Out of Scope',
+  },
+  HU: {
+    heroTitle: 'Szolgáltatási Katalógus',
+    heroSub:
+      'Strukturált szolgáltatási modulok világos határokkal, dokumentált átadással és megfelelőség-orientált megvalósítással.',
+    deliverables: '✓ Eredmények / Deliverables',
+    boundaries: '⊘ Kiterjedésen Kívül',
+  },
+  FR: {
+    heroTitle: 'Catalogue de Services',
+    heroSub:
+      'Modules de services structurés avec un périmètre clair, une transmission documentée et une exécution axée sur la conformité.',
+    deliverables: '✓ Livrables',
+    boundaries: '⊘ Hors Périmètre',
+  },
+  ES: {
+    heroTitle: 'Catálogo de Servicios',
+    heroSub:
+      'Módulos de servicio estructurados con alcance claro, entrega documentada y ejecución orientada al cumplimiento.',
+    deliverables: '✓ Entregables',
+    boundaries: '⊘ Fuera de Alcance',
+  },
+  IT: {
+    heroTitle: 'Catalogo Servizi',
+    heroSub:
+      'Moduli di servizio strutturati con perimetro chiaro, passaggio di consegne documentato ed esecuzione orientata alla conformità.',
+    deliverables: '✓ Deliverables',
+    boundaries: '⊘ Fuori Ambito',
+  },
+  NL: {
+    heroTitle: 'Dienstencatalogus',
+    heroSub:
+      'Gegestructureerde servicemodules met een duidelijke afbakening, gedocumenteerde overdracht en compliance-gerichte uitvoering.',
+    deliverables: '✓ Opleveringen',
+    boundaries: '⊘ Buiten Scope',
+  },
+  PL: {
+    heroTitle: 'Katalog Usług',
+    heroSub:
+      'Ustrukturyzowane moduły usługowe z jasnym zakresem, udokumentowanym przekazaniem i realizacją zorientowaną na zgodność.',
+    deliverables: '✓ Rezultaty',
+    boundaries: '⊘ Poza Zakresem',
+  },
+}
+
+interface PageProps {
+  searchParams: Promise<{ lang?: string }>
+}
+
+export default async function HomePage({ searchParams }: PageProps) {
+  const resolvedParams = await searchParams
+  const rawLang = resolvedParams?.lang || 'de'
+  const langKey = rawLang.toUpperCase()
+  const payloadLocale = rawLang.toLowerCase()
+
+  // Fallback to DE if language not found in dictionary
+  const t = pageTranslations[langKey] || pageTranslations.DE
+
   const payload = await getPayload({ config: configPromise })
+
+  // Fetch services from Payload with locale setting
   const { docs: services } = await payload.find({
     collection: 'services',
+    locale: payloadLocale as any,
   })
 
   return (
@@ -44,7 +119,7 @@ export default async function HomePage() {
               fontFamily: 'system-ui, -apple-system, sans-serif',
             }}
           >
-            Leistungskatalog
+            {t.heroTitle}
           </h1>
           <p
             style={{
@@ -56,8 +131,7 @@ export default async function HomePage() {
               color: 'var(--text-secondary)',
             }}
           >
-            Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und
-            compliance-orientierter Umsetzung.
+            {t.heroSub}
           </p>
         </section>
 
@@ -155,7 +229,7 @@ export default async function HomePage() {
                           margin: '0 0 8px 0',
                         }}
                       >
-                        ✓ Deliverables
+                        {t.deliverables}
                       </h3>
                       <ul
                         style={{
@@ -207,7 +281,7 @@ export default async function HomePage() {
                         margin: '0 0 8px 0',
                       }}
                     >
-                      ⊘ Abgrenzung
+                      {t.boundaries}
                     </h3>
                     <ul
                       style={{
