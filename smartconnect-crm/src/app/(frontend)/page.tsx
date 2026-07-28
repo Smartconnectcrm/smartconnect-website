@@ -62,6 +62,136 @@ const pageTranslations: Record<string, Record<string, string>> = {
   },
 }
 
+// Translations for Service Card Contents based on Service ID / Title key
+const serviceTranslations: Record<
+  string,
+  Record<string, { title: string; description: string; deliverables: string[] }>
+> = {
+  ES: {
+    'Delivery Support & Project Recovery': {
+      title: 'Soporte de Entrega y Recuperación de Proyectos',
+      description:
+        'Asistencia orientada a la estabilización y transferencia bajo presión de entrega, puntos pendientes y responsabilidades no resueltas.',
+      deliverables: [
+        'Evaluación del estado actual y backlog de problemas (priorizado por riesgo e impacto)',
+        'Sprint de estabilización (contención, victorias rápidas, plan de solución)',
+        'Transferencia limpia (RACI, Runbooks, riesgos abiertos, siguientes pasos)',
+        'Checklists de control de calidad y aceptación (criterios, pruebas, puntos pendientes)',
+        'Estructura de comunicación y escalamiento (formato de estado, mapa de partes interesadas)',
+        'Documentación de lecciones aprendidas',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Fundamentos de Datos e Informes',
+      description:
+        'Construcción de bases de datos e informes con definiciones claras, verificaciones de calidad de datos y lógica KPI trazable.',
+      deliverables: [
+        'Catálogo de KPIs y métricas (definiciones, lógica de cálculo, fuentes de datos)',
+        'Fundamentos del modelo de datos (mapeo, responsabilidades, flujos de datos)',
+        'Controles de calidad de datos (completitud, duplicados, plausibilidad, consistencia)',
+        'Prototipos de paneles e informes (alcance limitado, iterativos, verificables)',
+        'Documentación para operación y desarrollo posterior (diccionario de datos, lógica de cambios)',
+        'Concepto de protección de datos y retención',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Operaciones de Nube y Puesto de Trabajo Moderno',
+      description:
+        'Soporte operativo para entornos orientados a Microsoft 365/Azure, incluyendo identidades, dispositivos finales, gobernanza y monitoreo.',
+      deliverables: [
+        'Procesos operativos para servicios en la nube (Incidencias/Solicitudes/Cambios según lógica ITIL)',
+        'Configuración de identidad y acceso (MFA, acceso condicional, roles, PIM)',
+        'Estándares de gestión de endpoints (conjunto de directivas, estándares de dispositivos, políticas de cumplimiento)',
+        'Gobernanza de inquilinos y servicios (convenciones de nomenclatura, ciclo de vida, permisos)',
+        'Fundamentos de monitoreo y alertas (integración en sistemas existentes)',
+        'Documentación de entrega (manual de administración, runbooks, límites operativos)',
+      ],
+    },
+  },
+  HU: {
+    'Delivery Support & Project Recovery': {
+      title: 'Szállítási Támogatás és Projekt Helyreállítás',
+      description:
+        'Stabilizációs és átadás-központú támogatás szállítási nyomás, nyitott pontok és tisztázatlan felelősségek esetén.',
+      deliverables: [
+        'Helyzetfelmérés és probléma-backlog (kockázat és hatás szerinti priorizálás)',
+        'Stabilizációs sprint (korlátozás, gyors győzelmek, javítási terv)',
+        'Tiszta átadás (RACI, Runbookok, nyitott kockázatok, következő lépések)',
+        'Minőségbiztosítási és átvételi ellenőrzőlisták (kritériumok, igazolások, maradványpontok)',
+        'Kommunikációs és eszkalációs struktúra (státuszformátum, érdekelt felek térképe)',
+        'Tanulságok dokumentációja',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Adat- és Jelentéskészítési Alapok',
+      description:
+        'Adat- és jelentéskészítési alapok kiépítése világos definíciókkal, adatminőség-ellenőrzéssel és nyomon követhető KPI-logikával.',
+      deliverables: [
+        'KPI- és mátrix-katalógus (definíciók, számítási logika, adatforrások)',
+        'Adatmodell-alapok (feltérképezés, felelősségek, adatfolyamok)',
+        'Adatminőség-ellenőrzések (teljesség, duplikációk, hihetőség, konzisztencia)',
+        'Műszerfal- és jelentés-prototípusok (korlátozott terjedelmű, iteratív, ellenőrizhető)',
+        'Üzemeltetési és továbbfejlesztési dokumentáció (adatszótár, módosítási logika)',
+        'Adatvédelmi és megőrzési koncepció',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Felhő és Modern Munkahelyi Üzemeltetés',
+      description:
+        'Operatív támogatás Microsoft 365/Azure környezetekhez, beleértve az identitásokat, végpontokat, irányítást és monitorozást.',
+      deliverables: [
+        'Üzemeltetési folyamatok felhőszolgáltatásokhoz (incidens/kérés/módosítás ITIL-logika szerint)',
+        'Identitás- és hozzáférés-beállítás (MFA, feltételes hozzáférés, szerepkörök, PIM)',
+        'Végpontkezelési szabványok (szabálykészlet, eszközszabványok, megfelelőségi irányelvek)',
+        'Bérlői és szolgáltatásirányítás (névkonvenciók, életciklus, jogosultságok)',
+        'Monitorozási és riasztási alapok (integráció a meglévő rendszerekbe)',
+        'Átadási dokumentáció (adminisztrációs kézikönyv, runbookok, üzemeltetési határok)',
+      ],
+    },
+  },
+  EN: {
+    'Delivery Support & Project Recovery': {
+      title: 'Delivery Support & Project Recovery',
+      description:
+        'Stabilization and handover-oriented support under delivery pressure, open issues, and unresolved responsibilities.',
+      deliverables: [
+        'As-is assessment & problem backlog (prioritized by risk and impact)',
+        'Stabilization sprint (containment, quick wins, fix plan)',
+        'Clean handover (RACI, runbooks, open risks, next steps)',
+        'QA and acceptance checklists (criteria, proofs, residual items)',
+        'Communication and escalation structure (status format, stakeholder map)',
+        'Lessons learned documentation',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Data & Reporting Foundations',
+      description:
+        'Establishment of data and reporting foundations with clear definitions, data quality checks, and traceable KPI logic.',
+      deliverables: [
+        'KPI and metrics catalog (definitions, calculation logic, data sources)',
+        'Data model foundations (mapping, responsibilities, data flows)',
+        'Data quality checks (completeness, duplicates, plausibility, consistency)',
+        'Dashboard and report prototypes (scope-limited, iterative, verifiable)',
+        'Documentation for operation and further development (data dictionary, change logic)',
+        'Data protection and retention concept',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Cloud & Modern Workplace Operations',
+      description:
+        'Operational support for Microsoft 365/Azure environments including identities, endpoints, governance, and monitoring.',
+      deliverables: [
+        'Operational processes for cloud services (incident/request/change according to ITIL logic)',
+        'Identity and access setup (MFA, conditional access, role models, PIM)',
+        'Endpoint management standards (policy set, device standards, compliance policies)',
+        'Tenant and service governance (naming conventions, lifecycle, permissions)',
+        'Monitoring and alerting foundations (integration into existing systems)',
+        'Handover documentation (admin handbook, runbooks, operational boundaries)',
+      ],
+    },
+  },
+}
+
 interface PageProps {
   searchParams: Promise<{ lang?: string }>
 }
@@ -146,8 +276,14 @@ export default async function HomePage({ searchParams }: PageProps) {
           }}
         >
           {services.map((service) => {
+            const translation = serviceTranslations[langKey]?.[service.title]
+
+            const displayTitle = translation?.title || service.title
+            const displayDesc = translation?.description || service.description
             const deliverablesList =
-              service.deliverables?.map((d: any) => d?.item).filter(Boolean) || []
+              translation?.deliverables ||
+              service.deliverables?.map((d: any) => d?.item).filter(Boolean) ||
+              []
             const boundariesList =
               service.boundaries?.map((b: any) => b?.item).filter(Boolean) || []
 
@@ -187,7 +323,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                         color: 'var(--text-primary)',
                       }}
                     >
-                      {service.title}
+                      {displayTitle}
                     </h2>
                     {service.categoryTag && (
                       <span
@@ -208,7 +344,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                   </div>
 
                   {/* Description */}
-                  {service.description && (
+                  {displayDesc && (
                     <p
                       style={{
                         fontSize: '13px',
@@ -217,7 +353,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                         margin: '0 0 24px 0',
                       }}
                     >
-                      {service.description}
+                      {displayDesc}
                     </p>
                   )}
 
