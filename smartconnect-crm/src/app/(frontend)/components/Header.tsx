@@ -134,14 +134,13 @@ function HeaderNav() {
           style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
         >
           <img
-            src="https://i.postimg.cc/mkn4Ywn7/LOGO-Chain.png"
+            src="/logo.png"
             alt="SmartConnect CRM Logo"
             width="38"
             height="38"
             style={{
               objectFit: 'contain',
               flexShrink: 0,
-              borderRadius: '50%',
               display: 'block',
             }}
           />
