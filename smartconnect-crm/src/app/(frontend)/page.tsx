@@ -14,7 +14,7 @@ const pageTranslations: Record<string, Record<string, string>> = {
   EN: {
     heroTitle: 'Service Catalog',
     heroSub:
-      'Structured service modules with clear scope, documented handover, and compliance-oriented execution.',
+      'Structured service modules with clear boundaries, documented handovers, and compliance-oriented execution.',
     deliverables: '✓ Deliverables',
     boundaries: '⊘ Out of Scope',
   },
@@ -22,51 +22,215 @@ const pageTranslations: Record<string, Record<string, string>> = {
     heroTitle: 'Szolgáltatási Katalógus',
     heroSub:
       'Strukturált szolgáltatási modulok világos határokkal, dokumentált átadással és megfelelőség-orientált megvalósítással.',
-    deliverables: '✓ Eredmények / Deliverables',
-    boundaries: '⊘ Kiterjedésen Kívül',
+    deliverables: '✓ A Csomag Tartalma',
+    boundaries: '⊘ Kizárások',
   },
   FR: {
     heroTitle: 'Catalogue de Services',
     heroSub:
-      'Modules de services structurés avec un périmètre clair, une transmission documentée et une exécution axée sur la conformité.',
+      'Modules de services structurés avec délimitation claire, transfert documenté et exécution orientée conformité.',
     deliverables: '✓ Livrables',
-    boundaries: '⊘ Hors Périmètre',
+    boundaries: '⊘ Périmètre Exclu',
   },
   ES: {
     heroTitle: 'Catálogo de Servicios',
     heroSub:
-      'Módulos de servicio estructurados con alcance claro, entrega documentada y ejecución orientada al cumplimiento.',
+      'Módulos de servicio estructurados con clara delimitación, entrega documentada y ejecución orientada al cumplimiento.',
     deliverables: '✓ Entregables',
     boundaries: '⊘ Fuera de Alcance',
   },
   IT: {
     heroTitle: 'Catalogo Servizi',
     heroSub:
-      'Moduli di servizio strutturati con perimetro chiaro, passaggio di consegne documentato ed esecuzione orientata alla conformità.',
-    deliverables: '✓ Deliverables',
-    boundaries: '⊘ Fuori Ambito',
+      'Moduli di servizio strutturati con chiara delimitazione, consegna documentata ed esecuzione orientata alla conformità.',
+    deliverables: '✓ Deliverable',
+    boundaries: '⊘ Esclusioni',
   },
   NL: {
     heroTitle: 'Dienstencatalogus',
     heroSub:
-      'Gegestructureerde servicemodules met een duidelijke afbakening, gedocumenteerde overdracht en compliance-gerichte uitvoering.',
+      'Gestructureerde servicemodules met heldere afbakening, gedocumenteerde overdracht en op naleving gerichte uitvoering.',
     deliverables: '✓ Opleveringen',
     boundaries: '⊘ Buiten Scope',
   },
   PL: {
     heroTitle: 'Katalog Usług',
     heroSub:
-      'Ustrukturyzowane moduły usługowe z jasnym zakresem, udokumentowanym przekazaniem i realizacją zorientowaną na zgodność.',
-    deliverables: '✓ Rezultaty',
-    boundaries: '⊘ Poza Zakresem',
+      'Strukturyzowane moduły usługowe z jasnym rozgraniczeniem, udokumentowanym przekazaniem i realizacją zorientowaną na zgodność.',
+    deliverables: '✓ Zakres Usługi',
+    boundaries: '⊘ Wyłączenia',
   },
 }
 
-// Translations for Service Card Contents based on Service ID / Title key
+// Translations for Service Card Contents across all supported languages
 const serviceTranslations: Record<
   string,
   Record<string, { title: string; description: string; deliverables: string[] }>
 > = {
+  IT: {
+    'Delivery Support & Project Recovery': {
+      title: 'Supporto alla Consegna e Recupero Progetti',
+      description:
+        'Supporto orientato alla stabilizzazione e al passaggio di consegne in situazioni di pressione sui tempi, punti aperti e responsabilità non definite.',
+      deliverables: [
+        'Valutazione dello stato attuale e backlog dei problemi (prioritizzazione per rischio e impatto)',
+        'Sprint di stabilizzazione (contenimento, vittorie rapide, piano di risoluzione)',
+        'Passaggio di consegne pulito (RACI, Runbook, rischi aperti, passaggi successivi)',
+        'Checklist di garanzia della qualità e collaudo (criteri, verifiche, elementi residui)',
+        'Struttura di comunicazione ed escalation (formato di stato, mappa degli stakeholder)',
+        'Documentazione delle lezioni apprese',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Fondamenta Dati e Reportistica',
+      description:
+        'Creazione delle basi per dati e reportistica con definizioni chiare, controlli di qualità dei dati e logica KPI tracciabile.',
+      deliverables: [
+        'Catalogo KPI e metriche (definizioni, logica di calcolo, fonti dati)',
+        'Fondamenta del modello dati (mappatura, responsabilità, flussi dati)',
+        'Controlli di qualità dei dati (completezza, duplicati, plausibilità, coerenza)',
+        'Prototipi di dashboard e report (ambito limitato, iterativi, verificabili)',
+        "Documentazione per l'operatività e lo sviluppo ulteriore (dizionario dati, logica di modifica)",
+        'Concetto di protezione e conservazione dei dati',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Operatività Cloud e Modern Workplace',
+      description:
+        'Supporto operativo per ambienti Microsoft 365/Azure, inclusi identità, dispositivi, governance e monitoraggio.',
+      deliverables: [
+        'Processi operativi per servizi cloud (incidenti/richieste/modifiche secondo logica ITIL)',
+        'Configurazione identità e accessi (MFA, accesso condizionale, ruoli, PIM)',
+        'Standard di gestione degli endpoint (set di policy, standard dispositivi, policy di conformità)',
+        'Governance tenant e servizi (convenzioni di denominazione, ciclo di vita, autorizzazioni)',
+        'Fondamenta di monitoraggio e avvisi (integrazione nei sistemi esistenti)',
+        'Documentazione di consegna (manuale di amministrazione, runbook, limiti operativi)',
+      ],
+    },
+  },
+  FR: {
+    'Delivery Support & Project Recovery': {
+      title: 'Support à la Livraison et Redressement de Projet',
+      description:
+        'Assistance axée sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non définies.',
+      deliverables: [
+        "Évaluation de l'état actuel et backlog des problèmes (priorisé par risque et impact)",
+        'Sprint de stabilisation (confinement, victoires rapides, plan de résolution)',
+        'Passage de relais propre (RACI, Runbooks, risques ouverts, étapes suivantes)',
+        "Check-lists d'assurance qualité et de recette (critères, preuves, points résiduels)",
+        "Structure de communication et d'escalade (format d'état, carte des parties prenantes)",
+        'Documentation des leçons apprises',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Fondations Données et Reporting',
+      description:
+        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
+      deliverables: [
+        'Catalogue de KPI et métriques (définitions, logique de calcul, sources de données)',
+        'Fondations du modèle de données (cartographie, responsabilités, flux de données)',
+        'Contrôles de qualité des données (exhaustivité, doublons, plausibilité, cohérence)',
+        'Prototypes de tableaux de bord et rapports (périmètre limité, itératifs, vérifiables)',
+        "Documentation pour l'exploitation et les évolutions (dictionnaire de données, logique de changement)",
+        'Concept de protection et de conservation des données',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Opérations Cloud et Modern Workplace',
+      description:
+        'Support opérationnel pour les environnements Microsoft 365/Azure, incluant identités, postes de travail, gouvernance et supervision.',
+      deliverables: [
+        'Processus opérationnels pour les services Cloud (Incidents/Demandes/Changements selon la logique ITIL)',
+        'Configuration des identités et des accès (MFA, accès conditionnel, modèles de rôles, PIM)',
+        "Normes de gestion des points de terminaison (jeu de politiques, normes d'équipements, conformité)",
+        'Gouvernance du tenant et des services (conventions de nommage, cycle de vie, autorisations)',
+        "Bases de supervision et d'alerte (intégration dans les systèmes existants)",
+        "Documentation de transfert (manuel d'administration, runbooks, limites opérationnelles)",
+      ],
+    },
+  },
+  PL: {
+    'Delivery Support & Project Recovery': {
+      title: 'Wsparcie Realizacji i Naprawa Projektów',
+      description:
+        'Wsparcie ukierunkowane na stabilizację i przekazanie zadań pod presją czasu, przy otwartych kwestiach i niejasnych odpowiedzialnościach.',
+      deliverables: [
+        'Ocena stanu faktycznego i backlog problemów (priorytetyzacja według ryzyka i wpływu)',
+        'Sprint stabilizacyjny (opanowanie sytuacji, szybkie wygrane, plan naprawczy)',
+        'Czyste przekazanie (RACI, Runbooki, otwarte ryzyka, kolejne kroki)',
+        'Listy kontrolne zapewnienia jakości i odbioru (kryteria, dowody, punkty pozostałe)',
+        'Struktura komunikacji i eskalacji (format statusu, mapa interesariuszy)',
+        'Dokumentacja wyciągniętych wniosków (Lessons Learned)',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Fundamenty Danych i Raportowania',
+      description:
+        'Budowa fundamentów danych i raportowania z jasnymi definicjami, kontrolą jakości danych i przejrzystą logiką KPI.',
+      deliverables: [
+        'Katalog KPI i metryk (definicje, logika obliczeń, źródła danych)',
+        'Podstawy modelu danych (mapowanie, odpowiedzialności, przepływy danych)',
+        'Kontrole jakości danych (kompletność, duplikaty, wiarygodność, spójność)',
+        'Prototypy pulpitów nawigacyjnych i raportów (ograniczony zakres, iteracyjne, weryfikowalne)',
+        'Dokumentacja operacyjna i rozwojowa (słownik danych, logika zmian)',
+        'Koncepcja ochrony danych i ich przechowywania',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Operacje Chmurowe i Nowoczesne Miejsce Pracy',
+      description:
+        'Wsparcie operacyjne dla środowisk Microsoft 365/Azure, w tym tożsamości, urządzeń końcowych, zarządzania i monitoringu.',
+      deliverables: [
+        'Procesy operacyjne dla usług chmurowych (incydenty/wnioski/zmiany zgodnie z logiką ITIL)',
+        'Konfiguracja tożsamości i dostępu (MFA, dostęp warunkowy, modele ról, PIM)',
+        'Standardy zarządzania urządzeniami końcowymi (zbiór polityk, standardy urządzeń, zgodność)',
+        'Gubernancja dzierżawy i usług (konwencje nazewnictwa, cykl życia, uprawnienia)',
+        'Podstawy monitorowania i alertów (integracja z istniejącymi systemami)',
+        'Dokumentacja przekazania (podręcznik administratora, runbooki, granice operacyjne)',
+      ],
+    },
+  },
+  NL: {
+    'Delivery Support & Project Recovery': {
+      title: 'Opleverondersteuning & Projectherstel',
+      description:
+        'Ondersteuning gericht op stabilisatie en overdracht onder opleverdruk, openstaande punten en onduidelijke verantwoordelijkheden.',
+      deliverables: [
+        'Nulmeting en probleem-backlog (geprioriteerd op risico en impact)',
+        'Stabilisatiesprint (beheersing, snelle winst, herstelplan)',
+        "Schone overdracht (RACI, Runbooks, openstaande risico's, vervolgstappen)",
+        'Kwaliteitsborging en acceptatiechecklists (criteria, bewijzen, restpunten)',
+        'Communicatie- en escalatiestructuur (statusformaat, stakeholderkaart)',
+        'Documentatie van geleerde lessen',
+      ],
+    },
+    'Data & Reporting Foundations': {
+      title: 'Data- & Rapportagefundamenten',
+      description:
+        'Opbouw van data- en rapportagebasis met duidelijke definities, datakwaliteitscontroles en traceerbare KPI-logica.',
+      deliverables: [
+        'KPI- en metricscatalogus (definities, berekeningslogica, databronnen)',
+        'Datamodel-fundamenten (mapping, verantwoordelijkheden, datastromen)',
+        'Datakwaliteitscontroles (volledigheid, duplicaten, plausibiliteit, consistentie)',
+        'Dashboard- en rapportprototypes (beperkte scope, iteratief, verifieerbaar)',
+        'Documentatie voor beheer en doorontwikkeling (datawoordenboek, wijzigingslogica)',
+        'Databeschermings- en bewaarconcept',
+      ],
+    },
+    'Cloud & Modern Workplace Operations': {
+      title: 'Cloud & Modern Workplace Operations',
+      description:
+        'Operationele ondersteuning voor Microsoft 365/Azure-omgevingen inclusief identiteiten, endpoints, governance en monitoring.',
+      deliverables: [
+        'Operationele processen voor cloudservices (incident/request/change volgens ITIL-logica)',
+        'Identiteits- en toegangsinrichting (MFA, conditional access, rolmodellen, PIM)',
+        'Endpoint management-standaarden (beleidsset, apparaatstandaarden, compliancebeleid)',
+        'Tenant- en servicegovernance (naamconventies, levenscyclus, rechten)',
+        'Monitoring- en alertfundamenten (integratie in bestaande systemen)',
+        'Overdrachtsdocumentatie (beheerdershandboek, runbooks, operationele grenzen)',
+      ],
+    },
+  },
   ES: {
     'Delivery Support & Project Recovery': {
       title: 'Soporte de Entrega y Recuperación de Proyectos',
