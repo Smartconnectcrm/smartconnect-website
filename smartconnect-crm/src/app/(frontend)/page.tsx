@@ -65,7 +65,7 @@ const pageTranslations: Record<string, Record<string, string>> = {
 // Translations ordered by card index (0 = Card 1, 1 = Card 2, 2 = Card 3)
 const cardIndexTranslations: Record<
   string,
-  Array<{ title: string; description: string; deliverables: string[] }>
+  Array<{ title: string; description: string; deliverables: string[]; boundaries?: string[] }>
 > = {
   HU: [
     {
@@ -80,6 +80,10 @@ const cardIndexTranslations: Record<
         'Kommunikációs és eszkalációs struktúra (státuszformátum, érdekelt felek térképe)',
         'Tanulságok dokumentációja',
       ],
+      boundaries: [
+        'Operatív vonalvezetés / L1-L2 támogatás',
+        'Szoftverfejlesztés vagy egyedi kódolás',
+      ],
     },
     {
       title: 'Adat- és Jelentéskészítési Alapok',
@@ -93,6 +97,7 @@ const cardIndexTranslations: Record<
         'Üzemeltetési és továbbfejlesztési dokumentáció (adatszótár, módosítási logika)',
         'Adatvédelmi és megőrzési koncepció',
       ],
+      boundaries: ['Adatbázis-architektúra átalakítása', 'Folyamatos adatelemzési üzemeltetés'],
     },
     {
       title: 'Felhő és Modern Munkahelyi Üzemeltetés',
@@ -106,128 +111,9 @@ const cardIndexTranslations: Record<
         'Monitorozási és riasztási alapok (integráció a meglévő rendszerekbe)',
         'Átadási dokumentáció (adminisztrációs kézikönyv, runbookok, üzemeltetési határok)',
       ],
-    },
-  ],
-  ES: [
-    {
-      title: 'Soporte de Entrega y Recuperación de Proyectos',
-      description:
-        'Asistencia orientada a la estabilización y transferencia bajo presión de entrega, puntos pendientes y responsabilidades no resueltas.',
-      deliverables: [
-        'Evaluación del estado actual y backlog de problemas (priorizado por riesgo e impacto)',
-        'Sprint de estabilización (contención, victorias rápidas, plan de solución)',
-        'Transferencia limpia (RACI, Runbooks, riesgos abiertos, siguientes pasos)',
-        'Checklists de control de calidad y aceptación (criterios, pruebas, puntos pendientes)',
-        'Estructura de comunicación y escalamiento (formato de estado, mapa de partes interesadas)',
-        'Documentación de lecciones aprendidas',
-      ],
-    },
-    {
-      title: 'Fundamentos de Datos e Informes',
-      description:
-        'Construcción de bases de datos e informes con definiciones claras, verificaciones de calidad de datos y lógica KPI trazable.',
-      deliverables: [
-        'Catálogo de KPIs y métricas (definiciones, lógica de cálculo, fuentes de datos)',
-        'Fundamentos del modelo de datos (mapeo, responsabilidades, flujos de datos)',
-        'Controles de calidad de datos (completitud, duplicados, plausibilidad, consistencia)',
-        'Prototipos de paneles e informes (alcance limitado, iterativos, verificables)',
-        'Documentación para operación y desarrollo posterior (diccionario de datos, lógica de cambios)',
-        'Concepto de protección de datos y retención',
-      ],
-    },
-    {
-      title: 'Operaciones de Nube y Puesto de Trabajo Moderno',
-      description:
-        'Soporte operativo para entornos orientados a Microsoft 365/Azure, incluyendo identidades, dispositivos finales, gobernanza y monitoreo.',
-      deliverables: [
-        'Procesos operativos para servicios en la nube (Incidencias/Solicitudes/Cambios según lógica ITIL)',
-        'Configuración de identidad y acceso (MFA, acceso condicional, roles, PIM)',
-        'Estándares de gestión de endpoints (conjunto de directivas, estándares de dispositivos, políticas de cumplimiento)',
-        'Gobernanza de inquilinos y servicios (convenciones de nomenclatura, ciclo de vida, permisos)',
-        'Fundamentos de monitoreo y alertas (integración en sistemas existentes)',
-        'Documentación de entrega (manual de administración, runbooks, límites operativos)',
-      ],
-    },
-  ],
-  IT: [
-    {
-      title: 'Supporto alla Consegna e Recupero Progetti',
-      description:
-        'Supporto orientato alla stabilizzazione e al passaggio di consegne in situazioni di pressione sui tempi, punti aperti e responsabilità non definite.',
-      deliverables: [
-        'Valutazione dello stato attuale e backlog dei problemi (prioritizzazione per rischio e impatto)',
-        'Sprint di stabilizzazione (contenimento, vittorie rapide, piano di risoluzione)',
-        'Passaggio di consegne pulito (RACI, Runbook, rischi aperti, passaggi successivi)',
-        'Checklist di garanzia della qualità e collaudo (criteri, verifiche, elementi residui)',
-        'Struttura di comunicazione ed escalation (formato di stato, mappa degli stakeholder)',
-        'Documentazione delle lezioni apprese',
-      ],
-    },
-    {
-      title: 'Fondamenta Dati e Reportistica',
-      description:
-        'Creazione delle basi per dati e reportistica con definizioni chiare, controlli di qualità dei dati e logica KPI tracciabile.',
-      deliverables: [
-        'Catalogo KPI e metriche (definizioni, logica di calcolo, fonti dati)',
-        'Fondamenta del modello dati (mappatura, responsabilità, flussi dati)',
-        'Controlli di qualità dei dati (completezza, duplicati, plausibilità, coerenza)',
-        'Prototipi di dashboard e report (ambito limitato, iterativi, verificabili)',
-        "Documentazione per l'operatività e lo sviluppo ulteriore (dizionario dati, logica di modifica)",
-        'Concetto di protezione e conservazione dei dati',
-      ],
-    },
-    {
-      title: 'Operatività Cloud e Modern Workplace',
-      description:
-        'Supporto operativo per ambienti Microsoft 365/Azure, inclusi identità, dispositivi, governance e monitoraggio.',
-      deliverables: [
-        'Processi operativi per servizi cloud (incidenti/richieste/modifiche secondo logica ITIL)',
-        'Configurazione identità e accessi (MFA, accesso condizionale, ruoli, PIM)',
-        'Standard di gestione degli endpoint (set di policy, standard dispositivi, policy di conformità)',
-        'Governance tenant e servizi (convenzioni di denominazione, ciclo di vita, autorizzazioni)',
-        'Fondamenta di monitoraggio e avvisi (integrazione nei sistemi esistenti)',
-        'Documentazione di consegna (manuale di amministrazione, runbook, limiti operativi)',
-      ],
-    },
-  ],
-  FR: [
-    {
-      title: 'Support à la Livraison et Redressement de Projet',
-      description:
-        'Assistance axée sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non définies.',
-      deliverables: [
-        "Évaluation de l'état actuel et backlog des problèmes (priorisé par risque et impact)",
-        'Sprint de stabilisation (confinement, victoires rapides, plan de résolution)',
-        'Passage de relais propre (RACI, Runbooks, risques ouverts, étapes suivantes)',
-        "Check-lists d'assurance qualité et de recette (critères, preuves, points résiduels)",
-        "Structure de communication et d'escalade (format d'état, carte des parties prenantes)",
-        'Documentation des leçons apprises',
-      ],
-    },
-    {
-      title: 'Fondations Données et Reporting',
-      description:
-        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
-      deliverables: [
-        'Catalogue de KPI et métriques (définitions, logique de calcul, sources de données)',
-        'Fondations du modèle de données (cartographie, responsabilités, flux de données)',
-        'Contrôles de qualité des données (exhaustivité, doublons, plausibilité, cohérence)',
-        'Prototypes de tableaux de bord et rapports (périmètre limité, itératifs, vérifiables)',
-        "Documentation pour l'exploitation et les évolutions (dictionnaire de données, logique de changement)",
-        'Concept de protection et de conservation des données',
-      ],
-    },
-    {
-      title: 'Opérations Cloud et Modern Workplace',
-      description:
-        'Support opérationnel pour les environnements Microsoft 365/Azure, incluant identités, postes de travail, gouvernance et supervision.',
-      deliverables: [
-        'Processus opérationnels pour les services Cloud (Incidents/Demandes/Changements selon la logique ITIL)',
-        'Configuration des identités et des accès (MFA, accès conditionnel, modèles de rôles, PIM)',
-        "Normes de gestion des points de terminaison (jeu de politiques, normes d'équipements, conformité)",
-        'Gouvernance du tenant et des services (conventions de nommage, cycle de vie, autorisations)',
-        "Bases de supervision et d'alerte (intégration dans les systèmes existants)",
-        "Documentation de transfert (manuel d'administration, runbooks, limites opérationnelles)",
+      boundaries: [
+        '24/7 Call-Center L1 támogatás',
+        'Harmadik féltől származó hardverek fizikai javítása',
       ],
     },
   ],
@@ -244,6 +130,10 @@ const cardIndexTranslations: Record<
         'Communication and escalation structure (status format, stakeholder map)',
         'Lessons learned documentation',
       ],
+      boundaries: [
+        'Operational line management / L1-L2 support',
+        'Software development or custom coding',
+      ],
     },
     {
       title: 'Data & Reporting Foundations',
@@ -257,6 +147,7 @@ const cardIndexTranslations: Record<
         'Documentation for operation and further development (data dictionary, change logic)',
         'Data protection and retention concept',
       ],
+      boundaries: ['Database architecture overhaul', 'Continuous data analysis operations'],
     },
     {
       title: 'Cloud & Modern Workplace Operations',
@@ -270,6 +161,57 @@ const cardIndexTranslations: Record<
         'Monitoring and alerting foundations (integration into existing systems)',
         'Handover documentation (admin handbook, runbooks, operational boundaries)',
       ],
+      boundaries: ['24/7 Call-center L1 support', 'Physical repair of third-party hardware'],
+    },
+  ],
+  ES: [
+    {
+      title: 'Soporte de Entrega y Recuperación de Proyectos',
+      description:
+        'Asistencia orientada a la estabilización y transferencia bajo presión de entrega, puntos pendientes y responsabilidades no resueltas.',
+      deliverables: [
+        'Evaluación del estado actual y backlog de problemas (priorizado por riesgo e impacto)',
+        'Sprint de estabilización (contención, victorias rápidas, plan de solución)',
+        'Transferencia limpia (RACI, Runbooks, riesgos abiertos, siguientes pasos)',
+        'Checklists de control de calidad y aceptación (criterios, pruebas, puntos pendientes)',
+        'Estructura de comunicación y escalamiento (formato de estado, mapa de partes interesadas)',
+        'Documentación de lecciones aprendidas',
+      ],
+      boundaries: [
+        'Gestión operativa de línea / Soporte L1-L2',
+        'Desarrollo de software o código personalizado',
+      ],
+    },
+    {
+      title: 'Fundamentos de Datos e Informes',
+      description:
+        'Construcción de bases de datos e informes con definiciones claras, verificaciones de calidad de datos y lógica KPI trazable.',
+      deliverables: [
+        'Catálogo de KPIs y métricas (definiciones, lógica de cálculo, fuentes de datos)',
+        'Fundamentos del modelo de datos (mapeo, responsabilidades, flujos de datos)',
+        'Controles de calidad de datos (completitud, duplicados, plausibilidad, consistencia)',
+        'Prototipos de paneles e informes (alcance limitado, iterativos, verificables)',
+        'Documentación para operación y desarrollo posterior (diccionario de datos, lógica de cambios)',
+        'Concepto de protección de datos y retención',
+      ],
+      boundaries: [
+        'Reorganización de arquitectura de base de datos',
+        'Operaciones continuas de análisis de datos',
+      ],
+    },
+    {
+      title: 'Operaciones de Nube y Puesto de Trabajo Moderno',
+      description:
+        'Soporte operativo para entornos orientados a Microsoft 365/Azure, incluyendo identidades, dispositivos finales, gobernanza y monitoreo.',
+      deliverables: [
+        'Procesos operativos para servicios en la nube (Incidencias/Solicitudes/Cambios según lógica ITIL)',
+        'Configuración de identidad y acceso (MFA, acceso condicional, roles, PIM)',
+        'Estándares de gestión de endpoints (conjunto de directivas, estándares de dispositivos, políticas de cumplimiento)',
+        'Gobernanza de inquilinos y servicios (convenciones de nomenclatura, ciclo de vida, permisos)',
+        'Fundamentos de monitoreo y alertas (integración en sistemas existentes)',
+        'Documentación de entrega (manual de administración, runbooks, límites operativos)',
+      ],
+      boundaries: ['Soporte L1 de call-center 24/7', 'Reparación física de hardware de terceros'],
     },
   ],
 }
@@ -358,7 +300,6 @@ export default async function HomePage({ searchParams }: PageProps) {
           }}
         >
           {services.map((service, index) => {
-            // Direct index fallback ensures translation regardless of database string titles
             const translation = cardIndexTranslations[langKey]?.[index]
 
             const displayTitle = translation?.title || service.title
@@ -368,7 +309,9 @@ export default async function HomePage({ searchParams }: PageProps) {
               service.deliverables?.map((d: any) => d?.item).filter(Boolean) ||
               []
             const boundariesList =
-              service.boundaries?.map((b: any) => b?.item).filter(Boolean) || []
+              translation?.boundaries ||
+              service.boundaries?.map((b: any) => b?.item).filter(Boolean) ||
+              []
 
             return (
               <div
