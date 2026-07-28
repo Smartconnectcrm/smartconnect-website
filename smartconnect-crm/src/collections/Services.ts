@@ -6,21 +6,19 @@ export const Services: CollectionConfig = {
     useAsTitle: 'title',
   },
   access: {
-    read: () => true, // Publicly readable for the website
+    read: () => true,
   },
   fields: [
     {
       name: 'title',
       type: 'text',
-      required: true, // e.g. "Systemintegration & Schnittstellen"
-      localized: true, // <-- Enables translation for Title
+      required: true,
+      localized: true,
     },
     {
       name: 'categoryTag',
       type: 'select',
       defaultValue: 'RunOperations',
-      // We usually leave tags unlocalized so they act as universal filters,
-      // but you can add localized: true here if you want to translate the tags too!
       options: [
         { label: 'RunOperations', value: 'RunOperations' },
         { label: 'Change', value: 'Change' },
@@ -31,35 +29,31 @@ export const Services: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
-      localized: true, // <-- Enables translation for Description
+      localized: true,
     },
     {
       name: 'deliverables',
       label: '✓ Deliverables',
       type: 'array',
-      localized: true, // <-- Enables translation for Deliverables array
-      fields: [{ name: 'item', type: 'text' }],
+      fields: [{ name: 'item', type: 'text', localized: true }],
     },
     {
       name: 'inputs',
       label: '↓ Typische Inputs',
       type: 'array',
-      localized: true, // <-- Enables translation for Inputs array
-      fields: [{ name: 'item', type: 'text' }],
+      fields: [{ name: 'item', type: 'text', localized: true }],
     },
     {
       name: 'outputs',
       label: '↑ Typische Outputs',
       type: 'array',
-      localized: true, // <-- Enables translation for Outputs array
-      fields: [{ name: 'item', type: 'text' }],
+      fields: [{ name: 'item', type: 'text', localized: true }],
     },
     {
       name: 'boundaries',
       label: '⊘ Abgrenzung',
       type: 'array',
-      localized: true, // <-- Enables translation for Boundaries array
-      fields: [{ name: 'item', type: 'text' }],
+      fields: [{ name: 'item', type: 'text', localized: true }],
     },
   ],
 }
