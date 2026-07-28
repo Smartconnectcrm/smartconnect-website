@@ -1,42 +1,232 @@
-'use server'
+'use client'
 
-import { Resend } from 'resend'
+import React, { useState } from 'react'
+import { sendContactEmail } from '@/app/actions/sendContactEmail'
 
-export async function sendContactEmail(formData: FormData) {
-  const name = formData.get('name') as string
-  const email = formData.get('email') as string
-  const subject = formData.get('subject') as string
-  const message = formData.get('message') as string
+// ⚠️ MAKE SURE "export default" IS RIGHT HERE:
+export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [formData, setFormData] = useState({
+    org: '',
+    email: '',
+    message: '',
+  })
 
-  // Check if API key is present in the Vercel environment
-  if (!process.env.RESEND_API_KEY) {
-    console.error('RESEND_API_KEY is not defined in environment variables.')
-    return {
-      success: false,
-      error: 'RESEND_API_KEY path missing in Vercel settings.',
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setErrorMessage('')
+
+    try {
+      const payload = new FormData()
+      payload.append('name', formData.org)
+      payload.append('email', formData.email)
+      payload.append('subject', `Inquiry from ${formData.org}`)
+      payload.append('message', formData.message)
+
+      const result = await sendContactEmail(payload)
+
+      if (result.success) {
+        setSubmitted(true)
+      } else {
+        setErrorMessage(result.error || 'Fehler beim Senden der Anfrage.')
+      }
+    } catch (err: any) {
+      console.error(err)
+      setErrorMessage('Ein unerwarteter Fehler ist aufgetreten.')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  return (
+    <main
+      style={{
+        maxWidth: '800px',
+        margin: '0 auto',
+        padding: '40px 20px 80px 20px',
+      }}
+    >
+      <h1
+        style={{
+          fontSize: '32px',
+          fontWeight: '900',
+          textTransform: 'uppercase',
+          marginBottom: '12px',
+          color: '#0f172a',
+        }}
+      >
+        Kontakt & Anfragen
+      </h1>
+      <p style={{ color: '#475569', marginBottom: '32px', fontSize: '15px' }}>
+        Nehmen Sie direkt Kontakt mit unserem Enterprise-Team auf oder übermitteln Sie Ihre
+        Tender-Unterlagen.
+      </p>
 
-  try {
-    const { data, error } = await resend.emails.send({
-      from: 'SmartConnect CRM <info@smartclientcrm.com>',
-      to: ['info@smartclientcrm.com'],
-      replyTo: email,
-      subject: subject || `Neue Anfrage von ${name}`,
-      text: `Organisation: ${name}\nE-Mail: ${email}\n\nNachricht:\n${message}`,
-    })
+      {errorMessage && (
+        <div
+          style={{
+            border: '2px solid #ef4444',
+            padding: '16px',
+            borderRadius: '8px',
+            backgroundColor: '#fef2f2',
+            color: '#b91c1c',
+            marginBottom: '20px',
+            fontWeight: 'bold',
+          }}
+        >
+          {errorMessage}
+        </div>
+      )}
 
-    if (error) {
-      console.error('Resend returned an error:', error)
-      return { success: false, error: error.message }
-    }
+      {submitted ? (
+        <div
+          style={{
+            border: '2px solid #000000',
+            padding: '32px',
+            borderRadius: '8px',
+            backgroundColor: '#f0fdf4',
+            boxShadow: '4px 4px 0px 0px #000000',
+          }}
+        >
+          <h2
+            style={{ fontSize: '20px', fontWeight: '900', color: '#166534', marginBottom: '8px' }}
+          >
+            ✓ Anfrage Erfolgreich Übermittelt
+          </h2>
+          <p style={{ color: '#15803d', fontSize: '14px', margin: 0 }}>
+            Vielen Dank! Unser Procurement- und Enterprise-Team wird Ihre Nachricht prüfen und sich
+            in Kürze melden.
+          </p>
+        </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            border: '2px solid #000000',
+            padding: '32px',
+            borderRadius: '8px',
+            backgroundColor: '#ffffff',
+            boxShadow: '4px 4px 0px 0px #000000',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '12px',
+                fontWeight: '800',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                color: '#0f172a',
+              }}
+            >
+              Organisation / Unternehmen *
+            </label>
+            <input
+              type="text"
+              required
+              placeholder="z.B. Ministerium / Enterprise AG"
+              value={formData.org}
+              onChange={(e) => setFormData({ ...formData, org: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #cbd5e1',
+                borderRadius: '4px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
 
-    console.log('Resend Response Data:', data)
-    return { success: true, data }
-  } catch (err: any) {
-    console.error('Unexpected error sending email:', err)
-    return { success: false, error: err?.message || 'Fehler beim E-Mail-Versand.' }
-  }
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '12px',
+                fontWeight: '800',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                color: '#0f172a',
+              }}
+            >
+              E-Mail Adresse *
+            </label>
+            <input
+              type="email"
+              required
+              placeholder="name@organisation.de"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #cbd5e1',
+                borderRadius: '4px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '12px',
+                fontWeight: '800',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                color: '#0f172a',
+              }}
+            >
+              Anfrage / Projektbeschreibung *
+            </label>
+            <textarea
+              rows={5}
+              required
+              placeholder="Beschreiben Sie Ihre Anforderungen oder Tender-Details..."
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                border: '1px solid #cbd5e1',
+                borderRadius: '4px',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              backgroundColor: '#fbbf24',
+              color: '#000000',
+              border: '2px solid #000000',
+              padding: '12px 24px',
+              borderRadius: '4px',
+              fontWeight: '900',
+              fontSize: '13px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              cursor: loading ? 'wait' : 'pointer',
+              boxShadow: '2px 2px 0px 0px #000000',
+              alignSelf: 'flex-start',
+            }}
+          >
+            {loading ? 'Wird Gesendet...' : 'Anfrage Absenden'}
+          </button>
+        </form>
+      )}
+    </main>
+  )
 }
