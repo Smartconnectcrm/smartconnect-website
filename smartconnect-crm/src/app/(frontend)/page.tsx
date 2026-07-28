@@ -70,18 +70,20 @@ export default async function HomePage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams
   const rawLang = resolvedParams?.lang || 'de'
   const langKey = rawLang.toUpperCase()
-  const payloadLocale = rawLang.toLowerCase()
 
   const t = pageTranslations[langKey] || pageTranslations.DE
 
-  const payload = await getPayload({ config: configPromise })
+  let services: any[] = []
 
-  // Query Payload CMS with explicitly requested locale
-  const { docs: services } = await payload.find({
-    collection: 'services',
-    locale: payloadLocale as any,
-    fallbackLocale: 'de' as any,
-  })
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const res = await payload.find({
+      collection: 'services',
+    })
+    services = res.docs || []
+  } catch (err) {
+    console.error('Failed to fetch services from Payload:', err)
+  }
 
   return (
     <main
@@ -144,8 +146,10 @@ export default async function HomePage({ searchParams }: PageProps) {
           }}
         >
           {services.map((service) => {
-            const deliverablesList = service.deliverables?.map((d) => d.item) || []
-            const boundariesList = service.boundaries?.map((b) => b.item) || []
+            const deliverablesList =
+              service.deliverables?.map((d: any) => d?.item).filter(Boolean) || []
+            const boundariesList =
+              service.boundaries?.map((b: any) => b?.item).filter(Boolean) || []
 
             return (
               <div
@@ -204,16 +208,18 @@ export default async function HomePage({ searchParams }: PageProps) {
                   </div>
 
                   {/* Description */}
-                  <p
-                    style={{
-                      fontSize: '13px',
-                      color: 'var(--text-secondary)',
-                      lineHeight: '1.5',
-                      margin: '0 0 24px 0',
-                    }}
-                  >
-                    {service.description}
-                  </p>
+                  {service.description && (
+                    <p
+                      style={{
+                        fontSize: '13px',
+                        color: 'var(--text-secondary)',
+                        lineHeight: '1.5',
+                        margin: '0 0 24px 0',
+                      }}
+                    >
+                      {service.description}
+                    </p>
+                  )}
 
                   {/* Deliverables */}
                   {deliverablesList.length > 0 && (
@@ -242,7 +248,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                           color: 'var(--text-body, var(--text-primary))',
                         }}
                       >
-                        {deliverablesList.map((itemText, idx) => (
+                        {deliverablesList.map((itemText: string, idx: number) => (
                           <li
                             key={idx}
                             style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
@@ -294,7 +300,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                         color: 'var(--text-secondary)',
                       }}
                     >
-                      {boundariesList.map((itemText, idx) => (
+                      {boundariesList.map((itemText: string, idx: number) => (
                         <li
                           key={idx}
                           style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}

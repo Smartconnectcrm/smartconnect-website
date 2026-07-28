@@ -23,21 +23,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  // Enable 8-language localization across Payload CMS
-  localization: {
-    locales: [
-      { code: 'de', label: 'Deutsch' },
-      { code: 'en', label: 'English' },
-      { code: 'hu', label: 'Magyar' },
-      { code: 'fr', label: 'Français' },
-      { code: 'es', label: 'Español' },
-      { code: 'it', label: 'Italiano' },
-      { code: 'nl', label: 'Nederlands' },
-      { code: 'pl', label: 'Polski' },
-    ],
-    defaultLocale: 'de',
-    fallback: true, // Automatically falls back to 'de' if a locale isn't translated yet
-  },
+  // Disabled temporarily to fix DB query error
+  // localization: { ... },
   collections: [Users, Media, Services],
   globals: [SiteSettings],
   editor: lexicalEditor(),

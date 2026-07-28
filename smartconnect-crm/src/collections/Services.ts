@@ -13,7 +13,6 @@ export const Services: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true,
     },
     {
       name: 'categoryTag',
@@ -29,31 +28,30 @@ export const Services: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
-      localized: true,
     },
     {
       name: 'deliverables',
       label: '✓ Deliverables',
       type: 'array',
-      fields: [{ name: 'item', type: 'text', localized: true }],
+      fields: [{ name: 'item', type: 'text' }],
     },
     {
       name: 'inputs',
       label: '↓ Typische Inputs',
       type: 'array',
-      fields: [{ name: 'item', type: 'text', localized: true }],
+      fields: [{ name: 'item', type: 'text' }],
     },
     {
       name: 'outputs',
       label: '↑ Typische Outputs',
       type: 'array',
-      fields: [{ name: 'item', type: 'text', localized: true }],
+      fields: [{ name: 'item', type: 'text' }],
     },
     {
       name: 'boundaries',
       label: '⊘ Abgrenzung',
       type: 'array',
-      fields: [{ name: 'item', type: 'text', localized: true }],
+      fields: [{ name: 'item', type: 'text' }],
     },
   ],
 }
