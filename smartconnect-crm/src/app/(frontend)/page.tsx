@@ -3,7 +3,6 @@ import configPromise from '@payload-config'
 
 export const dynamic = 'force-dynamic'
 
-// Translation Dictionary for Page UI Labels
 const pageTranslations: Record<string, Record<string, string>> = {
   DE: {
     heroTitle: 'Leistungskatalog',
@@ -73,15 +72,15 @@ export default async function HomePage({ searchParams }: PageProps) {
   const langKey = rawLang.toUpperCase()
   const payloadLocale = rawLang.toLowerCase()
 
-  // Fallback to DE if language not found in dictionary
   const t = pageTranslations[langKey] || pageTranslations.DE
 
   const payload = await getPayload({ config: configPromise })
 
-  // Fetch services from Payload with locale setting
+  // Query Payload CMS with explicitly requested locale
   const { docs: services } = await payload.find({
     collection: 'services',
     locale: payloadLocale as any,
+    fallbackLocale: 'de' as any,
   })
 
   return (
