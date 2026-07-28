@@ -136,14 +136,15 @@ function HeaderNav() {
           <img
             src="/logo.png"
             alt="SmartConnect CRM Logo"
-            width="42"
-            height="42"
+            width="44"
+            height="44"
             style={{
-              objectFit: 'contain',
+              objectFit: 'cover',
               flexShrink: 0,
               display: 'block',
-              maxHeight: '42px',
-              filter: 'drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.3))', // Adds pop in dark mode
+              borderRadius: '8px',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
             }}
           />
           <span
