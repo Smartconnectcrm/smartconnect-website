@@ -62,6 +62,7 @@ const pageTranslations: Record<string, Record<string, string>> = {
   },
 }
 
+// Full 7-card translations across all 8 languages (0 to 6)
 const cardIndexTranslations: Record<
   string,
   Array<{ title: string; description: string; deliverables: string[]; boundaries?: string[] }>
@@ -137,58 +138,58 @@ const cardIndexTranslations: Record<
     {
       title: 'Szervezeti Biztonság & Alapbeállítások',
       description:
-        'Biztonságorientált megvalósítás alapvető keményítéssel (baseline hardening), kockázati áttekintéssel és auditálható igazolásokkal.',
+        'Biztonságorientált megvalósítás alapvető keményítéssel, kockázati áttekintéssel és auditálható igazolásokkal.',
       deliverables: [
-        'Baseline-Hardening ellenőrzőlista (systemspezifisch, CIS/BSI-orientiert)',
-        'Kockázat- és intézkedéslista (priorizálva)',
-        'Lognaplózási és monitorozási ajánlások (GDPR-konform)',
-        'Dokumentáció felülvizsgálathoz és audithoz',
+        'Baseline-Hardening ellenőrzőlista (rendszerspecifikus, CIS/BSI-orientált)',
+        'Kockázat- és intézkedéslista (valószínűség és hatás szerint priorizálva)',
+        'Lognaplózási és monitorozási ajánlások (minimális, célhoz kötött, GDPR-konform)',
+        'Dokumentáció felülvizsgálathoz és audithoz (műszaki igazolások, konfigurációs exportok)',
         'Szerepkör-elv és Least-Privilege koncepció',
-        'Incidens-kezelési alapok',
+        'Incidens-kezelési alapok (eszkaláció, kommunikáció, korlátozás)',
       ],
       boundaries: [
-        'Nincs behatolási tesztelés külön megbízás nélkül',
+        'Nincs behatolási tesztelés külön megbízás és jogi jóváhagyás nélkül',
         'Nincs garantált abszolút biztonság',
-        'Nincs követési/analitikai eszközök bevezetése külön jóváhagyás nélkül',
-        'Nincs tanúsítási tanácsadás (ISO 27001, BSI IT-Grundschutz)',
+        'Nincs követési/analitikai eszközök bevezetése dokumentált koncepció nélkül',
+        'Nincs tanúsítási tanácsadás (ISO 27001, BSI IT-Grundschutz) külön megbízás nélkül',
       ],
     },
     {
       title: 'Rendszerintegráció & Interfészek',
       description:
-        'Meglévő rendszerek integrációja API-kon, ETL-folyamatokon vagy köztes szoftvereken keresztül.',
+        'Meglévő rendszerek integrációja API-kon, ETL-folyamatokon vagy köztes szoftvereken keresztül, dokumentált adatfolyamokkal.',
       deliverables: [
-        'Interfész-leírás (adatmezők, hitelesítés, hibakezelés)',
-        'Integrációs és folyamatdiagramok (UML/BPMN)',
-        'Tesztetek és átvételi kritériumok',
-        'Üzemeltetési és monitorozási útmutató',
-        'Adatfolyam-dokumentáció',
+        'Interfész-leírás (adatmezők, hitelesítés, hibakezelés, újrapróbálkozási logika)',
+        'Integrációs és folyamatdiagramok (műszakilag nyomon követhető, UML/BPMN)',
+        'Tesztetek és átvételi kritériumok (funkcionális, biztonsági, határesetek)',
+        'Üzemeltetési és monitorozási útmutató az integrációhoz',
+        'Adatfolyam-dokumentáció (forrás, transzformáció, cél, megőrzés)',
         'Hibakezelési és naplózási koncepció',
       ],
       boundaries: [
-        'Személyes adatok különleges kategóriáinak feldolgozása kizárt',
-        'Nincs élesítés tesztigazolás nélkül',
-        'Nincs tartós adattárolás a megállapodott rendszereken kívül',
-        'Nincs garancia az adatminőségre hibás forrásadatok esetén',
+        'Személyes adatok különleges kategóriáinak (GDPR 9. cikk) feldolgozása kizárt',
+        'Nincs élesítés tesztigazolás és dokumentált Change-folyamat nélkül',
+        'Nincs tartós adattárolás a megállapodott rendszereken és célokon kívül',
+        'Nincs garancia az adatminőségre a forrásrendszer hiányos validációja esetén',
       ],
     },
     {
       title: 'IT Szolgáltatás & Üzemeltetési Támogatás',
       description:
-        'Támogatás a napi működésben világos szolgáltatási modulokkal és auditálható átadhatósággal.',
+        'Támogatás a napi működésben világos szolgáltatási modulokkal, strukturált dokumentációval és auditálható átadhatósággal.',
       deliverables: [
-        'Üzemeltetési és szolgáltatási dokumentáció (Runbookok, SOP-k)',
-        'Incidens- / kérelem- / módosítási folyamatok',
+        'Üzemeltetési és szolgáltatási dokumentáció (Runbookok, Standard Operating Procedures)',
+        'Incidens- / kérelem- / módosítási folyamatok (ITSM-integráció)',
         'Szolgáltatási áttekintés a felelősségekkel (RACI-mátrix)',
         'Átadási és betanítási anyagok az üzemeltető csapatok számára',
-        'Monitorozási és riasztási alapok',
+        'Monitorozási és riasztási alapok (integráció a meglévő rendszerekbe)',
         'Eszkalációs és kommunikációs struktúra',
       ],
       boundaries: [
-        'Nincs 24/7 üzemeltetés kifejezett SLA nélkül',
-        'Nincs módosítás az éles rendszereken jóváhagyott Change-folyamat nélkül',
-        'Nincs licenc- vagy szolgáltatói szerződések átvállalása',
-        'Nincs felelősségvállalás a meglévő korábbi architektúrákért',
+        'Nincs 24/7 üzemeltetés kifejezett megállapodás és SLA nélkül',
+        'Nincs módosítás az éles rendszereken dokumentált Change-folyamat nélkül',
+        'Nincs licenc- vagy szolgáltatói szerződések átvállalása külön megbízás nélkül',
+        'Nincs felelősségvállalás a meglévő korábbi architektúrákért teljes átláthatóság nélkül',
       ],
     },
   ],
@@ -251,8 +252,8 @@ const cardIndexTranslations: Record<
         'Auditable annexes (RACI, process mapping, handover concept, reference texts)',
       ],
       boundaries: [
-        'No guarantee of award or success',
-        'No legal advice',
+        'No guarantee of award or success (decision rests with awarding bodies)',
+        'No legal advice (tender and legal questions via specialized legal department)',
         'No content expansion without agreed change process',
         'No liability assumed for third-party tender content',
       ],
@@ -270,9 +271,9 @@ const cardIndexTranslations: Record<
         'Incident response foundations (escalation, communication, containment)',
       ],
       boundaries: [
-        'No penetration testing without separate mandate',
-        'No security guarantees',
-        'No tracking/analytics implementation without consent concept',
+        'No penetration testing without separate mandate, scope definition, and legal approval',
+        'No security guarantees (results are context-dependent and point-in-time)',
+        'No tracking/analytics implementation without documented consent concept',
         'No certification consulting (ISO 27001, BSI IT-Grundschutz) without separate mandate',
       ],
     },
@@ -290,8 +291,8 @@ const cardIndexTranslations: Record<
       ],
       boundaries: [
         'No processing of special categories of personal data (Art. 9 GDPR) without separate review',
-        'No production deployment without acceptance test proof',
-        'No permanent data retention outside agreed systems',
+        'No production deployment without acceptance test proof and documented change process',
+        'No permanent data retention outside agreed systems and purposes',
         'No data quality guarantee in case of missing source system validations',
       ],
     },
@@ -311,7 +312,634 @@ const cardIndexTranslations: Record<
         'No 24/7 operations without explicit agreement and SLA definition',
         'No changes to production systems without documented change process and approval',
         'No assumption of license or provider contracts without separate mandate',
-        'No liability for legacy architectures without full transparency',
+        'No liability for legacy architectures without full transparency and documentation',
+      ],
+    },
+  ],
+  FR: [
+    {
+      title: 'Support à la Livraison et Redressement de Projet',
+      description:
+        'Assistance axée sur la stabilisation et le transfert sous pression de livraison, points ouverts et responsabilités non définies.',
+      deliverables: [
+        "Évaluation de l'état actuel et backlog des problèmes (priorisé par risque et impact)",
+        'Sprint de stabilisation (confinement, victoires rapides, plan de résolution)',
+        'Passage de relais propre (RACI, Runbooks, risques ouverts, étapes suivantes)',
+        "Check-lists d'assurance qualité et de recette (critères, preuves, points résiduels)",
+        "Structure de communication et d'escalade (format d'état, carte des parties prenantes)",
+        'Documentation des leçons apprises',
+      ],
+      boundaries: [
+        'Gestion de ligne opérationnelle / Support L1-L2',
+        'Développement logiciel ou codage spécifique',
+      ],
+    },
+    {
+      title: 'Fondations Données et Reporting',
+      description:
+        'Mise en place de bases de données et de reporting avec des définitions claires, des contrôles de qualité et une logique KPI traçable.',
+      deliverables: [
+        'Catalogue de KPI et métriques (définitions, logique de calcul, sources de données)',
+        'Fondations du modèle de données (cartographie, responsabilités, flux de données)',
+        'Contrôles de qualité des données (exhaustivité, doublons, plausibilité, cohérence)',
+        'Prototypes de tableaux de bord et rapports (périmètre limité, itératifs, vérifiables)',
+        "Documentation pour l'exploitation et les évolutions (dictionnaire de données, logique de changement)",
+        'Concept de protection et de conservation des données',
+      ],
+      boundaries: [
+        "Refonte de l'architecture de base de données",
+        "Opérations d'analyse de données en continu",
+      ],
+    },
+    {
+      title: 'Opérations Cloud et Modern Workplace',
+      description:
+        'Support opérationnel pour les environnements Microsoft 365/Azure, incluant identités, postes de travail, gouvernance et supervision.',
+      deliverables: [
+        'Processus opérationnels pour les services Cloud (Incidents/Demandes/Changements selon la logique ITIL)',
+        'Configuration des identités et des accès (MFA, accès conditionnel, modèles de rôles, PIM)',
+        "Normes de gestion des points de terminaison (jeu de politiques, normes d'équipements, conformité)",
+        'Gouvernance du tenant et des services (conventions de nommage, cycle de vie, autorisations)',
+        "Bases de supervision et d'alerte (intégration dans les systèmes existants)",
+        "Documentation de transfert (manuel d'administration, runbooks, limites opérationnelles)",
+      ],
+      boundaries: ["Support L1 centre d'appels 24/7", 'Réparation physique de matériel tiers'],
+    },
+    {
+      title: "Appels d'Offres UE & Support Achats",
+      description:
+        "Documentation prête pour les appels d'offres, structure de proposition et préparation vérifiable pour les marchés publics.",
+      deliverables: [
+        "Pack Tender-Readiness (profil d'entreprise, fiche de service, structure d'annexes)",
+        'Modules de conformité et de confidentialité (RGPD, TOMS, logique de traitement des données)',
+        'Concept de livraison et de service (périmètre, limites, hypothèses, exclusions)',
+        "Évaluation des risques et plan d'action (risques de livraison, de calendrier, de qualité)",
+        'Structure de prix et de services (modules, options, logique SLA selon les besoins)',
+        'Annexes vérifiables (RACI, cartographie des processus, concept de transfert)',
+      ],
+      boundaries: [
+        "Aucune garantie d'attribution ou de succès",
+        'Aucun conseil juridique',
+        "Pas d'extension du contenu sans processus de changement validé",
+        "Aucune responsabilité pour le contenu des appels d'offres tiers",
+      ],
+    },
+    {
+      title: 'Sécurité dès la Conception & Durcissement',
+      description:
+        'Mise en œuvre axée sur la sécurité avec durcissement de base, aperçu des risques et preuves vérifiables.',
+      deliverables: [
+        'Liste de contrôle de durcissement de base (spécifique au système, orientée CIS/BSI)',
+        'Liste des risques et actions (priorisée par probabilité et impact)',
+        'Recommandations de journalisation et supervision (minimales, conformes au RGPD)',
+        'Documentation pour examen et audit (preuves techniques, exports de configuration)',
+        'Principe des rôles et concept du moindre privilège',
+        'Bases de réponse aux incidents (escalade, communication, confinement)',
+      ],
+      boundaries: [
+        'Pas de tests de pénétration sans mandat séparé et approbation juridique',
+        'Aucune garantie de sécurité absolue',
+        "Pas de mise en œuvre d'outils de suivi sans concept de consentement",
+        'Pas de conseil en certification (ISO 27001) sans mandat séparé',
+      ],
+    },
+    {
+      title: 'Intégration de Systèmes & Interfaces',
+      description:
+        'Intégration des systèmes existants via API, processus ETL ou middleware avec flux de données traçables.',
+      deliverables: [
+        'Description des interfaces (champs de données, authentification, gestion des erreurs)',
+        "Diagrammes d'intégration et de flux (techniquement traçables, UML/BPMN)",
+        'Cas de test et critères de recette (fonctionnels, de sécurité, cas limites)',
+        "Notes d'exploitation et de supervision pour l'intégration",
+        'Documentation des flux de données (source, transformation, cible, conservation)',
+        'Concept de gestion des erreurs et de journalisation',
+      ],
+      boundaries: [
+        'Traitement des catégories particulières de données personnelles (Art. 9 RGPD) exclu',
+        "Pas de mise en production sans preuve de test d'acceptation",
+        'Pas de conservation permanente des données hors systèmes convenus',
+        'Pas de garantie de qualité des données en cas de validations défaillantes des systèmes sources',
+      ],
+    },
+    {
+      title: 'Services IT & Support Opérationnel',
+      description:
+        'Soutien dans les opérations quotidiennes avec des modules de service clairs et une capacité de transfert vérifiable.',
+      deliverables: [
+        "Documentation d'exploitation et de service (Runbooks, Procédures Opérationnelles Standards)",
+        "Processus d'incidents/demandes/changements (définition, intégration ITSM)",
+        'Aperçu des services incluant les responsabilités (Matrice RACI)',
+        "Documents de transfert et d'intégration pour les équipes d'exploitation",
+        "Bases de supervision et d'alerte (intégration dans les systèmes existants)",
+        "Structure d'escalade et de communication",
+      ],
+      boundaries: [
+        'Pas de fonctionnement 24/7 sans accord explicite et définition SLA',
+        'Pas de modifications des systèmes de production sans processus de changement',
+        'Pas de reprise de contrats de licences ou de fournisseurs',
+        'Aucune responsabilité pour les architectures anciennes sans transparence totale',
+      ],
+    },
+  ],
+  ES: [
+    {
+      title: 'Soporte de Entrega y Recuperación de Proyectos',
+      description:
+        'Asistencia orientada a la estabilización y transferencia bajo presión de entrega, puntos pendientes y responsabilidades no resueltas.',
+      deliverables: [
+        'Evaluación del estado actual y backlog de problemas (priorizado por riesgo e impacto)',
+        'Sprint de estabilización (contención, victorias rápidas, plan de solución)',
+        'Transferencia limpia (RACI, Runbooks, riesgos abiertos, siguientes pasos)',
+        'Checklists de control de calidad y aceptación (criterios, pruebas, puntos pendientes)',
+        'Estructura de comunicación y escalamiento (formato de estado, mapa de partes interesadas)',
+        'Documentación de lecciones aprendidas',
+      ],
+      boundaries: [
+        'Gestión operativa de línea / Soporte L1-L2',
+        'Desarrollo de software o código personalizado',
+      ],
+    },
+    {
+      title: 'Fundamentos de Datos e Informes',
+      description:
+        'Construcción de bases de datos e informes con definiciones claras, verificaciones de calidad de datos y lógica KPI trazable.',
+      deliverables: [
+        'Catálogo de KPIs y métricas (definiciones, lógica de cálculo, fuentes de datos)',
+        'Fundamentos del modelo de datos (mapeo, responsabilidades, flujos de datos)',
+        'Controles de calidad de datos (completitud, duplicados, plausibilidad, consistencia)',
+        'Prototipos de paneles e informes (alcance limitado, iterativos, verificables)',
+        'Documentación para operación y desarrollo posterior (diccionario de datos, lógica de cambios)',
+        'Concepto de protección de datos y retención',
+      ],
+      boundaries: [
+        'Reorganización de arquitectura de base de datos',
+        'Operaciones continuas de análisis de datos',
+      ],
+    },
+    {
+      title: 'Operaciones de Nube y Puesto de Trabajo Moderno',
+      description:
+        'Soporte operativo para entornos orientados a Microsoft 365/Azure, incluyendo identidades, dispositivos finales, gobernanza y monitoreo.',
+      deliverables: [
+        'Procesos operativos para servicios en la nube (Incidencias/Solicitudes/Cambios según lógica ITIL)',
+        'Configuración de identidad y acceso (MFA, acceso condicional, roles, PIM)',
+        'Estándares de gestión de endpoints (conjunto de directivas, estándares de dispositivos, políticas de cumplimiento)',
+        'Gobernanza de inquilinos y servicios (convenciones de nomenclatura, ciclo de vida, permisos)',
+        'Fundamentos de monitoreo y alertas (integración en sistemas existentes)',
+        'Documentación de entrega (manual de administración, runbooks, límites operativos)',
+      ],
+      boundaries: ['Soporte L1 de call-center 24/7', 'Reparación física de hardware de terceros'],
+    },
+    {
+      title: 'Licitaciones UE y Soporte de Contratación',
+      description:
+        'Documentación lista para licitaciones, estructura de propuestas y preparación verificable para contratación pública.',
+      deliverables: [
+        'Paquete Tender-Readiness (perfil de empresa, hoja de servicio, estructura de anexos)',
+        'Módulos de cumplimiento y privacidad (RGPD, TOMS, lógica de procesamiento)',
+        'Concepto de entrega y servicio (alcance, límites, supuestos, exclusiones)',
+        'Evaluación de riesgos y plan de acción (riesgos de entrega, plazo, calidad)',
+        'Estructura de precios y servicios (módulos, opciones, lógica de SLA)',
+        'Anexos auditales (RACI, mapeo de procesos, concepto de entrega)',
+      ],
+      boundaries: [
+        'Sin garantía de adjudicación o éxito',
+        'Sin asesoramiento legal',
+        'Sin ampliación de contenido sin proceso de cambio acordado',
+        'Sin responsabilidad asumida por el contenido de licitaciones de terceros',
+      ],
+    },
+    {
+      title: 'Seguridad por Diseño y Fortalecimiento Base',
+      description:
+        'Implementación orientada a la seguridad con fortalecimiento base, resumen de riesgos y pruebas auditables.',
+      deliverables: [
+        'Lista de verificación de fortalecimiento base (específica del sistema, orientada a CIS/BSI)',
+        'Lista de riesgos y acciones (priorizada por probabilidad e impacto)',
+        'Recomendaciones de registro y monitoreo (mínimas, conformes con RGPD)',
+        'Documentación para revisión y auditoría (pruebas técnicas, exportación de configuración)',
+        'Principio de roles y concepto de privilegio mínimo',
+        'Fundamentos de respuesta a incidentes (escalamiento, comunicación, contención)',
+      ],
+      boundaries: [
+        'Sin pruebas de penetración sin mandato independiente y aprobación legal',
+        'Sin garantías de seguridad absoluta',
+        'Sin implementación de herramientas de rastreo sin concepto de consentimiento',
+        'Sin consultoría de certificación (ISO 27001) sin mandato independiente',
+      ],
+    },
+    {
+      title: 'Integración de Sistemas e Interfaces',
+      description:
+        'Integración de sistemas existentes a través de APIs, procesos ETL o middleware con flujos de datos trazables.',
+      deliverables: [
+        'Descripción de interfaz (campos de datos, autenticación, gestión de errores, lógica de reintento)',
+        'Diagramas de integración y flujo (técnicamente trazables, UML/BPMN)',
+        'Casos de prueba y criterios de aceptación (funcionales, de seguridad, casos límite)',
+        'Notas de operaciones y monitoreo para la integración',
+        'Documentación de flujo de datos (origen, transformación, destino, retención)',
+        'Concepto de gestión de errores y registro',
+      ],
+      boundaries: [
+        'Tratamiento de categorías especiales de datos personales (Art. 9 RGPD) excluido',
+        'Sin despliegue en producción sin prueba de aceptación',
+        'Sin retención permanente de datos fuera de los sistemas acordados',
+        'Sin garantía de calidad de datos en caso de validaciones de origen deficientes',
+      ],
+    },
+    {
+      title: 'Servicio TI y Soporte de Operaciones',
+      description:
+        'Soporte en operaciones continuas con módulos de servicio claros, documentación estructurada y capacidad de entrega auditable.',
+      deliverables: [
+        'Documentación de operaciones y servicio (Runbooks, Procedimientos Operativos Estándar)',
+        'Procesos de incidencias/solicitudes/cambios (definición, integración ITSM)',
+        'Resumen de servicio incluyendo responsabilidades (Matriz RACI)',
+        'Documentos de entrega e incorporación para equipos de operaciones',
+        'Fundamentos de monitoreo y alertas (integración en sistemas existentes)',
+        'Estructura de escalamiento y comunicación',
+      ],
+      boundaries: [
+        'Sin operaciones 24/7 sin acuerdo explícito y definición de SLA',
+        'Sin cambios en sistemas de producción sin proceso de cambio documentado',
+        'Sin asunción de contratos de licencias o proveedores',
+        'Sin responsabilidad por arquitecturas heredadas sin transparencia total',
+      ],
+    },
+  ],
+  IT: [
+    {
+      title: 'Supporto alla Consegna e Recupero Progetti',
+      description:
+        'Supporto orientato alla stabilizzazione e al passaggio di consegne in situazioni di pressione sui tempi, punti aperti e responsabilità non definite.',
+      deliverables: [
+        'Valutazione dello stato attuale e backlog dei problemi (prioritizzazione per rischio e impatto)',
+        'Sprint di stabilizzazione (contenimento, vittorie rapide, piano di risoluzione)',
+        'Passaggio di consegne pulito (RACI, Runbook, rischi aperti, passaggi successivi)',
+        'Checklist di garanzia della qualità e collaudo (criteri, verifiche, elementi residui)',
+        'Struttura di comunicazione ed escalation (formato di stato, mappa degli stakeholder)',
+        'Documentazione delle lezioni apprese',
+      ],
+      boundaries: [
+        'Gestione operativa di linea / Supporto L1-L2',
+        'Sviluppo software o codice personalizzato',
+      ],
+    },
+    {
+      title: 'Fondamenta Dati e Reportistica',
+      description:
+        'Creazione delle basi per dati e reportistica con definizioni chiare, controlli di qualità dei dati e logica KPI tracciabile.',
+      deliverables: [
+        'Catalogo KPI e metriche (definizioni, logica di calcolo, fonti dati)',
+        'Fondamenta del modello dati (mappatura, responsabilità, flussi dati)',
+        'Controlli di qualità dei dati (completezza, duplicati, plausibilità, coerenza)',
+        'Prototipi di dashboard e report (ambito limitato, iterativi, verificabili)',
+        "Documentazione per l'operatività e lo sviluppo ulteriore (dizionario dati, logica di modifica)",
+        'Concetto di protezione e conservazione dei dati',
+      ],
+      boundaries: [
+        "Ristrutturazione dell'architettura del database",
+        'Operazioni di analisi dati continua',
+      ],
+    },
+    {
+      title: 'Operatività Cloud e Modern Workplace',
+      description:
+        'Supporto operativo per ambienti Microsoft 365/Azure, inclusi identità, dispositivi, governance e monitoraggio.',
+      deliverables: [
+        'Processi operativi per servizi cloud (incidenti/richieste/modifiche secondo logica ITIL)',
+        'Configurazione identità e accessi (MFA, accesso condizionale, ruoli, PIM)',
+        'Standard di gestione degli endpoint (set di policy, standard dispositivi, policy di conformità)',
+        'Governance tenant e servizi (convenzioni di denominazione, ciclo di vita, autorizzazioni)',
+        'Fondamenta di monitoraggio e avvisi (integrazione nei sistemi esistenti)',
+        'Documentazione di consegna (manuale di amministrazione, runbook, limiti operativi)',
+      ],
+      boundaries: ['Supporto L1 call-center 24/7', 'Riparazione fisica di hardware di terze parti'],
+    },
+    {
+      title: "Gare d'Appalto UE e Supporto Procurement",
+      description:
+        "Documentazione pronta per gare d'appalto, struttura di proposta e preparazione verificabile per gli appalti pubblici.",
+      deliverables: [
+        'Pacchetto Tender-Readiness (profilo aziendale, scheda servizio, struttura allegati)',
+        'Moduli di conformità e privacy (GDPR, TOMS, logica di trattamento dati)',
+        'Concetto di consegna e servizio (ambito, limiti, presupposti, esclusioni)',
+        "Valutazione dei rischi e piano d'azione (rischi di consegna, tempistiche, qualità)",
+        'Struttura dei prezzi e dei servizi (moduli, opzioni, logica SLA)',
+        'Allegati verificabili (RACI, mappatura processi, concetto di consegna)',
+      ],
+      boundaries: [
+        'Nessuna garanzia di aggiudicazione o successo',
+        'Nessuna consulenza legale',
+        'Nessuna estensione del contenuto senza processo di modifica approvato',
+        'Nessuna responsabilità assunta per i contenuti di gare di terzi',
+      ],
+    },
+    {
+      title: 'Sicurezza Fin dalla Progettazione & Hardening',
+      description:
+        'Implementazione orientata alla sicurezza con hardening di base, panoramica dei rischi e prove verificabili.',
+      deliverables: [
+        'Checklist di hardening di base (specifica per sistema, orientata CIS/BSI)',
+        'Elenco rischi e azioni (prioritizzato per probabilità e impatto)',
+        'Raccomandazioni di registrazione e monitoraggio (minime, conformi al GDPR)',
+        'Documentazione per revisione e audit (prove tecniche, esportazioni configurazione)',
+        'Principio dei ruoli e concetto di privilegio minimo',
+        'Fondamenta di risposta agli incidenti (escalation, comunicazione, contenimento)',
+      ],
+      boundaries: [
+        'Nessun penetration test senza mandato separato e approvazione legale',
+        'Nessuna garanzia di sicurezza assoluta',
+        'Nessuna implementazione di strumenti di tracciamento senza consenso',
+        'Nessuna consulenza di certificazione (ISO 27001) senza mandato separato',
+      ],
+    },
+    {
+      title: 'Integrazione di Sistemi e Interfacce',
+      description:
+        'Integrazione dei sistemi esistenti tramite API, processi ETL o middleware con flussi dati tracciabili.',
+      deliverables: [
+        'Descrizione interfaccia (campi dati, autenticazione, gestione errori, logica di remapping)',
+        'Diagrammi di integrazione e flusso (tecnicamente tracciabili, UML/BPMN)',
+        'Casi di test e criteri di collaudo (funzionali, di sicurezza, casi limite)',
+        "Note operative e di monitoraggio per l'integrazione",
+        'Documentazione flusso dati (origine, trasformazione, destinazione, conservazione)',
+        'Concetto di gestione errori e registrazione',
+      ],
+      boundaries: [
+        'Trattamento di categorie particolari di dati personali (Art. 9 GDPR) escluso',
+        'Nessuna messa in produzione senza prova di collaudo',
+        'Nessuna conservazione permanente dei dati fuori dai sistemi concordati',
+        'Nessuna garanzia di qualità dati in caso di validazioni di origine mancanti',
+      ],
+    },
+    {
+      title: 'Servizi IT e Supporto Operativo',
+      description:
+        'Supporto nelle operazioni quotidiane con moduli di servizio chiari, documentazione strutturata e collaudabilità.',
+      deliverables: [
+        'Documentazione operativa e di servizio (Runbook, Procedure Operative Standard)',
+        'Processi di incidenti/richieste/modifiche (definizione, integrazione ITSM)',
+        'Panoramica dei servizi con responsabilità (Matrice RACI)',
+        'Documenti di consegna e onboarding per i team operativi',
+        'Fondamenta di monitoraggio e avvisi (integrazione nei sistemi esistenti)',
+        'Struttura di escalation e comunicazione',
+      ],
+      boundaries: [
+        'Nessun funzionamento 24/7 senza accordo esplicito e definizione SLA',
+        'Nessuna modifica ai sistemi di produzione senza processo di modifica documentato',
+        'Nessun subentro in contratti di licenza o fornitori',
+        'Nessuna responsabilità per architetture legacy senza piena trasparenza',
+      ],
+    },
+  ],
+  NL: [
+    {
+      title: 'Opleverondersteuning & Projectherstel',
+      description:
+        'Ondersteuning gericht op stabilisatie en overdracht onder opleverdruk, openstaande punten en onduidelijke verantwoordelijkheden.',
+      deliverables: [
+        'Nulmeting en probleem-backlog (geprioriteerd op risico en impact)',
+        'Stabilisatiesprint (beheersing, snelle winst, herstelplan)',
+        "Schone overdracht (RACI, Runbooks, openstaande risico's, vervolgstappen)",
+        'Kwaliteitsborging en acceptatiechecklists (criteria, bewijzen, restpunten)',
+        'Communicatie- en escalatiestructuur (statusformaat, stakeholderkaart)',
+        'Documentatie van geleerde lessen',
+      ],
+      boundaries: [
+        'Lijnmanagement / L1-L2 ondersteuning',
+        'Softwareontwikkeling of maatwerkcodering',
+      ],
+    },
+    {
+      title: 'Data- & Rapportagefundamenten',
+      description:
+        'Opbouw van data- en rapportagebasis met duidelijke definities, datakwaliteitscontroles en traceerbare KPI-logica.',
+      deliverables: [
+        'KPI- en metricscatalogus (definies, berekeningslogica, databronnen)',
+        'Datamodel-fundamenten (mapping, verantwoordelijkheden, datastromen)',
+        'Datakwaliteitscontroles (volledigheid, duplicaten, plausibiliteit, consistentie)',
+        'Dashboard- en rapportprototypes (beperkte scope, iteratief, verifieerbaar)',
+        'Documentatie voor beheer en doorontwikkeling (datawoordenboek, wijzigingslogica)',
+        'Databeschermings- en bewaarconcept',
+      ],
+      boundaries: [
+        'Herziening van database-architectuur',
+        'Continu datageneratie- en analysebeheer',
+      ],
+    },
+    {
+      title: 'Cloud & Modern Workplace Operations',
+      description:
+        'Operationele ondersteuning voor Microsoft 365/Azure-omgevingen inclusief identiteiten, endpoints, governance en monitoring.',
+      deliverables: [
+        'Operationele processen voor cloudservices (incident/request/change volgens ITIL-logica)',
+        'Identiteits- en toegangsinrichting (MFA, conditional access, rolmodellen, PIM)',
+        'Endpoint management-standaarden (beleidsset, apparaatstandaarden, compliancebeleid)',
+        'Tenant- en servicegovernance (naamconventies, levenscyclus, rechten)',
+        'Monitoring- en alertfundamenten (integratie in bestaande systemen)',
+        'Overdrachtsdocumentatie (beheerdershandboek, runbooks, operationele grenzen)',
+      ],
+      boundaries: ['24/7 Callcenter L1-ondersteuning', 'Fysieke reparatie van hardware van derden'],
+    },
+    {
+      title: 'EU-Tenders & Inkoopondersteuning',
+      description:
+        'Tender-klare documentatie, voorstelstructuur en verifieerbare voorbereiding voor openbare aanbestedingen.',
+      deliverables: [
+        'Tender-Readiness Pack (bedrijfsprofiel, serviceblad, bijlagenstructuur)',
+        'Compliance- en privacymodules (AVG, TOMS, verwerkingslogica)',
+        'Leverings- en serviceconcept (scope, grenzen, aannames, uitsluitingen)',
+        "Risicobeoordeling en actieplan (leverings-, plannings- en kwaliteitsrisico's)",
+        'Prijs- en servicestructuur (modules, opties, SLA-logica)',
+        'Auditeerbare bijlagen (RACI, procesmapping, overdrachtsconcept)',
+      ],
+      boundaries: [
+        'Geen garantie op gunning of succes',
+        'Geen juridisch advies',
+        'Geen inhoudelijke uitbreiding zonder goedgekeurd wijzigingsproces',
+        'Geen aansprakelijkheid voor tenderinhoud van derden',
+      ],
+    },
+    {
+      title: 'Security-by-Design & Hardening',
+      description:
+        'Beveiligingsgerichte uitvoering met baseline hardening, risico-overzicht en auditeerbare bewijzen.',
+      deliverables: [
+        'Baseline hardening-checklist (systeemspecifiek, CIS/BSI-gericht)',
+        'Risico- en actielijst (geprioriteerd op waarschijnlijkheid en impact)',
+        'Aanbevelingen voor loggin en monitoring (minimaal, AVG-conform)',
+        'Documentatie voor controle en audit (technische bewijzen, configuratie-exports)',
+        'Rollenprincipe en Least-Privilege-concept',
+        'Incident response-basis (escalatie, communicatie, beheersing)',
+      ],
+      boundaries: [
+        'Geen penetratietesten zonder afzonderlijk mandaat en juridische goedkeuring',
+        'Geen absolute beveiligingsgaranties',
+        'Geen implementatie van tracking-tools zonder toestemmingsconcept',
+        'Geen certificeringsadvies (ISO 27001) zonder afzonderlijk mandaat',
+      ],
+    },
+    {
+      title: 'Systeemintegratie & Interfaces',
+      description:
+        "Integratie van bestaande systemen via API's, ETL-processen of middleware met traceerbare datastromen.",
+      deliverables: [
+        'Interfacebeschrijving (datavelden, authenticatie, foutafhandeling, retry-logica)',
+        'Integratie- en stroomdiagrammen (technisch traceerbaar, UML/BPMN)',
+        'Testcases en acceptatiecriteria (functioneel, beveiliging, randgevallen)',
+        'Beheers- en monitoringnotities voor de integratie',
+        'Datastroomdocumentatie (bron, transformatie, doel, bewaartermijn)',
+        'Foutafhandeling en loggingconcept',
+      ],
+      boundaries: [
+        'Verwerking van bijzondere categorieën persoonsgegevens (Art. 9 AVG) uitgesloten',
+        'Geen livegang zonder acceptatietestbewijs',
+        'Geen permanente databewaring buiten overeengekomen systemen',
+        'Geen datakwaliteitsgarantie bij ontbrekende bronvalidaties',
+      ],
+    },
+    {
+      title: 'IT-Service & Operations Support',
+      description:
+        'Ondersteuning bij dagelijks beheer met heldere servicemodules, gestructureerde documentatie en overdraagbaarheid.',
+      deliverables: [
+        'Beheers- en servicedocumentatie (Runbooks, Standard Operating Procedures)',
+        'Incident/Request/Change-processen (definitie, ITSM-integratie)',
+        'Service-overzicht inclusief verantwoordelijkheden (RACI-matrix)',
+        'Overdrachts- en onboardingdocumenten voor beheerteams',
+        'Monitoring- en alertfundamenten (integratie in bestaande systemen)',
+        'Escalatie- en communicatiestructuur',
+      ],
+      boundaries: [
+        'Geen 24/7 beheer zonder expliciete overeenkomst en SLA-definitie',
+        'Geen wijzigingen aan productiesystemen zonder gedocumenteerd change-proces',
+        'Geen overname van licentie- of providercontracten',
+        'Geen aansprakelijkheid voor verouderde architecturen zonder volledige transparantie',
+      ],
+    },
+  ],
+  PL: [
+    {
+      title: 'Wsparcie Realizacji i Naprawa Projektów',
+      description:
+        'Wsparcie ukierunkowane na stabilizację i przekazanie zadań pod presją czasu, przy otwartych kwestiach i niejasnych odpowiedzialnościach.',
+      deliverables: [
+        'Ocena stanu faktycznego i backlog problemów (priorytetyzacja według ryzyka i wpływu)',
+        'Sprint stabilizacyjny (opanowanie sytuacji, szybkie wygrane, plan naprawczy)',
+        'Czyste przekazanie (RACI, Runbooki, otwarte ryzyka, kolejne kroki)',
+        'Listy kontrolne zapewnienia jakości i odbioru (kryteria, dowody, punkty pozostałe)',
+        'Struktura komunikacji i eskalacji (format statusu, mapa interesariuszy)',
+        'Dokumentacja wyciągniętych wniosków (Lessons Learned)',
+      ],
+      boundaries: [
+        'Liniowe zarządzanie operacyjne / Wsparcie L1-L2',
+        'Tworzenie oprogramowania lub dedykowany kod',
+      ],
+    },
+    {
+      title: 'Fundamenty Danych i Raportowania',
+      description:
+        'Budowa fundamentów danych i raportowania z jasnymi definicjami, kontrolą jakości danych i przejrzystą logiką KPI.',
+      deliverables: [
+        'Katalog KPI i metryk (definicje, logika obliczeń, źródła danych)',
+        'Podstawy modelu danych (mapowanie, odpowiedzialności, przepływy danych)',
+        'Kontrole jakości danych (kompletność, duplikaty, wiarygodność, spójność)',
+        'Prototypy pulpitów nawigacyjnych i raportów (ograniczony zakres, iteracyjne, weryfikowalne)',
+        'Dokumentacja operacyjna i rozwojowa (słownik danych, logika zmian)',
+        'Koncepcja ochrony danych i ich przechowywania',
+      ],
+      boundaries: ['Przebudowa architektury bazy danych', 'Ciągłe operacje analizy danych'],
+    },
+    {
+      title: 'Operacje Chmurowe i Nowoczesne Miejsce Pracy',
+      description:
+        'Wsparcie operacyjne dla środowisk Microsoft 365/Azure, w tym tożsamości, urządzeń końcowych, zarządzania i monitoringu.',
+      deliverables: [
+        'Procesy operacyjne dla usług chmurowych (incydenty/wnioski/zmiany zgodnie z logiką ITIL)',
+        'Konfiguracja tożsamości i dostępu (MFA, dostęp warunkowy, modele ról, PIM)',
+        'Standardy zarządzania urządzeniami końcowymi (zbiór polityk, standardy urządzeń, zgodność)',
+        'Gubernancja dzierżawy i usług (konwencje nazewnictwa, cykl życia, uprawnienia)',
+        'Podstawy monitorowania i alertów (integracja z istniejącymi systemami)',
+        'Dokumentacja przekazania (podręcznik administratora, runbooki, granice operacyjne)',
+      ],
+      boundaries: ['Wsparcie L1 call-center 24/7', 'Fizyczna naprawa sprzętu firm trzecich'],
+    },
+    {
+      title: 'Przetargi UE i Wsparcie Zamówień',
+      description:
+        'Dokumentacja gotowa do przetargów, struktura propozycji i weryfikowalne przygotowanie do zamówień publicznych.',
+      deliverables: [
+        'Pakiet Tender-Readiness (profil firmy, karta usług, struktura załączników)',
+        'Moduły zgodności i prywatności (RODO, TOMS, logika przetwarzania danych)',
+        'Koncepcja dostawy i usług (zakres, granice, założenia, wyłączenia)',
+        'Ocena ryzyka i plan działań (ryzyka dostaw, harmonogramu, jakości)',
+        'Struktura cenowa i usługowa (moduły, opcje, logika SLA)',
+        'Załączniki audytowalne (RACI, mapowanie procesów, koncepcja przekazania)',
+      ],
+      boundaries: [
+        'Brak gwarancji wygranej w przetargu lub sukcesu',
+        'Brak doradztwa prawnego',
+        'Brak rozszerzenia treści bez uzgodnionego procesu zmian',
+        'Brak odpowiedzialności za treść przetargów osób trzecich',
+      ],
+    },
+    {
+      title: 'Bezpieczeństwo w Fazie Projektowania & Utwardzanie',
+      description:
+        'Realizacja zorientowana na bezpieczeństwo z utwardzaniem bazowym, przeglądem ryzyk i audytowalnymi dowodami.',
+      deliverables: [
+        'Lista kontrolna utwardzania bazowego (specyficzna dla systemu, zorientowana na CIS/BSI)',
+        'Lista ryzyk i działań (priorytetyzowana wg prawdopodobieństwa i wpływu)',
+        'Rekomendacje dotyczące logowania i monitoringu (minimalne, zgodne z RODO)',
+        'Dokumentacja do przeglądu i audytu (dowody techniczne, eksporty konfiguracji)',
+        'Zasada ról i koncepcja minimalnych uprawnień (Least Privilege)',
+        'Podstawy reagowania na incydenty (eskalacja, komunikacja, opanowanie)',
+      ],
+      boundaries: [
+        'Brak testów penetracyjnych bez osobnego mandatu i zgody prawnej',
+        'Brak gwarancji bezwzględnego bezpieczeństwa',
+        'Brak wdrażania narzędzi śledzących bez koncepcji zgody',
+        'Brak doradztwa certyfikacyjnego (ISO 27001) bez osobnego mandatu',
+      ],
+    },
+    {
+      title: 'Integracja Systemów i Interfejsy',
+      description:
+        'Integracja istniejących systemów poprzez API, procesy ETL lub oprogramowanie pośredniczące.',
+      deliverables: [
+        'Opis interfejsu (pola danych, uwierzytelnianie, obsługę błędów, logika ponawiania)',
+        'Diagramy integracji i przepływu (technicznie do prześledzenia, UML/BPMN)',
+        'Przypadki testowe i kryteria odbioru (funkcjonalne, bezpieczeństwa, brzegowe)',
+        'Uwagi operacyjne i monitoringowe dla integracji',
+        'Dokumentacja przepływu danych (źródło, transformacja, cel, retencja)',
+        'Koncepcja obsługi błędów i logowania',
+      ],
+      boundaries: [
+        'Przetwarzanie szczególnych kategorii danych osobowych (Art. 9 RODO) wyłączone',
+        'Brak wdrożenia produkcyjnego bez dowodu testu odbiorczego',
+        'Brak trwałego przechowywania danych poza uzgodnionymi systemami',
+        'Brak gwarancji jakości danych w przypadku braku walidacji w systemie źródłowym',
+      ],
+    },
+    {
+      title: 'Usługi IT i Wsparcie Operacyjne',
+      description:
+        'Wsparcie w codziennych operacjach z jasnymi modułami usługowymi, ustrukturyzowaną dokumentacją i możliwością przekazania.',
+      deliverables: [
+        'Dokumentacja operacyjna i usługowa (Runbooki, Standardowe Procedury Operacyjne)',
+        'Procesy incydentów/wniosków/zmian (definicja, integracja z ITSM)',
+        'Przegląd usług wraz z odpowiedzialnościami (Macierz RACI)',
+        'Materiały przekazania i wdrażania dla zespołów operacyjnych',
+        'Podstawy monitorowania i alertów (integracja z istniejącymi systemami)',
+        'Struktura eskalacji i komunikacji',
+      ],
+      boundaries: [
+        'Brak pracy w trybie 24/7 bez wyraźnej umowy i definicji SLA',
+        'Brak zmian w systemach produkcyjnych bez udokumentowanego procesu zmian',
+        'Brak przejmowania umów licencyjnych lub dostawców',
+        'Brak odpowiedzialności za starsze architektury bez pełnej przejrzystości',
       ],
     },
   ],
