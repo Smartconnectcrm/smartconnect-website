@@ -4,7 +4,9 @@ import React, { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { sendContactEmail } from '@/app/actions/sendContactEmail'
 
-// Translations Dictionary for Contact Page
+// Force dynamic rendering so Vercel won't bail on useSearchParams during static build
+export const dynamic = 'force-dynamic'
+
 const contactTranslations: Record<string, Record<string, string>> = {
   DE: {
     title: 'Kontakt & Anfragen',
