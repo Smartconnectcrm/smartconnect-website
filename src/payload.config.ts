@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Services } from './collections/Services'
+import { Proposals } from './collections/Proposals'
 
 // Globals
 import { SiteSettings } from './payload/globals/SiteSettings'
@@ -38,7 +39,7 @@ export default buildConfig({
     defaultLocale: 'de',
     fallback: true, // Fallback to German if a field isn't translated yet
   },
-  collections: [Users, Media, Services],
+  collections: [Users, Media, Services, Proposals],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
