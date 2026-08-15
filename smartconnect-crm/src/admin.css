@@ -1,16 +1,37 @@
 /* src/admin.css */
-.template-minimal__wrap,
-.template-minimal__main,
-main {
-  background: transparent !important;
+body,
+[data-theme],
+.template-minimal,
+.template-default {
+  background-color: #ffffff !important;
 }
 
-/* Allow the full screen watermark to show behind fields smoothly */
+/* Watermark element styling */
+.admin-watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 900px;
+  background-image: url('/smartconnect.logo.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  mix-blend-mode: multiply; /* Removes the off-white box background */
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure form cards stay clear above the watermark */
 .template-minimal__wrap > div,
 form {
-  background-color: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(4px);
+  position: relative;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(6px);
+  padding: 2.5rem;
   border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
