@@ -19,7 +19,7 @@ export default buildConfig({
   },
   collections: [Users, Services, Media],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'fallback-payload-secret-key-smartconnect-crm-2026',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
