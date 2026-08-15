@@ -70,6 +70,8 @@ export interface Config {
     users: User;
     media: Media;
     services: Service;
+    proposals: Proposal;
+    tenders: Tender;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +82,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
+    proposals: ProposalsSelect<false> | ProposalsSelect<true>;
+    tenders: TendersSelect<false> | TendersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -88,14 +92,19 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale:
+    | ('false' | 'none' | 'null')
+    | false
+    | null
+    | ('de' | 'en' | 'hu' | 'fr' | 'es' | 'it' | 'nl' | 'pl')
+    | ('de' | 'en' | 'hu' | 'fr' | 'es' | 'it' | 'nl' | 'pl')[];
   globals: {
     'site-settings': SiteSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
-  locale: null;
+  locale: 'de' | 'en' | 'hu' | 'fr' | 'es' | 'it' | 'nl' | 'pl';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -129,6 +138,8 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  name: string;
+  roles: ('admin' | 'editor' | 'viewer')[];
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -166,6 +177,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -205,6 +242,45 @@ export interface Service {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "proposals".
+ */
+export interface Proposal {
+  id: number;
+  tenderName: string;
+  tenderDocument: number | Media;
+  status?: ('draft' | 'processing' | 'ready') | null;
+  preflightScore?: number | null;
+  auditReport?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  generatedDocx?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenders".
+ */
+export interface Tender {
+  id: number;
+  title: string;
+  organization?: string | null;
+  source_url?: string | null;
+  budget?: number | null;
+  ai_score?: number | null;
+  ai_justification?: string | null;
+  status?: ('Scraped' | 'Under Review' | 'Go' | 'No-Go' | 'Submitted') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -238,6 +314,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'services';
         value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'proposals';
+        value: number | Proposal;
+      } | null)
+    | ({
+        relationTo: 'tenders';
+        value: number | Tender;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -286,6 +370,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -320,6 +406,40 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -353,6 +473,35 @@ export interface ServicesSelect<T extends boolean = true> {
         item?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "proposals_select".
+ */
+export interface ProposalsSelect<T extends boolean = true> {
+  tenderName?: T;
+  tenderDocument?: T;
+  status?: T;
+  preflightScore?: T;
+  auditReport?: T;
+  generatedDocx?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenders_select".
+ */
+export interface TendersSelect<T extends boolean = true> {
+  title?: T;
+  organization?: T;
+  source_url?: T;
+  budget?: T;
+  ai_score?: T;
+  ai_justification?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -402,14 +551,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface SiteSetting {
   id: number;
-  /**
-   * For use on light backgrounds (image_3d6c3b.jpg)
-   */
-  lightLogo: number | Media;
-  /**
-   * For use on dark backgrounds (your processed inverted file)
-   */
-  darkLogo: number | Media;
+  lightLogoUrl?: string | null;
+  darkLogoUrl?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -418,8 +561,8 @@ export interface SiteSetting {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
-  lightLogo?: T;
-  darkLogo?: T;
+  lightLogoUrl?: T;
+  darkLogoUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
