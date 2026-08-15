@@ -23,7 +23,7 @@ export default buildConfig({
         {
           rel: 'icon',
           type: 'image/png',
-          url: '/favicon.ico',
+          url: '/logo.png',
         },
       ],
     },

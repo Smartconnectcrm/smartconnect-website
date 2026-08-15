@@ -1,5 +1,6 @@
 // src/components/SccrmLogo.tsx
 import React from 'react'
+import '../admin.css' // Injects custom CSS watermark into the admin dashboard
 
 export const SccrmLogo: React.FC = () => {
   return (
