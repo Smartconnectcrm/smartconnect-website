@@ -4,26 +4,25 @@ import '@payloadcms/next/css'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* 🖼️ Fixed Center Background Watermark Logo */}
+    <div style={{ position: 'relative', minHeight: '100vh', width: '100%' }}>
+      {/* 🖼️ Full-screen broad watermark logo */}
       <div
         style={{
           position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '500px',
-          height: '500px',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
           backgroundImage: "url('/smartconnect.logo.png')",
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center center',
-          backgroundSize: 'contain',
-          opacity: 0.25,
+          backgroundSize: 'min(750px, 85vw) auto', // Makes the logo broad & responsive
+          opacity: 0.18,
           pointerEvents: 'none',
-          zIndex: 1,
+          zIndex: 0,
         }}
       />
-      <div style={{ position: 'relative', zIndex: 2 }}>{children}</div>
+      <div style={{ position: 'relative', zIndex: 1 }}>{children}</div>
     </div>
   )
 }

@@ -23,7 +23,7 @@ export default buildConfig({
         {
           rel: 'icon',
           type: 'image/png',
-          url: '/smartconnect.logo.png', // Points to the exact file in /public
+          url: '/logo.png', // Restored to previous logo.png
         },
       ],
     },
