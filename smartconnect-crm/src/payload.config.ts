@@ -23,14 +23,14 @@ export default buildConfig({
         {
           rel: 'icon',
           type: 'image/png',
-          url: '/logo.png',
+          url: '/smartconnect.logo.png', // Points to the exact file in /public
         },
       ],
     },
     components: {
       graphics: {
-        Logo: '/src/components/SccrmLogo#SccrmLogo',
-        Icon: '/src/components/SccrmLogo#SccrmIcon',
+        Logo: '@/components/SccrmLogo#SccrmLogo',
+        Icon: '@/components/SccrmLogo#SccrmIcon',
       },
     },
   },
