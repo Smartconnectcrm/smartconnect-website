@@ -1,3 +1,4 @@
+// src/payload.config.ts
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
@@ -16,6 +17,22 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' - SCCRM Admin',
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: '/favicon.ico',
+        },
+      ],
+    },
+    components: {
+      graphics: {
+        Logo: '/src/components/SccrmLogo#SccrmLogo',
+        Icon: '/src/components/SccrmLogo#SccrmIcon',
+      },
+    },
   },
   collections: [Users, Services, Media],
   editor: lexicalEditor({}),
@@ -27,9 +44,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: {
-        rejectUnauthorized: false, // Accepts Hetzner SSL certificates
+        rejectUnauthorized: false,
       },
     },
-    push: true, // Automatically syncs database schema & creates missing columns
+    push: true,
   }),
 })
