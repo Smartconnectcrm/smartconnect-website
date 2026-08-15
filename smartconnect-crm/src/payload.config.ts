@@ -9,6 +9,8 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Services } from './collections/Services'
+import { Proposals } from './collections/Proposals'
+import { Tenders } from './collections/Tenders'
 
 // Globals
 import { SiteSettings } from './payload/globals/SiteSettings'
@@ -19,13 +21,36 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: '- SmartConnect CMS',
+      description: 'SmartConnect CRM Management Dashboard',
+    },
+    components: {
+      graphics: {
+        Logo: '/components/SccrmLogo#SccrmLogo',
+        Icon: '/components/SccrmLogo#SccrmLogo',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  // Disabled temporarily to fix DB query error
-  // localization: { ... },
-  collections: [Users, Media, Services],
+  // --- Native Multi-Language Localization Configuration ---
+  localization: {
+    locales: [
+      { code: 'de', label: 'Deutsch' },
+      { code: 'en', label: 'English' },
+      { code: 'hu', label: 'Magyar' },
+      { code: 'fr', label: 'Français' },
+      { code: 'es', label: 'Español' },
+      { code: 'it', label: 'Italiano' },
+      { code: 'nl', label: 'Nederlands' },
+      { code: 'pl', label: 'Polski' },
+    ],
+    defaultLocale: 'de',
+    fallback: true,
+  },
+  collections: [Users, Media, Services, Proposals, Tenders],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -36,7 +61,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || process.env.DATABASE_URI || '',
     },
-    push: true,
+    push: true, // Automatically syncs schema columns into PostgreSQL
   }),
   sharp,
   plugins: [],

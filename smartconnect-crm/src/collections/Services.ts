@@ -4,54 +4,81 @@ export const Services: CollectionConfig = {
   slug: 'services',
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'categoryTag', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    read: () => true, // Allows public frontend fetching for Service Catalog cards
   },
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true, // Localized title
     },
     {
       name: 'categoryTag',
       type: 'select',
       defaultValue: 'RunOperations',
       options: [
-        { label: 'RunOperations', value: 'RunOperations' },
-        { label: 'Change', value: 'Change' },
-        { label: 'Advisory', value: 'Advisory' },
-        { label: 'Security', value: 'Security' },
+        { label: 'Run Operations', value: 'RunOperations' },
+        { label: 'Change / Transformation', value: 'Change' },
+        { label: 'Advisory & Consulting', value: 'Advisory' },
+        { label: 'Security & Compliance', value: 'Security' },
       ],
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true, // Localized short description
     },
     {
       name: 'deliverables',
-      label: '✓ Deliverables',
+      label: '✓ Deliverables / Leistungsinhalte',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true, // Enables language-specific deliverables
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'inputs',
       label: '↓ Typische Inputs',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true,
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'outputs',
       label: '↑ Typische Outputs',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true,
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
     {
       name: 'boundaries',
-      label: '⊘ Abgrenzung',
+      label: '⊘ Abgrenzung / Boundaries',
       type: 'array',
-      fields: [{ name: 'item', type: 'text' }],
+      localized: true, // Localized scope boundaries
+      fields: [
+        {
+          name: 'item',
+          type: 'text',
+        },
+      ],
     },
   ],
 }
