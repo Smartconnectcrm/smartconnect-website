@@ -1,37 +1,23 @@
 /* src/admin.css */
-body,
-[data-theme],
-.template-minimal,
-.template-default {
+html, body {
   background-color: #ffffff !important;
 }
 
-/* Watermark element styling */
-.admin-watermark {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 900px;
-  height: 900px;
-  background-image: url('/smartconnect.logo.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  mix-blend-mode: multiply; /* Removes the off-white box background */
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 0;
+/* Removes background containment box on Payload minimal wrappers */
+.template-minimal,
+.template-minimal__wrap,
+.template-minimal__main {
+  background: transparent !important;
 }
 
-/* Ensure form cards stay clear above the watermark */
+/* Keep form inputs legible */
 .template-minimal__wrap > div,
 form {
   position: relative;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(6px);
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(8px);
   padding: 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
