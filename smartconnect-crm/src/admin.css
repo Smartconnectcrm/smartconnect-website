@@ -1,0 +1,26 @@
+/* src/admin.css */
+body {
+  background-image: url('/logo.png'); /* Ensure logo.png exists in your /public folder */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 420px auto;
+  background-attachment: fixed;
+}
+
+/* Semi-transparent watermark overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.92); /* Adjust opacity here (0.90 - 0.95) */
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
