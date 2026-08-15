@@ -30,5 +30,6 @@ export default buildConfig({
         rejectUnauthorized: false, // Accepts Hetzner SSL certificates
       },
     },
+    push: true, // Automatically syncs database schema & creates missing columns
   }),
 })
