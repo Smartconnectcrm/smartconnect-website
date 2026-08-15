@@ -1,26 +1,28 @@
 /* src/admin.css */
-body, 
-.template-default,
-.template-minimal {
+html, body, [data-theme] {
+  background-color: #f8fafc !important;
   background-image: url('/smartconnect-logo.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
-  background-size: 380px auto !important;
+  background-size: 450px auto !important;
   background-attachment: fixed !important;
 }
 
-/* Adds a soft fade layer so your form controls stay sharp and readable */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.45);
-  pointer-events: none;
-  z-index: 0;
+/* Ensure minimal template wrappers are transparent */
+.template-minimal,
+.template-minimal__wrap,
+.template-default {
+  background: transparent !important;
 }
 
-/* Keeps form cards and interactive UI above the background watermark */
-#app, main, .template-minimal__wrap {
+/* Keep form cards readable */
+.card, 
+form, 
+.form {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(4px);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
