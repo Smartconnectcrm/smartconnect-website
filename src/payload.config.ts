@@ -10,6 +10,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Services } from './collections/Services'
 import { Proposals } from './collections/Proposals'
+import { Tenders } from './collections/Tenders'
 
 // Globals
 import { SiteSettings } from './payload/globals/SiteSettings'
@@ -20,6 +21,18 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      // Branding update: Appears in browser tab titles
+      titleSuffix: '- SmartConnect CMS',
+      description: 'SmartConnect CRM Management Dashboard',
+    },
+    components: {
+      graphics: {
+        // Replaces default Payload branding with your SmartConnect CRM Logo
+        Logo: '/components/SccrmLogo#SccrmLogo',
+        Icon: '/components/SccrmLogo#SccrmLogo',
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
@@ -39,7 +52,7 @@ export default buildConfig({
     defaultLocale: 'de',
     fallback: true, // Fallback to German if a field isn't translated yet
   },
-  collections: [Users, Media, Services, Proposals],
+  collections: [Users, Media, Services, Proposals, Tenders],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -50,7 +63,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || process.env.DATABASE_URI || '',
     },
-    push: true, // Automatically syncs localized schema columns into PostgreSQL/Supabase
+    push: true, // Automatically syncs localized schema columns into PostgreSQL
   }),
   sharp,
   plugins: [],
