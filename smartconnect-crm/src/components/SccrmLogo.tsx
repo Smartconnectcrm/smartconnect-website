@@ -8,17 +8,18 @@ export const SccrmLogo: React.FC = () => {
       <div
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '500px',
+          height: '500px',
           backgroundImage: "url('/smartconnect.logo.png')",
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center 40%',
-          backgroundSize: '420px auto',
-          opacity: 0.12, // Subtle watermark transparency
+          backgroundPosition: 'center center',
+          backgroundSize: 'contain',
+          opacity: 0.35, // Increased visibility
           pointerEvents: 'none',
-          zIndex: 0,
+          zIndex: 1, // Elevated above white background templates
         }}
       />
 
