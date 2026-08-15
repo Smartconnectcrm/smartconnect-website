@@ -1,34 +1,32 @@
 /* src/admin.css */
-html, 
-body, 
-#app, 
-[data-theme], 
-main, 
-.template-minimal, 
+html,
+body,
+[data-theme],
+.template-minimal,
 .template-default {
   background-color: #f8fafc !important;
-  background-image: url('/smartconnect-logo.png') !important;
+  background-image: url('/smartconnect.logo.png') !important;
   background-repeat: no-repeat !important;
-  background-position: center 45% !important;
-  background-size: 420px auto !important;
+  background-position: center 40% !important;
+  background-size: 450px auto !important;
   background-attachment: fixed !important;
 }
 
-/* Ensure minimal template wrappers do not obscure the background */
-.template-minimal__wrap, 
-.template-minimal__main {
+/* Ensure template wrappers do not block the background image */
+.template-minimal__wrap,
+.template-minimal__main,
+main {
   background: transparent !important;
 }
 
-/* Form container card styling for contrast */
-form, 
-.form, 
-.template-minimal__wrap > div {
+/* Add contrast card styling around the form */
+.template-minimal__wrap > div,
+form {
   position: relative;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(6px);
-  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.93) !important;
+  backdrop-filter: blur(8px);
+  padding: 2.5rem;
   border-radius: 12px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
