@@ -1,3 +1,4 @@
+// src/app/(frontend)/layout.tsx
 import type { Metadata } from 'next'
 import React from 'react'
 import Header from './components/Header'
@@ -14,34 +15,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className="notranslate" suppressHydrationWarning>
-      <head>
-        {/* Manual Favicon Link Tags pointing to public/media/logo_white.png */}
-        <link rel="icon" type="image/png" href="/media/logo_white.png" />
-        <link rel="shortcut icon" type="image/png" href="/media/logo_white.png" />
-        <link rel="apple-touch-icon" href="/media/logo_white.png" />
-      </head>
-      <body
-        className="min-h-screen flex flex-col antialiased notranslate"
-        style={{
-          backgroundColor: 'var(--bg-page, #ffffff)',
-          color: 'var(--text-primary, #0f172a)',
-          transition: 'background-color 0.25s ease, color 0.25s ease',
-        }}
-      >
-        <CustomThemeProvider>
-          {/* Dynamic Header Component */}
-          <Header />
+    <CustomThemeProvider>
+      <div className="flex flex-col min-h-screen">
+        {/* Header containing theme toggle & translation widget */}
+        <Header />
 
-          {/* Main Page Content */}
-          <main className="flex-1">{children}</main>
+        {/* Main Public Page Content */}
+        <main className="flex-1">{children}</main>
 
-          {/* Footer */}
-          <Footer />
-        </CustomThemeProvider>
-      </body>
-    </html>
+        {/* Footer */}
+        <Footer />
+      </div>
+    </CustomThemeProvider>
   )
 }
