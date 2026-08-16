@@ -4,6 +4,8 @@
 import React, { useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+
 const translations: Record<string, Record<string, string>> = {
   DE: {
     badge: 'PUBLIC SECTOR & ENTERPRISE COMPLIANCE PROFILE',
@@ -68,9 +70,10 @@ const translations: Record<string, Record<string, string>> = {
   },
 }
 
-function ProcurementContent() {
+// Inner component isolated specifically to consume search params
+function ProcurementInner() {
   const searchParams = useSearchParams()
-  const rawLang = searchParams.get('lang') || 'de'
+  const rawLang = searchParams ? searchParams.get('lang') || 'de' : 'de'
   const langKey = rawLang.toUpperCase()
   const t = translations[langKey] || translations.DE
 
@@ -116,7 +119,7 @@ function ProcurementContent() {
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        {/* Header Section with PDF Downloads */}
+        {/* Header Section */}
         <div
           style={{
             display: 'flex',
@@ -186,7 +189,7 @@ function ProcurementContent() {
           </a>
         </div>
 
-        {/* Enterprise Compliance Verification Matrix */}
+        {/* Compliance Table */}
         <div
           style={{
             border: '2px solid var(--border-color)',
@@ -352,7 +355,7 @@ function ProcurementContent() {
           </table>
         </div>
 
-        {/* Structured Corporate RFP Form */}
+        {/* Corporate RFP Form */}
         <div
           id="tender"
           style={{
@@ -591,10 +594,11 @@ function ProcurementContent() {
   )
 }
 
+// Default export wrapped completely inside Suspense boundary
 export default function ProcurementPage() {
   return (
     <Suspense fallback={<div style={{ minHeight: '80vh' }} />}>
-      <ProcurementContent />
+      <ProcurementInner />
     </Suspense>
   )
 }
