@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     const payload = await getPayload({ config: configPromise })
 
     const lead = await payload.create({
-      collection: 'leads', // Payload fully detects 'leads' now
+      collection: 'leads' as any, // Casts string to bypass the outdated union type
       data: {
         email: body.email,
         company: body.company,
