@@ -9,10 +9,12 @@ import { fileURLToPath } from 'url'
 import { Users } from './collections/Users'
 import { Services } from './collections/Services'
 import { Media } from './collections/Media'
-import { Leads } from './collections/Leads' // 👈 Added Leads collection import
+import { Leads } from './collections/Leads'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || ''
 
 export default buildConfig({
   admin: {
@@ -37,7 +39,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Services, Media, Leads], // 👈 Added Leads to collections array
+  collections: [Users, Services, Media, Leads],
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || 'fallback-payload-secret-key-smartconnect-crm-2026',
   typescript: {
@@ -45,11 +47,9 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      connectionString,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     },
-    push: true,
+    push: process.env.NODE_ENV !== 'production',
   }),
 })
