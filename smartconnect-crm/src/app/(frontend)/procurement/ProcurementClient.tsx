@@ -2,6 +2,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
 const translations: Record<string, Record<string, string>> = {
@@ -13,7 +14,7 @@ const translations: Record<string, Record<string, string>> = {
     colStatus: 'COMPLIANCE STATUS',
     colScope: 'GELTUNGSBEREICH & DETAILS',
     colLocation: 'NACHWEIS & AUDIT-VERANKERUNG',
-    downloadPack: '📄 Procurement-Dokumentation (PDF)',
+    downloadPack: '✉ Procurement-Dokumentation Anfragen',
     rfpTitle: 'OFFIZIELLE AUSSCHREIBUNG / RFP EINREICHEN',
     rfpSub:
       'Übermitteln Sie Ihre Tender-Unterlagen, Spezifikationen oder unverbindliche Voranfragen direkt an unser Procurement-Spezialistenteam.',
@@ -34,7 +35,7 @@ const translations: Record<string, Record<string, string>> = {
     colStatus: 'COMPLIANCE STATUS',
     colScope: 'SCOPE & DETAILS',
     colLocation: 'PROOF & AUDIT LOCATION',
-    downloadPack: '📄 Procurement Documentation (PDF)',
+    downloadPack: '✉ Request Procurement Documentation',
     rfpTitle: 'SUBMIT OFFICIAL RFP / TENDER',
     rfpSub:
       'Submit your tender documents, specifications, or preliminary inquiries directly to our procurement team.',
@@ -54,7 +55,7 @@ const translations: Record<string, Record<string, string>> = {
     colStatus: 'STÁTUSZ',
     colScope: 'HATÓKÖR ÉS RÉSZLETEK',
     colLocation: 'IGAZOLÁS ÉS AUDIT',
-    downloadPack: '📄 Beszerzési Dokumentáció (PDF)',
+    downloadPack: '✉ Beszerzési Dokumentáció Igénylése',
     rfpTitle: 'AJÁNLATKÉRÉS ÉS TENDER BENYÚJTÁSA',
     rfpSub:
       'Küldje el ajánlatkérési dokumentumait és specifikációit közvetlenül szakértő csapatunknak.',
@@ -105,6 +106,11 @@ export default function ProcurementClient() {
       setLoading(false)
     }
   }
+
+  const contactHref =
+    rawLang && rawLang !== 'de'
+      ? `/contact?lang=${rawLang}&type=procurement-pack`
+      : '/contact?type=procurement-pack'
 
   return (
     <main
@@ -166,10 +172,8 @@ export default function ProcurementClient() {
             </p>
           </div>
 
-          <a
-            href="/docs/SmartConnect_Procurement_Pack.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={contactHref}
             style={{
               padding: '10px 16px',
               border: '2px solid var(--border-color)',
@@ -183,10 +187,10 @@ export default function ProcurementClient() {
             }}
           >
             {t.downloadPack}
-          </a>
+          </Link>
         </div>
 
-        {/* Compliance Table */}
+        {/* Extended Enterprise Compliance Matrix */}
         <div
           style={{
             border: '2px solid var(--border-color)',
