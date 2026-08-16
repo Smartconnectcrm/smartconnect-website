@@ -1,70 +1,10 @@
 // src/app/(frontend)/page.tsx
 import React from 'react'
 import Link from 'next/link'
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
+import { pageTranslations } from '@/lib/translations'
 import { defaultServices } from '@/lib/servicesData'
 
 export const dynamic = 'force-dynamic'
-
-const pageTranslations: Record<string, Record<string, string>> = {
-  DE: {
-    heroTitle: 'Leistungskatalog',
-    heroSub:
-      'Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und compliance-orientierter Umsetzung.',
-    deliverables: '✓ Key Features & Deliverables',
-    ctaBtn: 'Anfragen / RFP →',
-  },
-  EN: {
-    heroTitle: 'Service Catalog',
-    heroSub:
-      'Structured service modules with clear boundaries, documented handovers, and compliance-oriented execution.',
-    deliverables: '✓ Key Features & Deliverables',
-    ctaBtn: 'Inquiry / RFP →',
-  },
-  HU: {
-    heroTitle: 'Szolgáltatási Katalógus',
-    heroSub:
-      'Strukturált szolgáltatási modulok világos határokkal, dokumentált átadással és megfelelőség-orientált megvalósítással.',
-    deliverables: '✓ A CSOMAG TARTALMA',
-    ctaBtn: 'Ajánlatkérés →',
-  },
-  FR: {
-    heroTitle: 'Catalogue de Services',
-    heroSub:
-      'Modules de services structurés avec délimitation claire, transfert documenté et exécution orientée conformité.',
-    deliverables: '✓ Livrables',
-    ctaBtn: 'Demande RFP →',
-  },
-  ES: {
-    heroTitle: 'Catálogo de Servicios',
-    heroSub:
-      'Módulos de servicio estructurados con clara delimitación, entrega documentada y ejecución orientada al cumplimiento.',
-    deliverables: '✓ Entregables',
-    ctaBtn: 'Consulta RFP →',
-  },
-  IT: {
-    heroTitle: 'Catalogo Servizi',
-    heroSub:
-      'Moduli di servizio strutturati con chiara delimitazione, consegna documentata ed esecuzione orientata alla conformità.',
-    deliverables: '✓ Deliverable',
-    ctaBtn: 'Richiesta Gara →',
-  },
-  NL: {
-    heroTitle: 'Dienstencatalogus',
-    heroSub:
-      'Gestructureerde servicemodules met heldere afbakening, gedocumenteerde overdracht en op naleving gerichte uitvoering.',
-    deliverables: '✓ Opleveringen',
-    ctaBtn: 'Offerte / RFP →',
-  },
-  PL: {
-    heroTitle: 'Katalog Usług',
-    heroSub:
-      'Strukturyzowane moduły usługowe z jasnym rozgraniczeniem, udokumentowanym przekazaniem i realizacją zorientowaną na zgodność.',
-    deliverables: '✓ Zakres Usługi',
-    ctaBtn: 'Zapytanie RFP →',
-  },
-}
 
 interface PageProps {
   searchParams: Promise<{ lang?: string }>
@@ -74,32 +14,14 @@ export default async function HomePage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams
   const rawLang = resolvedParams?.lang || 'de'
   const langKey = rawLang.toUpperCase()
-
   const t = pageTranslations[langKey] || pageTranslations.DE
   const contactBase = rawLang && rawLang !== 'de' ? `/contact?lang=${rawLang}` : '/contact'
 
-  let cmsServices: any[] = []
-
-  try {
-    const payload = await getPayload({ config: configPromise })
-    const res = await payload.find({ collection: 'services' })
-    cmsServices = res.docs || []
-  } catch (err) {
-    console.error('Payload fetch skipped, rendering default 12 enterprise items:', err)
-  }
-
-  const useCmsData = cmsServices.length > 0
-
   return (
     <main
-      style={{
-        backgroundColor: 'var(--bg-page)',
-        color: 'var(--text-primary)',
-        transition: 'background-color 0.25s ease, color 0.25s ease',
-        minHeight: 'calc(100vh - 80px - 300px)',
-      }}
+      style={{ backgroundColor: 'var(--bg-page)', color: 'var(--text-primary)', minHeight: '80vh' }}
     >
-      <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '40px 20px 80px 20px' }}>
+      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px 20px' }}>
         {/* Hero Section */}
         <section
           style={{
@@ -113,9 +35,7 @@ export default async function HomePage({ searchParams }: PageProps) {
               fontSize: '32px',
               fontWeight: '900',
               textTransform: 'uppercase',
-              letterSpacing: '-0.02em',
               marginBottom: '10px',
-              color: 'var(--text-primary)',
             }}
           >
             {t.heroTitle}
@@ -134,27 +54,17 @@ export default async function HomePage({ searchParams }: PageProps) {
           </p>
         </section>
 
-        {/* 12 Enterprise Service Grid */}
+        {/* 12-Item Enterprise Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
             gap: '24px',
-            alignItems: 'stretch',
           }}
         >
           {defaultServices.map((service, index) => {
-            const cmsItem = useCmsData ? cmsServices[index] : null
             const localized = service.translations[langKey] || service.translations.DE
-
-            const title = cmsItem?.title || localized.title
-            const category = service.category
-            const description = cmsItem?.description || localized.description
-            const features: string[] = localized.features
-
-            const targetHref = contactBase.includes('?')
-              ? `${contactBase}&service=${encodeURIComponent(title)}`
-              : `${contactBase}?service=${encodeURIComponent(title)}`
+            const targetHref = `${contactBase}${contactBase.includes('?') ? '&' : '?'}service=${encodeURIComponent(localized.title)}`
 
             return (
               <div
@@ -163,7 +73,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                   border: '2px solid var(--border-color)',
                   padding: '24px',
                   borderRadius: '8px',
-                  boxShadow: '4px 4px 0px 0px var(--border-color)',
+                  boxShadow: '4px 4px 0px 0px var(--shadow-color, var(--border-color))',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
@@ -171,113 +81,118 @@ export default async function HomePage({ searchParams }: PageProps) {
                 }}
               >
                 <div>
-                  {/* Category Tag & Title */}
+                  {/* Category Tag & Enterprise Badge */}
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      gap: '12px',
+                      alignItems: 'center',
                       marginBottom: '14px',
+                      gap: '8px',
                     }}
                   >
-                    <h2
+                    <span
                       style={{
-                        fontSize: '17px',
+                        fontSize: '11px',
                         fontWeight: '800',
-                        margin: 0,
-                        lineHeight: '1.3',
+                        padding: '3px 8px',
+                        borderRadius: '4px',
+                        border: '1px solid var(--border-color)',
+                        backgroundColor: 'var(--bg-tag)',
                         color: 'var(--text-primary)',
+                        whiteSpace: 'nowrap',
                       }}
                     >
-                      {title}
-                    </h2>
-                    {category && (
-                      <span
-                        style={{
-                          fontSize: '11px',
-                          fontWeight: '700',
-                          padding: '3px 8px',
-                          border: '1px solid var(--border-color)',
-                          borderRadius: '4px',
-                          whiteSpace: 'nowrap',
-                          backgroundColor: 'var(--bg-tag, #1e293b)',
-                          color: 'var(--text-primary)',
-                        }}
-                      >
-                        {category}
-                      </span>
-                    )}
+                      {service.category}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '10px',
+                        fontWeight: '700',
+                        color: '#0284c7',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      ✓ EVB-IT & ISO 27001
+                    </span>
                   </div>
 
-                  {/* Description */}
+                  <h2
+                    style={{
+                      fontSize: '18px',
+                      fontWeight: '800',
+                      margin: '0 0 10px 0',
+                      lineHeight: '1.3',
+                    }}
+                  >
+                    {localized.title}
+                  </h2>
+
                   <p
                     style={{
                       fontSize: '13px',
                       color: 'var(--text-secondary)',
                       lineHeight: '1.5',
-                      margin: '0 0 20px 0',
+                      margin: '0 0 16px 0',
                     }}
                   >
-                    {description}
+                    {localized.description}
                   </p>
 
-                  {/* Features / Deliverables */}
-                  {features.length > 0 && (
-                    <div style={{ marginBottom: '20px' }}>
-                      <h3
-                        style={{
-                          fontSize: '11px',
-                          fontWeight: '800',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.05em',
-                          color: 'var(--text-primary)',
-                          margin: '0 0 8px 0',
-                        }}
-                      >
-                        {t.deliverables}
-                      </h3>
-                      <ul
-                        style={{
-                          listStyle: 'none',
-                          padding: 0,
-                          margin: 0,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '6px',
-                          fontSize: '12px',
-                        }}
-                      >
-                        {features.map((feat: string, idx: number) => (
-                          <li
-                            key={idx}
-                            style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
-                          >
-                            <span style={{ color: '#38bdf8', fontWeight: 'bold' }}>→</span>
-                            <span style={{ lineHeight: '1.4' }}>{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  {/* Feature Deliverables */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <h3
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: '800',
+                        textTransform: 'uppercase',
+                        margin: '0 0 8px 0',
+                        color: 'var(--text-primary)',
+                      }}
+                    >
+                      {t.deliverables}
+                    </h3>
+                    <ul
+                      style={{
+                        listStyle: 'none',
+                        padding: 0,
+                        margin: 0,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '6px',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {localized.features.map((feat, idx) => (
+                        <li
+                          key={idx}
+                          style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
+                        >
+                          <span style={{ color: '#0284c7', fontWeight: 'bold' }}>→</span>
+                          <span style={{ lineHeight: '1.4' }}>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
 
-                {/* Direct Action CTA Button */}
+                {/* Direct Action Button */}
                 <Link
                   href={targetHref}
                   style={{
                     display: 'block',
                     textAlign: 'center',
-                    padding: '8px 12px',
+                    padding: '10px 14px',
                     border: '1px solid var(--border-color)',
                     borderRadius: '4px',
-                    backgroundColor: 'var(--bg-tag, #1e293b)',
+                    backgroundColor: 'var(--bg-tag)',
                     color: 'var(--text-primary)',
-                    fontWeight: '700',
+                    fontWeight: '800',
                     fontSize: '11px',
                     textTransform: 'uppercase',
                     textDecoration: 'none',
-                    letterSpacing: '0.05em',
+                    letterSpacing: '0.04em',
+                    boxShadow: '2px 2px 0px 0px var(--shadow-color, var(--border-color))',
                     marginTop: '12px',
                   }}
                 >

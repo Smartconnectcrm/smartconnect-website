@@ -1,3 +1,4 @@
+// src/app/(frontend)/components/Header.tsx
 'use client'
 
 import React, { useState, useEffect, Suspense } from 'react'
@@ -108,7 +109,6 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
-  // Active translation dictionary fallback
   const t = translations[lang] || translations.DE
 
   return (
@@ -332,7 +332,7 @@ function HeaderNav() {
           </Link>
         </div>
 
-        {/* Theme Select Dropdown (Top-Right Position) */}
+        {/* Theme Select Dropdown */}
         <div
           style={{ position: 'relative', display: 'inline-block', marginLeft: '4px' }}
           suppressHydrationWarning
