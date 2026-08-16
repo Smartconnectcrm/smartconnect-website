@@ -50,6 +50,6 @@ export default buildConfig({
       connectionString,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     },
-    push: process.env.NODE_ENV !== 'production',
+    push: true, // 👈 Force table creation in production for missing tables
   }),
 })
