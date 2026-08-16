@@ -1,21 +1,18 @@
 /* src/admin.css */
-html, body {
-  background-color: #ffffff !important;
-}
-
-/* Removes background containment box on Payload minimal wrappers */
+html, 
+body,
 .template-minimal,
 .template-minimal__wrap,
 .template-minimal__main {
   background: transparent !important;
 }
 
-/* Keep form inputs legible */
+/* Ensure the create user card stays crisp and floating */
 .template-minimal__wrap > div,
 form {
   position: relative;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.85) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(8px);
   padding: 2.5rem;
   border-radius: 12px;
