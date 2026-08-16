@@ -8,8 +8,8 @@ export const Leads: CollectionConfig = {
     defaultColumns: ['email', 'company', 'serviceInterest', 'createdAt'],
   },
   access: {
-    create: () => true, // Allow public POST requests from your lead engine
-    read: ({ req: { user } }) => Boolean(user), // Restrict reading to authenticated admin users
+    create: () => true, // Allow public POST requests from lead engine
+    read: ({ req: { user } }) => Boolean(user), // Restrict reading to authenticated admins
   },
   fields: [
     {
@@ -24,6 +24,10 @@ export const Leads: CollectionConfig = {
     {
       name: 'serviceInterest',
       type: 'text',
+    },
+    {
+      name: 'notes',
+      type: 'textarea',
     },
     {
       name: 'submittedAt',
