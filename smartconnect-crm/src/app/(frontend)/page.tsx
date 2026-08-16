@@ -62,7 +62,18 @@ const pageTranslations: Record<string, Record<string, string>> = {
   },
 }
 
-// Full 7-card translations across all 8 languages (0 to 6)
+// Default fallback items if Payload database returns empty
+const defaultFallbackServices = [
+  { id: '1', title: 'Lieferunterstützung & Projektsanierung', categoryTag: 'Enterprise' },
+  { id: '2', title: 'Daten- & Reporting-Fundamente', categoryTag: 'Data & BI' },
+  { id: '3', title: 'Cloud & Modern Workplace Operations', categoryTag: 'Cloud IT' },
+  { id: '4', title: 'EU-Tender & Procurement-Befähigung', categoryTag: 'Public Sector' },
+  { id: '5', title: 'Security-by-Design & Baseline-Härtung', categoryTag: 'Security' },
+  { id: '6', title: 'Systemintegration & Schnittstellen', categoryTag: 'Integration' },
+  { id: '7', title: 'IT-Service & Betriebssupport', categoryTag: 'Operations' },
+]
+
+// Full 7-card translations across all languages (indices 0 to 6)
 const cardIndexTranslations: Record<
   string,
   Array<{ title: string; description: string; deliverables: string[]; boundaries?: string[] }>
@@ -968,6 +979,9 @@ export default async function HomePage({ searchParams }: PageProps) {
     console.error('Failed to fetch services from Payload:', err)
   }
 
+  // Use default fallback services if database returns empty
+  const displayServices = services.length > 0 ? services : defaultFallbackServices
+
   return (
     <main
       style={{
@@ -1019,7 +1033,7 @@ export default async function HomePage({ searchParams }: PageProps) {
           </p>
         </section>
 
-        {/* Grid */}
+        {/* Service Cards Grid */}
         <div
           style={{
             display: 'grid',
@@ -1028,7 +1042,7 @@ export default async function HomePage({ searchParams }: PageProps) {
             alignItems: 'stretch',
           }}
         >
-          {services.map((service, index) => {
+          {displayServices.map((service, index) => {
             const translation = cardIndexTranslations[langKey]?.[index]
 
             const displayTitle = translation?.title || service.title
@@ -1059,7 +1073,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                 }}
               >
                 <div>
-                  {/* Title & Tag */}
+                  {/* Title & Category Tag */}
                   <div
                     style={{
                       display: 'flex',
@@ -1112,7 +1126,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                     </p>
                   )}
 
-                  {/* Deliverables */}
+                  {/* Deliverables List */}
                   {deliverablesList.length > 0 && (
                     <div style={{ marginBottom: '24px' }}>
                       <h3

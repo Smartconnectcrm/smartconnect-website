@@ -1,3 +1,4 @@
+// src/app/(frontend)/procurement/page.tsx
 import React, { Suspense } from 'react'
 import { ProcurementClient } from './ProcurementClient'
 

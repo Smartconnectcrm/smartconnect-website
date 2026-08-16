@@ -10,15 +10,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Procurement-Profil',
     subtitle:
       'Qualifikationsprofil, Standards und Compliance-Richtlinien für die Beschaffung im öffentlichen Sektor und in Enterprise-Umgebungen.',
-    evbTitle: '✓ EVB-IT Standard',
-    evbDesc:
-      'Vollständige Konformität mit Ergänzenden Vertragsbedingungen für die Beschaffung von IT-Leistungen (EVB-IT Dienstleistung / Erstellung).',
-    gdprTitle: '🔒 DSGVO & Compliance',
-    gdprDesc:
-      'Dokumentierte AVV-Muster, Auftragsverarbeitung gemäß Art. 28 DSGVO, Sitz & Datenverarbeitung exklusiv in der Europäischen Union.',
-    securityTitle: '🛡️ Information Security',
-    securityDesc:
-      'ISO 27001-orientierte Betriebsstrukturen, striktes Rollen- & Rechtemodell, MFA-Zwang für administrative Zugriffe.',
+    colStandard: 'Compliance Standard',
+    colStatus: 'Status',
+    colScope: 'Geltungsbereich & Abdeckung',
+    colVerification: 'Prüfstandort / Nachweis',
+    evbTitle: 'EVB-IT Standard',
+    evbStatus: 'Vollständig Konform',
+    evbScope: 'EVB-IT Dienstleistung, Erstellung & Pflege Vertragswerke',
+    evbVerify: 'Bereit für Öffentliche Ausschreibungen',
+    gdprTitle: 'DSGVO & Compliance',
+    gdprStatus: 'EU-Exklusiv',
+    gdprScope: 'Dokumentierte AVV-Muster gemäß Art. 28 DSGVO & EU-Hosting',
+    gdprVerify: 'Sitz & Datenverarbeitung Exklusiv in der EU',
+    securityTitle: 'Information Security',
+    securityStatus: 'ISO 27001 Orientiert',
+    securityScope: 'Striktes Rollen- & Rechtemodell, MFA-Zwang für Admin-Zugriffe',
+    securityVerify: 'Enterprise Access Security Standard',
     tenderTitle: 'RFP & Ausschreibung Einreichen',
     tenderDesc:
       'Senden Sie Ihre Ausschreibungsunterlagen oder unverbindliche Voranfragen direkt an unser Procurement-Spezialistenteam.',
@@ -29,15 +36,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Procurement Profile',
     subtitle:
       'Qualification profile, standards, and compliance guidelines for public sector and enterprise procurement.',
-    evbTitle: '✓ EVB-IT Standard',
-    evbDesc:
-      'Full compliance with Supplementary Contract Terms for Procurement of IT Services (EVB-IT Services / Creation).',
-    gdprTitle: '🔒 GDPR & Compliance',
-    gdprDesc:
-      'Documented DPA templates, data processing pursuant to Art. 28 GDPR, headquarters & data processing exclusively within the EU.',
-    securityTitle: '🛡️ Information Security',
-    securityDesc:
-      'ISO 27001-oriented operational structures, strict role & permission models, mandatory MFA for administrative access.',
+    colStandard: 'Compliance Standard',
+    colStatus: 'Status',
+    colScope: 'Scope & Coverage',
+    colVerification: 'Verification / Location',
+    evbTitle: 'EVB-IT Standard',
+    evbStatus: 'Fully Compliant',
+    evbScope: 'EVB-IT Services, Creation & Maintenance Contract Frameworks',
+    evbVerify: 'Ready for Public Sector Tenders',
+    gdprTitle: 'GDPR & Compliance',
+    gdprStatus: 'EU-Exclusive',
+    gdprScope: 'Documented DPA templates pursuant to Art. 28 GDPR & EU Hosting',
+    gdprVerify: 'Headquarters & Processing Exclusively in EU',
+    securityTitle: 'Information Security',
+    securityStatus: 'ISO 27001 Aligned',
+    securityScope: 'Strict role & permission models, mandatory MFA for Admin Access',
+    securityVerify: 'Enterprise Access Security Standard',
     tenderTitle: 'Submit RFP & Tender',
     tenderDesc:
       'Submit your tender documents or non-binding inquiries directly to our procurement specialist team.',
@@ -48,15 +62,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Beszerzési Profil',
     subtitle:
       'Képesítési profil, szabványok és megfelelőségi irányelvek a közszféra és a vállalati beszerzések számára.',
-    evbTitle: '✓ EVB-IT Szabvány',
-    evbDesc:
-      'Teljes körű megfelelőség az IT-szolgáltatások beszerzésére vonatkozó kiegészítő szerződési feltételeknek (EVB-IT).',
-    gdprTitle: '🔒 GDPR és Megfelelőség',
-    gdprDesc:
-      'Dokumentált adatfeldolgozási sablonok, GDPR 28. cikk szerinti feldolgozás, székhely és adatfeldolgozás kizárólag az EU-ban.',
-    securityTitle: '🛡️ Információbiztonság',
-    securityDesc:
-      'ISO 27001 orientált működési struktúra, szigorú szerep- és jogosultságkezelés, kötelező MFA az adminisztratív hozzáférésekhez.',
+    colStandard: 'Megfelelőségi Szabvány',
+    colStatus: 'Státusz',
+    colScope: 'Kiterjedés és Lefedettség',
+    colVerification: 'Ellenőrzés / Helyszín',
+    evbTitle: 'EVB-IT Szabvány',
+    evbStatus: 'Teljesen Megfelelő',
+    evbScope: 'EVB-IT Szolgáltatás, Fejlesztés és Karbantartás',
+    evbVerify: 'Közbeszerzésre Kész',
+    gdprTitle: 'GDPR és Megfelelőség',
+    gdprStatus: 'Kizárólag EU',
+    gdprScope: 'Adatfeldolgozási sablonok a GDPR 28. cikk szerint & EU Hosting',
+    gdprVerify: 'Székhely és Adatfeldolgozás az EU-ban',
+    securityTitle: 'Információbiztonság',
+    securityStatus: 'ISO 27001 Orientált',
+    securityScope: 'Szigorú szerepkörök, kötelező MFA adminisztratív hozzáféréshez',
+    securityVerify: 'Vállalati Hozzáférés-biztonsági Szabvány',
     tenderTitle: 'RFP és Tender Benyújtása',
     tenderDesc:
       'Küldje el tenderdokumentációját vagy kötelezettségmentes megkeresését közvetlenül beszerzési szakértő csapatunknak.',
@@ -67,15 +88,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Profil d’Achat',
     subtitle:
       'Profil de qualification, normes et directives de conformité pour les marchés publics et les achats en entreprise.',
-    evbTitle: '✓ Norme EVB-IT',
-    evbDesc:
-      'Conformité totale avec les conditions contractuelles complémentaires pour la fourniture de prestations IT (EVB-IT).',
-    gdprTitle: '🔒 RGPD & Conformité',
-    gdprDesc:
-      'Modèles de sous-traitance documentés, traitement des données selon l’Art. 28 RGPD, siège et traitement situés exclusivement dans l’UE.',
-    securityTitle: '🛡️ Sécurité de l’Information',
-    securityDesc:
-      'Structures opérationnelles axées sur ISO 27001, modèle strict de rôles et privilèges, MFA obligatoire pour l’administration.',
+    colStandard: 'Norme de Conformité',
+    colStatus: 'Statut',
+    colScope: 'Périmètre & Couverture',
+    colVerification: 'Vérification / Emplacement',
+    evbTitle: 'Norme EVB-IT',
+    evbStatus: 'Totalement Conforme',
+    evbScope: 'Contrats EVB-IT Prestation, Création et Maintenance',
+    evbVerify: 'Prêt pour les Marchés Publics',
+    gdprTitle: 'RGPD & Conformité',
+    gdprStatus: 'Exclusif UE',
+    gdprScope: 'Modèles de sous-traitance Art. 28 RGPD & Hébergement UE',
+    gdprVerify: 'Siège et Traitement Situés dans l’UE',
+    securityTitle: 'Sécurité de l’Information',
+    securityStatus: 'Aligné ISO 27001',
+    securityScope: 'Gestion stricte des privilèges, MFA obligatoire pour l’administration',
+    securityVerify: 'Norme de Sécurité d’Accès Enterprise',
     tenderTitle: 'Soumettre un RFP & Appel d’Offres',
     tenderDesc:
       'Transmettez vos documents d’appel d’offres ou demandes d’informations directement à notre équipe spécialisée en achats.',
@@ -86,15 +114,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Perfil de Contratación',
     subtitle:
       'Perfil de cualificación, estándares y directrices de cumplimiento para la contratación pública y empresarial.',
-    evbTitle: '✓ Estándar EVB-IT',
-    evbDesc:
-      'Cumplimiento total de las Condiciones Contractuales Complementarias para la Contratación de Servicios TI (EVB-IT).',
-    gdprTitle: '🔒 RGPD y Cumplimiento',
-    gdprDesc:
-      'Plantillas de encargados de tratamiento documentadas, procesamiento según Art. 28 RGPD, sede y datos procesados en la UE.',
-    securityTitle: '🛡️ Seguridad de la Información',
-    securityDesc:
-      'Estructuras operativas orientadas a ISO 27001, modelo estricto de roles y permisos, MFA obligatorio para accesos de administración.',
+    colStandard: 'Estándar de Cumplimiento',
+    colStatus: 'Estado',
+    colScope: 'Alcance y Cobertura',
+    colVerification: 'Verificación / Ubicación',
+    evbTitle: 'Estándar EVB-IT',
+    evbStatus: 'Totalmente Conforme',
+    evbScope: 'Marcos Contractuales EVB-IT Servicios, Creación y Mantenimiento',
+    evbVerify: 'Listo para Licitaciones Públicas',
+    gdprTitle: 'RGPD y Cumplimiento',
+    gdprStatus: 'Exclusivo UE',
+    gdprScope: 'Plantillas de encargado de tratamiento Art. 28 RGPD y Alojamiento UE',
+    gdprVerify: 'Sede y Procesamiento Exclusivo en la UE',
+    securityTitle: 'Seguridad de la Información',
+    securityStatus: 'Orientado a ISO 27001',
+    securityScope: 'Modelo estricto de permisos, MFA obligatorio para administración',
+    securityVerify: 'Estándar de Seguridad de Acceso Empresarial',
     tenderTitle: 'Enviar RFP y Licitación',
     tenderDesc:
       'Envíe los pliegos de su licitación o consultas preliminares directamente a nuestro equipo especializado en contratación.',
@@ -105,15 +140,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Profilo Appalti',
     subtitle:
       'Profilo di qualificazione, standard e linee guida di conformità per gli appalti del settore pubblico e aziendale.',
-    evbTitle: '✓ Standard EVB-IT',
-    evbDesc:
-      'Piena conformità con le Condizioni Contrattuali Supplementari per l’Acquisto di Servizi IT (EVB-IT).',
-    gdprTitle: '🔒 GDPR & Conformità',
-    gdprDesc:
-      'Modelli DPA documentati, trattamento dei dati ai sensi dell’Art. 28 GDPR, sede e trattamento dei dati esclusivamente nell’UE.',
-    securityTitle: '🛡️ Sicurezza delle Informazioni',
-    securityDesc:
-      'Strutture operative orientate alla ISO 27001, modello rigoroso di ruoli e permessi, MFA obbligatoria per accessi amministrativi.',
+    colStandard: 'Standard di Conformità',
+    colStatus: 'Stato',
+    colScope: 'Ambito e Copertura',
+    colVerification: 'Verifica / Posizione',
+    evbTitle: 'Standard EVB-IT',
+    evbStatus: 'Pienamente Conforme',
+    evbScope: 'Contratti EVB-IT Servizi, Creazione e Manutenzione',
+    evbVerify: 'Pronto per Gare Pubbliche',
+    gdprTitle: 'GDPR & Conformità',
+    gdprStatus: 'Esclusivo UE',
+    gdprScope: 'Modelli DPA Art. 28 GDPR e Hosting UE',
+    gdprVerify: 'Sede e Trattamento Esclusivamente nell’UE',
+    securityTitle: 'Sicurezza delle Informazioni',
+    securityStatus: 'Allineato ISO 27001',
+    securityScope: 'Controllo accessi rigoroso, MFA obbligatoria per amministrazione',
+    securityVerify: 'Standard di Sicurezza Accessi Enterprise',
     tenderTitle: 'Invia RFP e Gara d’Appalto',
     tenderDesc:
       'Inviate i documenti di gara o richieste non vincolanti direttamente al nostro team specializzato in appalti.',
@@ -124,15 +166,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Inkoopprofiel',
     subtitle:
       'Kwalificatieprofiel, standaarden en richtlijnen voor inkoop in de publieke sector en enterprise-omgevingen.',
-    evbTitle: '✓ EVB-IT Standaard',
-    evbDesc:
-      'Volledige conformiteit met aanvullende contractvoorwaarden voor inkoop van IT-diensten (EVB-IT).',
-    gdprTitle: '🔒 AVG / GDPR & Compliance',
-    gdprDesc:
-      'Gedocumenteerde verwerkersovereenkomsten, verwerking conform Art. 28 AVG, vestiging en dataverwerking exclusief binnen de EU.',
-    securityTitle: '🛡️ Informatiebeveiliging',
-    securityDesc:
-      'ISO 27001-gericht beheer, strikt rollen- en rechtenmodel, verplichte MFA voor beheerderstoegang.',
+    colStandard: 'Compliance Standaard',
+    colStatus: 'Status',
+    colScope: 'Reikwijdte & Dekking',
+    colVerification: 'Verificatie / Locatie',
+    evbTitle: 'EVB-IT Standaard',
+    evbStatus: 'Volledig Conform',
+    evbScope: 'EVB-IT Diensten, Realisatie & Onderhoud Contracten',
+    evbVerify: 'Gereed voor Publieke Tenders',
+    gdprTitle: 'AVG / GDPR & Compliance',
+    gdprStatus: 'Exclusief EU',
+    gdprScope: 'Gedocumenteerde verwerkersovereenkomsten Art. 28 AVG & EU Hosting',
+    gdprVerify: 'Vestiging & Verwerking Exclusief in de EU',
+    securityTitle: 'Informatiebeveiliging',
+    securityStatus: 'ISO 27001 Gericht',
+    securityScope: 'Strikt rollenmodel, verplichte MFA voor beheerderstoegang',
+    securityVerify: 'Enterprise Access Security Standaard',
     tenderTitle: 'RFP & Tender Indienen',
     tenderDesc:
       'Stuur uw tenderdocumenten of vrijblijvende vragen rechtstreeks naar ons inkoopspecialistenteam.',
@@ -143,14 +192,22 @@ const procurementTranslations: Record<string, Record<string, string>> = {
     title: 'Profil Zakupowy',
     subtitle:
       'Profil kwalifikacyjny, standardy i wytyczne dotyczące zgodności dla zamówień publicznych i korporacyjnych.',
-    evbTitle: '✓ Standard EVB-IT',
-    evbDesc: 'Pełna zgodność z dodatkowymi warunkami umowy na zakup usług IT (EVB-IT).',
-    gdprTitle: '🔒 RODO & Zgodność',
-    gdprDesc:
-      'Udokumentowane wzorce umów powierzenia przetwarzania, przetwarzanie wg Art. 28 RODO, siedziba i dane w Unii Europejskiej.',
-    securityTitle: '🛡️ Bezpieczeństwo Informacji',
-    securityDesc:
-      'Struktury operacyjne zorientowane na ISO 27001, rygorystyczny model ról i uprawnień, obowiązkowe MFA dla dostępów admina.',
+    colStandard: 'Standard Zgodności',
+    colStatus: 'Status',
+    colScope: 'Zakres i Pokrycie',
+    colVerification: 'Weryfikacja / Lokalizacja',
+    evbTitle: 'Standard EVB-IT',
+    evbStatus: 'Pełna Zgodność',
+    evbScope: 'Umowy EVB-IT Usługi, Tworzenie i Utrzymanie',
+    evbVerify: 'Gotowość do Zamówień Publicznych',
+    gdprTitle: 'RODO & Zgodność',
+    gdprStatus: 'Wyłącznie EU',
+    gdprScope: 'Wzorce umów powierzenia Art. 28 RODO i Hosting w EU',
+    gdprVerify: 'Siedziba i Przetwarzanie Wyłącznie w EU',
+    securityTitle: 'Bezpieczeństwo Informacji',
+    securityStatus: 'Zgodność z ISO 27001',
+    securityScope: 'Rygorystyczny model ról, obowiązkowe MFA dla adminów',
+    securityVerify: 'Standard Bezpieczeństwa Dostępu Enterprise',
     tenderTitle: 'Złóż RFP i Zapytanie Przetargowe',
     tenderDesc:
       'Prześlij dokumentację przetargową lub wstępne zapytania bezpośrednio do naszego zespołu specjalistów ds. zamówień.',
@@ -164,12 +221,32 @@ export function ProcurementClient() {
   const langKey = rawLang.toUpperCase()
 
   const t = procurementTranslations[langKey] || procurementTranslations.DE
-
   const contactHref = rawLang && rawLang !== 'de' ? `/contact?lang=${rawLang}` : '/contact'
+
+  const matrixData = [
+    {
+      title: t.evbTitle,
+      status: t.evbStatus,
+      scope: t.evbScope,
+      verify: t.evbVerify,
+    },
+    {
+      title: t.gdprTitle,
+      status: t.gdprStatus,
+      scope: t.gdprScope,
+      verify: t.gdprVerify,
+    },
+    {
+      title: t.securityTitle,
+      status: t.securityStatus,
+      scope: t.securityScope,
+      verify: t.securityVerify,
+    },
+  ]
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero Header */}
       <section
         style={{
           marginBottom: '40px',
@@ -218,107 +295,94 @@ export function ProcurementClient() {
         </p>
       </section>
 
-      {/* Grid Specs */}
+      {/* Compliance Matrix Table */}
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '24px',
           marginBottom: '48px',
+          overflowX: 'auto',
+          borderRadius: '8px',
+          border: '2px solid var(--border-color, #000000)',
+          backgroundColor: 'var(--bg-card, #ffffff)',
+          boxShadow: '4px 4px 0px 0px var(--border-color, #000000)',
         }}
       >
-        <div
+        <table
           style={{
-            border: '2px solid var(--border-color, #000000)',
-            padding: '24px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--bg-card, #ffffff)',
-            boxShadow: '4px 4px 0px 0px var(--border-color, #000000)',
+            width: '100%',
+            textAlign: 'left',
+            borderCollapse: 'collapse',
+            fontSize: '13px',
           }}
         >
-          <h2
-            style={{
-              fontSize: '16px',
-              fontWeight: '800',
-              marginBottom: '12px',
-              color: 'var(--text-primary, #0f172a)',
-            }}
-          >
-            {t.evbTitle}
-          </h2>
-          <p
-            style={{
-              fontSize: '13px',
-              color: 'var(--text-secondary, #475569)',
-              lineHeight: '1.5',
-              margin: 0,
-            }}
-          >
-            {t.evbDesc}
-          </p>
-        </div>
-
-        <div
-          style={{
-            border: '2px solid var(--border-color, #000000)',
-            padding: '24px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--bg-card, #ffffff)',
-            boxShadow: '4px 4px 0px 0px var(--border-color, #000000)',
-          }}
-        >
-          <h2
-            style={{
-              fontSize: '16px',
-              fontWeight: '800',
-              marginBottom: '12px',
-              color: 'var(--text-primary, #0f172a)',
-            }}
-          >
-            {t.gdprTitle}
-          </h2>
-          <p
-            style={{
-              fontSize: '13px',
-              color: 'var(--text-secondary, #475569)',
-              lineHeight: '1.5',
-              margin: 0,
-            }}
-          >
-            {t.gdprDesc}
-          </p>
-        </div>
-
-        <div
-          style={{
-            border: '2px solid var(--border-color, #000000)',
-            padding: '24px',
-            borderRadius: '8px',
-            backgroundColor: 'var(--bg-card, #ffffff)',
-            boxShadow: '4px 4px 0px 0px var(--border-color, #000000)',
-          }}
-        >
-          <h2
-            style={{
-              fontSize: '16px',
-              fontWeight: '800',
-              marginBottom: '12px',
-              color: 'var(--text-primary, #0f172a)',
-            }}
-          >
-            {t.securityTitle}
-          </h2>
-          <p
-            style={{
-              fontSize: '13px',
-              color: 'var(--text-secondary, #475569)',
-              lineHeight: '1.5',
-              margin: 0,
-            }}
-          >
-            {t.securityDesc}
-          </p>
-        </div>
+          <thead>
+            <tr
+              style={{
+                backgroundColor: 'var(--bg-tag, #f1f5f9)',
+                borderBottom: '2px solid var(--border-color, #000000)',
+                color: 'var(--text-primary, #0f172a)',
+                textTransform: 'uppercase',
+                fontSize: '11px',
+                fontWeight: '800',
+                letterSpacing: '0.05em',
+              }}
+            >
+              <th style={{ padding: '16px' }}>{t.colStandard}</th>
+              <th style={{ padding: '16px' }}>{t.colStatus}</th>
+              <th style={{ padding: '16px' }}>{t.colScope}</th>
+              <th style={{ padding: '16px' }}>{t.colVerification}</th>
+            </tr>
+          </thead>
+          <tbody style={{ color: 'var(--text-secondary, #334155)' }}>
+            {matrixData.map((row, idx) => (
+              <tr
+                key={idx}
+                style={{
+                  borderBottom:
+                    idx === matrixData.length - 1
+                      ? 'none'
+                      : '1px solid var(--border-color, #e2e8f0)',
+                }}
+              >
+                <td
+                  style={{
+                    padding: '16px',
+                    fontWeight: '800',
+                    color: 'var(--text-primary, #0f172a)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <span style={{ color: '#0284c7', marginRight: '6px' }}>✓</span> {row.title}
+                </td>
+                <td style={{ padding: '16px', whiteSpace: 'nowrap' }}>
+                  <span
+                    style={{
+                      padding: '3px 8px',
+                      fontSize: '11px',
+                      fontWeight: '700',
+                      borderRadius: '4px',
+                      backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                      color: '#0284c7',
+                      border: '1px solid rgba(2, 132, 199, 0.3)',
+                    }}
+                  >
+                    {row.status}
+                  </span>
+                </td>
+                <td style={{ padding: '16px', lineHeight: '1.5' }}>{row.scope}</td>
+                <td
+                  style={{
+                    padding: '16px',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {row.verify}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Tender Anchor Section */}
