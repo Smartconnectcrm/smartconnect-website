@@ -6,135 +6,65 @@ import { useSearchParams } from 'next/navigation'
 
 const translations: Record<string, Record<string, string>> = {
   DE: {
-    badge: 'PUBLIC SECTOR COMPLIANCE PROFILE',
+    badge: 'PUBLIC SECTOR & ENTERPRISE COMPLIANCE PROFILE',
     title: 'PROCUREMENT-PROFIL',
-    sub: 'Qualifikationsprofil, Standards und Compliance-Richtlinien für die Beschaffung im öffentlichen Sektor und in Enterprise-Umgebungen.',
-    colStandard: 'COMPLIANCE STANDARD',
-    colStatus: 'STATUS',
-    colScope: 'GELTUNGSBEREICH & ABDECKUNG',
-    colLocation: 'PRÜFSTANDORT / NACHWEIS',
-    rfpTitle: 'RFP & AUSSCHREIBUNG EINREICHEN',
+    sub: 'Qualifikationsprofil, vertragliche Standards und auditierbare Compliance-Richtlinien für die IT-Beschaffung im öffentlichen Sektor und in Enterprise-Umgebungen.',
+    colStandard: 'STANDARD / ZERTIFIZIERUNG',
+    colStatus: 'COMPLIANCE STATUS',
+    colScope: 'GELTUNGSBEREICH & DETAILS',
+    colLocation: 'NACHWEIS & AUDIT-VERANKERUNG',
+    downloadPack: '📄 Procurement-Dokumentation (PDF)',
+    rfpTitle: 'OFFIZIELLE AUSSCHREIBUNG / RFP EINREICHEN',
     rfpSub:
-      'Senden Sie Ihre Ausschreibungsunterlagen oder unverbindliche Voranfragen direkt an unser Procurement-Spezialistenteam.',
-    formCompany: 'Unternehmen / Behörde',
-    formEmail: 'E-Mail-Adresse',
-    formNotes: 'Projektbeschreibung / Scope',
+      'Übermitteln Sie Ihre Tender-Unterlagen, Spezifikationen oder unverbindliche Voranfragen direkt an unser Procurement-Spezialistenteam.',
+    formCompany: 'Organisation / Behörde',
+    formEmail: 'Offizielle Kontakt-E-Mail',
+    formRef: 'Ausschreibungs-ID / Ref. Nr. (Optional)',
+    formContractType: 'Gewünschter Vertragstyp',
+    formNotes: 'Projekt-Scope & Anforderungsprofil',
     formSubmit: 'Ausschreibung Übermitteln →',
     formSuccess:
-      'Vielen Dank! Ihre Anfrage wurde erfolgreich an unser Procurement-Team übermittelt.',
+      'Vielen Dank! Ihre Unterlagen wurden erfolgreich an unser Procurement-Team übermittelt.',
   },
   EN: {
-    badge: 'PUBLIC SECTOR COMPLIANCE PROFILE',
+    badge: 'PUBLIC SECTOR & ENTERPRISE COMPLIANCE PROFILE',
     title: 'PROCUREMENT PROFILE',
-    sub: 'Qualification profile, standards, and compliance guidelines for public sector procurement and enterprise environments.',
-    colStandard: 'COMPLIANCE STANDARD',
-    colStatus: 'STATUS',
-    colScope: 'SCOPE & COVERAGE',
-    colLocation: 'AUDIT LOCATION / PROOF',
-    rfpTitle: 'SUBMIT RFP & TENDER',
+    sub: 'Qualification profile, contractual standards, and auditable compliance guidelines for public sector and enterprise IT procurement.',
+    colStandard: 'STANDARD / CERTIFICATION',
+    colStatus: 'COMPLIANCE STATUS',
+    colScope: 'SCOPE & DETAILS',
+    colLocation: 'PROOF & AUDIT LOCATION',
+    downloadPack: '📄 Procurement Documentation (PDF)',
+    rfpTitle: 'SUBMIT OFFICIAL RFP / TENDER',
     rfpSub:
-      'Submit your tender documents or non-binding inquiries directly to our procurement specialist team.',
-    formCompany: 'Company / Public Authority',
-    formEmail: 'Email Address',
-    formNotes: 'Project Scope / Requirements',
+      'Submit your tender documents, specifications, or preliminary inquiries directly to our procurement team.',
+    formCompany: 'Organization / Public Authority',
+    formEmail: 'Official Contact Email',
+    formRef: 'Tender ID / Ref. Number (Optional)',
+    formContractType: 'Preferred Contract Type',
+    formNotes: 'Project Scope & Requirements Profile',
     formSubmit: 'Submit Tender Request →',
-    formSuccess: 'Thank you! Your tender request has been submitted to our procurement team.',
+    formSuccess: 'Thank you! Your submission has been securely delivered to our procurement team.',
   },
   HU: {
-    badge: 'KÖZSZFÉRA MEGFELELŐSÉGI PROFIL',
+    badge: 'KÖZSZFÉRA ÉS VÁLLALATI MEGFELELŐSÉGI PROFIL',
     title: 'BESZERZÉSI PROFIL',
-    sub: 'Minősítési profil, szabványok és megfelelőségi irányelvek a közszféra és vállalati beszerzésekhez.',
+    sub: 'Minősítési profil, szerződéses szabványok és auditálható megfelelőségi irányelvek beszerzésekhez.',
     colStandard: 'SZABVÁNY',
     colStatus: 'STÁTUSZ',
-    colScope: 'HATÓKÖR ÉS LEFEDETTSÉG',
-    colLocation: 'ELLENŐRZÉS / IGAZOLÁS',
+    colScope: 'HATÓKÖR ÉS RÉSZLETEK',
+    colLocation: 'IGAZOLÁS ÉS AUDIT',
+    downloadPack: '📄 Beszerzési Dokumentáció (PDF)',
     rfpTitle: 'AJÁNLATKÉRÉS ÉS TENDER BENYÚJTÁSA',
-    rfpSub: 'Küldje el ajánlatkérési dokumentumait közvetlenül beszerzési szakértő csapatunknak.',
-    formCompany: 'Vállalat / Intézmény',
-    formEmail: 'E-mail Cím',
-    formNotes: 'Projekt Terjedelem / Követelmények',
+    rfpSub:
+      'Küldje el ajánlatkérési dokumentumait és specifikációit közvetlenül szakértő csapatunknak.',
+    formCompany: 'Szervezet / Intézmény',
+    formEmail: 'Hivatalos Kapcsolattartási E-mail',
+    formRef: 'Tender ID / Hivatkozási Szám (Opcionális)',
+    formContractType: 'Kívánt Szerződéstípus',
+    formNotes: 'Projekt Terjedelem és Követelmények',
     formSubmit: 'Tender Benyújtása →',
-    formSuccess: 'Köszönjük! Ajánlatkérése sikeresen megérkezett beszerzési csapatunkhoz.',
-  },
-  FR: {
-    badge: 'PROFIL DE CONFORMITÉ SECTEUR PUBLIC',
-    title: "PROFIL D'ACHAT",
-    sub: 'Profil de qualification, normes et directives de conformité pour les marchés publics et entreprises.',
-    colStandard: 'NORME',
-    colStatus: 'STATUT',
-    colScope: 'PÉRIMÈTRE ET COUVERTURE',
-    colLocation: 'LIEU D’AUDIT / PREUVE',
-    rfpTitle: "SOUMETTRE UN APPEL D'OFFRES / RFP",
-    rfpSub: 'Envoyez vos documents d’appel d’offres directement à notre équipe de spécialistes.',
-    formCompany: 'Entreprise / Organisme',
-    formEmail: 'Adresse E-mail',
-    formNotes: 'Périmètre du Projet',
-    formSubmit: 'Soumettre la Demande →',
-    formSuccess: 'Merci ! Votre demande a été transmise à notre équipe d’achats.',
-  },
-  ES: {
-    badge: 'PERFIL DE CUMPLIMIENTO SECTOR PÚBLICO',
-    title: 'PERFIL DE CONTRATACIÓN',
-    sub: 'Perfil de cualificación, estándares y directivas para la contratación pública y empresarial.',
-    colStandard: 'ESTÁNDAR',
-    colStatus: 'ESTADO',
-    colScope: 'ALCANCE Y COBERTURA',
-    colLocation: 'UBICACIÓN DE AUDITORÍA',
-    rfpTitle: 'PRESENTAR LICITACIÓN / RFP',
-    rfpSub: 'Envíe sus documentos de licitación directamente a nuestro equipo especializado.',
-    formCompany: 'Empresa / Entidad Pública',
-    formEmail: 'Correo Electrónico',
-    formNotes: 'Alcance del Proyecto',
-    formSubmit: 'Enviar Licitación →',
-    formSuccess: '¡Gracias! Su solicitud ha sido enviada a nuestro equipo.',
-  },
-  IT: {
-    badge: 'PROFILO DI CONFORMITÀ SETTORE PUBBLICO',
-    title: 'PROFILO PROCUREMENT',
-    sub: 'Profilo di qualificazione, standard e linee guida per gli appalti pubblici e aziendali.',
-    colStandard: 'STANDARD',
-    colStatus: 'STATO',
-    colScope: 'AMBITO E COPERTURA',
-    colLocation: 'SEDE DI AUDIT / PROVA',
-    rfpTitle: 'INVIA GARA D’APPALTO / RFP',
-    rfpSub: 'Invia i documenti di gara direttamente al nostro team di specialisti.',
-    formCompany: 'Azienda / Ente Pubblico',
-    formEmail: 'Indirizzo Email',
-    formNotes: 'Ambito del Progetto',
-    formSubmit: 'Invia Richiesta Gara →',
-    formSuccess: 'Grazie! La tua richiesta è stata inviata al nostro team.',
-  },
-  NL: {
-    badge: 'PUBLIEKE SECTOR COMPLIANCE PROFIEL',
-    title: 'INKOOPPROFIEL',
-    sub: 'Kwalificatieprofiel, normen en richtlijnen voor inkoop in de publieke sector en enterprise-omgevingen.',
-    colStandard: 'NORME',
-    colStatus: 'STATUS',
-    colScope: 'SCOPE & DEKKING',
-    colLocation: 'AUDITLOCATIE / BEWIJS',
-    rfpTitle: 'RFP & AANBESTEDING INDIENEN',
-    rfpSub: 'Stuur uw aanbestedingsdocumenten direct naar ons inkoopteam.',
-    formCompany: 'Bedrijf / Overheidsinstantie',
-    formEmail: 'E-mailadres',
-    formNotes: 'Projectomvang',
-    formSubmit: 'Aanbesteding Indienen →',
-    formSuccess: 'Bedankt! Uw aanvraag is succesvol verzonden.',
-  },
-  PL: {
-    badge: 'PROFIL ZGODNOŚCI SEKTORA PUBLICZNEGO',
-    title: 'PROFIL ZAKUPOWY',
-    sub: 'Profil kwalifikacyjny, standardy i wytyczne zgodności dla zamówień publicznych i komercyjnych.',
-    colStandard: 'STANDARD',
-    colStatus: 'STATUS',
-    colScope: 'ZAKRES I POKRYCIE',
-    colLocation: 'LOKALIZACJA AUDYTU',
-    rfpTitle: 'ZŁÓŻ ZAPYTANIE OFERTOWE / RFP',
-    rfpSub: 'Wyślij dokumentację przetargową bezpośrednio do naszego zespołu specjalistów.',
-    formCompany: 'Firma / Instytucja',
-    formEmail: 'Adres E-mail',
-    formNotes: 'Zakres Projektu',
-    formSubmit: 'Wyślij Zapytanie →',
-    formSuccess: 'Dziękujemy! Twoje zapytanie zostało wysłane.',
+    formSuccess: 'Köszönjük! Ajánlatkérése sikeresen megérkezett csapatunkhoz.',
   },
 }
 
@@ -146,6 +76,8 @@ function ProcurementContent() {
 
   const [company, setCompany] = useState('')
   const [email, setEmail] = useState('')
+  const [tenderRef, setTenderRef] = useState('')
+  const [contractType, setContractType] = useState('EVB-IT Dienstleistung')
   const [notes, setNotes] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -161,14 +93,12 @@ function ProcurementContent() {
         body: JSON.stringify({
           company,
           email,
-          serviceInterest: 'Procurement RFP Submission',
-          notes,
+          serviceInterest: `Procurement RFP (${contractType})`,
+          notes: `[Ref: ${tenderRef}] ${notes}`,
         }),
       })
 
-      if (res.ok) {
-        setSubmitted(true)
-      }
+      if (res.ok) setSubmitted(true)
     } catch (err) {
       console.error('Submission failed:', err)
     } finally {
@@ -186,47 +116,77 @@ function ProcurementContent() {
       }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-        {/* Header Badge & Title */}
-        <div style={{ marginBottom: '32px' }}>
-          <span
+        {/* Header Section with PDF Downloads */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+            gap: '20px',
+            marginBottom: '32px',
+          }}
+        >
+          <div>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: '800',
+                padding: '4px 10px',
+                border: '1px solid var(--border-color)',
+                borderRadius: '4px',
+                backgroundColor: 'var(--bg-tag)',
+                color: 'var(--text-primary)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              ⚙ {t.badge}
+            </span>
+            <h1
+              style={{
+                fontSize: '36px',
+                fontWeight: '900',
+                textTransform: 'uppercase',
+                margin: '16px 0 10px 0',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              {t.title}
+            </h1>
+            <p
+              style={{
+                fontSize: '15px',
+                color: 'var(--text-secondary)',
+                maxWidth: '720px',
+                margin: 0,
+                lineHeight: '1.6',
+              }}
+            >
+              {t.sub}
+            </p>
+          </div>
+
+          <a
+            href="/docs/SmartConnect_Procurement_Pack.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
-              fontSize: '11px',
-              fontWeight: '800',
-              padding: '4px 10px',
-              border: '1px solid var(--border-color)',
+              padding: '10px 16px',
+              border: '2px solid var(--border-color)',
               borderRadius: '4px',
-              backgroundColor: 'var(--bg-tag)',
+              backgroundColor: 'var(--bg-card)',
               color: 'var(--text-primary)',
-              letterSpacing: '0.05em',
+              fontWeight: '800',
+              fontSize: '12px',
+              textDecoration: 'none',
+              boxShadow: '3px 3px 0px 0px var(--shadow-color, var(--border-color))',
             }}
           >
-            ⚙ {t.badge}
-          </span>
-          <h1
-            style={{
-              fontSize: '36px',
-              fontWeight: '900',
-              textTransform: 'uppercase',
-              margin: '16px 0 10px 0',
-              letterSpacing: '-0.02em',
-            }}
-          >
-            {t.title}
-          </h1>
-          <p
-            style={{
-              fontSize: '15px',
-              color: 'var(--text-secondary)',
-              maxWidth: '720px',
-              margin: 0,
-              lineHeight: '1.6',
-            }}
-          >
-            {t.sub}
-          </p>
+            {t.downloadPack}
+          </a>
         </div>
 
-        {/* Extended Enterprise Compliance Table */}
+        {/* Enterprise Compliance Verification Matrix */}
         <div
           style={{
             border: '2px solid var(--border-color)',
@@ -259,10 +219,9 @@ function ProcurementContent() {
               </tr>
             </thead>
             <tbody>
-              {/* Row 1: EVB-IT */}
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#38bdf8' }}>
-                  ✓ EVB-IT Standard
+                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#0284c7' }}>
+                  ✓ EVB-IT Framework
                 </td>
                 <td style={{ padding: '16px 18px' }}>
                   <span
@@ -279,17 +238,16 @@ function ProcurementContent() {
                   </span>
                 </td>
                 <td style={{ padding: '16px 18px', color: 'var(--text-secondary)' }}>
-                  EVB-IT Dienstleistung, Erstellung & Pflege Vertragswerke
+                  EVB-IT Dienstleistung, Erstellung & Pflege Standardverträge
                 </td>
                 <td style={{ padding: '16px 18px', fontWeight: '700' }}>
-                  Bereit für Öffentliche Ausschreibungen
+                  Deutsches Öffentliches Auftragsrecht
                 </td>
               </tr>
 
-              {/* Row 2: GDPR */}
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#38bdf8' }}>
-                  ✓ DSGVO & Compliance
+                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#0284c7' }}>
+                  ✓ DSGVO & Privacy Boundary
                 </td>
                 <td style={{ padding: '16px 18px' }}>
                   <span
@@ -306,17 +264,16 @@ function ProcurementContent() {
                   </span>
                 </td>
                 <td style={{ padding: '16px 18px', color: 'var(--text-secondary)' }}>
-                  Dokumentierte AVV-Muster gemäß Art. 28 DSGVO & EU-Hosting
+                  Art. 28 DSGVO AVV-Vorlagen, Anonymisierung & Zero-Third-Party Tracking
                 </td>
                 <td style={{ padding: '16px 18px', fontWeight: '700' }}>
-                  Sitz & Datenverarbeitung Exklusiv in der EU
+                  Sitz & Rechenzentren Exklusiv in der EU
                 </td>
               </tr>
 
-              {/* Row 3: ISO 27001 */}
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#38bdf8' }}>
-                  ✓ Information Security
+                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#0284c7' }}>
+                  ✓ ISO 27001 & Access Governance
                 </td>
                 <td style={{ padding: '16px 18px' }}>
                   <span
@@ -329,21 +286,20 @@ function ProcurementContent() {
                       fontWeight: '700',
                     }}
                   >
-                    ISO 27001 Orientiert
+                    ISMS Standard
                   </span>
                 </td>
                 <td style={{ padding: '16px 18px', color: 'var(--text-secondary)' }}>
-                  Striktes Rollen- & Rechtemodell, MFA-Zwang für Admin-Zugriffe
+                  Rollen- & Rechtemodell (RBAC/PAM), Pflicht-MFA & verschlüsselte Backups
                 </td>
                 <td style={{ padding: '16px 18px', fontWeight: '700' }}>
-                  Enterprise Access Security Standard
+                  Audited Access Control Architecture
                 </td>
               </tr>
 
-              {/* Row 4: NIS2 & BSI IT-Grundschutz */}
-              <tr>
-                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#38bdf8' }}>
-                  ✓ NIS2 & BSI Grundschutz
+              <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#0284c7' }}>
+                  ✓ NIS2 & Cyber Resiliency
                 </td>
                 <td style={{ padding: '16px 18px' }}>
                   <span
@@ -356,21 +312,47 @@ function ProcurementContent() {
                       fontWeight: '700',
                     }}
                   >
-                    Cyber-Resilient
+                    NIS2 Ready
                   </span>
                 </td>
                 <td style={{ padding: '16px 18px', color: 'var(--text-secondary)' }}>
-                  Vorfall-Meldesysteme, Lieferketten-Sicherheit und Systemhärtung
+                  Lieferketten-Sicherheit, Incident Response Protocols & Systemhärtung
                 </td>
                 <td style={{ padding: '16px 18px', fontWeight: '700' }}>
-                  Audited European Cloud Infrastructure
+                  European Critical Infrastructure Standards
+                </td>
+              </tr>
+
+              <tr>
+                <td style={{ padding: '16px 18px', fontWeight: '800', color: '#0284c7' }}>
+                  ✓ SLA & Operating Commitments
+                </td>
+                <td style={{ padding: '16px 18px' }}>
+                  <span
+                    style={{
+                      fontSize: '11px',
+                      padding: '3px 8px',
+                      borderRadius: '4px',
+                      backgroundColor: '#0284c7',
+                      color: '#fff',
+                      fontWeight: '700',
+                    }}
+                  >
+                    Enterprise Level
+                  </span>
+                </td>
+                <td style={{ padding: '16px 18px', color: 'var(--text-secondary)' }}>
+                  Kritische Reaktionszeit unter 2h, 99.9% Verfügbarkeit für Core Engines
+                </td>
+                <td style={{ padding: '16px 18px', fontWeight: '700' }}>
+                  Vertraglich Garantiert (SLA Accord)
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        {/* Interactive In-Page Tender & RFP Submission Form */}
+        {/* Structured Corporate RFP Form */}
         <div
           id="tender"
           style={{
@@ -417,64 +399,141 @@ function ProcurementContent() {
           ) : (
             <form
               onSubmit={handleSubmit}
-              style={{ display: 'grid', gap: '16px', maxWidth: '640px' }}
+              style={{ display: 'grid', gap: '16px', maxWidth: '680px' }}
             >
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '12px',
-                    fontWeight: '800',
-                    textTransform: 'uppercase',
-                    marginBottom: '6px',
-                  }}
-                >
-                  {t.formCompany}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '4px',
-                    border: '1px solid var(--border-color)',
-                    backgroundColor: 'var(--bg-page)',
-                    color: 'var(--text-primary)',
-                    fontWeight: '600',
-                  }}
-                />
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                  gap: '16px',
+                }}
+              >
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: '800',
+                      textTransform: 'uppercase',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    {t.formCompany}
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '4px',
+                      border: '1px solid var(--border-color)',
+                      backgroundColor: 'var(--bg-page)',
+                      color: 'var(--text-primary)',
+                      fontWeight: '600',
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: '800',
+                      textTransform: 'uppercase',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    {t.formEmail}
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '4px',
+                      border: '1px solid var(--border-color)',
+                      backgroundColor: 'var(--bg-page)',
+                      color: 'var(--text-primary)',
+                      fontWeight: '600',
+                    }}
+                  />
+                </div>
               </div>
 
-              <div>
-                <label
-                  style={{
-                    display: 'block',
-                    fontSize: '12px',
-                    fontWeight: '800',
-                    textTransform: 'uppercase',
-                    marginBottom: '6px',
-                  }}
-                >
-                  {t.formEmail}
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '4px',
-                    border: '1px solid var(--border-color)',
-                    backgroundColor: 'var(--bg-page)',
-                    color: 'var(--text-primary)',
-                    fontWeight: '600',
-                  }}
-                />
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                  gap: '16px',
+                }}
+              >
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: '800',
+                      textTransform: 'uppercase',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    {t.formRef}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="z. B. REF-2026-EU-882"
+                    value={tenderRef}
+                    onChange={(e) => setTenderRef(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '4px',
+                      border: '1px solid var(--border-color)',
+                      backgroundColor: 'var(--bg-page)',
+                      color: 'var(--text-primary)',
+                      fontWeight: '600',
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: '800',
+                      textTransform: 'uppercase',
+                      marginBottom: '6px',
+                    }}
+                  >
+                    {t.formContractType}
+                  </label>
+                  <select
+                    value={contractType}
+                    onChange={(e) => setContractType(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      borderRadius: '4px',
+                      border: '1px solid var(--border-color)',
+                      backgroundColor: 'var(--bg-page)',
+                      color: 'var(--text-primary)',
+                      fontWeight: '700',
+                    }}
+                  >
+                    <option value="EVB-IT Dienstleistung">EVB-IT Dienstleistung</option>
+                    <option value="EVB-IT Erstellung">EVB-IT Erstellung</option>
+                    <option value="EVB-IT Pflege">EVB-IT Pflege</option>
+                    <option value="Custom Enterprise SLA">Custom Enterprise SLA</option>
+                  </select>
+                </div>
               </div>
 
               <div>
