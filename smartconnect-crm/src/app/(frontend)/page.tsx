@@ -1,5 +1,6 @@
 // src/app/(frontend)/page.tsx
 import React from 'react'
+import Link from 'next/link'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { defaultServices } from '@/lib/servicesData'
@@ -12,48 +13,56 @@ const pageTranslations: Record<string, Record<string, string>> = {
     heroSub:
       'Strukturierte Leistungsbausteine mit klarer Abgrenzung, dokumentierter Übergabe und compliance-orientierter Umsetzung.',
     deliverables: '✓ Key Features & Deliverables',
+    ctaBtn: 'Anfragen / RFP →',
   },
   EN: {
     heroTitle: 'Service Catalog',
     heroSub:
       'Structured service modules with clear boundaries, documented handovers, and compliance-oriented execution.',
     deliverables: '✓ Key Features & Deliverables',
+    ctaBtn: 'Inquiry / RFP →',
   },
   HU: {
     heroTitle: 'Szolgáltatási Katalógus',
     heroSub:
       'Strukturált szolgáltatási modulok világos határokkal, dokumentált átadással és megfelelőség-orientált megvalósítással.',
     deliverables: '✓ A CSOMAG TARTALMA',
+    ctaBtn: 'Ajánlatkérés →',
   },
   FR: {
     heroTitle: 'Catalogue de Services',
     heroSub:
       'Modules de services structurés avec délimitation claire, transfert documenté et exécution orientée conformité.',
     deliverables: '✓ Livrables',
+    ctaBtn: 'Demande RFP →',
   },
   ES: {
     heroTitle: 'Catálogo de Servicios',
     heroSub:
       'Módulos de servicio estructurados con clara delimitación, entrega documentada y ejecución orientada al cumplimiento.',
     deliverables: '✓ Entregables',
+    ctaBtn: 'Consulta RFP →',
   },
   IT: {
     heroTitle: 'Catalogo Servizi',
     heroSub:
       'Moduli di servizio strutturati con chiara delimitazione, consegna documentata ed esecuzione orientata alla conformità.',
     deliverables: '✓ Deliverable',
+    ctaBtn: 'Richiesta Gara →',
   },
   NL: {
     heroTitle: 'Dienstencatalogus',
     heroSub:
       'Gestructureerde servicemodules met heldere afbakening, gedocumenteerde overdracht en op naleving gerichte uitvoering.',
     deliverables: '✓ Opleveringen',
+    ctaBtn: 'Offerte / RFP →',
   },
   PL: {
     heroTitle: 'Katalog Usług',
     heroSub:
       'Strukturyzowane moduły usługowe z jasnym rozgraniczeniem, udokumentowanym przekazaniem i realizacją zorientowaną na zgodność.',
     deliverables: '✓ Zakres Usługi',
+    ctaBtn: 'Zapytanie RFP →',
   },
 }
 
@@ -61,27 +70,25 @@ interface PageProps {
   searchParams: Promise<{ lang?: string }>
 }
 
-// 👈 MUST BE EXPORTED AS DEFAULT
 export default async function HomePage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams
   const rawLang = resolvedParams?.lang || 'de'
   const langKey = rawLang.toUpperCase()
 
   const t = pageTranslations[langKey] || pageTranslations.DE
+  const contactBase = rawLang && rawLang !== 'de' ? `/contact?lang=${rawLang}` : '/contact'
 
   let cmsServices: any[] = []
 
   try {
     const payload = await getPayload({ config: configPromise })
-    const res = await payload.find({
-      collection: 'services',
-    })
+    const res = await payload.find({ collection: 'services' })
     cmsServices = res.docs || []
   } catch (err) {
-    console.error('Payload fetch skipped, rendering 12 enterprise default items:', err)
+    console.error('Payload fetch skipped, rendering default 12 enterprise items:', err)
   }
 
-  const displayServices = cmsServices.length > 0 ? cmsServices : defaultServices
+  const useCmsData = cmsServices.length > 0
 
   return (
     <main
@@ -92,14 +99,8 @@ export default async function HomePage({ searchParams }: PageProps) {
         minHeight: 'calc(100vh - 80px - 300px)',
       }}
     >
-      <div
-        style={{
-          maxWidth: '1240px',
-          margin: '0 auto',
-          padding: '40px 20px 80px 20px',
-        }}
-      >
-        {/* Hero Header */}
+      <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '40px 20px 80px 20px' }}>
+        {/* Hero Section */}
         <section
           style={{
             marginBottom: '36px',
@@ -142,14 +143,18 @@ export default async function HomePage({ searchParams }: PageProps) {
             alignItems: 'stretch',
           }}
         >
-          {displayServices.map((service, index) => {
-            const title = service.title
-            const category = service.category || service.categoryTag
-            const description = service.description
-            const features: string[] =
-              service.features ||
-              service.deliverables?.map((d: any) => d?.item).filter(Boolean) ||
-              []
+          {defaultServices.map((service, index) => {
+            const cmsItem = useCmsData ? cmsServices[index] : null
+            const localized = service.translations[langKey] || service.translations.DE
+
+            const title = cmsItem?.title || localized.title
+            const category = service.category
+            const description = cmsItem?.description || localized.description
+            const features: string[] = localized.features
+
+            const targetHref = contactBase.includes('?')
+              ? `${contactBase}&service=${encodeURIComponent(title)}`
+              : `${contactBase}?service=${encodeURIComponent(title)}`
 
             return (
               <div
@@ -196,7 +201,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                           border: '1px solid var(--border-color)',
                           borderRadius: '4px',
                           whiteSpace: 'nowrap',
-                          backgroundColor: 'var(--bg-tag, #f1f5f9)',
+                          backgroundColor: 'var(--bg-tag, #1e293b)',
                           color: 'var(--text-primary)',
                         }}
                       >
@@ -217,9 +222,9 @@ export default async function HomePage({ searchParams }: PageProps) {
                     {description}
                   </p>
 
-                  {/* Feature Bullets */}
+                  {/* Features / Deliverables */}
                   {features.length > 0 && (
-                    <div>
+                    <div style={{ marginBottom: '20px' }}>
                       <h3
                         style={{
                           fontSize: '11px',
@@ -248,7 +253,7 @@ export default async function HomePage({ searchParams }: PageProps) {
                             key={idx}
                             style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}
                           >
-                            <span style={{ color: '#0284c7', fontWeight: 'bold' }}>→</span>
+                            <span style={{ color: '#38bdf8', fontWeight: 'bold' }}>→</span>
                             <span style={{ lineHeight: '1.4' }}>{feat}</span>
                           </li>
                         ))}
@@ -256,6 +261,28 @@ export default async function HomePage({ searchParams }: PageProps) {
                     </div>
                   )}
                 </div>
+
+                {/* Direct Action CTA Button */}
+                <Link
+                  href={targetHref}
+                  style={{
+                    display: 'block',
+                    textAlign: 'center',
+                    padding: '8px 12px',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '4px',
+                    backgroundColor: 'var(--bg-tag, #1e293b)',
+                    color: 'var(--text-primary)',
+                    fontWeight: '700',
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    letterSpacing: '0.05em',
+                    marginTop: '12px',
+                  }}
+                >
+                  {t.ctaBtn}
+                </Link>
               </div>
             )
           })}
