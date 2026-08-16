@@ -4,43 +4,46 @@ body {
   background-color: #ffffff !important;
 }
 
-/* Removes Payload internal template background boxes */
+/* Clear Payload template background layers */
 .template-minimal,
 .template-minimal__wrap,
 .template-minimal__main {
   background: transparent !important;
 }
 
-/* Watermark overlay styling with radial border-fade mask */
+/* Contrast-boosted, borderless radial watermark */
 .admin-watermark-overlay {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 900px;
-  height: 900px;
-  max-width: 95vw;
-  max-height: 95vh;
+  width: 700px;
+  height: 700px;
+  max-width: 90vw;
+  max-height: 90vh;
   background-image: url('/smartconnect.logo.png');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
+  
+  /* Boost line contrast and darken gray nodes */
+  filter: contrast(180%) brightness(88%);
   mix-blend-mode: multiply;
-  opacity: 0.16;
+  opacity: 0.28;
   pointer-events: none;
   z-index: 0;
-  
-  /* Mask out the square outer edges */
-  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 72%);
-  mask-image: radial-gradient(circle at center, black 40%, transparent 72%);
+
+  /* Dissolve image background square seamlessly */
+  -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 75%);
+  mask-image: radial-gradient(circle at center, black 45%, transparent 75%);
 }
 
-/* Keep the form card clean and sharp */
+/* Ensure form card stays sharp and readable */
 .template-minimal__wrap > div,
 form {
   position: relative;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.94) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(8px);
   padding: 2.5rem;
   border-radius: 12px;
