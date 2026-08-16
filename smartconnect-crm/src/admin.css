@@ -1,24 +1,24 @@
-/* src/admin.css */
-html,
-body {
-  background-color: #f8fafc !important;
-}
-
-/* Make internal Payload minimal wrappers transparent */
-.template-minimal,
-.template-minimal__wrap,
-.template-minimal__main {
-  background: transparent !important;
-}
-
-/* Sharp form card container */
-.template-minimal__wrap > div,
-form {
+/* Custom Admin Panel Styling & Vector Watermark */
+body, .payload-admin {
   position: relative;
-  z-index: 2;
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  padding: 2.5rem;
-  border-radius: 14px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+}
+
+/* Background SVG Watermark */
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 750px;
+  height: 750px;
+  max-width: 90vw;
+  max-height: 90vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' stroke='%23334155' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M 60,60 C 35,85 35,115 60,140 C 85,165 115,165 140,140 C 165,115 165,85 140,60 C 115,35 85,35 60,60 Z' /%3E%3Cpath d='M 140,60 C 165,85 165,115 140,140 C 115,165 85,165 60,140 C 35,115 35,85 60,60 Z' /%3E%3Cpath d='M 75,75 L 125,125' /%3E%3Cpath d='M 125,75 L 75,125' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
