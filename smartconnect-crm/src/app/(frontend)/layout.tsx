@@ -18,14 +18,14 @@ export const metadata: Metadata = {
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
     <CustomThemeProvider>
-      <div className="flex flex-col min-h-screen">
-        {/* Header containing theme toggle & translation widget */}
+      <div className="flex flex-col min-h-screen bg-[var(--bg-page,#ffffff)] text-[var(--text-primary,#0f172a)] transition-colors duration-250">
+        {/* Navigation Header with Theme Toggle & Language Selector */}
         <Header />
 
-        {/* Main Public Page Content */}
-        <main className="flex-1">{children}</main>
+        {/* Public Content Area Wrapper */}
+        <div className="flex-1 w-full">{children}</div>
 
-        {/* Footer */}
+        {/* Global Footer */}
         <Footer />
       </div>
     </CustomThemeProvider>
