@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     services: Service;
     proposals: Proposal;
+    tenders: Tender;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     services: ServicesSelect<false> | ServicesSelect<true>;
     proposals: ProposalsSelect<false> | ProposalsSelect<true>;
+    tenders: TendersSelect<false> | TendersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -235,6 +237,22 @@ export interface Proposal {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenders".
+ */
+export interface Tender {
+  id: number;
+  title: string;
+  organization?: string | null;
+  source_url?: string | null;
+  budget?: number | null;
+  ai_score?: number | null;
+  ai_justification?: string | null;
+  status?: ('Scraped' | 'Under Review' | 'Go' | 'No-Go' | 'Submitted') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -272,6 +290,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'proposals';
         value: number | Proposal;
+      } | null)
+    | ({
+        relationTo: 'tenders';
+        value: number | Tender;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -401,6 +423,21 @@ export interface ProposalsSelect<T extends boolean = true> {
   preflightScore?: T;
   auditReport?: T;
   generatedDocx?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenders_select".
+ */
+export interface TendersSelect<T extends boolean = true> {
+  title?: T;
+  organization?: T;
+  source_url?: T;
+  budget?: T;
+  ai_score?: T;
+  ai_justification?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }

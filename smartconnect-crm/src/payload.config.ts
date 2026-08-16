@@ -4,9 +4,12 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
+
+// Collections
 import { Users } from './collections/Users'
 import { Services } from './collections/Services'
 import { Media } from './collections/Media'
+import { Leads } from './collections/Leads' // 👈 Added Leads collection import
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +26,7 @@ export default buildConfig({
         {
           rel: 'icon',
           type: 'image/png',
-          url: '/logo.png', // Restored to previous logo.png
+          url: '/logo.png',
         },
       ],
     },
@@ -34,7 +37,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Services, Media],
+  collections: [Users, Services, Media, Leads], // 👈 Added Leads to collections array
   editor: lexicalEditor({}),
   secret: process.env.PAYLOAD_SECRET || 'fallback-payload-secret-key-smartconnect-crm-2026',
   typescript: {
