@@ -1,27 +1,34 @@
-// src/components/MatomoAnalytics.tsx
-'use client'
+// src/app/(frontend)/layout.tsx
+import type { Metadata } from 'next'
+import React from 'react'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { CustomThemeProvider } from '../../context/ThemeContext'
+import './styles.css'
 
-import Script from 'next/script'
+export const metadata: Metadata = {
+  title: 'SmartConnect CRM | Enterprise & Public Sector IT Services',
+  description:
+    'B2B IT & Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.',
+  other: {
+    google: 'notranslate',
+  },
+}
 
-export function MatomoAnalytics() {
+// 👈 MUST BE EXPORTED AS DEFAULT
+export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Script
-      id="matomo-tracking"
-      strategy="afterInteractive"
-      dangerouslySetInnerHTML={{
-        __html: `
-          var _paq = window._paq = window._paq || [];
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="https://your-matomo-domain.com/";
-            _paq.push(['setTrackerUrl', u+'matomo.php']);
-            _paq.push(['setSiteId', '1']);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-          })();
-        `,
-      }}
-    />
+    <CustomThemeProvider>
+      <div className="flex flex-col min-h-screen bg-[var(--bg-page,#ffffff)] text-[var(--text-primary,#0f172a)] transition-colors duration-250">
+        {/* Navigation Header with Theme Toggle & Language Selector */}
+        <Header />
+
+        {/* Public Content Area Wrapper */}
+        <div className="flex-1 w-full">{children}</div>
+
+        {/* Global Footer */}
+        <Footer />
+      </div>
+    </CustomThemeProvider>
   )
 }
