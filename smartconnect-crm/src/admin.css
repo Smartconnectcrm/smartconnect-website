@@ -1,18 +1,46 @@
 /* src/admin.css */
-html, 
-body,
+html,
+body {
+  background-color: #ffffff !important;
+}
+
+/* Removes Payload internal template background boxes */
 .template-minimal,
 .template-minimal__wrap,
 .template-minimal__main {
   background: transparent !important;
 }
 
-/* Ensure the create user card stays crisp and floating */
+/* Watermark overlay styling with radial border-fade mask */
+.admin-watermark-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  height: 900px;
+  max-width: 95vw;
+  max-height: 95vh;
+  background-image: url('/smartconnect.logo.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  mix-blend-mode: multiply;
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 0;
+  
+  /* Mask out the square outer edges */
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 72%);
+  mask-image: radial-gradient(circle at center, black 40%, transparent 72%);
+}
+
+/* Keep the form card clean and sharp */
 .template-minimal__wrap > div,
 form {
   position: relative;
   z-index: 2;
-  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgba(255, 255, 255, 0.94) !important;
   backdrop-filter: blur(8px);
   padding: 2.5rem;
   border-radius: 12px;
