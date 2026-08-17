@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
@@ -18,8 +21,8 @@ import { SiteSettings } from './payload/globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+// 👈 TEMPORARY: Hardcode production URL directly to bypass ESM variable loading
 const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URI || ''
-
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -29,13 +32,12 @@ export default buildConfig({
     },
     components: {
       graphics: {
-        // Updated path alias to allow importMap generation
         Logo: '@/components/SccrmLogo#SccrmLogo',
         Icon: '@/components/SccrmLogo#SccrmLogo',
       },
     },
     importMap: {
-      baseDir: path.resolve(dirname, 'src'), // Explicitly target 'src'
+      baseDir: path.resolve(dirname),
     },
   },
   localization: {
@@ -55,16 +57,16 @@ export default buildConfig({
   collections: [Users, Media, Services, Proposals, Tenders],
   globals: [SiteSettings],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || 'fallback-payload-secret-key-smartconnect-crm-2026',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
       connectionString,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl: { rejectUnauthorized: false },
     },
-    push: true, // Syncs missing tables/columns dynamically
+    push: true,
   }),
   sharp,
   plugins: [],
