@@ -20,7 +20,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: {
-      baseDir: path.resolve(dirname),
+      baseDir: path.resolve(dirname), // Kept at project root
     },
     meta: {
       titleSuffix: ' - SCCRM Admin',
@@ -32,12 +32,12 @@ export default buildConfig({
         },
       ],
     },
-    components: {
-      graphics: {
-        Logo: '@/components/SccrmLogo#SccrmLogo',
-        Icon: '@/components/SccrmLogo#SccrmIcon',
-      },
-    },
+    //components: {
+    // graphics: {
+    //    Logo: '/src/components/SccrmLogo#SccrmLogo', // 👈 Fixed: Explicit path from root
+    //  Icon: '/src/components/SccrmLogo#SccrmIcon', // 👈 Fixed: Explicit path from root
+    // },
+    //},
   },
   collections: [Users, Services, Media, Leads],
   editor: lexicalEditor({}),
@@ -50,6 +50,6 @@ export default buildConfig({
       connectionString,
       ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     },
-    push: true, // 👈 Force table creation in production for missing tables
+    push: true,
   }),
 })
