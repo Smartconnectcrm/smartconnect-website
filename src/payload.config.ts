@@ -18,26 +18,26 @@ import { SiteSettings } from './payload/globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URI || ''
+
 export default buildConfig({
   admin: {
     user: Users.slug,
     meta: {
-      // Branding update: Appears in browser tab titles
       titleSuffix: '- SmartConnect CMS',
       description: 'SmartConnect CRM Management Dashboard',
     },
     components: {
       graphics: {
-        // Replaces default Payload branding with your SmartConnect CRM Logo
-        Logo: '/components/SccrmLogo#SccrmLogo',
-        Icon: '/components/SccrmLogo#SccrmLogo',
+        // Updated path alias to allow importMap generation
+        Logo: '@/components/SccrmLogo#SccrmLogo',
+        Icon: '@/components/SccrmLogo#SccrmLogo',
       },
     },
     importMap: {
-      baseDir: path.resolve(dirname),
+      baseDir: path.resolve(dirname, 'src'), // Explicitly target 'src'
     },
   },
-  // --- Native Multi-Language Localization Configuration ---
   localization: {
     locales: [
       { code: 'de', label: 'Deutsch' },
@@ -50,7 +50,7 @@ export default buildConfig({
       { code: 'pl', label: 'Polski' },
     ],
     defaultLocale: 'de',
-    fallback: true, // Fallback to German if a field isn't translated yet
+    fallback: true,
   },
   collections: [Users, Media, Services, Proposals, Tenders],
   globals: [SiteSettings],
@@ -61,9 +61,10 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || process.env.DATABASE_URI || '',
+      connectionString,
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     },
-    push: true, // Automatically syncs localized schema columns into PostgreSQL
+    push: true, // Syncs missing tables/columns dynamically
   }),
   sharp,
   plugins: [],
