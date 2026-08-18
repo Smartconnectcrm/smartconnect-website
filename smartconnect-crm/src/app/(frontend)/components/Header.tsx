@@ -4,7 +4,7 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { useTheme as useCustomTheme, type ThemeMode as Theme } from '@/context/ThemeContext'
+import { useCustomTheme, type Theme } from '@/context/ThemeContext'
 
 // Translation Dictionary for Header UI Elements
 const translations: Record<string, Record<string, string>> = {

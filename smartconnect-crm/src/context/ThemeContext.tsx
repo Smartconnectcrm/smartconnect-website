@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 export type ThemeMode = 'light' | 'dark' | 'neon' | 'blue'
+export type Theme = ThemeMode // Alias for Header.tsx
 
 interface ThemeContextType {
   theme: ThemeMode
@@ -16,7 +17,6 @@ export const CustomThemeProvider = ({ children }: { children: React.ReactNode })
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Load saved theme or fall back to 'light'
     const savedTheme = (localStorage.getItem('sc_theme') as ThemeMode) || 'light'
     setThemeState(savedTheme)
     applyTheme(savedTheme)
@@ -31,15 +31,12 @@ export const CustomThemeProvider = ({ children }: { children: React.ReactNode })
 
   const applyTheme = (mode: ThemeMode) => {
     const root = document.documentElement
-    // Remove previous theme classes
     root.classList.remove('theme-light', 'theme-dark', 'theme-neon', 'theme-blue')
-    // Add current theme class
     root.classList.add(`theme-${mode}`)
   }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      {/* Prevent hydration mismatch flash before mounted */}
       <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>{children}</div>
     </ThemeContext.Provider>
   )
@@ -52,3 +49,5 @@ export const useTheme = () => {
   }
   return context
 }
+
+export const useCustomTheme = useTheme // Alias for Header.tsx
