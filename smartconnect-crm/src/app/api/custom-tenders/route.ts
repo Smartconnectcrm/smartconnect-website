@@ -3,6 +3,11 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
+// Optional GET handler so browser testing doesn't 404
+export async function GET() {
+  return NextResponse.json({ message: 'Custom tenders endpoint active' })
+}
+
 export async function POST(req: Request) {
   try {
     const apiKey = req.headers.get('x-api-key')
