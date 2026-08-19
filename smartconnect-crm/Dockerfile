@@ -1,5 +1,5 @@
 # To use this Dockerfile, ensure `output: 'standalone'` is set in next.config.ts / next.config.mjs
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 
 # Step 1: Install dependencies
 FROM base AS deps
