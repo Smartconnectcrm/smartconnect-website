@@ -55,10 +55,16 @@ export default buildConfig({
   endpoints: [
     {
       path: '/custom-tenders',
+      method: 'get',
+      handler: async () => {
+        return Response.json({ message: 'Custom tenders API endpoint active' })
+      },
+    },
+    {
+      path: '/custom-tenders',
       method: 'post',
       handler: async (req) => {
         try {
-          // 1. Verify API Key header
           const apiKey = req.headers?.get('x-api-key')
           const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET || 'my-super-secret-key-123'
 
@@ -66,7 +72,6 @@ export default buildConfig({
             return Response.json({ error: 'Unauthorized' }, { status: 401 })
           }
 
-          // 2. Parse JSON body safely for PayloadRequest
           let body: any = {}
           if (typeof req.json === 'function') {
             body = await req.json()
@@ -74,7 +79,6 @@ export default buildConfig({
             body = (req as any).body
           }
 
-          // 3. Insert record using Payload Local API instance
           const tender = await req.payload.create({
             collection: 'tenders' as any,
             data: {

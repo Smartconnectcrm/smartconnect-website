@@ -6,6 +6,18 @@ export const Tenders: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'organization', 'budget', 'ai_score', 'status'],
   },
+  access: {
+    // Allows n8n to post directly to /api/tenders when x-api-key header matches
+    create: ({ req }) => {
+      const apiKey = req.headers.get('x-api-key')
+      const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET || 'my-super-secret-key-123'
+      if (apiKey === WORKFLOW_SECRET) return true
+      return Boolean(req.user)
+    },
+    read: () => true,
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
   fields: [
     { name: 'title', type: 'text', required: true, localized: true },
     { name: 'organization', type: 'text' },
