@@ -42,6 +42,11 @@ export default buildConfig({
         Logo: '@/components/SccrmLogo#SccrmLogo',
         Icon: '@/components/SccrmLogo#SccrmLogo',
       },
+      views: {
+        dashboard: {
+          Component: '@/components/Dashboard#CustomDashboard',
+        },
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
