@@ -81,6 +81,7 @@ export default buildConfig({
 
           const tender = await req.payload.create({
             collection: 'tenders' as any,
+            locale: 'de', // Guarantees proper field mapping for localized schema
             data: {
               title: body.title || 'Untitled Tender',
               source_url: body.source_url || '',
