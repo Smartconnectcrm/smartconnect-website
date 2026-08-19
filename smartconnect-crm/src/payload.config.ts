@@ -65,6 +65,7 @@ export default buildConfig({
       method: 'post',
       handler: async (req) => {
         try {
+          // Check API secret
           const apiKey = req.headers?.get('x-api-key')
           const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET || 'my-super-secret-key-123'
 
@@ -72,16 +73,21 @@ export default buildConfig({
             return Response.json({ error: 'Unauthorized' }, { status: 401 })
           }
 
+          // Parse incoming request JSON
           let body: any = {}
           if (typeof req.json === 'function') {
             body = await req.json()
           } else if ((req as any).body) {
-            body = (req as any).body
+            body =
+              typeof (req as any).body === 'string'
+                ? JSON.parse((req as any).body)
+                : (req as any).body
           }
 
+          // Insert into Payload Local API
           const tender = await req.payload.create({
-            collection: 'tenders' as any,
-            locale: 'de', // Guarantees proper field mapping for localized schema
+            collection: 'tenders',
+            locale: 'de',
             data: {
               title: body.title || 'Untitled Tender',
               source_url: body.source_url || '',
