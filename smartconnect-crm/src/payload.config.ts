@@ -52,63 +52,6 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  endpoints: [
-    {
-      path: '/custom-tenders',
-      method: 'get',
-      handler: async () => {
-        return Response.json({ message: 'Custom tenders API endpoint active' })
-      },
-    },
-    {
-      path: '/custom-tenders',
-      method: 'post',
-      handler: async (req) => {
-        try {
-          // Check API secret
-          const apiKey = req.headers?.get('x-api-key')
-          const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET || 'my-super-secret-key-123'
-
-          if (apiKey !== WORKFLOW_SECRET) {
-            return Response.json({ error: 'Unauthorized' }, { status: 401 })
-          }
-
-          // Parse incoming request JSON
-          let body: any = {}
-          if (typeof req.json === 'function') {
-            body = await req.json()
-          } else if ((req as any).body) {
-            body =
-              typeof (req as any).body === 'string'
-                ? JSON.parse((req as any).body)
-                : (req as any).body
-          }
-
-          // Insert into Payload Local API
-          const tender = await req.payload.create({
-            collection: 'tenders',
-            locale: 'de',
-            data: {
-              title: body.title || 'Untitled Tender',
-              source_url: body.source_url || '',
-              organization: body.organization || 'Öffentlicher Auftraggeber',
-              ai_score: Number(body.ai_score) || 75,
-              ai_justification: body.ai_justification || 'Automated evaluation',
-              status: body.status || 'Scraped',
-            },
-          })
-
-          return Response.json({ success: true, tenderId: tender.id }, { status: 201 })
-        } catch (err: any) {
-          console.error('Error creating tender:', err)
-          return Response.json(
-            { error: err?.message || 'Failed to process tender' },
-            { status: 500 },
-          )
-        }
-      },
-    },
-  ],
   localization: {
     locales: [
       { code: 'de', label: 'Deutsch' },

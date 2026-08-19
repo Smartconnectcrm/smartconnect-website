@@ -5,7 +5,7 @@ import configPromise from '@payload-config'
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  return NextResponse.json({ message: 'Custom tenders endpoint active' })
+  return NextResponse.json({ message: 'Custom tenders API endpoint active' })
 }
 
 export async function POST(req: Request) {
@@ -22,6 +22,7 @@ export async function POST(req: Request) {
 
     const tender = await payload.create({
       collection: 'tenders',
+      locale: 'de',
       data: {
         title: body.title || 'Untitled Tender',
         source_url: body.source_url || '',
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, tenderId: tender.id }, { status: 201 })
   } catch (err: any) {
-    console.error('Error creating tender:', err)
+    console.error('Error in custom-tenders route:', err)
     return NextResponse.json({ error: err?.message || 'Failed to process tender' }, { status: 500 })
   }
 }
