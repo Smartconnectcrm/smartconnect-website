@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-// Optional GET handler so browser testing doesn't 404
+// Prevents Next.js from attempting to statically optimize this API route during build
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   return NextResponse.json({ message: 'Custom tenders endpoint active' })
 }
@@ -21,7 +23,7 @@ export async function POST(req: Request) {
     const payload = await getPayload({ config: configPromise })
 
     const tender = await payload.create({
-      collection: 'tenders' as any,
+      collection: 'tenders',
       data: {
         title: body.title || 'Untitled Tender',
         source_url: body.source_url || '',
