@@ -1,4 +1,4 @@
-// src/app/api/tenders/route.ts
+// src/app/api/leads/route.ts
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -15,24 +15,24 @@ export async function POST(req: Request) {
 
     // 2. Parse request body
     const body = await req.json()
+
+    // 3. Initialize Payload
     const payload = await getPayload({ config: configPromise })
 
-    // 3. Create record using Payload Local API (bypasses REST auth restrictions)
-    const tender = await payload.create({
-      collection: 'tenders' as any,
+    // 4. Create lead record using Payload Local API
+    const lead = await payload.create({
+      collection: 'leads' as any, // Cast to bypass strict collection type checking if needed
       data: {
-        title: body.title || 'Untitled Tender',
-        source_url: body.source_url || '',
-        organization: body.organization || 'Öffentlicher Auftraggeber',
-        ai_score: Number(body.ai_score) || 75,
-        ai_justification: body.ai_justification || 'Automated evaluation',
-        status: body.status || 'Scraped',
+        email: body.email || '',
+        company: body.company || '',
+        serviceInterest: body.serviceInterest || '',
+        submittedAt: body.submittedAt || new Date().toISOString(),
       },
     })
 
-    return NextResponse.json({ success: true, tenderId: tender.id }, { status: 201 })
+    return NextResponse.json({ success: true, leadId: lead.id }, { status: 201 })
   } catch (err: any) {
-    console.error('Error creating tender:', err)
-    return NextResponse.json({ error: err?.message || 'Failed to process tender' }, { status: 500 })
+    console.error('Error creating lead:', err)
+    return NextResponse.json({ error: err?.message || 'Failed to process lead' }, { status: 500 })
   }
 }
