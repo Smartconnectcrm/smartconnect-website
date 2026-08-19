@@ -1,3 +1,4 @@
+// src/collections/Tenders.ts
 import type { CollectionConfig } from 'payload'
 
 export const Tenders: CollectionConfig = {
@@ -7,7 +8,6 @@ export const Tenders: CollectionConfig = {
     defaultColumns: ['title', 'organization', 'budget', 'ai_score', 'status'],
   },
   access: {
-    // Allows n8n to post directly to /api/tenders when x-api-key header matches
     create: ({ req }) => {
       const apiKey = req.headers.get('x-api-key')
       const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET || 'my-super-secret-key-123'
@@ -19,12 +19,12 @@ export const Tenders: CollectionConfig = {
     delete: ({ req }) => Boolean(req.user),
   },
   fields: [
-    { name: 'title', type: 'text', required: true, localized: true },
+    { name: 'title', type: 'text', required: true },
     { name: 'organization', type: 'text' },
     { name: 'source_url', type: 'text' },
     { name: 'budget', type: 'number' },
     { name: 'ai_score', type: 'number' },
-    { name: 'ai_justification', type: 'textarea', localized: true },
+    { name: 'ai_justification', type: 'textarea' },
     {
       name: 'status',
       type: 'select',
