@@ -1,9 +1,7 @@
-// src/app/api/custom-tenders/route.ts
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 
-// Prevents Next.js from attempting to statically optimize this API route during build
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
