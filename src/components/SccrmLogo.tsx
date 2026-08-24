@@ -1,41 +1,31 @@
-// src/components/SccrmLogo.tsx
+'use client'
 import React from 'react'
 
 export const SccrmLogo: React.FC = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-      {/* 🏷️ Title / Brand Name */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
       <h1
         style={{
-          fontSize: '1.4rem',
-          fontWeight: 'bold',
+          fontSize: '1.2rem',
+          fontWeight: '800',
           margin: 0,
-          color: 'var(--theme-elevation-800, #1E293B)',
+          color: 'var(--theme-text)',
+          letterSpacing: '-0.01em',
         }}
       >
         SCCRM Admin
       </h1>
-
-      {/* 🖼️ SmartConnect CRM Subtitle / Logo */}
       <div
         style={{
-          fontSize: '0.85rem',
-          fontWeight: '600',
+          fontSize: '0.75rem',
+          fontWeight: '700',
           letterSpacing: '1px',
           textTransform: 'uppercase',
-          color: 'var(--theme-elevation-500, #64748B)',
+          color: 'var(--neon-blue, #38BDF8)',
         }}
       >
         SmartConnect CRM
       </div>
-
-      {/* Or embed your <img> here:
-      <img 
-        src="/assets/smartconnect-logo.png" 
-        alt="SmartConnect CRM" 
-        style={{ maxHeight: '36px', width: 'auto' }} 
-      /> 
-      */}
     </div>
   )
 }

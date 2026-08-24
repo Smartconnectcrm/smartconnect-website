@@ -97,37 +97,42 @@ export default async function HomePage({ searchParams }: Props) {
     rawServices.map(async (service: any) => {
       if (activeLangCode === 'DE') return service
 
-      const [translatedTitle, translatedDescription] = await Promise.all([
-        translateText(service.title || '', localeKey),
-        translateText(service.description || '', localeKey),
-      ])
+      try {
+        const [translatedTitle, translatedDescription] = await Promise.all([
+          translateText(service.title || '', localeKey),
+          translateText(service.description || '', localeKey),
+        ])
 
-      let translatedDeliverables = service.deliverables
-      if (Array.isArray(service.deliverables)) {
-        translatedDeliverables = await Promise.all(
-          service.deliverables.map(async (item: any) => ({
-            ...item,
-            text: await translateText(item.text || item, localeKey),
-          })),
-        )
-      }
+        let translatedDeliverables = service.deliverables
+        if (Array.isArray(service.deliverables)) {
+          translatedDeliverables = await Promise.all(
+            service.deliverables.map(async (item: any) => ({
+              ...item,
+              text: await translateText(item.text || item, localeKey),
+            })),
+          )
+        }
 
-      let translatedOutofScope = service.outOfScope
-      if (Array.isArray(service.outOfScope)) {
-        translatedOutofScope = await Promise.all(
-          service.outOfScope.map(async (item: any) => ({
-            ...item,
-            text: await translateText(item.text || item, localeKey),
-          })),
-        )
-      }
+        let translatedOutofScope = service.outOfScope
+        if (Array.isArray(service.outOfScope)) {
+          translatedOutofScope = await Promise.all(
+            service.outOfScope.map(async (item: any) => ({
+              ...item,
+              text: await translateText(item.text || item, localeKey),
+            })),
+          )
+        }
 
-      return {
-        ...service,
-        title: translatedTitle,
-        description: translatedDescription,
-        deliverables: translatedDeliverables,
-        outOfScope: translatedOutofScope,
+        return {
+          ...service,
+          title: translatedTitle,
+          description: translatedDescription,
+          deliverables: translatedDeliverables,
+          outOfScope: translatedOutofScope,
+        }
+      } catch (err) {
+        console.error(`Auto-translation fallback for service ${service.id}:`, err)
+        return service
       }
     }),
   )
@@ -145,7 +150,7 @@ export default async function HomePage({ searchParams }: Props) {
       <section
         style={{
           marginBottom: '36px',
-          borderBottom: '2px solid var(--border-color)',
+          borderBottom: '2px solid var(--border-color, #1e293b)',
           paddingBottom: '20px',
         }}
       >
@@ -156,7 +161,7 @@ export default async function HomePage({ searchParams }: Props) {
             textTransform: 'uppercase',
             letterSpacing: '-0.02em',
             marginBottom: '10px',
-            color: 'var(--text-primary)',
+            color: 'var(--text-primary, #ffffff)',
             fontFamily: 'system-ui, -apple-system, sans-serif',
           }}
         >
@@ -169,7 +174,7 @@ export default async function HomePage({ searchParams }: Props) {
             fontSize: '15px',
             lineHeight: '1.6',
             margin: 0,
-            color: 'var(--text-secondary)',
+            color: 'var(--text-secondary, #94a3b8)',
           }}
         >
           {labels.subtitle}

@@ -11,9 +11,9 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const apiKey = req.headers.get('x-api-key')
-    const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET || 'my-super-secret-key-123'
+    const WORKFLOW_SECRET = process.env.N8N_WORKFLOW_SECRET
 
-    if (apiKey !== WORKFLOW_SECRET) {
+    if (!WORKFLOW_SECRET || apiKey !== WORKFLOW_SECRET) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

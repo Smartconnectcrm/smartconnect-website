@@ -21,14 +21,17 @@ import { SiteSettings } from './payload/globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-// 👈 TEMPORARY: Hardcode production URL directly to bypass ESM variable loading
 const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URI || ''
+
 export default buildConfig({
   admin: {
     user: Users.slug,
+    routes: {
+      login: '/login', // Route default authentication to custom portal
+    },
     meta: {
-      titleSuffix: '- SmartConnect CMS',
-      description: 'SmartConnect CRM Management Dashboard',
+      titleSuffix: '- SmartConnect CRM Engine',
+      description: 'Enterprise Backend Control Center',
     },
     components: {
       graphics: {

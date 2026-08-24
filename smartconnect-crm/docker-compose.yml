@@ -2,14 +2,13 @@ version: '3'
 
 services:
   payload:
-    image: node:22-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartconnect-crm-payload-1
+    restart: always
     ports:
       - '3000:3000'
-    volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install && pnpm dev"
     depends_on:
       - mongo
     env_file:
@@ -17,6 +16,7 @@ services:
 
   mongo:
     image: mongo:latest
+    restart: always
     ports:
       - '27017:27017'
     command:
@@ -28,4 +28,3 @@ services:
 
 volumes:
   data:
-  node_modules:
