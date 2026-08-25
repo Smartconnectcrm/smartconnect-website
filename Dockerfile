@@ -15,10 +15,10 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-ENV NODE_ENV=production
 ENV CI=true
 
-RUN corepack enable pnpm && pnpm run build
+RUN corepack enable pnpm && pnpm payload generate:importmap && pnpm run build
+
 FROM base AS runner
 WORKDIR /app
 
