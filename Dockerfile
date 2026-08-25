@@ -4,7 +4,7 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* .npmrc* ./
 RUN corepack enable pnpm && \
     pnpm i --no-frozen-lockfile --ignore-scripts
 
@@ -18,7 +18,6 @@ ENV NODE_ENV=production
 ENV CI=false
 
 RUN corepack enable pnpm && \
-    pnpm i --no-frozen-lockfile --ignore-scripts && \
     pnpm payload generate:importmap && \
     pnpm run build
 
@@ -42,7 +41,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 3000
-
 ENV PORT=3000
 
 CMD ["node", "server.js"]
