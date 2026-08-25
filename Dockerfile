@@ -5,7 +5,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml* .npmrc* ./
-RUN corepack enable pnpm && \
+RUN corepack enable && corepack prepare pnpm@10.5.2 --activate && \
     pnpm i --no-frozen-lockfile
 
 FROM base AS builder
@@ -17,7 +17,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 ENV CI=true
 
-RUN corepack enable pnpm && \
+RUN corepack enable && corepack prepare pnpm@10.5.2 --activate && \
     pnpm payload generate:importmap && \
     pnpm run build
 
