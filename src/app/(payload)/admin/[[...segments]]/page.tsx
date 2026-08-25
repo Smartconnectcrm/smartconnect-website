@@ -43,20 +43,45 @@ export default async function Page({ params, searchParams }: Args) {
     }
 
     let tendersCount = 0
+    let openRfpsCount = 0
     let proposalsCount = 0
+    let aiProposalsCount = 0
 
     try {
-      const [tendersRes, proposalsRes] = await Promise.all([
+      const [tendersRes, openRfpsRes, proposalsRes, aiProposalsRes] = await Promise.all([
         payload.count({ collection: 'tenders', overrideAccess: true }),
+        payload.count({
+          collection: 'tenders',
+          where: { status: { equals: 'open' } }, // Adjust field name/value to match your schema
+          overrideAccess: true,
+        }),
         payload.count({ collection: 'proposals', overrideAccess: true }),
+        payload.count({
+          collection: 'proposals',
+          where: { isAiGenerated: { equals: true } }, // Adjust field name/value to match your schema
+          overrideAccess: true,
+        }),
       ])
+
       tendersCount = tendersRes.totalDocs
+      openRfpsCount = openRfpsRes.totalDocs
       proposalsCount = proposalsRes.totalDocs
+      aiProposalsCount = aiProposalsRes.totalDocs
     } catch (err) {
       console.error('Error fetching dashboard counts:', err)
     }
 
-    return <CustomDashboard user={user} metrics={{ tendersCount, proposalsCount }} />
+    return (
+      <CustomDashboard
+        user={user}
+        metrics={{
+          tendersCount,
+          openRfpsCount,
+          proposalsCount,
+          aiProposalsCount,
+        }}
+      />
+    )
   }
 
   // Fallback to standard Payload CMS admin UI

@@ -1,13 +1,14 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import type { User } from '@/payload-types' // Adjust path if payload-types is located elsewhere, or use `any`
 
 interface DashboardProps {
-  user?: User | any
+  user?: any
   metrics?: {
     tendersCount: number
+    openRfpsCount: number
     proposalsCount: number
+    aiProposalsCount: number
   }
 }
 
@@ -120,6 +121,7 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
           marginBottom: '32px',
         }}
       >
+        {/* Tenders Metric Card */}
         <div
           style={{
             background: 'rgba(255,255,255,0.02)',
@@ -150,10 +152,11 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
             {metrics?.tendersCount ?? 0}
           </div>
           <span style={{ fontSize: '12px', color: '#10B981', fontWeight: '600' }}>
-            ● Live Collection Docs
+            ● {metrics?.openRfpsCount ?? 0} Open RFPs
           </span>
         </div>
 
+        {/* Proposals Metric Card */}
         <div
           style={{
             background: 'rgba(255,255,255,0.02)',
@@ -184,7 +187,7 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
             {metrics?.proposalsCount ?? 0}
           </div>
           <span style={{ fontSize: '12px', color: '#A855F7', fontWeight: '600' }}>
-            ✦ Live Collection Docs
+            ✦ {metrics?.aiProposalsCount ?? 0} AI Generated
           </span>
         </div>
       </div>
