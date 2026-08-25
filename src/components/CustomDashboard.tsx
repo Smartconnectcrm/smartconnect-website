@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
-import type { User } from 'payload'
+import type { User } from '@/payload-types' // Adjust path if payload-types is located elsewhere, or use `any`
 
 interface DashboardProps {
-  user?: User | null
+  user?: User | any
   metrics?: {
     tendersCount: number
     proposalsCount: number
@@ -62,7 +64,7 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {user && (
+          {user?.email && (
             <span style={{ fontSize: '13px', opacity: 0.8, marginRight: '8px' }}>
               Logged in: <strong>{user.email}</strong>
             </span>
