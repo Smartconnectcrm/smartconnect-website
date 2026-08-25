@@ -18,7 +18,6 @@ interface ProposalGenerationResult {
 
 const extractTextFromPdf = (pdfBytes: Buffer): string => {
   const raw = pdfBytes.toString('utf8')
-  // Clean readable ASCII/UTF-8 character sequences from PDF stream
   const cleanText = raw
     .replace(/[^\x20-\x7E\xA0-\xFF\n\r]/g, ' ')
     .replace(/\s+/g, ' ')
@@ -62,8 +61,9 @@ const parseJsonSafe = (value: string): any => {
 }
 
 const callLocalOllama = async (prompt: string): Promise<string> => {
-  const ollamaUrl = 'http://localhost:11434/api/generate'
-  console.log('[OllamaLocalEngine] Calling local Llama 3.2 on http://localhost:11434...')
+  const baseUrl = process.env.OLLAMA_BASE_URL || 'http://host.docker.internal:11434'
+  const ollamaUrl = `${baseUrl}/api/generate`
+  console.log(`[OllamaLocalEngine] Calling Llama 3.2 at ${ollamaUrl}...`)
 
   const response = await fetch(ollamaUrl, {
     method: 'POST',
@@ -125,21 +125,26 @@ const buildDocxBuffer = (title: string, sections: Record<string, string>): Buffe
   </w:body>
 </w:document>`
 
-  const contentTypesXml = `<?xml version="1.0" encoding="UTF-8"?>
+  const contentTypesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
   <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
   <Default Extension="xml" ContentType="application/xml"/>
   <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
 </Types>`
 
-  const relsXml = `<?xml version="1.0" encoding="UTF-8"?>
+  const relsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`
+
+  const wordRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
 </Relationships>`
 
   return buildZipArchive([
     { name: '[Content_Types].xml', content: contentTypesXml },
     { name: '_rels/.rels', content: relsXml },
+    { name: 'word/_rels/document.xml.rels', content: wordRelsXml },
     { name: 'word/document.xml', content: contentXml },
   ])
 }

@@ -10,15 +10,14 @@ type Props = {
   searchParams: Promise<{ lang?: string }>
 }
 
-const uiLabels: Record<
-  string,
-  {
-    title: string
-    subtitle: string
-    deliverables: string
-    boundaries: string
-  }
-> = {
+export interface UILabelSet {
+  title: string
+  subtitle: string
+  deliverables: string
+  boundaries: string
+}
+
+const uiLabels: Record<string, UILabelSet> = {
   EN: {
     title: 'Service Catalog',
     subtitle:
@@ -92,43 +91,44 @@ export default async function HomePage({ searchParams }: Props) {
     fallbackLocale: true as any,
   })
 
-  // Dynamically translate services if target language is not German
+  // Dynamically translate services in parallel if target language is not German
   const services = await Promise.all(
     rawServices.map(async (service: any) => {
       if (activeLangCode === 'DE') return service
 
       try {
-        const [translatedTitle, translatedDescription] = await Promise.all([
-          translateText(service.title || '', localeKey),
-          translateText(service.description || '', localeKey),
-        ])
+        const delivItems = Array.isArray(service.deliverables)
+          ? service.deliverables.map((item: any) =>
+              typeof item === 'string' ? item : item.text || '',
+            )
+          : []
 
-        let translatedDeliverables = service.deliverables
-        if (Array.isArray(service.deliverables)) {
-          translatedDeliverables = await Promise.all(
-            service.deliverables.map(async (item: any) => ({
-              ...item,
-              text: await translateText(item.text || item, localeKey),
-            })),
-          )
-        }
+        const scopeItems = Array.isArray(service.outOfScope)
+          ? service.outOfScope.map((item: any) =>
+              typeof item === 'string' ? item : item.text || '',
+            )
+          : []
 
-        let translatedOutofScope = service.outOfScope
-        if (Array.isArray(service.outOfScope)) {
-          translatedOutofScope = await Promise.all(
-            service.outOfScope.map(async (item: any) => ({
-              ...item,
-              text: await translateText(item.text || item, localeKey),
-            })),
-          )
-        }
+        const [translatedTitle, translatedDescription, translatedDelivs, translatedScopes] =
+          await Promise.all([
+            translateText(service.title || '', localeKey),
+            translateText(service.description || '', localeKey),
+            Promise.all(delivItems.map((str: string) => translateText(str, localeKey))),
+            Promise.all(scopeItems.map((str: string) => translateText(str, localeKey))),
+          ])
 
         return {
           ...service,
           title: translatedTitle,
           description: translatedDescription,
-          deliverables: translatedDeliverables,
-          outOfScope: translatedOutofScope,
+          deliverables: translatedDelivs.map((text: string, i: number) => ({
+            ...(typeof service.deliverables[i] === 'object' ? service.deliverables[i] : {}),
+            text,
+          })),
+          outOfScope: translatedScopes.map((text: string, i: number) => ({
+            ...(typeof service.outOfScope[i] === 'object' ? service.outOfScope[i] : {}),
+            text,
+          })),
         }
       } catch (err) {
         console.error(`Auto-translation fallback for service ${service.id}:`, err)
