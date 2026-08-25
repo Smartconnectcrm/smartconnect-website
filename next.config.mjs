@@ -14,6 +14,18 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/admin/login',
+        destination: '/login',
+      },
+      {
+        source: '/admin/dashboard',
+        destination: '/dashboard',
+      },
+    ]
+  },
   webpack: (config) => {
     config.resolve.alias['@payload-config'] = path.resolve(__dirname, 'src/payload.config.ts')
     return config
