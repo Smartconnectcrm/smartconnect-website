@@ -10,9 +10,14 @@ interface DashboardProps {
     proposalsCount: number
     aiProposalsCount: number
   }
+  recentProposals?: any[]
 }
 
-export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => {
+export const CustomDashboard: React.FC<DashboardProps> = ({
+  user,
+  metrics,
+  recentProposals = [],
+}) => {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [mounted, setMounted] = useState(false)
 
@@ -44,7 +49,7 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
         transition: 'all 0.2s ease',
       }}
     >
-      {/* Top Bar Header */}
+      {/* Header */}
       <div
         style={{
           display: 'flex',
@@ -112,7 +117,7 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
         </div>
       </div>
 
-      {/* Metrics Cards */}
+      {/* Metrics Grid */}
       <div
         style={{
           display: 'grid',
@@ -121,7 +126,6 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
           marginBottom: '32px',
         }}
       >
-        {/* Tenders Metric Card */}
         <div
           style={{
             background: 'rgba(255,255,255,0.02)',
@@ -156,7 +160,6 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
           </span>
         </div>
 
-        {/* Proposals Metric Card */}
         <div
           style={{
             background: 'rgba(255,255,255,0.02)',
@@ -190,6 +193,88 @@ export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => 
             ✦ {metrics?.aiProposalsCount ?? 0} AI Generated
           </span>
         </div>
+      </div>
+
+      {/* Recent Activity Feed */}
+      <div
+        style={{
+          background: 'rgba(255,255,255,0.02)',
+          border: '1px solid var(--theme-border-color, #1e293b)',
+          borderRadius: '12px',
+          padding: '24px',
+        }}
+      >
+        <h2 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '16px' }}>
+          Recent Proposals
+        </h2>
+
+        {recentProposals.length === 0 ? (
+          <p style={{ opacity: 0.6, fontSize: '14px', margin: 0 }}>
+            No recent proposals recorded yet.
+          </p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table
+              style={{
+                width: '100%',
+                borderCollapse: 'collapse',
+                textAlign: 'left',
+                fontSize: '14px',
+              }}
+            >
+              <thead>
+                <tr
+                  style={{
+                    borderBottom: '1px solid var(--theme-border-color, #334155)',
+                    opacity: 0.7,
+                  }}
+                >
+                  <th style={{ padding: '12px 8px' }}>Tender Name</th>
+                  <th style={{ padding: '12px 8px' }}>Status</th>
+                  <th style={{ padding: '12px 8px' }}>Updated At</th>
+                  <th style={{ padding: '12px 8px', textAlign: 'right' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentProposals.map((item) => (
+                  <tr key={item.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <td style={{ padding: '12px 8px', fontWeight: '600' }}>
+                      {item.tenderName || 'Untitled Proposal'}
+                    </td>
+                    <td style={{ padding: '12px 8px' }}>
+                      <span
+                        style={{
+                          padding: '4px 8px',
+                          borderRadius: '4px',
+                          fontSize: '12px',
+                          fontWeight: '700',
+                          background:
+                            item.status === 'draft'
+                              ? 'rgba(168, 85, 247, 0.2)'
+                              : 'rgba(6, 182, 212, 0.2)',
+                          color: item.status === 'draft' ? '#C084FC' : '#22D3EE',
+                        }}
+                      >
+                        {item.status || 'Draft'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px 8px', opacity: 0.7, fontSize: '13px' }}>
+                      {new Date(item.updatedAt).toLocaleDateString()}
+                    </td>
+                    <td style={{ padding: '12px 8px', textAlign: 'right' }}>
+                      <a
+                        href={`/admin/collections/proposals/${item.id}`}
+                        style={{ color: '#38BDF8', textDecoration: 'none', fontWeight: '600' }}
+                      >
+                        Edit →
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )
