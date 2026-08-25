@@ -44,27 +44,13 @@ export default buildConfig({
       },
       views: {
         dashboard: {
-          Component: '@/components/CustomDashboard#CustomDashboard', // FIXED
+          Component: '@/components/CustomDashboard#CustomDashboard',
         },
       },
     },
     importMap: {
       baseDir: path.resolve(dirname),
     },
-  },
-  localization: {
-    locales: [
-      { code: 'de', label: 'Deutsch' },
-      { code: 'en', label: 'English' },
-      { code: 'hu', label: 'Magyar' },
-      { code: 'fr', label: 'Français' },
-      { code: 'es', label: 'Español' },
-      { code: 'it', label: 'Italiano' },
-      { code: 'nl', label: 'Nederlands' },
-      { code: 'pl', label: 'Polski' },
-    ],
-    defaultLocale: 'de',
-    fallback: true,
   },
   collections: [Users, Media, Services, Proposals, Tenders],
   globals: [SiteSettings],
