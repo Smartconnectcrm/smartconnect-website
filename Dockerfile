@@ -15,9 +15,12 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-ENV CI=true
+ENV CI=false
 
-RUN corepack enable pnpm && pnpm payload generate:importmap && pnpm run build
+RUN corepack enable pnpm && \
+    pnpm i --no-frozen-lockfile --ignore-scripts && \
+    pnpm payload generate:importmap && \
+    pnpm run build
 
 FROM base AS runner
 WORKDIR /app
