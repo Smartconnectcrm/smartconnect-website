@@ -4,6 +4,9 @@ import React, { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { ShieldCheck, Lock, Mail } from 'lucide-react'
 
+// Force dynamic rendering to prevent prerender build errors with useSearchParams
+export const dynamic = 'force-dynamic'
+
 function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
