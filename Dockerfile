@@ -1,4 +1,4 @@
-# To use this Dockerfile, ensure `output: 'standalone'` is set in next.config.ts / next.config.mjs
+# To use this Dockerfile, ensure output: 'standalone' is set in next.config.mjs
 FROM node:22-alpine AS base
 
 # Step 1: Install dependencies
@@ -6,13 +6,9 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Enable Corepack and enforce pnpm
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && pnpm i --frozen-lockfile
 
 # Step 2: Build the application
 FROM base AS builder
@@ -23,12 +19,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-RUN \
-  if [ -f yarn.lock ]; then yarn run build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+RUN corepack enable pnpm && pnpm payload generate:importmap && pnpm run build
 
 # Step 3: Production server runner
 FROM base AS runner
