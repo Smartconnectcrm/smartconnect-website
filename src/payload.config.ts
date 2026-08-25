@@ -46,10 +46,6 @@ export default buildConfig({
         dashboard: {
           Component: '@/components/CustomDashboard#CustomDashboard',
         },
-        // Override the default Payload admin login view
-        login: {
-          Component: '@/app/(frontend)/login/page#default',
-        },
       },
     },
     importMap: {
