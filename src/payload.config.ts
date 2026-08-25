@@ -44,7 +44,7 @@ export default buildConfig({
       },
       views: {
         dashboard: {
-          Component: '@/components/Dashboard#CustomDashboard',
+          Component: '@/components/CustomDashboard#CustomDashboard', // FIXED
         },
       },
     },
