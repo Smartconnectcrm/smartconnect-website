@@ -15,7 +15,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-ENV CI=false
+ENV CI=true
 
 RUN corepack enable pnpm && \
     pnpm payload generate:importmap && \
