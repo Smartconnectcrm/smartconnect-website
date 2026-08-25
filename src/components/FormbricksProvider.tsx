@@ -1,4 +1,3 @@
-// src/components/FormbricksProvider.tsx
 'use client'
 
 import { useEffect } from 'react'
@@ -29,6 +28,11 @@ export function FormbricksProvider({ children }: { children: React.ReactNode }) 
               environmentId,
               apiHost: 'https://app.formbricks.com',
             })
+          }
+
+          // Track page views dynamically across Next.js App Router route transitions
+          if (typeof instance.registerRouteChange === 'function') {
+            instance.registerRouteChange()
           }
         })
         .catch((err) => console.warn('Formbricks SDK load skipped:', err))
