@@ -42,11 +42,19 @@ export default async function Page({ params, searchParams }: Args) {
       redirect('/admin/login')
     }
 
-    // Fetch database document counts server-side
-    const [{ totalDocs: tendersCount }, { totalDocs: proposalsCount }] = await Promise.all([
-      payload.count({ collection: 'tenders' }),
-      payload.count({ collection: 'proposals' }),
-    ])
+    let tendersCount = 0
+    let proposalsCount = 0
+
+    try {
+      const [tendersRes, proposalsRes] = await Promise.all([
+        payload.count({ collection: 'tenders', overrideAccess: true }),
+        payload.count({ collection: 'proposals', overrideAccess: true }),
+      ])
+      tendersCount = tendersRes.totalDocs
+      proposalsCount = proposalsRes.totalDocs
+    } catch (err) {
+      console.error('Error fetching dashboard counts:', err)
+    }
 
     return <CustomDashboard user={user} metrics={{ tendersCount, proposalsCount }} />
   }
