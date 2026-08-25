@@ -1,5 +1,6 @@
-import { redirect } from 'next/navigation'
+import React from 'react'
+import CustomLogin from '@/components/CustomLogin'
 
-export default function OverrideAdminLogin() {
-  redirect('/login')
+export default function AdminLoginPage() {
+  return <CustomLogin />
 }

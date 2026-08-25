@@ -5,26 +5,21 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('payload-token')?.value
 
-  // 1. Force hard redirect from native CMS login to custom portal
-  if (pathname === '/admin/login') {
-    return NextResponse.redirect(new URL('/login', request.url))
-  }
-
-  // 2. Protect custom dashboard
-  if (pathname.startsWith('/dashboard') && !token) {
-    const loginUrl = new URL('/login', request.url)
+  // Protect /admin routes (except /admin/login) if no session token exists
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login' && !token) {
+    const loginUrl = new URL('/admin/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
-  // 3. Bounce logged-in users away from /login to /dashboard
-  if (pathname === '/login' && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Bounce logged-in users away from /admin/login straight to /admin
+  if (pathname === '/admin/login' && token) {
+    return NextResponse.redirect(new URL('/admin', request.url))
   }
 
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/login', '/admin/login'],
+  matcher: ['/admin/:path*'],
 }

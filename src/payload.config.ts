@@ -26,18 +26,15 @@ const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URI ||
 export default buildConfig({
   admin: {
     user: Users.slug,
-    routes: {
-      login: '/login', // Route default authentication to custom portal
-    },
-    meta: {
-      titleSuffix: '- SmartConnect CRM Engine',
-      description: 'Enterprise Backend Control Center',
-    },
     components: {
       graphics: {
         Logo: '@/components/SccrmLogo#SccrmLogo',
         Icon: '@/components/SccrmLogo#SccrmLogo',
       },
+    },
+    meta: {
+      titleSuffix: '- SmartConnect CRM Engine',
+      description: 'Enterprise Backend Control Center',
     },
     importMap: {
       baseDir: path.resolve(dirname),
