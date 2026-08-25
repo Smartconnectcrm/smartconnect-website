@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml* .npmrc* ./
 RUN corepack enable pnpm && \
-    pnpm i --no-frozen-lockfile --ignore-scripts
+    pnpm i --no-frozen-lockfile --allow-build=sharp,esbuild,unrs-resolver
 
 FROM base AS builder
 WORKDIR /app
@@ -18,7 +18,7 @@ ENV NODE_ENV=production
 ENV CI=true
 
 RUN corepack enable pnpm && \
-    pnpm payload generate:importmap && \
+    pnpm payload generate:importmap --allow-build=sharp,esbuild,unrs-resolver && \
     pnpm run build
 
 FROM base AS runner

@@ -56,7 +56,6 @@
     "pnpm": "^9 || ^10 || ^11"
   },
   "pnpm": {
-    "confirmModulesPurge": false,
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild",
