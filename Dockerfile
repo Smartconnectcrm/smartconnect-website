@@ -6,9 +6,15 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Enable Corepack and enforce pnpm
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && pnpm i --frozen-lockfile
+# Copy package definition and any available lockfile optionally
+COPY package.json package-lock.json* pnpm-lock.yaml* ./
+
+# Install dependencies based on available lockfile
+RUN \
+  if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && pnpm i --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm install; \
+  else npm install; \
+  fi
 
 # Step 2: Build the application
 FROM base AS builder
@@ -19,7 +25,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-RUN corepack enable pnpm && pnpm payload generate:importmap && pnpm run build
+RUN \
+  if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm payload generate:importmap && pnpm run build; \
+  else npx payload generate:importmap && npm run build; \
+  fi
 
 # Step 3: Production server runner
 FROM base AS runner
