@@ -1,9 +1,11 @@
-import config from '@payload-config'
 import type { Metadata } from 'next'
 import { RootPage, generatePageMetadata } from '@payloadcms/next/views'
+import configPromise from '@payload-config'
 import { importMap } from '../importMap.js'
+import CustomLogin from '@/components/CustomLogin'
+import CustomDashboard from '@/components/CustomDashboard'
 
-type PageArgs = {
+type Args = {
   params: Promise<{
     segments?: string[]
   }>
@@ -12,15 +14,29 @@ type PageArgs = {
   }>
 }
 
-export const generateMetadata = async ({ params, searchParams }: PageArgs): Promise<Metadata> =>
-  generatePageMetadata({ config, params, searchParams })
+export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
+  generatePageMetadata({ config: configPromise, params, searchParams })
 
-const Page = ({ params, searchParams }: PageArgs) =>
-  RootPage({
-    config,
-    importMap,
-    params: params as Promise<{ segments: string[] }>,
-    searchParams,
+export default async function Page({ params, searchParams }: Args) {
+  const resolvedParams = await params
+  const segments = resolvedParams?.segments || []
+
+  if (segments.length === 1 && segments[0] === 'login') {
+    return <CustomLogin />
+  }
+
+  if (segments.length === 0 || (segments.length === 1 && segments[0] === 'dashboard')) {
+    return <CustomDashboard />
+  }
+
+  const payloadParams = Promise.resolve({
+    segments,
   })
 
-export default Page
+  return RootPage({
+    config: configPromise,
+    importMap,
+    params: payloadParams,
+    searchParams,
+  })
+}
