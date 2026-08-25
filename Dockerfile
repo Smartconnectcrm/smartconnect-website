@@ -1,16 +1,24 @@
 FROM node:22-alpine AS base
 
-# Step 1: Dependencies
+# Step 1: Dependencies & Sharp Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 
+# Install dependencies and enforce linuxmusl-x64 Sharp binaries
 RUN \
-  if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && pnpm i --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm install; \
-  else npm install; \
+  if [ -f pnpm-lock.yaml ]; then \
+    corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
+    pnpm i --frozen-lockfile && \
+    pnpm add --save-optional @img/sharp-linuxmusl-x64; \
+  elif [ -f package-lock.json ]; then \
+    npm install && \
+    npm install --os=linux --libc=musl --cpu=x64 sharp; \
+  else \
+    npm install && \
+    npm install --os=linux --libc=musl --cpu=x64 sharp; \
   fi
 
 # Step 2: Builder
