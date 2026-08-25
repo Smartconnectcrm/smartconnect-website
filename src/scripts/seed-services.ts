@@ -1,5 +1,6 @@
+import 'dotenv/config'
 import { getPayload } from 'payload'
-import config from '../payload.config'
+import config from '../payload.config' // Corrected relative path
 
 const seedServices = async () => {
   const payload = await getPayload({ config })
@@ -9,8 +10,13 @@ const seedServices = async () => {
   const defaultServices = [
     {
       title: 'Enterprise CRM Integration & Customization',
-      shortDescription:
+      categoryTag: 'RunOperations',
+      description:
         'Tailored CRM solutions for enterprise and public sector requirements with EVB-IT compliance.',
+      deliverables: [
+        { item: 'Full lifecycle CRM deployment' },
+        { item: 'Custom API connector integration' },
+      ],
       boundaries: [
         { item: 'ISO 27001 compliant deployment' },
         { item: 'EVB-IT contract terms integration' },
@@ -20,7 +26,12 @@ const seedServices = async () => {
     },
     {
       title: 'Cloud Infrastructure & GDPR Hosting',
-      shortDescription: 'EU-hosted sovereign cloud deployment with strict data privacy compliance.',
+      categoryTag: 'Security',
+      description: 'EU-hosted sovereign cloud deployment with strict data privacy compliance.',
+      deliverables: [
+        { item: 'ISO 27001 readiness review' },
+        { item: 'Automated failover configuration' },
+      ],
       boundaries: [
         { item: 'GDPR / DSGVO compliant data processing' },
         { item: 'Sovereignty-first EU data center hosting' },
@@ -30,8 +41,13 @@ const seedServices = async () => {
     },
     {
       title: 'Public Sector Bid & RFP Automation',
-      shortDescription:
+      categoryTag: 'Advisory',
+      description:
         'Automated AI-driven screening and evaluation of public sector tender opportunities.',
+      deliverables: [
+        { item: 'AI document ingestion setup' },
+        { item: 'Custom proposal template scoring' },
+      ],
       boundaries: [
         { item: 'Real-time UVgO/VgV feed ingestion' },
         { item: 'Local AI screening (Ollama + Gemini)' },

@@ -2,53 +2,52 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-export type Theme = 'light' | 'dark' | 'neon' | 'blue'
+export type ThemeMode = 'light' | 'dark' | 'neon' | 'blue'
+export type Theme = ThemeMode // Alias for Header.tsx
 
 interface ThemeContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
+  theme: ThemeMode
+  setTheme: (theme: ThemeMode) => void
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-const ALL_THEMES: Theme[] = ['light', 'dark', 'neon', 'blue']
-
-function applyThemeToDOM(theme: Theme) {
-  const root = document.documentElement
-
-  // 1. Set data-theme attribute
-  root.setAttribute('data-theme', theme)
-
-  // 2. Clear all theme classes first to prevent layout collisions
-  root.classList.remove(...ALL_THEMES)
-
-  // 3. Add active theme class (e.g. html.neon, html.blue, html.dark)
-  root.classList.add(theme)
-}
-
-export function CustomThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('light')
+export const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [theme, setThemeState] = useState<ThemeMode>('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Read stored theme or default to light
-    const savedTheme = (localStorage.getItem('app-theme') as Theme) || 'light'
+    const savedTheme = (localStorage.getItem('sc_theme') as ThemeMode) || 'light'
     setThemeState(savedTheme)
-    applyThemeToDOM(savedTheme)
+    applyTheme(savedTheme)
+    setMounted(true)
   }, [])
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = (newTheme: ThemeMode) => {
     setThemeState(newTheme)
-    localStorage.setItem('app-theme', newTheme)
-    applyThemeToDOM(newTheme)
+    localStorage.setItem('sc_theme', newTheme)
+    applyTheme(newTheme)
   }
 
-  return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>
+  const applyTheme = (mode: ThemeMode) => {
+    const root = document.documentElement
+    root.classList.remove('theme-light', 'theme-dark', 'theme-neon', 'theme-blue')
+    root.classList.add(`theme-${mode}`)
+  }
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div style={{ visibility: mounted ? 'visible' : 'hidden' }}>{children}</div>
+    </ThemeContext.Provider>
+  )
 }
 
-export function useCustomTheme() {
+export const useTheme = () => {
   const context = useContext(ThemeContext)
   if (!context) {
-    throw new Error('useCustomTheme must be used within CustomThemeProvider')
+    throw new Error('useTheme must be used within a CustomThemeProvider')
   }
   return context
 }
+
+export const useCustomTheme = useTheme // Alias for Header.tsx

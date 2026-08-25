@@ -2,9 +2,137 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { BrandLogo } from './BrandLogo'
 
+// Footer Translations Dictionary
+const footerTranslations: Record<string, Record<string, string>> = {
+  DE: {
+    tagline:
+      'Strukturierte IT-Leistungsbausteine, dokumentierte Übergaben und konforme Umsetzung für Enterprise und den öffentlichen Sektor.',
+    navHeader: 'Navigation',
+    catalog: 'Leistungskatalog',
+    procurement: 'Procurement-Profil',
+    cmsDashboard: '🔒 CMS Dashboard',
+    complianceHeader: 'Compliance & Standards',
+    legalHeader: 'Rechtliches',
+    impressum: 'Impressum',
+    datenschutz: 'Datenschutz',
+    rights: 'Alle Rechte vorbehalten.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  EN: {
+    tagline:
+      'Structured IT service modules, documented handovers, and compliant execution for enterprise and the public sector.',
+    navHeader: 'Navigation',
+    catalog: 'Service Catalog',
+    procurement: 'Procurement Profile',
+    cmsDashboard: '🔒 CMS Dashboard',
+    complianceHeader: 'Compliance & Standards',
+    legalHeader: 'Legal',
+    impressum: 'Imprint',
+    datenschutz: 'Privacy Policy',
+    rights: 'All rights reserved.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  HU: {
+    tagline:
+      'Strukturált IT-szolgáltatási modulok, dokumentált átadás és megfelelő megvalósítás a vállalati és a közszféra számára.',
+    navHeader: 'NAVIGÁCIÓ',
+    catalog: 'Szolgáltatási Katalógus',
+    procurement: 'Beszerzési Profil',
+    cmsDashboard: '🔒 CMS Irányítópult',
+    complianceHeader: 'MEGFELELŐSÉG ÉS SZABVÁNYOK',
+    legalHeader: 'JOGI NYILATKOZAT',
+    impressum: 'Impresszum',
+    datenschutz: 'Adatvédelem',
+    rights: 'Minden jog fenntartva.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  FR: {
+    tagline:
+      'Modules de services IT structurés, transferts documentés et exécution conforme pour les entreprises et le secteur public.',
+    navHeader: 'Navigation',
+    catalog: 'Catalogue de Services',
+    procurement: 'Profil d’Achat',
+    cmsDashboard: '🔒 Tableau de bord CMS',
+    complianceHeader: 'Conformité & Normes',
+    legalHeader: 'Mentions Légales',
+    impressum: 'Mentions Légales',
+    datenschutz: 'Confidentialité',
+    rights: 'Tous droits réservés.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  ES: {
+    tagline:
+      'Módulos de servicios TI estructurados, entregas documentadas y ejecución conforme para empresas y el sector público.',
+    navHeader: 'Navegación',
+    catalog: 'Catálogo de Servicios',
+    procurement: 'Perfil de Contratación',
+    cmsDashboard: '🔒 Panel CMS',
+    complianceHeader: 'Cumplimiento y Normas',
+    legalHeader: 'Aviso Legal',
+    impressum: 'Aviso Legal',
+    datenschutz: 'Protección de Datos',
+    rights: 'Todos los derechos reservados.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  IT: {
+    tagline:
+      'Moduli di servizio IT strutturati, consegne documentate ed esecuzione conforme per le aziende e il settore pubblico.',
+    navHeader: 'Navigazione',
+    catalog: 'Catalogo Servizi',
+    procurement: 'Profilo Appalti',
+    cmsDashboard: '🔒 Dashboard CMS',
+    complianceHeader: 'Conformità e Standard',
+    legalHeader: 'Note Legali',
+    impressum: 'Note Legali',
+    datenschutz: 'Protezione Dati',
+    rights: 'Tutti i diritti riservati.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  NL: {
+    tagline:
+      'Gestructureerde IT-servicemodules, gedocumenteerde overdrachten en conforme uitvoering voor enterprise en de publieke sector.',
+    navHeader: 'Navigatie',
+    catalog: 'Dienstencatalogus',
+    procurement: 'Inkoopprofiel',
+    cmsDashboard: '🔒 CMS Dashboard',
+    complianceHeader: 'Compliance & Standaarden',
+    legalHeader: 'Juridisch',
+    impressum: 'Colofon',
+    datenschutz: 'Privacybeleid',
+    rights: 'Alle rechten voorbehouden.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+  PL: {
+    tagline:
+      'Ustrukturyzowane moduły usług IT, udokumentowane przekazania i zgodna realizacja dla przedsiębiorstw i sektora publicznego.',
+    navHeader: 'Nawigacja',
+    catalog: 'Katalog Usług',
+    procurement: 'Profil Zakupowy',
+    cmsDashboard: '🔒 Panel CMS',
+    complianceHeader: 'Zgodność i Standardy',
+    legalHeader: 'Kwestie Prawne',
+    impressum: 'Nota Prawna',
+    datenschutz: 'Ochrona Danych',
+    rights: 'Wszelkie prawa zastrzeżone.',
+    tenderBadge: 'EU TENDER & PUBLIC PROCUREMENT READY',
+  },
+}
+
 export default function Footer() {
+  const searchParams = useSearchParams()
+  const rawLang = searchParams?.get('lang')?.toLowerCase() || 'de'
+  const langKey = rawLang.toUpperCase()
+
+  const t = footerTranslations[langKey] || footerTranslations.DE
+
+  // Helper to preserve active language parameter across internal footer links
+  const createLocalizedHref = (path: string) => {
+    return rawLang && rawLang !== 'de' ? `${path}?lang=${rawLang}` : path
+  }
+
   return (
     <footer
       style={{
@@ -36,8 +164,7 @@ export default function Footer() {
               lineHeight: '1.6',
             }}
           >
-            Strukturierte IT-Leistungsbausteine, dokumentierte Übergaben und konforme Umsetzung für
-            Enterprise und den öffentlichen Sektor.
+            {t.tagline}
           </p>
         </div>
 
@@ -53,7 +180,7 @@ export default function Footer() {
               color: 'var(--text-primary)',
             }}
           >
-            Navigation
+            {t.navHeader}
           </h4>
           <ul
             style={{
@@ -67,30 +194,33 @@ export default function Footer() {
             }}
           >
             <li>
-              <Link href="/" style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}>
-                Leistungskatalog
+              <Link
+                href={createLocalizedHref('/')}
+                style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
+              >
+                {t.catalog}
               </Link>
             </li>
             <li>
               <Link
-                href="/procurement"
+                href={createLocalizedHref('/procurement')}
                 style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
               >
-                Procurement-Profil
+                {t.procurement}
               </Link>
             </li>
             <li>
               <Link
                 href="/admin"
-                style={{ textDecoration: 'none', color: '#2563eb', fontWeight: 'bold' }}
+                style={{ textDecoration: 'none', color: 'var(--accent)', fontWeight: 'bold' }}
               >
-                🔒 CMS Dashboard
+                {t.cmsDashboard}
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Compliance & Standards */}
+        {/* Compliance */}
         <div>
           <h4
             style={{
@@ -102,7 +232,7 @@ export default function Footer() {
               color: 'var(--text-primary)',
             }}
           >
-            Compliance & Standards
+            {t.complianceHeader}
           </h4>
           <ul
             style={{
@@ -134,7 +264,7 @@ export default function Footer() {
               color: 'var(--text-primary)',
             }}
           >
-            Rechtliches
+            {t.legalHeader}
           </h4>
           <ul
             style={{
@@ -149,25 +279,24 @@ export default function Footer() {
           >
             <li>
               <Link
-                href="/impressum"
+                href={createLocalizedHref('/impressum')}
                 style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
               >
-                Impressum
+                {t.impressum}
               </Link>
             </li>
             <li>
               <Link
-                href="/datenschutz"
+                href={createLocalizedHref('/datenschutz')}
                 style={{ textDecoration: 'none', color: 'var(--text-secondary)' }}
               >
-                Datenschutz
+                {t.datenschutz}
               </Link>
             </li>
           </ul>
         </div>
       </div>
 
-      {/* Sub-Footer Row */}
       <div
         style={{
           maxWidth: '1280px',
@@ -183,7 +312,7 @@ export default function Footer() {
           color: 'var(--text-secondary)',
         }}
       >
-        <span>© 2026 SmartConnect CRM. All rights reserved.</span>
+        <span>© 2026 SmartConnect CRM. {t.rights}</span>
         <span
           style={{
             padding: '3px 8px',
@@ -193,7 +322,7 @@ export default function Footer() {
             backgroundColor: 'var(--bg-card)',
           }}
         >
-          EU TENDER & PUBLIC PROCUREMENT READY
+          {t.tenderBadge}
         </span>
       </div>
     </footer>

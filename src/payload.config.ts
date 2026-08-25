@@ -21,20 +21,32 @@ import { SiteSettings } from './payload/globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const connectionString = process.env.DATABASE_URL || process.env.DATABASE_URI || ''
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL || ''
 
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: ' - SCCRM Admin',
+      description: 'SmartConnect CRM Management Dashboard',
+      icons: [
+        {
+          rel: 'icon',
+          type: 'image/png',
+          url: '/logo.png',
+        },
+      ],
+    },
     components: {
       graphics: {
         Logo: '@/components/SccrmLogo#SccrmLogo',
         Icon: '@/components/SccrmLogo#SccrmLogo',
       },
-    },
-    meta: {
-      titleSuffix: '- SmartConnect CRM Engine',
-      description: 'Enterprise Backend Control Center',
+      views: {
+        dashboard: {
+          Component: '@/components/Dashboard#CustomDashboard',
+        },
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -64,7 +76,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString,
-      ssl: { rejectUnauthorized: false },
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     },
     push: true,
   }),

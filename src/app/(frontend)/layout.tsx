@@ -1,3 +1,4 @@
+// src/app/(frontend)/layout.tsx
 import type { Metadata } from 'next'
 import React from 'react'
 import Header from './components/Header'
@@ -6,27 +7,28 @@ import { CustomThemeProvider } from '../../context/ThemeContext'
 import './styles.css'
 
 export const metadata: Metadata = {
-  title: 'SmartConnect CRM',
-  description: 'Enterprise & Public Sector IT Services',
+  title: 'SmartConnect CRM | Enterprise & Public Sector IT Services',
+  description:
+    'B2B IT & Digital Solutions für Unternehmen, öffentliche Auftraggeber und EU-tendernahe Vorhaben.',
+  other: {
+    google: 'notranslate',
+  },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// 👈 MUST BE EXPORTED AS DEFAULT
+export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" suppressHydrationWarning>
-      <body
-        className="min-h-screen flex flex-col antialiased"
-        style={{
-          backgroundColor: 'var(--bg-page, #ffffff)',
-          color: 'var(--text-primary, #0f172a)',
-          transition: 'background-color 0.25s ease, color 0.25s ease',
-        }}
-      >
-        <CustomThemeProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CustomThemeProvider>
-      </body>
-    </html>
+    <CustomThemeProvider>
+      <div className="flex flex-col min-h-screen bg-[var(--bg-page,#ffffff)] text-[var(--text-primary,#0f172a)] transition-colors duration-250">
+        {/* Navigation Header with Theme Toggle & Language Selector */}
+        <Header />
+
+        {/* Public Content Area Wrapper */}
+        <div className="flex-1 w-full">{children}</div>
+
+        {/* Global Footer */}
+        <Footer />
+      </div>
+    </CustomThemeProvider>
   )
 }

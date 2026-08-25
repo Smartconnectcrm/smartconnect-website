@@ -1,55 +1,46 @@
-'use client'
-
 import React from 'react'
+import Link from 'next/link'
 
-export function BrandLogo({
-  variant = 'light',
-  priority,
-}: {
+interface BrandLogoProps {
   variant?: 'light' | 'dark'
   priority?: boolean
-}) {
-  const isDark = variant === 'dark'
+}
 
+export const BrandLogo: React.FC<BrandLogoProps> = () => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      {/* Direct 3D Logo Asset with standard img element */}
+    <Link
+      href="/"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '12px',
+        textDecoration: 'none',
+      }}
+      title="SmartConnect CRM - Home"
+    >
       <img
-        src="https://i.postimg.cc/cHXm12qd/3D-Smart-Connect-LOGO.png"
+        src="/logo.png"
         alt="SmartConnect CRM Logo"
         width="38"
         height="38"
         style={{
           objectFit: 'contain',
           flexShrink: 0,
-          borderRadius: '50%',
           display: 'block',
         }}
       />
-
-      {/* Brand Text */}
       <span
         style={{
-          fontFamily: 'system-ui, -apple-system, sans-serif',
-          fontWeight: 900,
-          fontSize: '18px',
+          fontSize: '20px',
+          fontWeight: '900',
+          color: 'var(--text-primary, #0f172a)',
           letterSpacing: '-0.02em',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '4px',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
           whiteSpace: 'nowrap',
         }}
       >
-        <span
-          style={{
-            color: isDark ? '#38bdf8' : '#2563eb',
-            transition: 'color 0.2s ease',
-          }}
-        >
-          SmartConnect
-        </span>
-        <span style={{ color: '#fbbf24' }}>CRM</span>
+        SmartConnect <span style={{ color: '#fbbf24' }}>CRM</span>
       </span>
-    </div>
+    </Link>
   )
 }

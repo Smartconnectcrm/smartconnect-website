@@ -1,5 +1,4 @@
-/* THIS FILE WAS GENERATED AUTOMATICALLY BY PAYLOAD. */
-/* DO NOT MODIFY IT BECAUSE IT COULD BE REWRITTEN AT ANY TIME. */
+// src/app/(payload)/layout.tsx
 import config from '@payload-config'
 import '@payloadcms/next/css'
 import type { ServerFunctionClient } from 'payload'
@@ -23,9 +22,13 @@ const serverFunction: ServerFunctionClient = async function (args) {
 }
 
 const Layout = ({ children }: Args) => (
-  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
-    {children}
-  </RootLayout>
+  <html lang="en">
+    <body>
+      <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+        {children}
+      </RootLayout>
+    </body>
+  </html>
 )
 
 export default Layout

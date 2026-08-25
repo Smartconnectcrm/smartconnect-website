@@ -22,11 +22,11 @@ export async function seedTestUser(): Promise<void> {
     },
   })
 
-  // Create fresh test user
+  // Create fresh test user (casted to satisfy strict Payload v3 options)
   await payload.create({
     collection: 'users',
     data: testUser,
-  })
+  } as any)
 }
 
 /**

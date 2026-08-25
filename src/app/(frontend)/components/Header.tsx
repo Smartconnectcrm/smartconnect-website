@@ -1,30 +1,86 @@
+// src/app/(frontend)/components/Header.tsx
 'use client'
 
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import { useCustomTheme, type Theme } from '../../../context/ThemeContext'
-import { BrandLogo } from './BrandLogo'
+import { useCustomTheme, type Theme } from '@/context/ThemeContext'
+
+// Translation Dictionary for Header UI Elements
+const translations: Record<string, Record<string, string>> = {
+  DE: {
+    catalog: 'Leistungskatalog',
+    procurement: 'Procurement-Profil',
+    contact: 'Kontakt',
+    tender: 'RFP / Tender',
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Public Sector',
+  },
+  EN: {
+    catalog: 'Service Catalog',
+    procurement: 'Procurement Profile',
+    contact: 'Contact',
+    tender: 'RFP / Tender',
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Public Sector',
+  },
+  HU: {
+    catalog: 'Szolgáltatási Katalógus',
+    procurement: 'Beszerzési Profil',
+    contact: 'Kapcsolat',
+    tender: 'RFP / Ajánlatkérés',
+    subtextLine1: 'Vállalati és',
+    subtextLine2: 'Közszféra',
+  },
+  FR: {
+    catalog: 'Catalogue de Services',
+    procurement: "Profil d'Achats",
+    contact: 'Contact',
+    tender: "Appel d'Offres",
+    subtextLine1: 'Entreprises &',
+    subtextLine2: 'Secteur Public',
+  },
+  ES: {
+    catalog: 'Catálogo de Servicios',
+    procurement: 'Perfil de Contratación',
+    contact: 'Contacto',
+    tender: 'Licitación / RFP',
+    subtextLine1: 'Empresas y',
+    subtextLine2: 'Sector Público',
+  },
+  IT: {
+    catalog: 'Catalogo Servizi',
+    procurement: 'Profilo Appalti',
+    contact: 'Contatto',
+    tender: "Gara d'Appalto",
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Settore Pubblico',
+  },
+  NL: {
+    catalog: 'Dienstencatalogus',
+    procurement: 'Inkoopprofiel',
+    contact: 'Contact',
+    tender: 'Aanbesteding',
+    subtextLine1: 'Enterprise &',
+    subtextLine2: 'Publieke Sector',
+  },
+  PL: {
+    catalog: 'Katalog Usług',
+    procurement: 'Profil Zamówień',
+    contact: 'Kontakt',
+    tender: 'Przetarg / RFP',
+    subtextLine1: 'Przedsiębiorstwa i',
+    subtextLine2: 'Sektor Publiczny',
+  },
+}
 
 function HeaderNav() {
   const { theme, setTheme } = useCustomTheme()
   const [lang, setLang] = useState('DE')
-  const [isThemeOpen, setIsThemeOpen] = useState(false)
-  const themeRef = useRef<HTMLDivElement>(null)
 
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (themeRef.current && !themeRef.current.contains(event.target as Node)) {
-        setIsThemeOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
 
   useEffect(() => {
     const urlLang = searchParams.get('lang')
@@ -53,14 +109,7 @@ function HeaderNav() {
     return activeLang ? `${path}?lang=${activeLang.toLowerCase()}` : path
   }
 
-  const themeModes: { id: Theme; label: string; icon: string }[] = [
-    { id: 'light', label: 'Light', icon: '☀️' },
-    { id: 'dark', label: 'Dark', icon: '🌙' },
-    { id: 'neon', label: 'Neon', icon: '⚡' },
-    { id: 'blue', label: 'Blue', icon: '🔵' },
-  ]
-
-  const currentModeInfo = themeModes.find((m) => m.id === theme) || themeModes[0]
+  const t = translations[lang] || translations.DE
 
   return (
     <div
@@ -80,11 +129,37 @@ function HeaderNav() {
     >
       {/* Brand Logo & Subtext */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
-        <div>
-          <Link href={createLocalizedHref('/')}>
-            <BrandLogo variant={theme === 'light' ? 'light' : 'dark'} />
-          </Link>
-        </div>
+        <Link
+          href={createLocalizedHref('/')}
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+        >
+          <img
+            src="/logo.png"
+            alt="SmartConnect CRM Logo"
+            width="44"
+            height="44"
+            style={{
+              objectFit: 'cover',
+              flexShrink: 0,
+              display: 'block',
+              borderRadius: '8px',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
+            }}
+          />
+          <span
+            style={{
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              fontWeight: 900,
+              fontSize: '18px',
+              letterSpacing: '-0.02em',
+              color: 'var(--text-primary)',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            SmartConnect <span style={{ color: '#fbbf24' }}>CRM</span>
+          </span>
+        </Link>
 
         <div
           className="brand-subtext"
@@ -99,8 +174,9 @@ function HeaderNav() {
             color: 'var(--text-secondary)',
           }}
         >
-          Enterprise &<br />
-          Public Sector
+          {t.subtextLine1}
+          <br />
+          {t.subtextLine2}
         </div>
       </div>
 
@@ -126,7 +202,7 @@ function HeaderNav() {
             color: 'var(--text-primary)',
           }}
         >
-          Leistungskatalog
+          {t.catalog}
         </Link>
 
         <Link
@@ -140,7 +216,7 @@ function HeaderNav() {
             color: 'var(--text-primary)',
           }}
         >
-          Procurement-Profil
+          {t.procurement}
         </Link>
 
         <Link
@@ -164,7 +240,7 @@ function HeaderNav() {
           <span>🔒</span> CMS Login
         </Link>
 
-        {/* Language Switcher */}
+        {/* Language Switcher Dropdown */}
         <div style={{ position: 'relative', display: 'inline-block' }}>
           <select
             id="lang-select"
@@ -211,84 +287,6 @@ function HeaderNav() {
           </span>
         </div>
 
-        {/* Inline Theme Switcher (No Overlapping) */}
-        <div ref={themeRef} className="notranslate" style={{ position: 'relative' }}>
-          <button
-            type="button"
-            onClick={() => setIsThemeOpen((prev) => !prev)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 10px',
-              borderRadius: '4px',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'var(--bg-card, #ffffff)',
-              color: 'var(--text-primary)',
-              fontSize: '11px',
-              fontWeight: '800',
-              cursor: 'pointer',
-            }}
-            title="Switch Theme"
-          >
-            <span>{currentModeInfo.icon}</span>
-            <span style={{ textTransform: 'uppercase' }}>{currentModeInfo.label}</span>
-            <span style={{ fontSize: '7px', opacity: 0.6 }}>{isThemeOpen ? '▲' : '▼'}</span>
-          </button>
-
-          {isThemeOpen && (
-            <div
-              style={{
-                position: 'absolute',
-                top: 'calc(100% + 4px)',
-                right: 0,
-                zIndex: 100001,
-                width: '120px',
-                backgroundColor: 'var(--bg-card, #ffffff)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '8px',
-                padding: '4px',
-                boxShadow: '0 8px 20px rgba(0,0,0,0.3)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2px',
-              }}
-            >
-              {themeModes.map((mode) => {
-                const isActive = theme === mode.id
-                return (
-                  <button
-                    key={mode.id}
-                    type="button"
-                    onClick={() => {
-                      setTheme(mode.id)
-                      setIsThemeOpen(false)
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '5px 8px',
-                      borderRadius: '4px',
-                      border: 'none',
-                      backgroundColor: isActive ? 'var(--border-color)' : 'transparent',
-                      color: isActive ? 'var(--bg-page)' : 'var(--text-primary)',
-                      fontSize: '11px',
-                      fontWeight: isActive ? '800' : '600',
-                      cursor: 'pointer',
-                      width: '100%',
-                      textAlign: 'left',
-                    }}
-                  >
-                    <span>{mode.icon}</span>
-                    <span>{mode.label}</span>
-                  </button>
-                )
-              })}
-            </div>
-          )}
-        </div>
-
         {/* Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
           <Link
@@ -309,7 +307,7 @@ function HeaderNav() {
               whiteSpace: 'nowrap',
             }}
           >
-            RFP / Tender
+            {t.tender}
           </Link>
 
           <Link
@@ -330,8 +328,54 @@ function HeaderNav() {
               whiteSpace: 'nowrap',
             }}
           >
-            Kontakt
+            {t.contact}
           </Link>
+        </div>
+
+        {/* Theme Select Dropdown */}
+        <div
+          style={{ position: 'relative', display: 'inline-block', marginLeft: '4px' }}
+          suppressHydrationWarning
+        >
+          <select
+            id="theme-select"
+            name="theme"
+            value={theme || 'light'}
+            onChange={(e) => setTheme(e.target.value as Theme)}
+            style={{
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              borderRadius: '4px',
+              padding: '6px 22px 6px 10px',
+              fontSize: '12px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              outline: 'none',
+              backgroundColor: 'var(--bg-tag)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-color)',
+              height: '32px',
+            }}
+          >
+            <option value="light">☀️ Light</option>
+            <option value="dark">🌙 Dark</option>
+            <option value="neon">⚡ Neon</option>
+            <option value="blue">🔵 Blue</option>
+          </select>
+          <span
+            style={{
+              position: 'absolute',
+              right: '7px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              fontSize: '9px',
+              pointerEvents: 'none',
+              color: 'var(--text-muted)',
+            }}
+          >
+            ▼
+          </span>
         </div>
       </nav>
     </div>

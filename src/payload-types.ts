@@ -138,6 +138,8 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  name: string;
+  roles: ('admin' | 'editor' | 'viewer')[];
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -175,6 +177,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -342,6 +370,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -376,6 +406,40 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -487,14 +551,8 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface SiteSetting {
   id: number;
-  /**
-   * Displayed on light backgrounds / Light theme
-   */
-  lightLogo: number | Media;
-  /**
-   * Displayed on dark, neon, and enterprise blue backgrounds
-   */
-  darkLogo: number | Media;
+  lightLogoUrl?: string | null;
+  darkLogoUrl?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -503,8 +561,8 @@ export interface SiteSetting {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
-  lightLogo?: T;
-  darkLogo?: T;
+  lightLogoUrl?: T;
+  darkLogoUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
