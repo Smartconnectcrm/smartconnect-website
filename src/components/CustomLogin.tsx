@@ -7,23 +7,33 @@ export default function CustomLogin() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setLoading(true)
 
-    const res = await fetch('/api/users/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
+    try {
+      const res = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
 
-    if (res.ok) {
-      router.push('/admin')
-      router.refresh()
-    } else {
-      setError('Invalid email or password.')
+      const data = await res.json()
+
+      if (res.ok) {
+        router.push('/admin')
+        router.refresh()
+      } else {
+        setError(data.errors?.[0]?.message || 'Invalid email or password.')
+      }
+    } catch (err) {
+      setError('A network error occurred. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -59,9 +69,20 @@ export default function CustomLogin() {
         >
           SmartConnect CRM
         </h2>
+
         {error && (
-          <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '14px' }}>{error}</p>
+          <p
+            style={{
+              color: '#ef4444',
+              marginBottom: '16px',
+              fontSize: '14px',
+              textAlign: 'center',
+            }}
+          >
+            {error}
+          </p>
         )}
+
         <div style={{ marginBottom: '16px' }}>
           <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px' }}>Email</label>
           <input
@@ -69,6 +90,7 @@ export default function CustomLogin() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
             style={{
               width: '100%',
               padding: '10px',
@@ -76,9 +98,11 @@ export default function CustomLogin() {
               border: '1px solid #475569',
               backgroundColor: '#0f172a',
               color: '#fff',
+              opacity: loading ? 0.7 : 1,
             }}
           />
         </div>
+
         <div style={{ marginBottom: '24px' }}>
           <label style={{ display: 'block', fontSize: '14px', marginBottom: '8px' }}>
             Password
@@ -88,6 +112,7 @@ export default function CustomLogin() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
             style={{
               width: '100%',
               padding: '10px',
@@ -95,23 +120,27 @@ export default function CustomLogin() {
               border: '1px solid #475569',
               backgroundColor: '#0f172a',
               color: '#fff',
+              opacity: loading ? 0.7 : 1,
             }}
           />
         </div>
+
         <button
           type="submit"
+          disabled={loading}
           style={{
             width: '100%',
             padding: '12px',
-            backgroundColor: '#06b6d4',
+            backgroundColor: loading ? '#0891b2' : '#06b6d4',
             color: '#fff',
             border: 'none',
             borderRadius: '4px',
             fontWeight: 'bold',
-            cursor: 'pointer',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'background-color 0.2s',
           }}
         >
-          Sign In
+          {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
     </div>

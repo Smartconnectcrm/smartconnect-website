@@ -1,7 +1,15 @@
-'use client'
 import React, { useState, useEffect } from 'react'
+import type { User } from 'payload'
 
-export const CustomDashboard: React.FC = () => {
+interface DashboardProps {
+  user?: User | null
+  metrics?: {
+    tendersCount: number
+    proposalsCount: number
+  }
+}
+
+export const CustomDashboard: React.FC<DashboardProps> = ({ user, metrics }) => {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   const [mounted, setMounted] = useState(false)
 
@@ -54,6 +62,12 @@ export const CustomDashboard: React.FC = () => {
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {user && (
+            <span style={{ fontSize: '13px', opacity: 0.8, marginRight: '8px' }}>
+              Logged in: <strong>{user.email}</strong>
+            </span>
+          )}
+
           <a
             href="/admin/collections/proposals/create"
             style={{
@@ -131,10 +145,10 @@ export const CustomDashboard: React.FC = () => {
               color: '#06B6D4',
             }}
           >
-            14
+            {metrics?.tendersCount ?? 0}
           </div>
           <span style={{ fontSize: '12px', color: '#10B981', fontWeight: '600' }}>
-            ● 4 Open RFPs
+            ● Live Collection Docs
           </span>
         </div>
 
@@ -165,10 +179,10 @@ export const CustomDashboard: React.FC = () => {
               color: '#A855F7',
             }}
           >
-            8
+            {metrics?.proposalsCount ?? 0}
           </div>
           <span style={{ fontSize: '12px', color: '#A855F7', fontWeight: '600' }}>
-            ✦ 5 AI Generated
+            ✦ Live Collection Docs
           </span>
         </div>
       </div>
