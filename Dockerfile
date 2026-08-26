@@ -8,14 +8,13 @@ WORKDIR /app
 ENV CI=true
 ENV COREPACK_ENABLE_STRICT=0
 
-COPY package.json package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* ./
+COPY package.json package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* .npmrc* ./
 
-# Install dependencies with locked pnpm version
+# Install dependencies and bypass PNPM 11 script restrictions
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm config set strict-dep-builds false && \
-    pnpm install --frozen-lockfile && \
+    pnpm install --frozen-lockfile --ignore-scripts=false && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
@@ -34,12 +33,12 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 ENV CI=true
+ENV COREPACK_ENABLE_STRICT=0
 
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm config set strict-dep-builds false && \
-    pnpm payload generate:importmap && \
+    pnpm --ignore-scripts=false payload generate:importmap && \
     pnpm run build; \
   else \
     npx payload generate:importmap && \
