@@ -6,17 +6,14 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 ENV CI=true
-ENV COREPACK_ENABLE_STRICT=0
 
-COPY package.json package-lock.json* pnpm-lock.yaml* ./
+COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
-# Install dependencies and force execution of native build scripts
+# Install dependencies and enforce Sharp binaries
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm config set confirmModulesPurge false && \
-    pnpm config set ignore-scripts false && \
-    pnpm install --frozen-lockfile --unsafe-perm && \
+    pnpm install --frozen-lockfile && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
@@ -35,12 +32,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 ENV CI=true
-ENV COREPACK_ENABLE_STRICT=0
 
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && \
-    pnpm config set ignore-scripts false && \
     pnpm payload generate:importmap && \
     pnpm run build; \
   else \
