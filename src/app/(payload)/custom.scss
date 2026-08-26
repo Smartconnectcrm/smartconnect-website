@@ -53,7 +53,6 @@ html.dark textarea {
   border-color: #475569 !important;
 }
 
-
 /* ==========================================================================
    2. Payload CMS 3.0 Admin Login & Graphic Overrides
    ========================================================================== */
@@ -84,15 +83,14 @@ html.dark textarea {
   mix-blend-mode: normal;
 }
 
-/* Aggressively hide the default top brand header logo on the login view */
-.template-default__wrap > a:first-child,
-.template-default__wrap > div:first-child,
-.template-login > div:first-child,
-.template-login > a:first-child,
-[class*="template-default"] > a:first-child,
-[class*="template-login"] > a:first-child,
-[class*="template-default"] > div:first-child,
-[class*="template-login"] > div:first-child {
+/* Purge ALL top header logo containers on the login page layout */
+body.login > div > *:not(.template-default__content):not(form):not(main),
+.template-default__wrap > *:not(.template-default__content),
+.template-login > *:not(.template-login__content):not(form),
+[class*="template"] > a,
+[class*="template"] > header,
+[class*="template"] > div:first-child:has(img),
+[class*="template"] > div:first-child:has(svg) {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;

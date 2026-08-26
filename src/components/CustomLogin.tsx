@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import SccrmLogo from '@/components/SccrmLogo'
 
 export default function CustomLogin() {
   const [email, setEmail] = useState('')
@@ -42,33 +41,40 @@ export default function CustomLogin() {
   return (
     <div
       style={{
-        minHeight: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#0f172a',
+        color: '#fff',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#0f172a',
-        color: '#fff',
-        position: 'relative',
+        zIndex: 9999,
         overflow: 'hidden',
       }}
     >
-      {/* 🖼️ Full-screen fixed background watermark logo */}
-      <div
+      {/* 1. Large Watermark Logo Centered Directly Behind Form */}
+      <img
+        src="/smartconnect.logo.png"
+        alt="Watermark Logo"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 'min(700px, 85vw)',
-          height: 'min(700px, 85vw)',
-          opacity: 0.08,
+          width: 'min(650px, 85vw)',
+          height: 'min(650px, 85vw)',
+          objectFit: 'contain',
+          opacity: 0.12,
           pointerEvents: 'none',
           zIndex: 0,
+          filter: 'drop-shadow(0 0 35px rgba(6, 182, 212, 0.3))',
         }}
-      >
-        <SccrmLogo />
-      </div>
+      />
 
+      {/* 2. Login Form Card */}
       <form
         onSubmit={handleLogin}
         style={{
@@ -95,7 +101,7 @@ export default function CustomLogin() {
             SmartConnect CRM
           </h2>
 
-          {/* 🏷️ Centered Logo directly beneath title */}
+          {/* Centered Form Logo */}
           <div
             style={{
               display: 'flex',
@@ -104,9 +110,16 @@ export default function CustomLogin() {
               marginTop: '12px',
             }}
           >
-            <div style={{ width: '48px', height: '48px' }}>
-              <SccrmLogo />
-            </div>
+            <img
+              src="/smartconnect.logo.png"
+              alt="SmartConnect CRM Logo"
+              style={{
+                width: '48px',
+                height: '48px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5))',
+              }}
+            />
           </div>
         </div>
 

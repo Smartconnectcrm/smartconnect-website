@@ -43,8 +43,13 @@ export default buildConfig({
         Icon: '@/components/SccrmLogo#SccrmLogo',
       },
       views: {
+        // 1. Existing Custom Dashboard
         dashboard: {
           Component: '@/components/CustomDashboard#CustomDashboard',
+        },
+        // 2. Custom Login View Override (Points to your custom login component)
+        login: {
+          Component: '@/app/(frontend)/login/page#default',
         },
       },
     },
