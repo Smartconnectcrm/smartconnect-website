@@ -9,11 +9,13 @@ ENV CI=true
 
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 
-# Install dependencies and enforce linuxmusl-x64 Sharp binaries
+# Install dependencies, allow build scripts, and enforce Sharp native binaries
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm i --frozen-lockfile --config.confirmModulesPurge=false --ignore-scripts=false && \
+    pnpm config set confirmModulesPurge false && \
+    pnpm install --frozen-lockfile --ignore-scripts=false && \
+    pnpm approve-builds --all || true && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
@@ -33,9 +35,16 @@ ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 ENV CI=true
 
+# Allow native builds during importmap generation and next build
 RUN \
-  if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm payload generate:importmap && pnpm run build; \
-  else npx payload generate:importmap && npm run build; \
+  if [ -f pnpm-lock.yaml ]; then \
+    corepack enable pnpm && \
+    pnpm approve-builds --all || true && \
+    pnpm payload generate:importmap && \
+    pnpm run build; \
+  else \
+    npx payload generate:importmap && \
+    npm run build; \
   fi
 
 # Step 3: Runner
