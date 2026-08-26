@@ -57,47 +57,33 @@ html.dark textarea {
    2. Payload CMS 3.0 Admin Login & Graphic Overrides
    ========================================================================== */
 
-/* Strip default background, border, and shadows from ALL login container wrappers */
-.template-default,
-.template-login,
+/* Turn Payload's gray login card into the transparent watermark container */
 .template-default__wrap,
 .template-login__wrap,
+[class*="template-default__wrap"],
+[class*="template-login__wrap"] {
+  background-image: url('/smartconnect.logo.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 16px !important;
+}
+
+/* Make inner content wrapper transparent so the logo image shows through */
 .template-default__content,
 .template-login__content,
-[class*="template-default"],
-[class*="template-login"],
-[class*="login__wrap"],
-[class*="login__content"] {
+[class*="template-default__content"],
+[class*="template-login__content"] {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-/* Remove white background boxes from logo elements */
-.graphic-logo,
-.graphic-icon,
-.payload-default-logo,
-[class*="graphic-logo"],
-[class*="graphic-icon"],
-[class*="logo_"],
-[class*="icon_"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Force image elements to render cleanly without background fill */
-.template-login img,
-.graphic-logo img,
-.graphic-icon img {
-  background: transparent !important;
-  background-color: transparent !important;
-  mix-blend-mode: normal;
-}
-
-/* Hide top header logo container on login screen */
+/* Hide Payload's floating top header logo above the card */
 .template-default__wrap > a:first-child,
 .template-default__wrap > div:first-child,
 .template-login > div:first-child,
@@ -110,8 +96,18 @@ html.dark textarea {
   width: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+}
+
+/* Remove default white background boxes behind logos */
+.graphic-logo,
+.graphic-icon,
+.payload-default-logo,
+[class*="graphic-logo"],
+[class*="graphic-icon"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 /* ==========================================================================
