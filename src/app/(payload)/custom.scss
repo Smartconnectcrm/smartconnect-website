@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark Mode Core & Root Viewport Layout
+   1. Global Dark Theme & Root Reset
    ========================================================================== */
 
 html,
@@ -14,54 +14,41 @@ html.dark body {
   padding: 0 !important;
 }
 
-/* Base template background color */
+/* Force dark background on Payload's top-level layout wrappers */
 .template-default,
 .template-login,
-main[class*="template"] {
+main[class*="template"],
+div[class*="template"] {
   background-color: #0b0f17 !important;
-  min-height: 100vh !important;
 }
 
 /* ==========================================================================
-   2. Remove Default Gray Card Container & Apply Watermark
+   2. Target Payload Login Container Card (Nuke Gray Background)
    ========================================================================== */
 
-/* Target Payload's native gray wrap card directly */
-.template-default__wrap,
-.template-login__wrap,
-[class*="template-default__wrap"],
-[class*="template-login__wrap"],
-main[class*="template"] > div {
-  background-color: transparent !important;
-  background-image: url('/smartconnect.logo.png') !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-  background-size: contain !important;
-  box-shadow: none !important;
-  border: none !important;
-  width: auto !important;
-  max-width: 100% !important;
+/* Universal override on all wrapper descendants inside main template */
+main * {
+  --theme-bg: transparent !important;
+  --color-base-100: transparent !important;
+  --color-base-150: transparent !important;
+  --color-base-200: transparent !important;
 }
 
-/* Remove internal container backgrounds */
-.template-default__content,
-.template-login__content,
-[class*="template-default__content"],
-[class*="template-login__content"] {
+/* Target the grey wrapper card element directly */
+main > div,
+main > div > div,
+[class*="template-default__wrap"],
+[class*="template-login__wrap"],
+[class*="template__wrap"],
+[class*="login__wrap"],
+[class*="card"] {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-/* Hide Payload's native floating logo anchor link above the card */
-[class*="template-default__wrap"] > a:first-child,
-[class*="template-login__wrap"] > a:first-child,
-main[class*="template"] > a:first-child {
-  display: none !important;
-}
-
-/* Clear white background boxes behind graphics */
+/* Remove default white background boxes from icon graphic containers */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
@@ -69,6 +56,14 @@ main[class*="template"] > a:first-child {
 [class*="graphic-icon"] {
   background: transparent !important;
   background-color: transparent !important;
-  border: none !important;
   box-shadow: none !important;
+  border: none !important;
+}
+
+/* Hide Payload's default floating top header logo link above the card */
+main > a:first-child,
+[class*="template-default__wrap"] > a:first-child,
+[class*="template-login__wrap"] > a:first-child {
+  display: none !important;
+  visibility: hidden !important;
 }
