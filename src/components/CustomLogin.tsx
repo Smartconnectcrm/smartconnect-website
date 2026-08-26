@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 
 export default function CustomLogin() {
@@ -8,7 +9,12 @@ export default function CustomLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -38,24 +44,26 @@ export default function CustomLogin() {
     }
   }
 
-  return (
+  if (!mounted) return null
+
+  // Render directly into body to destroy Payload's outer wrapper box
+  return createPortal(
     <div
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
+        inset: 0,
         width: '100vw',
         height: '100vh',
-        backgroundColor: '#0f172a',
+        backgroundColor: '#0b0f17',
         color: '#fff',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 9999,
+        zIndex: 99999,
         overflow: 'hidden',
       }}
     >
-      {/* 🖼️ Watermark image sized to fill the background frame container */}
+      {/* 🖼️ Watermark image sized to fill the background frame */}
       <img
         src="/smartconnect.logo.png"
         alt="Background Watermark Frame"
@@ -213,6 +221,7 @@ export default function CustomLogin() {
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
-    </div>
+    </div>,
+    document.body,
   )
 }
