@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark Mode Core & Root Viewport Layout
+   1. Dark Mode Core & Root Layout Fixes
    ========================================================================== */
 
 html,
@@ -9,101 +9,66 @@ html.dark body {
   background-color: #0b0f17 !important;
   color: #f8fafc !important;
   min-height: 100vh !important;
-  width: 100% !important;
+  width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
-  position: relative !important;
+  overflow: hidden !important;
 }
 
-/* Ensure Payload's root template wrappers expand to fill viewport */
+/* Ensure outer viewport containers remain centered and dark */
 .template-default,
 .template-login,
-[class*="template-"] {
-  min-height: 100vh !important;
-  width: 100% !important;
+main[class*="template"],
+div[class*="template"] {
   background-color: #0b0f17 !important;
-  position: relative !important;
 }
-
-html.dark header,
-html.dark footer {
-  background-color: #0f172a !important;
-  border-color: #334155 !important;
-}
-
-html.dark input,
-html.dark select,
-html.dark textarea {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border-color: #475569 !important;
-}
-
 
 /* ==========================================================================
-   2. Watermark Frame & Pinpoint Viewport Centering
+   2. Watermark Background Replacement & Content Box Cleanup
    ========================================================================== */
 
-/* Force the watermark wrap directly into the screen center */
-.template-default__wrap,
-.template-login__wrap,
+/* Target ALL wrapper divs/mains to display smartconnect.logo.png as the background box */
+main[class*="template"] > div,
+div[class*="template__wrap"],
 [class*="template-default__wrap"],
 [class*="template-login__wrap"] {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 560px !important;
-  height: 560px !important;
-  max-width: 92vw !important;
-  max-height: 92vh !important;
   background-image: url('/smartconnect.logo.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: contain !important;
   background-color: transparent !important;
-  border: none !important;
   box-shadow: none !important;
-  z-index: 10 !important;
+  border: none !important;
 }
 
-/* Ensure inner form content sits cleanly over the watermark */
-.template-default__content,
-.template-login__content,
+/* Remove default gray background and shadows from inner login content containers */
+div[class*="template__content"],
+div[class*="login__form"],
 [class*="template-default__content"],
 [class*="template-login__content"] {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
-  width: 100% !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
 }
 
-/* Remove default white background boxes from graphics */
+/* Strip default white boxes from icon graphic containers */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
 [class*="graphic-logo"],
-[class*="graphic-icon"] {
+[class*="graphic-icon"],
+[class*="logo_"] {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-/* Hide Payload's floating top header logo link above the card */
-.template-default__wrap > a:first-child,
-.template-default__wrap > div:first-child,
-.template-login > div:first-child,
-.template-login > a:first-child,
-[class*="template-default"] > a:first-child,
-[class*="template-login"] > a:first-child {
+/* Hide floating header link logo above the login card */
+main > a:first-child,
+div[class*="template"] > a:first-child,
+div[class*="template"] > div:first-child > a:first-child {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
@@ -112,9 +77,8 @@ html.dark textarea {
   padding: 0 !important;
 }
 
-
 /* ==========================================================================
-   3. Navigation Header Logo Scaling (Dashboard View)
+   3. Dashboard Header Logo Scaling
    ========================================================================== */
 
 .app-header__logo,
