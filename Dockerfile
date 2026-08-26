@@ -13,7 +13,7 @@ COPY package.json package-lock.json* pnpm-lock.yaml* ./
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm i --frozen-lockfile --config.confirmModulesPurge=false && \
+    pnpm i --frozen-lockfile --config.confirmModulesPurge=false --ignore-scripts=false && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
