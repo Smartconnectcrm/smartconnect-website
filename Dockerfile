@@ -1,20 +1,19 @@
 FROM node:22-alpine AS base
 
 ENV CI=true
-ENV COREPACK_ENABLE=0
+ENV COREPACK_ENABLE_STRICT=0
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Step 1: Dependencies & Sharp Native Bindings
+# Step 1: Dependencies & Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Force install PNPM 10 globally via npm (completely avoiding Corepack v11)
+# Force install PNPM 10 globally to purge Corepack 11 completely
 RUN npm install -g pnpm@10.5.2
 
 COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
-# Configure PNPM 10 to auto-approve native builds and avoid prompts
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set confirmModulesPurge false && \
@@ -41,10 +40,11 @@ COPY . .
 
 ENV NODE_ENV=production
 
+# Execute importmap with explicit script execution permission
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set ignore-scripts false && \
-    npx payload generate:importmap && \
+    pnpm exec payload generate:importmap --config.ignore-scripts=false && \
     pnpm run build; \
   else \
     npx payload generate:importmap && \
