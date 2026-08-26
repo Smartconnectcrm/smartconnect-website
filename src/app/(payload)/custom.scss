@@ -84,52 +84,30 @@ html.dark textarea {
   mix-blend-mode: normal;
 }
 
-/* Completely hide Payload's default top header logo container on the login view */
+/* Aggressively hide the default top brand header logo on the login view */
+.template-default__wrap > a:first-child,
+.template-default__wrap > div:first-child,
 .template-login > div:first-child,
 .template-login > a:first-child,
-.template-default__wrap > a:first-child,
-.template-default__wrap > .graphic-logo:first-child {
+[class*="template-default"] > a:first-child,
+[class*="template-login"] > a:first-child,
+[class*="template-default"] > div:first-child,
+[class*="template-login"] > div:first-child {
   display: none !important;
   visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
-
-/* ==========================================================================
-   3. Large Centered Background Watermark (Behind Login Card)
-   ========================================================================== */
-
-body.login,
-html:has(.template-login) body {
-  position: relative !important;
-  
-  &::before {
-    content: "" !important;
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 650px !important;
-    height: 650px !important;
-    max-width: 85vw !important;
-    max-height: 85vh !important;
-    /* Adjust filename below if your public folder asset has a different name */
-    background-image: url('/smartconnect-logo.svg') !important;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-    background-size: contain !important;
-    opacity: 0.15 !important;
-    z-index: 0 !important;
-    pointer-events: none !important;
-    filter: drop-shadow(0 0 40px rgba(6, 182, 212, 0.35)) !important;
-  }
-}
-
-/* Ensure login form container renders above the background watermark */
+/* Enhance form card inside custom layout */
 .template-login form,
 .template-default__content,
 [class*="login"] form {
   position: relative !important;
-  z-index: 10 !important;
   backdrop-filter: blur(6px) !important;
 }
 
@@ -143,7 +121,7 @@ html:has(.template-login) body {
 
 
 /* ==========================================================================
-   4. Navigation & Top Header Logo Scaling (Dashboard View)
+   3. Navigation & Top Header Logo Scaling (Dashboard View)
    ========================================================================== */
 
 .app-header__logo,
