@@ -1,24 +1,20 @@
 FROM node:22-alpine AS base
 
-# Prevent Corepack from downloading PNPM 11 dynamically
 ENV CI=true
-ENV COREPACK_ENABLE_STRICT=0
-ENV COREPACK_DEFAULT_TO_LATEST=0
+ENV NEXT_TELEMETRY_DISABLED 1
 
 # Step 1: Dependencies & Sharp Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* .npmrc* ./
+# Install PNPM 10 globally to bypass Corepack overrides completely
+RUN npm install -g pnpm@10.5.2
 
-# Lock PNPM to 10.5.2 and allow build scripts
+COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
+
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && \
-    corepack prepare pnpm@10.5.2 --activate && \
-    pnpm config set confirmModulesPurge false && \
-    pnpm config set ignore-scripts false && \
     pnpm install --frozen-lockfile --unsafe-perm && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
@@ -32,19 +28,18 @@ RUN \
 # Step 2: Builder
 FROM base AS builder
 WORKDIR /app
+
+# Install PNPM 10 globally in Builder stage
+RUN npm install -g pnpm@10.5.2
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-# Force build script execution and bypass PNPM 11 script checks
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && \
-    corepack prepare pnpm@10.5.2 --activate && \
-    pnpm config set ignore-scripts false && \
-    npx payload generate:importmap && \
+    pnpm payload generate:importmap && \
     pnpm run build; \
   else \
     npx payload generate:importmap && \
@@ -56,7 +51,6 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
