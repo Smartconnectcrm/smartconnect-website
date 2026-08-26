@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 
 export default function CustomLogin() {
@@ -8,26 +9,12 @@ export default function CustomLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const router = useRouter()
 
+  // Ensure portal target exists only on the client
   useEffect(() => {
-    // Target all parent div elements up to main and clear background styling
-    const stripWrapperStyles = () => {
-      const allDivs = document.querySelectorAll('main div, [class*="template"]')
-      allDivs.forEach((div) => {
-        const element = div as HTMLElement
-        if (!element.querySelector('form')) {
-          element.style.setProperty('background', 'transparent', 'important')
-          element.style.setProperty('background-color', 'transparent', 'important')
-          element.style.setProperty('box-shadow', 'none', 'important')
-          element.style.setProperty('border', 'none', 'important')
-        }
-      })
-    }
-
-    stripWrapperStyles()
-    const interval = setInterval(stripWrapperStyles, 200)
-    return () => clearInterval(interval)
+    setMounted(true)
   }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -58,11 +45,18 @@ export default function CustomLogin() {
     }
   }
 
-  return (
+  // Prevent SSR mismatch before mounting
+  if (!mounted) return null
+
+  // Render directly to document.body, completely breaking out of Payload's DOM wrapper
+  return createPortal(
     <div
       style={{
         position: 'fixed',
-        inset: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         width: '100vw',
         height: '100vh',
         backgroundColor: '#0b0f17',
@@ -71,10 +65,10 @@ export default function CustomLogin() {
         justifyContent: 'center',
         padding: '24px',
         boxSizing: 'border-box',
-        zIndex: 999999,
+        zIndex: 9999999,
       }}
     >
-      {/* Centered Watermark Logo */}
+      {/* 🟡 Centered Background Watermark */}
       <img
         src="/smartconnect.logo.png"
         alt="Background Watermark"
@@ -95,7 +89,7 @@ export default function CustomLogin() {
         }}
       />
 
-      {/* Dark Form Card */}
+      {/* 🔴 Clean Branded Form Card */}
       <form
         onSubmit={handleLogin}
         style={{
@@ -210,6 +204,7 @@ export default function CustomLogin() {
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
-    </div>
+    </div>,
+    document.body,
   )
 }
