@@ -39,119 +39,164 @@ export default function CustomLogin() {
   }
 
   return (
-    <form
-      onSubmit={handleLogin}
+    <div
       style={{
-        width: '100%',
-        maxWidth: '400px',
-        padding: '32px',
-        backgroundColor: 'rgba(30, 41, 59, 0.92)',
-        backdropFilter: 'blur(12px)',
-        borderRadius: '12px',
-        border: '1px solid #334155',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
-        position: 'relative',
-        zIndex: 1,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: '#0b0f17',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 999999,
       }}
     >
-      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#fff' }}>
-          SmartConnect CRM
-        </h2>
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
-          <img
-            src="/logo.png"
-            alt="SmartConnect CRM Logo"
-            style={{ width: '48px', height: '48px', objectFit: 'contain' }}
-          />
-        </div>
-      </div>
-
-      {error && (
-        <p
-          style={{
-            color: '#ef4444',
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid #ef4444',
-            padding: '10px',
-            borderRadius: '6px',
-            marginBottom: '16px',
-            fontSize: '14px',
-            textAlign: 'center',
-          }}
-        >
-          {error}
-        </p>
-      )}
-
-      <div style={{ marginBottom: '16px' }}>
-        <label
-          style={{ display: 'block', fontSize: '14px', marginBottom: '8px', color: '#94a3b8' }}
-        >
-          Email
-        </label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '10px 12px',
-            borderRadius: '6px',
-            border: '1px solid #475569',
-            backgroundColor: '#0f172a',
-            color: '#fff',
-            fontSize: '14px',
-            boxSizing: 'border-box',
-          }}
-        />
-      </div>
-
-      <div style={{ marginBottom: '24px' }}>
-        <label
-          style={{ display: 'block', fontSize: '14px', marginBottom: '8px', color: '#94a3b8' }}
-        >
-          Password
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '10px 12px',
-            borderRadius: '6px',
-            border: '1px solid #475569',
-            backgroundColor: '#0f172a',
-            color: '#fff',
-            fontSize: '14px',
-            boxSizing: 'border-box',
-          }}
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading}
+      {/* 🟡 Watermark Frame Container */}
+      <div
         style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: loading ? '#0891b2' : '#06b6d4',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '6px',
-          fontWeight: 'bold',
-          fontSize: '14px',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          boxShadow: '0 0 12px rgba(6, 182, 212, 0.3)',
+          position: 'relative',
+          width: '560px',
+          height: '560px',
+          maxWidth: '92vw',
+          maxHeight: '92vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        {loading ? 'Signing In...' : 'Sign In'}
-      </button>
-    </form>
+        <img
+          src="/smartconnect.logo.png"
+          alt="Background Watermark"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            opacity: 0.25,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+
+        {/* 🔴 Centered Form Card */}
+        <form
+          onSubmit={handleLogin}
+          style={{
+            width: '100%',
+            maxWidth: '400px',
+            padding: '32px',
+            backgroundColor: 'rgba(30, 41, 59, 0.92)',
+            backdropFilter: 'blur(12px)',
+            borderRadius: '12px',
+            border: '1px solid #334155',
+            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#fff' }}>
+              SmartConnect CRM
+            </h2>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '12px' }}>
+              <img
+                src="/logo.png"
+                alt="SmartConnect CRM Logo"
+                style={{ width: '48px', height: '48px', objectFit: 'contain' }}
+              />
+            </div>
+          </div>
+
+          {error && (
+            <p
+              style={{
+                color: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid #ef4444',
+                padding: '10px',
+                borderRadius: '6px',
+                marginBottom: '16px',
+                fontSize: '14px',
+                textAlign: 'center',
+              }}
+            >
+              {error}
+            </p>
+          )}
+
+          <div style={{ marginBottom: '16px' }}>
+            <label
+              style={{ display: 'block', fontSize: '14px', marginBottom: '8px', color: '#94a3b8' }}
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '6px',
+                border: '1px solid #475569',
+                backgroundColor: '#0f172a',
+                color: '#fff',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '24px' }}>
+            <label
+              style={{ display: 'block', fontSize: '14px', marginBottom: '8px', color: '#94a3b8' }}
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '6px',
+                border: '1px solid #475569',
+                backgroundColor: '#0f172a',
+                color: '#fff',
+                fontSize: '14px',
+                boxSizing: 'border-box',
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: loading ? '#0891b2' : '#06b6d4',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              fontWeight: 'bold',
+              fontSize: '14px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              boxShadow: '0 0 12px rgba(6, 182, 212, 0.3)',
+            }}
+          >
+            {loading ? 'Signing In...' : 'Sign In'}
+          </button>
+        </form>
+      </div>
+    </div>
   )
 }
