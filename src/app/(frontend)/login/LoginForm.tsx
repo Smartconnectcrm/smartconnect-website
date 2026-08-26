@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Lock, Mail } from 'lucide-react'
-import { SccrmLogo } from '@/components/SccrmLogo' // Adjust path if needed
+import SccrmLogo from '@/components/SccrmLogo'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
@@ -44,59 +44,59 @@ export default function LoginForm() {
   return (
     <div
       style={{
+        minHeight: '100vh',
+        width: '100vw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#0f172a',
         position: 'relative',
-        width: '100%',
-        maxWidth: '420px',
-        backgroundColor: 'rgba(15, 23, 42, 0.85)',
-        border: '1px solid #1e293b',
-        borderRadius: '16px',
-        padding: '36px',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
-        backdropFilter: 'blur(12px)',
         overflow: 'hidden',
       }}
     >
-      {/* Carved Background Watermark Logo */}
+      {/* 🖼️ Watermark Background using the Outline Graphic */}
       <div
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '320px',
-          height: '320px',
-          opacity: 0.04,
+          width: 'min(650px, 85vw)',
+          height: 'min(650px, 85vw)',
+          backgroundImage: 'url("/smartconnect.logo.png")',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: 'contain',
+          opacity: 0.12,
           pointerEvents: 'none',
           zIndex: 0,
         }}
-      >
-        <SccrmLogo />
-      </div>
+      />
 
-      {/* Main Login Form Content */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+      {/* Main Form Box */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          width: '100%',
+          maxWidth: '400px',
+          backgroundColor: 'rgba(15, 23, 42, 0.85)',
+          border: '1px solid #1e293b',
+          borderRadius: '16px',
+          padding: '36px',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
+          backdropFilter: 'blur(12px)',
+        }}
+      >
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <h1 style={{ color: '#ffffff', fontSize: '22px', fontWeight: '800', margin: 0 }}>
-            SmartConnect Procurement
+            SmartConnect CRM
           </h1>
 
-          {/* Centered Brand Logo */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: '12px 0',
-            }}
-          >
-            <div style={{ width: '42px', height: '42px' }}>
-              <SccrmLogo />
-            </div>
+          {/* Centered 3D Metallic Logo */}
+          <div style={{ marginTop: '8px' }}>
+            <SccrmLogo />
           </div>
-
-          <p style={{ color: '#64748b', fontSize: '13px', margin: 0 }}>
-            Enterprise Engine Control Center
-          </p>
         </div>
 
         {error && (
@@ -109,6 +109,7 @@ export default function LoginForm() {
               borderRadius: '8px',
               fontSize: '13px',
               marginBottom: '20px',
+              textAlign: 'center',
             }}
           >
             {error}
@@ -126,7 +127,7 @@ export default function LoginForm() {
                 marginBottom: '6px',
               }}
             >
-              WORK EMAIL
+              EMAIL
             </label>
             <div style={{ position: 'relative' }}>
               <input
@@ -210,7 +211,7 @@ export default function LoginForm() {
               boxShadow: '0 0 16px rgba(6, 182, 212, 0.4)',
             }}
           >
-            {loading ? 'Authenticating...' : 'Sign In to SmartConnect'}
+            {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
       </div>
