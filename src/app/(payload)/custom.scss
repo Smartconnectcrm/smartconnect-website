@@ -1,6 +1,62 @@
 /* ==========================================================================
+   1. Dark Mode Core Styles
+   ========================================================================== */
+
+html.dark {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark body {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark header,
+html.dark footer {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark header *,
+html.dark footer * {
+  color: #f8fafc !important;
+}
+
+html.dark .service-card,
+html.dark form {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+html.dark .boundary-box {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark h1, 
+html.dark h2, 
+html.dark h3, 
+html.dark p, 
+html.dark span, 
+html.dark li {
+  color: #f8fafc !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
+}
+
+
+/* ==========================================================================
    2. Payload CMS 3.0 Admin Login & Graphic Overrides
-   ========================================================================= */
+   ========================================================================== */
 
 /* Remove white background boxes from ALL logo wrappers and images */
 .template-default,
@@ -28,56 +84,85 @@
   mix-blend-mode: normal;
 }
 
+/* Completely hide Payload's default top header logo container on the login view */
+.template-login > div:first-child,
+.template-login > a:first-child,
+.template-default__wrap > a:first-child,
+.template-default__wrap > .graphic-logo:first-child {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+
 /* ==========================================================================
-   Centered Background Watermark (Behind the Login Card)
-   ========================================================================= */
+   3. Large Centered Background Watermark (Behind Login Card)
+   ========================================================================== */
 
-/* Target the wrapper element on the login page */
-.template-default__wrap,
-.template-login {
+body.login,
+html:has(.template-login) body {
   position: relative !important;
-  overflow: hidden !important;
-
-  /* Position the top logo container dead-center behind the form */
-  > a:first-child,
-  > div:first-child:has(img),
-  > .graphic-logo:first-child {
-    display: flex !important;
-    visibility: visible !important;
-    position: absolute !important;
+  
+  &::before {
+    content: "" !important;
+    position: fixed !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    z-index: 0 !important; /* Place behind form card */
+    width: 650px !important;
+    height: 650px !important;
+    max-width: 85vw !important;
+    max-height: 85vh !important;
+    /* Adjust filename below if your public folder asset has a different name */
+    background-image: url('/smartconnect-logo.svg') !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: contain !important;
+    opacity: 0.15 !important;
+    z-index: 0 !important;
     pointer-events: none !important;
-    opacity: 0.18 !important; /* Elegant subtle background opacity */
-    margin: 0 !important;
-    padding: 0 !important;
-
-    img, svg {
-      width: 480px !important; /* Scaled up for background display */
-      height: 480px !important;
-      max-width: 80vw !important;
-      max-height: 80vh !important;
-      object-fit: contain !important;
-      filter: drop-shadow(0 0 35px rgba(6, 182, 212, 0.4)) !important;
-    }
+    filter: drop-shadow(0 0 40px rgba(6, 182, 212, 0.35)) !important;
   }
 }
 
-/* Ensure the login form card sits cleanly above the background watermark */
+/* Ensure login form container renders above the background watermark */
 .template-login form,
 .template-default__content,
 [class*="login"] form {
   position: relative !important;
-  z-index: 10 !important; /* Keeps card interactive and on top */
-  backdrop-filter: blur(8px) !important; /* Subtle glassmorphism effect */
+  z-index: 10 !important;
+  backdrop-filter: blur(6px) !important;
 }
 
-/* Clean up inside logo on the form card itself */
+/* Style for logo inside the form card */
 .template-login form img,
 [class*="login"] form img {
   filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6)) 
           drop-shadow(0 0 12px rgba(6, 182, 212, 0.25));
   transition: filter 0.3s ease;
+}
+
+
+/* ==========================================================================
+   4. Navigation & Top Header Logo Scaling (Dashboard View)
+   ========================================================================== */
+
+.app-header__logo,
+.nav__brand,
+.nav__header,
+[class*="app-header"] [class*="logo"],
+[class*="nav_"] [class*="logo"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  height: auto !important;
+  max-height: 48px !important;
+  width: auto !important;
+  padding: 4px 8px !important;
+
+  img, svg {
+    max-height: 38px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
 }
