@@ -6,13 +6,15 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 ENV CI=true
+ENV COREPACK_ENABLE_STRICT=0
 
-COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
+COPY package.json package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* ./
 
-# Install dependencies and enforce Sharp binaries
+# Install dependencies with locked pnpm version
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
+    pnpm config set strict-dep-builds false && \
     pnpm install --frozen-lockfile && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
@@ -35,7 +37,8 @@ ENV CI=true
 
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && \
+    corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
+    pnpm config set strict-dep-builds false && \
     pnpm payload generate:importmap && \
     pnpm run build; \
   else \

@@ -1,0 +1,16 @@
+packages:
+  - '.'
+
+# PNPM 11 Security Allowlist for Native Build Dependencies
+allowBuilds:
+  esbuild: true
+  sharp: true
+  '@img/sharp-linuxmusl-x64': true
+  unrs-resolver: true
+
+# Legacy PNPM 10 Compatibility Fallback
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - '@img/sharp-linuxmusl-x64'
+  - unrs-resolver
