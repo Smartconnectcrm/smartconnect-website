@@ -10,6 +10,7 @@ export const SccrmLogo: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
+        background: 'transparent',
         padding: '4px 0',
       }}
     >
@@ -21,6 +22,8 @@ export const SccrmLogo: React.FC = () => {
           height: 'auto',
           display: 'block',
           objectFit: 'contain',
+          background: 'transparent',
+          filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4))',
         }}
       />
     </div>
@@ -36,6 +39,7 @@ export const SccrmIcon: React.FC = () => (
       height: 'auto',
       display: 'block',
       objectFit: 'contain',
+      background: 'transparent',
     }}
   />
 )
