@@ -55,7 +55,7 @@ export default function CustomLogin() {
         overflow: 'hidden',
       }}
     >
-      {/* 🔴 Bounded Watermark Frame (Constrained exactly to the red box area) */}
+      {/* 🖼️ Watermark image sized to fill the background frame container */}
       <img
         src="/smartconnect.logo.png"
         alt="Background Watermark Frame"
@@ -64,15 +64,15 @@ export default function CustomLogin() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '520px',
-          height: '520px',
-          maxWidth: '90vw',
-          maxHeight: '90vh',
-          objectFit: 'contain',
-          opacity: 0.2,
+          width: '560px',
+          height: '560px',
+          maxWidth: '92vw',
+          maxHeight: '92vh',
+          objectFit: 'cover',
+          opacity: 0.35,
           pointerEvents: 'none',
           zIndex: 0,
-          filter: 'drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))',
+          borderRadius: '16px',
         }}
       />
 
