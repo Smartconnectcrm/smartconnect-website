@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark Mode Core & Viewport Layout
+   1. Dark Mode Core & Root Viewport Layout
    ========================================================================== */
 
 html,
@@ -9,38 +9,50 @@ html.dark body {
   background-color: #0b0f17 !important;
   color: #f8fafc !important;
   min-height: 100vh !important;
-  width: 100vw !important;
+  width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  position: relative !important;
 }
 
-/* Force ALL top-level layout wrappers to use perfect CSS Grid centering */
-body > div,
-main,
+/* Ensure Payload's root template wrappers expand to fill viewport */
 .template-default,
 .template-login,
-[class*="template-"],
-[class*="login-"] {
-  display: grid !important;
-  place-items: center !important;
+[class*="template-"] {
   min-height: 100vh !important;
-  width: 100vw !important;
+  width: 100% !important;
   background-color: #0b0f17 !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  position: relative !important;
+}
+
+html.dark header,
+html.dark footer {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #475569 !important;
 }
 
 
 /* ==========================================================================
-   2. Watermark Frame & Content Container
+   2. Watermark Frame & Pinpoint Viewport Centering
    ========================================================================== */
 
-/* Centered watermark frame using smartconnect.logo.png */
+/* Force the watermark wrap directly into the screen center */
 .template-default__wrap,
 .template-login__wrap,
 [class*="template-default__wrap"],
 [class*="template-login__wrap"] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -48,7 +60,6 @@ main,
   height: 560px !important;
   max-width: 92vw !important;
   max-height: 92vh !important;
-  margin: auto !important;
   background-image: url('/smartconnect.logo.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
@@ -56,9 +67,10 @@ main,
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  z-index: 10 !important;
 }
 
-/* Ensure inner content box stays centered and transparent */
+/* Ensure inner form content sits cleanly over the watermark */
 .template-default__content,
 .template-login__content,
 [class*="template-default__content"],
@@ -73,7 +85,7 @@ main,
   align-items: center !important;
 }
 
-/* Remove default white background box from graphic components */
+/* Remove default white background boxes from graphics */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
@@ -102,7 +114,7 @@ main,
 
 
 /* ==========================================================================
-   3. Dashboard Header Logo Scaling
+   3. Navigation Header Logo Scaling (Dashboard View)
    ========================================================================== */
 
 .app-header__logo,
