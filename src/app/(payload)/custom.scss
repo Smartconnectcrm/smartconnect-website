@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark Mode Core & Page Layout Fixes
+   1. Dark Mode Core & Viewport Layout
    ========================================================================== */
 
 html,
@@ -12,43 +12,31 @@ html.dark body {
   width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow-x: hidden !important;
+  overflow: hidden !important;
 }
 
-/* Enforce strict full-viewport flex centering for Payload's template wrapper */
+/* Force ALL top-level layout wrappers to use perfect CSS Grid centering */
+body > div,
+main,
 .template-default,
 .template-login,
-main[class*="template"],
-div[class*="template"] {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+[class*="template-"],
+[class*="login-"] {
+  display: grid !important;
+  place-items: center !important;
   min-height: 100vh !important;
   width: 100vw !important;
   background-color: #0b0f17 !important;
-  margin: 0 auto !important;
-}
-
-html.dark header,
-html.dark footer {
-  background-color: #0f172a !important;
-  border-color: #334155 !important;
-}
-
-html.dark input,
-html.dark select,
-html.dark textarea {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border-color: #475569 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 
 /* ==========================================================================
-   2. Admin Login Watermark & Content Frame Overrides
+   2. Watermark Frame & Content Container
    ========================================================================== */
 
-/* Turn the inner template wrapper into the centered watermark background frame */
+/* Centered watermark frame using smartconnect.logo.png */
 .template-default__wrap,
 .template-login__wrap,
 [class*="template-default__wrap"],
@@ -60,7 +48,7 @@ html.dark textarea {
   height: 560px !important;
   max-width: 92vw !important;
   max-height: 92vh !important;
-  margin: 0 auto !important;
+  margin: auto !important;
   background-image: url('/smartconnect.logo.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
@@ -85,7 +73,7 @@ html.dark textarea {
   align-items: center !important;
 }
 
-/* Remove default white background box from graphic/icon components */
+/* Remove default white background box from graphic components */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
@@ -97,7 +85,7 @@ html.dark textarea {
   border: none !important;
 }
 
-/* Hide Payload's default floating top header logo link above the card */
+/* Hide Payload's floating top header logo link above the card */
 .template-default__wrap > a:first-child,
 .template-default__wrap > div:first-child,
 .template-login > div:first-child,
@@ -114,7 +102,7 @@ html.dark textarea {
 
 
 /* ==========================================================================
-   3. Navigation Header Logo Scaling (Dashboard View)
+   3. Dashboard Header Logo Scaling
    ========================================================================== */
 
 .app-header__logo,
