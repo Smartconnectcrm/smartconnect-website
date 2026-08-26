@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark-Blue Global Core Overrides
+   1. Global Dark-Blue Theme & Root Resets
    ========================================================================== */
 
 html,
@@ -14,7 +14,7 @@ html.dark body {
   padding: 0 !important;
 }
 
-/* Neutralize Payload root CSS variables to Dark-Blue palette */
+/* Force CSS variable token overrides across light/dark states */
 :root,
 [data-theme="dark"],
 [data-theme="light"] {
@@ -24,11 +24,39 @@ html.dark body {
   --color-base-100: transparent !important;
   --color-base-150: transparent !important;
   --color-base-200: transparent !important;
+  --color-base-300: transparent !important;
 }
+
+/* ==========================================================================
+   2. Target Payload 3.0 Template Container Layout
+   ========================================================================== */
 
 main,
 main div,
-.template-default,
-.template-login {
-  background-color: #0f172a !important;
+main section,
+main article,
+[class*="template"],
+[class*="login"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Specifically strip the persistent background and box-shadow off the card wrapper */
+main > div > div,
+main > div > div > div,
+[class*="template-default__wrap"],
+[class*="template-login__wrap"],
+[class*="template__wrap"],
+[class*="login__wrap"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Hide floating default logo anchor links */
+main > a:first-child,
+[class*="template-default__wrap"] > a:first-child {
+  display: none !important;
+  visibility: hidden !important;
 }
