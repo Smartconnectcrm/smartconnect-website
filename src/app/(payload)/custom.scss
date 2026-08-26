@@ -1,12 +1,12 @@
 /* ==========================================================================
-   1. Dark Theme Core & Variable Reset
+   1. Dark-Blue Global Core Overrides
    ========================================================================== */
 
 html,
 body,
 html.dark,
 html.dark body {
-  background-color: #0b0f17 !important;
+  background-color: #0f172a !important;
   color: #f8fafc !important;
   min-height: 100vh !important;
   width: 100vw !important;
@@ -14,14 +14,11 @@ html.dark body {
   padding: 0 !important;
 }
 
-/* Neutralize Payload template root CSS variables */
+/* Neutralize Payload root CSS variables to Dark-Blue palette */
 :root,
-html,
-body,
-[data-theme],
-.template-default,
-.template-login {
-  --theme-bg: #0b0f17 !important;
+[data-theme="dark"],
+[data-theme="light"] {
+  --theme-bg: #0f172a !important;
   --color-base-0: transparent !important;
   --color-base-50: transparent !important;
   --color-base-100: transparent !important;
@@ -29,50 +26,9 @@ body,
   --color-base-200: transparent !important;
 }
 
-/* Target all payload template containers */
+main,
+main div,
 .template-default,
-.template-login,
-main[class*="template"],
-div[class*="template"] {
-  background-color: #0b0f17 !important;
-  background: #0b0f17 !important;
-}
-
-/* Nuke the central gray wrapper box */
-.template-default__wrap,
-.template-login__wrap,
-[class*="template-default__wrap"],
-[class*="template-login__wrap"],
-main > div {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  outline: none !important;
-}
-
-.template-default__content,
-.template-login__content,
-[class*="template-default__content"],
-[class*="template-login__content"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-}
-
-/* Clear white background on logo icon containers */
-.graphic-logo,
-.graphic-icon,
-.payload-default-logo,
-[class*="graphic-logo"],
-[class*="graphic-icon"] {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Hide Payload floating header link above login card */
-main > a:first-child,
-[class*="template-default__wrap"] > a:first-child {
-  display: none !important;
+.template-login {
+  background-color: #0f172a !important;
 }
