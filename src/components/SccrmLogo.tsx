@@ -10,7 +10,7 @@ export const SccrmLogo: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        background: 'transparent',
+        backgroundColor: 'transparent',
         padding: '4px 0',
       }}
     >
@@ -22,24 +22,25 @@ export const SccrmLogo: React.FC = () => {
           height: 'auto',
           display: 'block',
           objectFit: 'contain',
-          background: 'transparent',
-          filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4))',
+          backgroundColor: 'transparent',
+          filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))',
         }}
       />
     </div>
   )
 }
 
+// Return transparent rendering for sidebar/icon contexts
 export const SccrmIcon: React.FC = () => (
   <img
     src="/logo.png"
     alt="SmartConnect CRM Icon"
     style={{
-      width: '28px',
+      width: '24px',
       height: 'auto',
       display: 'block',
       objectFit: 'contain',
-      background: 'transparent',
+      backgroundColor: 'transparent',
     }}
   />
 )

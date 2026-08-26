@@ -59,6 +59,7 @@ html.dark textarea {
    ========================================================================== */
 
 /* Remove white background boxes from ALL logo wrappers and images */
+.template-default,
 .template-login,
 .template-login *,
 .graphic-logo,
@@ -84,6 +85,8 @@ html.dark textarea {
 }
 
 /* Hide redundant top brand logo above the Payload login card */
+.template-default__wrap > a:first-child,
+.template-default__wrap > .graphic-logo:first-child,
 .template-login > div:first-child:has(img),
 .template-login > a:first-child,
 .template-login > header,
@@ -101,4 +104,31 @@ html.dark textarea {
   filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6)) 
           drop-shadow(0 0 12px rgba(6, 182, 212, 0.25));
   transition: filter 0.3s ease;
+}
+
+
+/* ==========================================================================
+   3. Payload CMS 3.0 Navigation & Top Header Logo Scale Fix
+   ========================================================================== */
+
+/* Fix tiny cropped icon in Payload 3.0 Dashboard top left bar */
+.app-header__logo,
+.nav__brand,
+.nav__header,
+[class*="app-header"] [class*="logo"],
+[class*="nav_"] [class*="logo"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  height: auto !important;
+  max-height: 48px !important;
+  width: auto !important;
+  padding: 4px 8px !important;
+
+  img, svg {
+    max-height: 38px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
 }
