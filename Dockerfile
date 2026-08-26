@@ -1,20 +1,18 @@
 FROM node:22-alpine AS base
 
 ENV CI=true
-ENV COREPACK_ENABLE_STRICT=0
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Step 1: Dependencies & Native Bindings
+# Step 1: Dependencies & Sharp Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Force install PNPM 10 globally to bypass Corepack v11 entirely
+# Install pnpm v10 directly via npm, bypassing Corepack
 RUN npm install -g pnpm@10.5.2
 
 COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
-# Configure PNPM 10 and install dependencies
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set confirmModulesPurge false && \
@@ -33,7 +31,6 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 
-# Install PNPM 10 globally in Builder stage
 RUN npm install -g pnpm@10.5.2
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -41,7 +38,6 @@ COPY . .
 
 ENV NODE_ENV=production
 
-# Execute importmap and build without corepack intervention
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set ignore-scripts false && \
