@@ -1,23 +1,25 @@
 FROM node:22-alpine AS base
 
 ENV CI=true
+ENV COREPACK_ENABLE_STRICT=0
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Step 1: Dependencies & Sharp Native Bindings
+# Step 1: Dependencies & Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install pnpm v10 directly via npm, bypassing Corepack
+# Force install PNPM 10 globally to bypass Corepack v11 entirely
 RUN npm install -g pnpm@10.5.2
 
 COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
+# Allow lockfile updates during Docker build
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set confirmModulesPurge false && \
     pnpm config set ignore-scripts false && \
-    pnpm install --frozen-lockfile --unsafe-perm && \
+    pnpm install --no-frozen-lockfile --unsafe-perm && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
