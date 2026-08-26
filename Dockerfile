@@ -1,6 +1,6 @@
 FROM node:22-alpine AS base
 
-# Step 1: Dependencies & Sharp Native Bindings
+# Step 1: Dependencies & Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -8,13 +8,15 @@ WORKDIR /app
 ENV CI=true
 ENV COREPACK_ENABLE_STRICT=0
 
-COPY package.json package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* .npmrc* ./
+COPY package.json package-lock.json* pnpm-lock.yaml* ./
 
-# Install dependencies and bypass PNPM 11 script restrictions
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm install --frozen-lockfile --ignore-scripts=false && \
+    corepack enable pnpm && \
+    corepack prepare pnpm@10.5.2 --activate && \
+    pnpm config set confirmModulesPurge false && \
+    pnpm config set ignore-scripts false && \
+    pnpm install --frozen-lockfile --unsafe-perm && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
@@ -37,11 +39,12 @@ ENV COREPACK_ENABLE_STRICT=0
 
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm --ignore-scripts=false payload generate:importmap && \
+    corepack enable pnpm && \
+    corepack prepare pnpm@10.5.2 --activate && \
+    pnpm run generate:importmap && \
     pnpm run build; \
   else \
-    npx payload generate:importmap && \
+    npm run generate:importmap && \
     npm run build; \
   fi
 
@@ -66,7 +69,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 3000
-
 ENV PORT 3000
 
 CMD ["node", "server.js"]
