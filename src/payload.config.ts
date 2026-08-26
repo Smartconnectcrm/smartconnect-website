@@ -46,10 +46,8 @@ export default buildConfig({
         dashboard: {
           Component: '@/components/CustomDashboard#CustomDashboard',
         },
-        // Force Payload to render ONLY your custom login component (bypasses DefaultTemplate)
         login: {
           Component: '@/components/CustomLogin#default',
-          exact: true,
         },
       },
     },

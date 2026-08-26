@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Global Dark Mode Reset
+   1. Dark Mode Core & Root Viewport Layout
    ========================================================================== */
 
 html,
@@ -14,14 +14,23 @@ html.dark body {
   padding: 0 !important;
 }
 
+/* Base template background color */
+.template-default,
+.template-login,
+main[class*="template"] {
+  background-color: #0b0f17 !important;
+  min-height: 100vh !important;
+}
+
 /* ==========================================================================
-   2. Payload 3.0 Login Template Overrides (Nuke Gray Container)
+   2. Remove Default Gray Card Container & Apply Watermark
    ========================================================================== */
 
-/* Target the wrapper card directly using wildcard attribute selectors */
+/* Target Payload's native gray wrap card directly */
+.template-default__wrap,
+.template-login__wrap,
 [class*="template-default__wrap"],
 [class*="template-login__wrap"],
-[class*="login__wrap"],
 main[class*="template"] > div {
   background-color: transparent !important;
   background-image: url('/smartconnect.logo.png') !important;
@@ -30,27 +39,29 @@ main[class*="template"] > div {
   background-size: contain !important;
   box-shadow: none !important;
   border: none !important;
+  width: auto !important;
+  max-width: 100% !important;
 }
 
-/* Remove default background from inner template content */
+/* Remove internal container backgrounds */
+.template-default__content,
+.template-login__content,
 [class*="template-default__content"],
-[class*="template-login__content"],
-[class*="login__content"],
-[class*="login__form"] {
+[class*="template-login__content"] {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-/* Hide floating top logo link above the card */
+/* Hide Payload's native floating logo anchor link above the card */
 [class*="template-default__wrap"] > a:first-child,
 [class*="template-login__wrap"] > a:first-child,
 main[class*="template"] > a:first-child {
   display: none !important;
 }
 
-/* Clear white backgrounds behind logo graphics */
+/* Clear white background boxes behind graphics */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
