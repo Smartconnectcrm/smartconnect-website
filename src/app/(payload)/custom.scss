@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Global Dark Theme & Root Reset
+   1. Dark Theme Core & Variable Reset
    ========================================================================== */
 
 html,
@@ -14,56 +14,65 @@ html.dark body {
   padding: 0 !important;
 }
 
-/* Force dark background on Payload's top-level layout wrappers */
+/* Neutralize Payload template root CSS variables */
+:root,
+html,
+body,
+[data-theme],
 .template-default,
-.template-login,
-main[class*="template"],
-div[class*="template"] {
-  background-color: #0b0f17 !important;
-}
-
-/* ==========================================================================
-   2. Target Payload Login Container Card (Nuke Gray Background)
-   ========================================================================== */
-
-/* Universal override on all wrapper descendants inside main template */
-main * {
-  --theme-bg: transparent !important;
+.template-login {
+  --theme-bg: #0b0f17 !important;
+  --color-base-0: transparent !important;
+  --color-base-50: transparent !important;
   --color-base-100: transparent !important;
   --color-base-150: transparent !important;
   --color-base-200: transparent !important;
 }
 
-/* Target the grey wrapper card element directly */
-main > div,
-main > div > div,
+/* Target all payload template containers */
+.template-default,
+.template-login,
+main[class*="template"],
+div[class*="template"] {
+  background-color: #0b0f17 !important;
+  background: #0b0f17 !important;
+}
+
+/* Nuke the central gray wrapper box */
+.template-default__wrap,
+.template-login__wrap,
 [class*="template-default__wrap"],
 [class*="template-login__wrap"],
-[class*="template__wrap"],
-[class*="login__wrap"],
-[class*="card"] {
+main > div {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
+  outline: none !important;
 }
 
-/* Remove default white background boxes from icon graphic containers */
+.template-default__content,
+.template-login__content,
+[class*="template-default__content"],
+[class*="template-login__content"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Clear white background on logo icon containers */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
 [class*="graphic-logo"],
 [class*="graphic-icon"] {
   background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
   border: none !important;
+  box-shadow: none !important;
 }
 
-/* Hide Payload's default floating top header logo link above the card */
+/* Hide Payload floating header link above login card */
 main > a:first-child,
-[class*="template-default__wrap"] > a:first-child,
-[class*="template-login__wrap"] > a:first-child {
+[class*="template-default__wrap"] > a:first-child {
   display: none !important;
-  visibility: hidden !important;
 }

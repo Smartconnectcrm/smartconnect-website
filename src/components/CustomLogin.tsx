@@ -10,35 +10,24 @@ export default function CustomLogin() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // 🔴 Directly strip gray backgrounds from parent Payload containers at the DOM level
   useEffect(() => {
-    const cleanPayloadParents = () => {
-      // Traverse upward and strip styling on parent divs and main elements
-      const elements = document.querySelectorAll('main, main *, div[class*="template"]')
-      elements.forEach((el) => {
-        const htmlEl = el as HTMLElement
-        const computedBg = window.getComputedStyle(htmlEl).backgroundColor
-
-        // Remove solid gray/white backgrounds while keeping the form untouched
-        if (
-          computedBg.includes('rgb(53,') ||
-          computedBg.includes('rgb(30,') ||
-          computedBg.includes('rgb(255,') ||
-          computedBg.includes('rgb(240,')
-        ) {
-          if (!htmlEl.tagName.toLowerCase().includes('form')) {
-            htmlEl.style.setProperty('background', 'transparent', 'important')
-            htmlEl.style.setProperty('background-color', 'transparent', 'important')
-            htmlEl.style.setProperty('box-shadow', 'none', 'important')
-            htmlEl.style.setProperty('border', 'none', 'important')
-          }
+    // Target all parent div elements up to main and clear background styling
+    const stripWrapperStyles = () => {
+      const allDivs = document.querySelectorAll('main div, [class*="template"]')
+      allDivs.forEach((div) => {
+        const element = div as HTMLElement
+        if (!element.querySelector('form')) {
+          element.style.setProperty('background', 'transparent', 'important')
+          element.style.setProperty('background-color', 'transparent', 'important')
+          element.style.setProperty('box-shadow', 'none', 'important')
+          element.style.setProperty('border', 'none', 'important')
         }
       })
     }
 
-    cleanPayloadParents()
-    const timer = setTimeout(cleanPayloadParents, 100)
-    return () => clearTimeout(timer)
+    stripWrapperStyles()
+    const interval = setInterval(stripWrapperStyles, 200)
+    return () => clearInterval(interval)
   }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -73,8 +62,7 @@ export default function CustomLogin() {
     <div
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
+        inset: 0,
         width: '100vw',
         height: '100vh',
         backgroundColor: '#0b0f17',
@@ -86,7 +74,7 @@ export default function CustomLogin() {
         zIndex: 999999,
       }}
     >
-      {/* 🟡 Centered Background Watermark */}
+      {/* Centered Watermark Logo */}
       <img
         src="/smartconnect.logo.png"
         alt="Background Watermark"
@@ -107,7 +95,7 @@ export default function CustomLogin() {
         }}
       />
 
-      {/* 🔴 Dark Form Card */}
+      {/* Dark Form Card */}
       <form
         onSubmit={handleLogin}
         style={{
