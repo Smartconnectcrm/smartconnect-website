@@ -1,48 +1,38 @@
 /* ==========================================================================
-   1. Dark Mode Core Styles
+   1. Dark Mode Core & Page Layout Fixes
    ========================================================================== */
 
-html.dark {
-  background-color: #0f172a !important;
+html,
+body,
+html.dark,
+html.dark body {
+  background-color: #0b0f17 !important;
   color: #f8fafc !important;
+  min-height: 100vh !important;
+  width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
 }
 
-html.dark body {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
+/* Enforce strict full-viewport flex centering for Payload's template wrapper */
+.template-default,
+.template-login,
+main[class*="template"],
+div[class*="template"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
+  width: 100vw !important;
+  background-color: #0b0f17 !important;
+  margin: 0 auto !important;
 }
 
 html.dark header,
 html.dark footer {
   background-color: #0f172a !important;
   border-color: #334155 !important;
-}
-
-html.dark header *,
-html.dark footer * {
-  color: #f8fafc !important;
-}
-
-html.dark .service-card,
-html.dark form {
-  background-color: #1e293b !important;
-  color: #ffffff !important;
-  border-color: #475569 !important;
-  box-shadow: 4px 4px 0px 0px #000000 !important;
-}
-
-html.dark .boundary-box {
-  background-color: #0f172a !important;
-  border-color: #334155 !important;
-}
-
-html.dark h1, 
-html.dark h2, 
-html.dark h3, 
-html.dark p, 
-html.dark span, 
-html.dark li {
-  color: #f8fafc !important;
 }
 
 html.dark input,
@@ -53,26 +43,34 @@ html.dark textarea {
   border-color: #475569 !important;
 }
 
+
 /* ==========================================================================
-   2. Payload CMS 3.0 Admin Login & Graphic Overrides
+   2. Admin Login Watermark & Content Frame Overrides
    ========================================================================== */
 
-/* Turn Payload's gray login card into the transparent watermark container */
+/* Turn the inner template wrapper into the centered watermark background frame */
 .template-default__wrap,
 .template-login__wrap,
 [class*="template-default__wrap"],
 [class*="template-login__wrap"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 560px !important;
+  height: 560px !important;
+  max-width: 92vw !important;
+  max-height: 92vh !important;
+  margin: 0 auto !important;
   background-image: url('/smartconnect.logo.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
-  background-size: cover !important;
+  background-size: contain !important;
   background-color: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  border-radius: 16px !important;
 }
 
-/* Make inner content wrapper transparent so the logo image shows through */
+/* Ensure inner content box stays centered and transparent */
 .template-default__content,
 .template-login__content,
 [class*="template-default__content"],
@@ -81,9 +79,25 @@ html.dark textarea {
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
-/* Hide Payload's floating top header logo above the card */
+/* Remove default white background box from graphic/icon components */
+.graphic-logo,
+.graphic-icon,
+.payload-default-logo,
+[class*="graphic-logo"],
+[class*="graphic-icon"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Hide Payload's default floating top header logo link above the card */
 .template-default__wrap > a:first-child,
 .template-default__wrap > div:first-child,
 .template-login > div:first-child,
@@ -98,20 +112,9 @@ html.dark textarea {
   padding: 0 !important;
 }
 
-/* Remove default white background boxes behind logos */
-.graphic-logo,
-.graphic-icon,
-.payload-default-logo,
-[class*="graphic-logo"],
-[class*="graphic-icon"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
 
 /* ==========================================================================
-   3. Navigation & Top Header Logo Scaling (Dashboard View)
+   3. Navigation Header Logo Scaling (Dashboard View)
    ========================================================================== */
 
 .app-header__logo,
