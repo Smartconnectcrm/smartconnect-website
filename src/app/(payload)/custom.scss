@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark Mode Core & Root Layout Fixes
+   1. Dark Mode Core & Root Viewport Layout
    ========================================================================== */
 
 html,
@@ -12,92 +12,46 @@ html.dark body {
   width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: hidden !important;
+  overflow-x: hidden !important;
 }
 
-/* Ensure outer viewport containers remain centered and dark */
+/* Ensure Payload template container wraps cleanly */
 .template-default,
 .template-login,
-main[class*="template"],
-div[class*="template"] {
+main[class*="template"] {
   background-color: #0b0f17 !important;
-}
-
-/* ==========================================================================
-   2. Watermark Background Replacement & Content Box Cleanup
-   ========================================================================== */
-
-/* Target ALL wrapper divs/mains to display smartconnect.logo.png as the background box */
-main[class*="template"] > div,
-div[class*="template__wrap"],
-[class*="template-default__wrap"],
-[class*="template-login__wrap"] {
-  background-image: url('/smartconnect.logo.png') !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-  background-size: contain !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Remove default gray background and shadows from inner login content containers */
-div[class*="template__content"],
-div[class*="login__form"],
-[class*="template-default__content"],
-[class*="template-login__content"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Strip default white boxes from icon graphic containers */
-.graphic-logo,
-.graphic-icon,
-.payload-default-logo,
-[class*="graphic-logo"],
-[class*="graphic-icon"],
-[class*="logo_"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-}
-
-/* Hide floating header link logo above the login card */
-main > a:first-child,
-div[class*="template"] > a:first-child,
-div[class*="template"] > div:first-child > a:first-child {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  width: 0 !important;
+  min-height: 100vh !important;
+  width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
+/* Clear default background boxes from graphic components */
+.graphic-logo,
+.graphic-icon,
+.payload-default-logo {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
 /* ==========================================================================
-   3. Dashboard Header Logo Scaling
+   2. Dashboard Header Scaling
    ========================================================================== */
 
 .app-header__logo,
 .nav__brand,
-.nav__header,
-[class*="app-header"] [class*="logo"],
-[class*="nav_"] [class*="logo"] {
+.nav__header {
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
   height: auto !important;
   max-height: 48px !important;
-  width: auto !important;
   padding: 4px 8px !important;
 
   img, svg {
     max-height: 38px !important;
     width: auto !important;
-    height: auto !important;
     object-fit: contain !important;
   }
 }
