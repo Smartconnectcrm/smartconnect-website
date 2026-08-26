@@ -57,10 +57,24 @@ html.dark textarea {
    2. Payload CMS 3.0 Admin Login & Graphic Overrides
    ========================================================================== */
 
-/* Remove white background boxes from ALL logo wrappers and images */
+/* Strip default background, border, and shadows from ALL login container wrappers */
 .template-default,
 .template-login,
-.template-login *,
+.template-default__wrap,
+.template-login__wrap,
+.template-default__content,
+.template-login__content,
+[class*="template-default"],
+[class*="template-login"],
+[class*="login__wrap"],
+[class*="login__content"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Remove white background boxes from logo elements */
 .graphic-logo,
 .graphic-icon,
 .payload-default-logo,
@@ -83,14 +97,13 @@ html.dark textarea {
   mix-blend-mode: normal;
 }
 
-/* Purge ALL top header logo containers on the login page layout */
-body.login > div > *:not(.template-default__content):not(form):not(main),
-.template-default__wrap > *:not(.template-default__content),
-.template-login > *:not(.template-login__content):not(form),
-[class*="template"] > a,
-[class*="template"] > header,
-[class*="template"] > div:first-child:has(img),
-[class*="template"] > div:first-child:has(svg) {
+/* Hide top header logo container on login screen */
+.template-default__wrap > a:first-child,
+.template-default__wrap > div:first-child,
+.template-login > div:first-child,
+.template-login > a:first-child,
+[class*="template-default"] > a:first-child,
+[class*="template-login"] > a:first-child {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
@@ -100,23 +113,6 @@ body.login > div > *:not(.template-default__content):not(form):not(main),
   opacity: 0 !important;
   pointer-events: none !important;
 }
-
-/* Enhance form card inside custom layout */
-.template-login form,
-.template-default__content,
-[class*="login"] form {
-  position: relative !important;
-  backdrop-filter: blur(6px) !important;
-}
-
-/* Style for logo inside the form card */
-.template-login form img,
-[class*="login"] form img {
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6)) 
-          drop-shadow(0 0 12px rgba(6, 182, 212, 0.25));
-  transition: filter 0.3s ease;
-}
-
 
 /* ==========================================================================
    3. Navigation & Top Header Logo Scaling (Dashboard View)
