@@ -55,22 +55,24 @@ export default function CustomLogin() {
         overflow: 'hidden',
       }}
     >
-      {/* 🟡 1. Large Watermark Logo in Yellow Area */}
+      {/* 🔴 Bounded Watermark Frame (Constrained exactly to the red box area) */}
       <img
         src="/smartconnect.logo.png"
-        alt="Background Watermark"
+        alt="Background Watermark Frame"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 'min(700px, 85vw)',
-          height: 'min(700px, 85vw)',
+          width: '520px',
+          height: '520px',
+          maxWidth: '90vw',
+          maxHeight: '90vh',
           objectFit: 'contain',
-          opacity: 0.12,
+          opacity: 0.2,
           pointerEvents: 'none',
           zIndex: 0,
-          filter: 'drop-shadow(0 0 35px rgba(6, 182, 212, 0.3))',
+          filter: 'drop-shadow(0 0 25px rgba(6, 182, 212, 0.25))',
         }}
       />
 
@@ -81,7 +83,7 @@ export default function CustomLogin() {
           width: '100%',
           maxWidth: '400px',
           padding: '32px',
-          backgroundColor: 'rgba(30, 41, 59, 0.9)',
+          backgroundColor: 'rgba(30, 41, 59, 0.92)',
           backdropFilter: 'blur(12px)',
           borderRadius: '12px',
           border: '1px solid #334155',
@@ -101,7 +103,6 @@ export default function CustomLogin() {
             SmartConnect CRM
           </h2>
 
-          {/* 🔴 2. Form Icon in Red Area */}
           <div
             style={{
               display: 'flex',
