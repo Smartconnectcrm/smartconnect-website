@@ -12,7 +12,6 @@ export default function CustomLogin() {
   const [mounted, setMounted] = useState(false)
   const router = useRouter()
 
-  // Ensure portal target exists only on the client
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -45,10 +44,8 @@ export default function CustomLogin() {
     }
   }
 
-  // Prevent SSR mismatch before mounting
   if (!mounted) return null
 
-  // Render directly to document.body, completely breaking out of Payload's DOM wrapper
   return createPortal(
     <div
       style={{
@@ -66,9 +63,10 @@ export default function CustomLogin() {
         padding: '24px',
         boxSizing: 'border-box',
         zIndex: 9999999,
+        overflow: 'hidden',
       }}
     >
-      {/* 🟡 Centered Background Watermark */}
+      {/* 🟡 Watermark Logo Backdrop */}
       <img
         src="/smartconnect.logo.png"
         alt="Background Watermark"
@@ -84,12 +82,12 @@ export default function CustomLogin() {
           objectFit: 'contain',
           opacity: 0.15,
           pointerEvents: 'none',
-          zIndex: 0,
+          zIndex: 1,
           filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.3))',
         }}
       />
 
-      {/* 🔴 Clean Branded Form Card */}
+      {/* 🔴 Dark Form Card */}
       <form
         onSubmit={handleLogin}
         style={{
