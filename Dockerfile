@@ -5,13 +5,16 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+# Non-interactive CI flags for PNPM 10+
+ENV CI=true
+
 COPY package.json package-lock.json* pnpm-lock.yaml* ./
 
 # Install dependencies and enforce linuxmusl-x64 Sharp binaries
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && corepack prepare pnpm@10.5.2 --activate && \
-    pnpm i --frozen-lockfile && \
+    pnpm i --frozen-lockfile --confirm-modules-purge=false && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
     npm install && \
@@ -29,6 +32,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
+ENV CI=true
 
 RUN \
   if [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm payload generate:importmap && pnpm run build; \
