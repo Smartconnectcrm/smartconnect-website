@@ -39,31 +39,42 @@ export default function CustomLogin() {
   }
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: '#0b0f17',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 999999,
-      }}
-    >
-      {/* 🟡 Watermark Frame Container */}
+    <>
+      {/* 🔴 Inject runtime global overrides to neutralize Payload's native gray card */}
+      <style>{`
+        body, html {
+          background-color: #0b0f17 !important;
+        }
+        main, [class*="template"], [class*="login"] {
+          background: transparent !important;
+          background-color: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+        main > div, [class*="wrap"], [class*="content"] {
+          background: transparent !important;
+          background-color: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
+        }
+      `}</style>
+
+      {/* 🟡 Full Viewport Overlay & Watermark */}
       <div
         style={{
-          position: 'relative',
-          width: '560px',
-          height: '560px',
-          maxWidth: '92vw',
-          maxHeight: '92vh',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#0b0f17',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          padding: '24px',
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          overflow: 'hidden',
+          zIndex: 999999,
         }}
       >
         <img
@@ -71,17 +82,22 @@ export default function CustomLogin() {
           alt="Background Watermark"
           style={{
             position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '550px',
+            height: '550px',
+            maxWidth: '80vw',
+            maxHeight: '80vh',
             objectFit: 'contain',
-            opacity: 0.25,
+            opacity: 0.15,
             pointerEvents: 'none',
             zIndex: 0,
+            filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.3))',
           }}
         />
 
-        {/* 🔴 Centered Form Card */}
+        {/* 🔵 Centered Form Card */}
         <form
           onSubmit={handleLogin}
           style={{
@@ -94,7 +110,7 @@ export default function CustomLogin() {
             border: '1px solid #334155',
             boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
             position: 'relative',
-            zIndex: 1,
+            zIndex: 10,
           }}
         >
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
@@ -197,6 +213,6 @@ export default function CustomLogin() {
           </button>
         </form>
       </div>
-    </div>
+    </>
   )
 }
