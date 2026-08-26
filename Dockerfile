@@ -9,11 +9,12 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Force install PNPM 10 globally to purge Corepack 11 completely
+# Force install PNPM 10 globally to bypass Corepack v11 entirely
 RUN npm install -g pnpm@10.5.2
 
 COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
+# Configure PNPM 10 and install dependencies
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set confirmModulesPurge false && \
@@ -40,11 +41,11 @@ COPY . .
 
 ENV NODE_ENV=production
 
-# Execute importmap with explicit script execution permission
+# Execute importmap and build without corepack intervention
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     pnpm config set ignore-scripts false && \
-    pnpm exec payload generate:importmap --config.ignore-scripts=false && \
+    npx payload generate:importmap && \
     pnpm run build; \
   else \
     npx payload generate:importmap && \
