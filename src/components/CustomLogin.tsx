@@ -55,17 +55,17 @@ export default function CustomLogin() {
         overflow: 'hidden',
       }}
     >
-      {/* 1. Large Watermark Logo Centered Directly Behind Form */}
+      {/* 🟡 1. Large Watermark Logo in Yellow Area */}
       <img
         src="/smartconnect.logo.png"
-        alt="Watermark Logo"
+        alt="Background Watermark"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 'min(650px, 85vw)',
-          height: 'min(650px, 85vw)',
+          width: 'min(700px, 85vw)',
+          height: 'min(700px, 85vw)',
           objectFit: 'contain',
           opacity: 0.12,
           pointerEvents: 'none',
@@ -74,7 +74,7 @@ export default function CustomLogin() {
         }}
       />
 
-      {/* 2. Login Form Card */}
+      {/* Login Form Card */}
       <form
         onSubmit={handleLogin}
         style={{
@@ -101,7 +101,7 @@ export default function CustomLogin() {
             SmartConnect CRM
           </h2>
 
-          {/* Centered Form Logo */}
+          {/* 🔴 2. Form Icon in Red Area */}
           <div
             style={{
               display: 'flex',
@@ -111,7 +111,7 @@ export default function CustomLogin() {
             }}
           >
             <img
-              src="/smartconnect.logo.png"
+              src="/logo.png"
               alt="SmartConnect CRM Logo"
               style={{
                 width: '48px',
