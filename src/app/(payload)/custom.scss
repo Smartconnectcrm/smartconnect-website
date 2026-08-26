@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. Dark Mode Core & Root Viewport Layout
+   1. Global Dark Mode Reset
    ========================================================================== */
 
 html,
@@ -12,46 +12,52 @@ html.dark body {
   width: 100vw !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow-x: hidden !important;
 }
 
-/* Ensure Payload template container wraps cleanly */
-.template-default,
-.template-login,
-main[class*="template"] {
-  background-color: #0b0f17 !important;
-  min-height: 100vh !important;
-  width: 100vw !important;
-  margin: 0 !important;
-  padding: 0 !important;
+/* ==========================================================================
+   2. Payload 3.0 Login Template Overrides (Nuke Gray Container)
+   ========================================================================== */
+
+/* Target the wrapper card directly using wildcard attribute selectors */
+[class*="template-default__wrap"],
+[class*="template-login__wrap"],
+[class*="login__wrap"],
+main[class*="template"] > div {
+  background-color: transparent !important;
+  background-image: url('/smartconnect.logo.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: contain !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
-/* Clear default background boxes from graphic components */
-.graphic-logo,
-.graphic-icon,
-.payload-default-logo {
+/* Remove default background from inner template content */
+[class*="template-default__content"],
+[class*="template-login__content"],
+[class*="login__content"],
+[class*="login__form"] {
   background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
   border: none !important;
 }
 
-/* ==========================================================================
-   2. Dashboard Header Scaling
-   ========================================================================== */
+/* Hide floating top logo link above the card */
+[class*="template-default__wrap"] > a:first-child,
+[class*="template-login__wrap"] > a:first-child,
+main[class*="template"] > a:first-child {
+  display: none !important;
+}
 
-.app-header__logo,
-.nav__brand,
-.nav__header {
-  display: flex !important;
-  align-items: center !important;
-  height: auto !important;
-  max-height: 48px !important;
-  padding: 4px 8px !important;
-
-  img, svg {
-    max-height: 38px !important;
-    width: auto !important;
-    object-fit: contain !important;
-  }
+/* Clear white backgrounds behind logo graphics */
+.graphic-logo,
+.graphic-icon,
+.payload-default-logo,
+[class*="graphic-logo"],
+[class*="graphic-icon"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
