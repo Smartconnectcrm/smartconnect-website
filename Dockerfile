@@ -1,20 +1,24 @@
 FROM node:22-alpine AS base
 
 ENV CI=true
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV COREPACK_ENABLE=0
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Step 1: Dependencies & Sharp Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install PNPM 10 globally to bypass Corepack overrides completely
+# Force install PNPM 10 globally via npm (completely avoiding Corepack v11)
 RUN npm install -g pnpm@10.5.2
 
 COPY package.json package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
+# Configure PNPM 10 to auto-approve native builds and avoid prompts
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
+    pnpm config set confirmModulesPurge false && \
+    pnpm config set ignore-scripts false && \
     pnpm install --frozen-lockfile --unsafe-perm && \
     pnpm add --save-optional @img/sharp-linuxmusl-x64; \
   elif [ -f package-lock.json ]; then \
@@ -35,11 +39,12 @@ RUN npm install -g pnpm@10.5.2
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
-    pnpm payload generate:importmap && \
+    pnpm config set ignore-scripts false && \
+    npx payload generate:importmap && \
     pnpm run build; \
   else \
     npx payload generate:importmap && \
@@ -50,7 +55,7 @@ RUN \
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -66,6 +71,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 3000
-ENV PORT 3000
+ENV PORT=3000
 
 CMD ["node", "server.js"]
