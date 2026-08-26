@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function CustomLogin() {
@@ -9,6 +9,37 @@ export default function CustomLogin() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+
+  // 🔴 Directly strip gray backgrounds from parent Payload containers at the DOM level
+  useEffect(() => {
+    const cleanPayloadParents = () => {
+      // Traverse upward and strip styling on parent divs and main elements
+      const elements = document.querySelectorAll('main, main *, div[class*="template"]')
+      elements.forEach((el) => {
+        const htmlEl = el as HTMLElement
+        const computedBg = window.getComputedStyle(htmlEl).backgroundColor
+
+        // Remove solid gray/white backgrounds while keeping the form untouched
+        if (
+          computedBg.includes('rgb(53,') ||
+          computedBg.includes('rgb(30,') ||
+          computedBg.includes('rgb(255,') ||
+          computedBg.includes('rgb(240,')
+        ) {
+          if (!htmlEl.tagName.toLowerCase().includes('form')) {
+            htmlEl.style.setProperty('background', 'transparent', 'important')
+            htmlEl.style.setProperty('background-color', 'transparent', 'important')
+            htmlEl.style.setProperty('box-shadow', 'none', 'important')
+            htmlEl.style.setProperty('border', 'none', 'important')
+          }
+        }
+      })
+    }
+
+    cleanPayloadParents()
+    const timer = setTimeout(cleanPayloadParents, 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,18 +72,21 @@ export default function CustomLogin() {
   return (
     <div
       style={{
-        position: 'relative',
-        width: '100%',
-        minHeight: '100vh',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
         backgroundColor: '#0b0f17',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px',
         boxSizing: 'border-box',
+        zIndex: 999999,
       }}
     >
-      {/* Centered Watermark Logo */}
+      {/* 🟡 Centered Background Watermark */}
       <img
         src="/smartconnect.logo.png"
         alt="Background Watermark"
@@ -73,18 +107,18 @@ export default function CustomLogin() {
         }}
       />
 
-      {/* Form Card */}
+      {/* 🔴 Dark Form Card */}
       <form
         onSubmit={handleLogin}
         style={{
           width: '100%',
           maxWidth: '400px',
           padding: '32px',
-          backgroundColor: 'rgba(30, 41, 59, 0.92)',
-          backdropFilter: 'blur(12px)',
+          backgroundColor: 'rgba(30, 41, 59, 0.95)',
+          backdropFilter: 'blur(16px)',
           borderRadius: '12px',
           border: '1px solid #334155',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6)',
           position: 'relative',
           zIndex: 10,
         }}
