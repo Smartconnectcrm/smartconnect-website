@@ -1,15 +1,18 @@
 FROM node:22-alpine AS base
 
-# Step 1: Dependencies & Native Bindings
+# Prevent Corepack from downloading PNPM 11 dynamically
+ENV CI=true
+ENV COREPACK_ENABLE_STRICT=0
+ENV COREPACK_DEFAULT_TO_LATEST=0
+
+# Step 1: Dependencies & Sharp Native Bindings
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-ENV CI=true
-ENV COREPACK_ENABLE_STRICT=0
+COPY package.json package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* .npmrc* ./
 
-COPY package.json package-lock.json* pnpm-lock.yaml* ./
-
+# Lock PNPM to 10.5.2 and allow build scripts
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && \
@@ -34,17 +37,17 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
-ENV CI=true
-ENV COREPACK_ENABLE_STRICT=0
 
+# Force build script execution and bypass PNPM 11 script checks
 RUN \
   if [ -f pnpm-lock.yaml ]; then \
     corepack enable pnpm && \
     corepack prepare pnpm@10.5.2 --activate && \
-    pnpm run generate:importmap && \
+    pnpm config set ignore-scripts false && \
+    npx payload generate:importmap && \
     pnpm run build; \
   else \
-    npm run generate:importmap && \
+    npx payload generate:importmap && \
     npm run build; \
   fi
 
